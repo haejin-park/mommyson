@@ -98,7 +98,7 @@
             </nav>
         </div>
         <div class="board_container">
-            <h1>공지사항</h1>
+            <h2>공지사항</h2>
             <form action="">
                 <table class="table board_table">
                     <colgroup>
@@ -121,21 +121,27 @@
                         <tr class="important_notice">
                             <th scope="row"><input type="checkbox" name="ch1"></th>
                             <td>공지</td>
-                            <td class="tal">[소비자] 신규 회원 가입 이벤트 당첨자 발표</td>
+                            <td class="tal">
+                                <a href="noticeDetailView.html">[소비자] 신규 회원 가입 이벤트 당첨자 발표</a>
+                            </td>
                             <td>2021-11-01</td>
                             <td>123</td>
                         </tr>
                         <tr>
                             <th scope="row"><input type="checkbox" name="ch1"></th>
                             <td>1</td>
-                            <td class="tal">[안내] 방역수칙을 준수하는 안전한 외식생활 캠페인</td>
+                            <td class="tal">
+                                <a href="noticeDetailView.html">[안내] 방역수칙을 준수하는 안전한 외식생활 캠페인</a>
+                            </td>
                             <td>2021-11-01</td>
                             <td>500</td>
                         </tr>
                         <tr>
                             <th scope="row"><input type="checkbox" name="ch1"></th>
                             <td>2</td>
-                            <td class="tal">[공지] 고객센터 일부 서비스 중단 안내(10일,12일)</td>
+                            <td class="tal">
+                                <a href="noticeDetailView.html">[공지] 고객센터 일부 서비스 중단 안내(10일,12일)</a>
+                            </td>
                             <td>2021-11-01</td>
                             <td>200</td>
                         </tr>
@@ -144,33 +150,32 @@
                 <input type="submit" value="삭제하기" class="black_btn delete_btn">
                 <a href="noticeWrite.html" class="black_btn write_btn" style="background-color: #F89E91;">작성하기</a>
             </form>
-                <!-- 페이징 -->
-                <nav class="page_box" aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                        <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+            <!-- 페이징 -->
+            <nav class="page_box" aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                </ul>
+                <form action="">
+                    <ul>
+                        <img class="glass" src="../../../resources/images/glass.png">
+                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+                        <button type="submit" class="searchbutton">검색하기</button></li>
                     </ul>
-                    <form action="">
-                        <ul>
-                            <img class="glass" src="../../../resources/images/glass.png">
-                            <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                            <button type="submit" class="searchbutton">검색하기</button></li>
-                        </ul>
-                    </form>
-                </nav>
-            </form>
+                </form>
+            </nav>
         </div>
     </div>
 

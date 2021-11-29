@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../../resources/css/mypage-sidebar.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="../../../resources/css/manager.css">
+    <link rel="stylesheet" href="../../../resources/css/buisnessMember.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
@@ -98,7 +99,7 @@
             </nav>
         </div>
         <div class="board_container">
-            <h1>회원관리</h1>
+            <h2>회원관리</h2>
             <div class="top_box">
                 <p>블랙 회원 조회</p>
                 <input type="button" value="블랙해지">
@@ -125,7 +126,7 @@
                     <th>가입일</th>
                     <th>주문횟수</th>
                     <th>총 결제금액</th>
-                    <th>상태</th>
+                    <th>-</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -138,7 +139,9 @@
                     <td>2021-11-01</td>
                     <td>123</td>
                     <td>7,000,000</td>
-                    <td>시민</td>
+                    <td>
+                        <a href="" data-toggle="modal" data-target="#exampleModal">상세보기</a>
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row"><input type="checkbox" name="ch1"></th>
@@ -149,7 +152,9 @@
                     <td>2021-11-01</td>
                     <td>123</td>
                     <td>7,000,000</td>
-                    <td>시민</td>
+                    <td>
+                        <a href="" data-toggle="modal" data-target="#exampleModal">상세보기</a>
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row"><input type="checkbox" name="ch1"></th>
@@ -160,14 +165,80 @@
                     <td>2021-11-01</td>
                     <td>123</td>
                     <td>7,000,000</td>
-                    <td>시민</td>
+                    <td>
+                        <a href="" data-toggle="modal" data-target="#exampleModal">상세보기</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
+
+            <!-- 페이징 -->
+            <nav class="page_box" aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                </ul>
+                <form action="">
+                    <ul>
+                        <img class="glass" src="../../../resources/images/glass.png">
+                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+                        <button type="submit" class="searchbutton">검색하기</button></li>
+                    </ul>
+                </form>
+            </nav>
         </div>
     </div>
 
-   
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   <table border="1" class="tb_content">
+                       <colgroup>
+                            <col width="15%"/>
+                            <col width="15%"/>
+                            <col width="55%"/>
+                            <col width="15%"/>
+                       </colgroup>
+                       <thead>
+                           <tr>
+                               <th>경고순번</th>
+                               <th>카테고리</th>
+                               <th>내용</th>
+                               <th>날짜</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           <tr>
+                               <td>1</td>
+                               <td>욕설</td>
+                               <td>XX별로다.</td>
+                               <td>2021-11-29</td>
+                           </tr>
+                       </tbody>
+                   </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="at-container">
         <ul class="df_ul ft_list">

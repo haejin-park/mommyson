@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -100,7 +99,7 @@
             </nav>
         </div>
         <div class="board_container">
-            <h1>회원관리</h1>
+            <h2>회원관리</h2>
             <div class="top_box">
                 <p>사업자 회원 조회</p>
                 <input type="button" value="회원삭제">
@@ -123,9 +122,10 @@
                     <th><input type="checkbox" name="ch1"></th>
                     <th>번호</th>
                     <th>아이디</th>
-                    <th>닉네임</th>
+                    <th>대표자</th>
                     <th>이메일</th>
                     <th>가입일</th>
+                    <th>가게</th>
                     <th>상태</th>
                     <th>-</th>
                 </tr>
@@ -138,6 +138,7 @@
                     <td>혜찌마요</td>
                     <td>heju@greedy.com</td>
                     <td>2021-11-01</td>
+                    <td>도미노피자</td>
                     <td>멤버쉽</td>
                     <td>
                         <a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
@@ -150,6 +151,7 @@
                     <td>혜찌마요</td>
                     <td>heju@greedy.com</td>
                     <td>2021-11-01</td>
+                    <td>치킨마루</td>
                     <td>멤버쉽</td>
                     <td>
                         <a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
@@ -162,6 +164,7 @@
                     <td>혜찌마요</td>
                     <td>heju@greedy.com</td>
                     <td>2021-11-01</td>
+                    <td>행복한찜닭</td>
                     <td>멤버쉽</td>
                     <td>
                         <a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
@@ -169,6 +172,33 @@
                 </tr>
                 </tbody>
             </table>
+            
+            <!-- 페이징 -->
+            <nav class="page_box" aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                </ul>
+                <form action="">
+                    <ul>
+                        <img class="glass" src="../../../resources/images/glass.png">
+                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+                        <button type="submit" class="searchbutton">검색하기</button></li>
+                    </ul>
+                </form>
+            </nav>
         </div>
     </div>
   
@@ -191,11 +221,11 @@
                             </colgroup>
                             <tbody>
                                 <tr>
-                                    <th>사업자 회원번호</th>
-                                    <td>111111111</td>
+                                    <th>사업자 번호</th>
+                                    <td>111-111-11111</td>
                                 </tr>
                                 <tr>
-                                    <th>닉네임</th>
+                                    <th>대표자명</th>
                                     <td>관리자</td>
                                 </tr>
                                 <tr>
@@ -211,8 +241,12 @@
                                     <td>vwnua@naver.com</td>
                                 </tr>
                                 <tr>
-                                    <th>상태</th>
-                                    <td>멤버쉽</td>
+                                    <th>가게정보</th>
+                                    <td>더조은가게</td>
+                                </tr>
+                                <tr>
+                                    <th>주소</th>
+                                    <td>서울특별시 서초구 서초대로78길 48 송림빌딩 13층</td>
                                 </tr>
                             </tbody>
                         </table>
