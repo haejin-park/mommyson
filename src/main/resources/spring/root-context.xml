@@ -19,9 +19,9 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 		<!-- db 아이디 설정 -->
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="C##SPRING"/>
-		<property name="password" value="SPRING"/>
+		<property name="url" value="jdbc:oracle:thin:@tjoeunkn.iptime.org:1881:xe"/>
+		<property name="username" value="C##MOMMYSON"/>
+		<property name="password" value="MOMMYSON"/>
 		<property name="defaultAutoCommit" value="false"/>
 	</bean>
 	
@@ -49,4 +49,5 @@
 	
 	<!-- dao 추가 샘플입니다~ -->
 	<!-- <mybatis-spring:scan base-package="com.greedy.spring.member.model.dao"/> -->
+	<mybatis-spring:scan base-package="com.sd.mommyson.member.dao"/>
 </beans>
