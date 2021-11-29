@@ -198,7 +198,7 @@
                   <th id="tablecol5" scope="col">수량</th>        
                   <th id="tablecol6" scope="col">수령일자</th>        
                   <th id="tablecol7" scope="col">구매금액</th>      
-                  <th id="tablecol8" scope="col"></th><!-- 리뷰쓰기 버튼 -->     
+                  <th id="tablecol8" scope="col"></th><!-- 리뷰쓰기 버튼// 접수상테(배달이완료되고 나서 뜨도록) -->     
                 </tr>
               </thead>
               <tbody>
