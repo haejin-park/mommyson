@@ -98,7 +98,7 @@
             </nav>
         </div>
         <div class="board_container">
-            <h1>공지사항</h1>
+            <h2>공지사항</h2>
             <form action="">
                 <table class="table bd_write_header bd_detail_view">
                     <colgroup>

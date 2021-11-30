@@ -98,7 +98,7 @@
             </nav>
         </div>
         <div class="board_container">
-            <h1>회원관리</h1>
+            <h2>회원관리</h2>
             <div class="top_box">
                 <p>일반 회원 조회</p>
                 <input type="button" value="회원삭제">
@@ -115,10 +115,11 @@
                     <col width=""/>
                     <col width=""/>
                     <col width=""/>
+                    <col width=""/>
                 </colgroup>
                 <thead style="background-color: #EDEDED;">
                     <tr>
-                        <th><input type="checkbox" name="ch1"></th>
+                        <th><input type="checkbox" name="ch1" id="chk_all"></th>
                         <th>번호</th>
                         <th>아이디</th>
                         <th>닉네임</th>
@@ -126,6 +127,7 @@
                         <th>가입일</th>
                         <th>주문횟수</th>
                         <th>총 결제금액</th>
+                        <th>신고</th>
                         <th>상태</th>
                     </tr>
                 </thead>
@@ -139,6 +141,7 @@
                         <td>2021-11-01</td>
                         <td>123</td>
                         <td>7,000,000</td>
+                        <td>1</td>
                         <td>시민</td>
                     </tr>
                     <tr>
@@ -150,6 +153,7 @@
                         <td>2021-11-01</td>
                         <td>123</td>
                         <td>7,000,000</td>
+                        <td>2</td>
                         <td>시민</td>
                     </tr>
                     <tr>
@@ -161,15 +165,46 @@
                         <td>2021-11-01</td>
                         <td>123</td>
                         <td>7,000,000</td>
+                        <td>1</td>
                         <td>시민</td>
                     </tr>
                 </tbody>
             </table>
             <input type="button" value="블랙등록" class="black_btn">
+            <!-- 페이징 -->
+            <nav class="page_box" aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
+                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                </ul>
+                <form action="">
+                    <ul>
+                        <img class="glass" src="../../../resources/images/glass.png">
+                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+                        <button type="submit" class="searchbutton">검색하기</button></li>
+                    </ul>
+                </form>
+            </nav>
         </div>
     </div>
 
-   
+   <script>
+       $("#chk_all").click(function(){
+        $(this).parent
+       });
+   </script>
 
     <footer class="at-container">
         <ul class="df_ul ft_list">

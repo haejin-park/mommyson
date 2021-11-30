@@ -1,22 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="../../resources/css/colorset.css">
-  <link rel="stylesheet" href="../../resources/css/user/userMyPageSideBar.css">
-  <link rel="stylesheet" href="../../resources/css/user/userMTMConsult.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-  <style>
-    nav { border: 1px;}
-  </style>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/user/shppingBusket.css">
+    <link rel="stylesheet" href="../../resources/css/colorset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
   <header class="header">
     <div class="headerTop">
@@ -117,6 +117,98 @@
        <input type="button" class="tag" value="#부드러운">
       </div>
     </div>
+    <form>
+        <img class=cart1 src="../../resources/images/cart1.png" >
+        <table id="table1">
+          <tr id="tr1">
+            <th><input type=checkbox id="all"></th>
+            <th>가게 정보</th>
+            <th>제품 정보</th>
+            <th>제품 금액</th>
+            <th>수량</th>
+            <th>총 제품 금액</th>
+          </tr>
+          <tr id="tr2">
+            <td><input type=checkbox name="checkbox"></td>
+            <td><img class=restaurantLogo001 src="../../resources/images/restaurantLogo001.png"><br>찜닭최고</td>
+            <td><img class=chicken src="../../resources/images/chicken.png"><br>고추장 야채 찜닭</td>
+            <td>10,000원</td>
+            <td>
+              <div class="number">
+                <a href="#" id="decreaseQuantity"> - </a>
+                <span id="numberUpDown">1</span>
+                <a href="#" id="increaseQuantity"> + </a>
+              </div>
+            </td>
+            <td>10,000원</td>
+          </tr>
+        </table>
+        <div id="div1">
+          <table id="table2">
+            <tr>
+              <th>가게별 총 제품 금액(배달시 배송비 별도)</th>
+              <td id="totalAmountByStore">10,000원</td>
+            </tr>
+          </table>
+        </div>
+        <div id="div2">
+          <table id="table3">
+            <tr>
+              <th>총 제품 금액 합계(배달 시 배송비 별도)</th>
+              <td id="paymentAmount">10,000원</td>
+            </tr>
+          </table>
+        </div>
+        <br> 
+        <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
+        <br>  
+          <button type="button" id="selectDelete">선택삭제</button>
+          <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="package">방문포장</button>
+          <button type="submit" id="delivery"><a href="deliveryPay.html">배달예약</a></button>
+        
+
+          <br>  
+
+    </form>  
+    <br><br><br><br>
+    <footer class="at-container" style="margin:0 auto">
+      <ul class="df_ul ft_list">
+          <li>
+              <a href="">마미손맛 소개</a>   
+          </li>
+          <li>
+              <a href="">이용약관</a>
+          </li>
+          <li>
+              <a href="">개인정보처리방침</a>
+          </li>
+          <li>
+              <a href="">전자금융거래이용약관</a>
+          </li>
+      </ul>
+      <div class="ft_img_line">
+          <img src="../../resources/images/ft_img01.png" alt="소비자중심경영">
+          <img src="../../resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
+          <img src="../../resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
+      </div>
+      <div class="ft_info">
+          <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
+          <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
+          <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
+          <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
+      </div>
+      <div class="manager_center">
+          <h4>고객센터</h4>
+          <div class="callNum">
+              <img src="../../resources/images/callImg.png" alt="call">
+              <span>1644 - 1234</span>    
+          </div>
+          <p>평일 10:00~18:50</p>
+          <p>점심시간 12:00~13:00</p>
+          <p>(주말과 공휴일은 휴무입니다.)</p>
+      </div>
+    </footer>
+    
     <script>
       // 태그 div 출력 이벤트
       $('#search').on('keyup', function() {
@@ -143,128 +235,46 @@
         return this.substr(0, index) + character + this.substr(index+character.length); 
       }
     </script>
-
-    <section>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3">
-            <nav id="sidebar">
-              <div class="sidebar-header">
-                  <h3>고객센터</h3>
-              </div>
-  
-              <ul class="list-unstyled components">
-                  <li>
-                      <a href="#">공지사항</a>
-                  </li>                 
-                  <li>
-                      <a href="#">자주하는 질문</a>
-                  </li>
-                  <li>
-                      <a href="#">1:1 문의</a>
-                  </li>
-                  <li>
-                    <a href="#">1:1 상담 내역</a>
-                </li>
-              </ul>
-          </nav>
-          <<!-- img src="../../resources/images/customerServiceImg.png" id="customerguide"> -->
-          </div>
-          <div class="col-md-9">
-            <div id="userCouponHead">
-            <br>
-              <h3><strong>1:1 상담 내역</strong></h3>
-            </div>
-            <br>
-            <table class="table table">
-              <thead style="background-color: #EDEDED;">
-                <tr>
-                  <th id="tablecol1" scope="col">번호</th>
-                  <th id="tablecol2" scope="col">문의유형</th><!-- 제품 이미지 -->        
-                  <th id="tablecol3" scope="col">제목</th>        
-                  <th id="tablecol4" scope="col">문의날짜</th>        
-                  <th id="tablecol5" scope="col">답변여부</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>소비자</td>
-                  <td>업데이트가 되지 않네요</td>
-                  <td>2021-11-29</td>
-                  <td>Y</td>
-                </tr>
-                
-              </tbody>
-            </table>
-
-             <!-- 페이징 -->
-             <nav class="page_box" aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-              </ul>
-              <ul>
-                  <img class="glass" src="../../resources/images/glass.png">
-                  <input type="text" class="searchtext" placeholder="찾고싶은 가게 이름을 입력해주세요"></li>
-                  <button type="submit" class="searchbutton">검색하기</button></li>
-               </ul>
-            </nav>
-            
-          </div>
-        </div>
-      </div>
-    </section>
     <script>
-      $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
+     
+      /* 전체 체크, 해제 */
+      $("#all").on("change",function(){
+            if($("#all").is(":checked")){
+                $("input[name=checkbox]").prop("checked",true);
+            } else {
+                $("input[name=checkbox]").prop("checked",false);
+            }
         });
+
+      /* 수량 증감 */
+      $(function(){
+        $('#decreaseQuantity').click(function(e){
+          e.preventDefault();
+          var stat = $('#numberUpDown').text();
+          var num = parseInt(stat,10);
+          num--;
+          if(num<=0){
+          alert('더이상 줄일수 없습니다.');
+          num =1;
+          }
+          $('#numberUpDown').text(num);
+        });
+        $('#increaseQuantity').click(function(e){
+          e.preventDefault();
+          var stat = $('#numberUpDown').text();
+          var num = parseInt(stat,10);
+          num++;
+
+          if(num>5){
+          alert('더이상 늘릴수 없습니다.');
+          num=5;
+          }
+          $('#numberUpDown').text(num);
+      });
+    });
+
+
     </script>
 
-
-
-      <footer class="at-container">
-        <ul class="df_ul ft_list">
-          <li>
-            <a href="">마미손맛 소개</a>   
-          </li>
-          <li>
-            <a href="">이용약관</a>
-          </li>
-          <li>
-            <a href="">개인정보처리방침</a>
-          </li>
-          <li>
-            <a href="">전자금융거래이용약관</a>
-          </li>
-        </ul>
-        <div class="ft_img_line">
-          <img src="../../../resources/images/ft_img01.png" alt="소비자중심경영">
-        <img src="../../../resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-        <img src="../../../resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
-      </div>
-      <div class="ft_info">
-        <p>(주)마미손맛 자세히 보기</p>
-        <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
-        <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
-        <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
-        <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
-      </div>
-    </footer>
-  </body>
-  </html>
+</body>
+</html>
