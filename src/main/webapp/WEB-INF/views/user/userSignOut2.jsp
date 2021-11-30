@@ -181,7 +181,7 @@
               </ul>
               
           </nav>
-          <img src="../../resources/images/customerServiceImg.png" id="customerguide">
+          <!-- <img src="../../resources/images/customerServiceImg.png" id="customerguide"> -->
           </div>
           <div class="col-md-9">
             <div>

@@ -165,7 +165,7 @@
                  </li>
               </ul>
           </nav>
-          <img src="../../resources/images/customerServiceImg.png" id="customerguide">
+          <!-- <img src="../../resources/images/customerServiceImg.png" id="customerguide"> -->
           </div>
           <script>
             $(document).ready(function () {
@@ -181,26 +181,26 @@
               <h3 id="title"><strong>고객센터</strong></h3>
             </div>
             <br>
-              <h5><b>자주하는 질문</b></h5>
+              <h5><b>FAQ</b></h5>
+              <!-- 구현하시는 분은 자주묻는 질문이나 공지사항 게시판 양식 그대로 끌어다 만드시면 됩니다. 클릭할때 관련 질문이 출력 되어야합니다.
+                  아니 게시판 형식이 아니어도 내용만 양식에 맞게 출력되면 ok입니다.  
+              -->
             <div style="border: solid gainsboro 2px; text-align: center; margin-top: 30px;">
               <table>
                 <tbody class="qnaList">
                   <tr>
-                    <td style="border-right: solid gainsboro;"><a href="#">회원가입</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">결제/주문</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">리뷰관리</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">이용문의</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">불편관리</a></td>
-                    <td>기타</td>
+                    <td style="border-right: solid gainsboro;"><a href="#"><img class="imgFAQ" src="../../resources/images/FAQICONIdPasswordFind.png"></a></td>
+                    <td style="border-right: solid gainsboro;"><a href="#"><img class="imgFAQ" src="../../resources/images/FAQICONOrderList.png"></a></td>
+                    <td style="border-right: solid gainsboro;"><a href="#"><img class="imgFAQ" src="../../resources/images/FAQICONWriteReview.png"></a></td>
+                    <td><a href="#"><img class="imgFAQ" src="../../resources/images/FAQICONCoupon.png"></a></td>                  
                   </tr>
                 </tbody>
-              
               </table>
             </div>
 
             <hr>
             <div>
-            <h5><b>FQA</b></h5>
+            <h5><b>자주하는 질문 TOP5</b></h5>
               <table class="table board_table question_table">
                 <colgroup>
                     <col width=""/>
