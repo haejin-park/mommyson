@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
@@ -58,10 +58,14 @@
                         <div class="info_con" style="background: #EFEFEF; width: 500px; padding: 10px 40px; font-weight: bold;">서울시 강남구 서초동</div>
                     </div>
                     <div class="info_div">
+                        <div style="font-size: 20pt; font-weight: bold;">영업시간</div>
+                        <div class="info_con" style="background: #EFEFEF; width: 500px; padding: 10px 40px; font-weight: bold;">08:00 ~ 21:00</div>
+                    </div>
+                    <div class="info_div">
                         <div style="font-size: 20pt; font-weight: bold;">상세주소</div>
                         <div class="info_con" style="background: #EFEFEF; width: 500px; padding: 10px 40px; font-weight: bold;">xx빌라 1층</div>
                     </div>
-                    <div class="info_div" style="margin-bottom: 100px;">
+                    <div class="info_div">
                         <div style="font-size: 20pt; font-weight: bold;">가게 소개</div>
                         <div class="info_con" style="background: #EFEFEF; width: 500px; padding: 10px 40px; font-weight: bold;">
                             <p>
@@ -70,12 +74,16 @@
                             </p>
                         </div>
                     </div>
+                    <div class="info_div" style="margin-bottom: 100px;">
+                        <div style="font-size: 20pt; font-weight: bold;">사업자<br>등록번호</div>
+                        <div class="info_con" style="background: #EFEFEF; width: 500px; padding: 10px 40px; font-weight: bold;">678-91-01234</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="at-container" style="margin: 0;">
+    <footer class="at-container" style="margin-top: 0;">
         <ul class="df_ul ft_list">
             <li>
                 <a href="">마미손맛 소개</a>   
