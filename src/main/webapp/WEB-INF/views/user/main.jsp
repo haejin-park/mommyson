@@ -17,30 +17,8 @@
 </head>
 <body>
     
-    <header class="header">
-        <div class="headerTop">
-            <div class="headerBody">
-                    <a href="#"><img src="../../resources/images/mainlogo.png" style="width: 300px;"></a>
-                <div class="bodyLeft">
-                    <ul class="df_ul headerItem">
-                        <li>
-                          <a href="#">장바구니</a>
-                        </li>
-                        <li>
-                          <a  href="#">로그인</a>
-                        </li>
-                        <li >
-                          <a href="#">회원가입</a>
-                        </li>
-                        <li >
-                          <a  href="#"><img src="../../resources/images/bell.png"></a>
-                        </li>
-                      </ul>
-                </div>
-            </div>
-        </div>
-    </header>
-
+    <jsp:include page="../commons/header.jsp"></jsp:include>
+	
     <section>
         <div style="width: 100%; height: 450px;">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">

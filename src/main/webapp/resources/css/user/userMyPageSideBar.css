@@ -1,0 +1,162 @@
+/* 소비자 사이드바 CSS */
+.container {
+  max-width: 1500px !important;
+}
+.row {
+    /* display: -ms-flexbox; */
+    display: flex;
+    /* -ms-flex-wrap: wrap; */
+    flex-wrap: wrap;
+    margin-right: 0px;
+    margin-left: -16%;
+}
+
+.sidebar-header {
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  background: white;
+  color: black;
+  transition: all 0.3s;
+}
+
+#sidebar.active {
+  margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: white;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid white;
+}
+
+#sidebar ul p {
+  color: black;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+  color: black;
+}
+
+#sidebar ul li a:hover {
+  color: black;
+  background: rgba(252, 235, 233, 1);
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+  color: black;
+  background: white;
+}
+
+a[data-toggle="collapse"] {
+  position: relative;
+  color: black;
+}
+
+/* .dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+} */
+
+ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: white;
+  color: black;
+}
+
+ul.CTAs {
+  padding: 20px;
+}
+
+ul.CTAs a {
+  text-align: center;
+  font-size: 0.9em !important;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+a.download {
+  background: #fff;
+  color:black;
+}
+
+a.article, a.article:hover {
+  background: white !important;
+  color: black !important;
+}
+.list-unstyled components {
+  border-bottom: black 1px;
+  background: #6d7fcc !important;
+  color: #fff !important;
+}
+/* 
+.headerTop{
+  width: 100%;
+  background: #fff;
+  text-align: center;
+  display: flex;
+}
+.headerBody{
+  width: 1180px;
+  margin: 0 auto;
+  padding: 50px 0 20px 0;
+
+}
+.headerItem{
+  float: right;
+  width: auto;
+
+}
+.headerItem li{
+  float: left;
+  padding-left: 36px;
+  font-size: 20px;
+}
+
+.headerItem li:first-child{
+  background-image: url("../../resources/images/cart.png");
+  background-repeat: no-repeat;
+  padding-left: 36px;
+} */
+
+
+#sidebar ul.components {
+  border: 1px solid;
+  padding: 20px 20px;
+  border-bottom: 1px solid;
+  text-align: center;
+}
+
+#sidebar ul.components li{
+  border-bottom : 1px solid;
+
+}
+
+#customerguide {
+  width: 240px;
+  height: 175px;
+  margin-bottom: 40px;
+}
