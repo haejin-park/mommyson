@@ -39,7 +39,7 @@
                     <a  href="${ pageContext.servletContext.contextPath }/member/login">로그인</a>
                   </li>
                   <li >
-                    <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain">회원가입</a>
+                    <a href="">회원가입</a>
                   </li>
                  </c:if>
               </ul>
