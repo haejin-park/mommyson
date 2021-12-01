@@ -18,14 +18,14 @@
         <div class="headerBody">
           <a href="${ pageContext.servletContext.contextPath }/"><img src="${ pageContext.servletContext.contextPath }/resources/images/mainlogo.png" style="width: 300px;"></a>
           <br><br><br>
-            <div class="bodyLeft">
-                <ul class="df_ul headerItem" style=" margin-left: 1150px;">
+            <div class="bodyLeft" style="display: block;">
+                <ul class="df_ul headerItem">
                 <c:if test="${ sessionScope.loginMember != null }">
                    <li>
                     <a href="#">장바구니</a>
                   </li>
                    <li>
-                    <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/profile">${ sessionScope.loginMember.nickname}</a>
+                    <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   </li>
                   <li>
                     <a href="#">로그아웃</a>

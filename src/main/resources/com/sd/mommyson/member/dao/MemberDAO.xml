@@ -3,7 +3,58 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sd.mommyson.member.dao.MemberDAO">
+	<resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="name" column="NAME"/>
+		<result property="repCount" column="REP_COUNT"/>
+	</resultMap>
+
+	<resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="memPwd" column="MEM_PWD"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="postCode" column="POST_CODE"/>
+		<result property="dAddress" column="D_ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="memType" column="MEM_TYPE"/>
+		<result property="locationCode" column="LOCATION_CODE"/>
+		<result property="nickname" column="NICKNAME"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+		<collection property="user" resultMap="userResultMap"/>
+	</resultMap>
+
 	<select id="selectAll" resultType="_int">
 		SELECT * FROM TEST
+	</select>
+	
+	<select id="selectEncPassword" resultType="String">
+		SELECT 
+			   A.MEM_PWD
+		  FROM MEMBER_TBL A
+		 WHERE A.MEM_ID = #{ memId }
+	</select>
+	
+	<select id="selectMember" resultMap="memberResultMap">
+		SELECT 
+			   A.MEM_CODE
+			 , A.EMAIL
+			 , A.ADDRESS
+			 , A.POST_CODE
+			 , A.D_ADDRESS
+			 , A.PHONE
+			 , A.MEM_TYPE
+			 , A.LOCATION_CODE
+			 , A.NICKNAME
+			 , A.MEM_ID
+			 , A.ENROLL_DATE
+			 , B.NAME
+			 , B.REP_COUNT
+		  FROM MEMBER_TBL A
+		  LEFT JOIN USER_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+		 WHERE A.IS_DELETED = 'N'
+		   AND A.MEM_ID = #{ memId }
 	</select>
 </mapper>

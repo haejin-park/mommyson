@@ -9,7 +9,7 @@
     <title>로그인</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/login.css">
@@ -22,17 +22,15 @@
         <h1>로그인</h1>
         <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         <br><br>
-        <form onsubmit="return validate();">
-        <input type="text" class="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
+        <input type="text" name="memId" class="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
         <br><br>
-        <input type="password" class="pwd" id="pwd" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
+        <input type="password" name="memPwd" class="pwd" id="pwd" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
         <br><br>
 
          <!-- 아이디와 비밀번호가 일치하면  메인페이지 이동하기 -->
-        <button type="submit" class=login>로그인</button>
+        <button type="submit" class=login onclick="validate();">로그인</button>
         &nbsp; &nbsp; &nbsp; 
         <button type="reset" class=reset><a href="login.html">취소</a></button>
-        </form>
         <br>
         <a href="findId.html">아이디 찾기</a> &nbsp; 
         <a href="findPwd.html">비밀번호 찾기</a> &nbsp; 
@@ -78,42 +76,45 @@
     </footer>  
     <script>
         function validate(){
-            var id = document.getElementById("id");
-            var pwd = document.getElementById("pwd");
+            let memId = $('#id').val();
+            let memPwd = $('#pwd').val();
        
-            if(id.value==""){
+            if(memId.value==""){
                 alert("아이디를 입력해주세요.");
-                id.focus();
-                return false;
+                memId.focus();
             }
 
-            if(!chk(/^[a-z][a-z\d]{3,11}$/,id,"아이디는 [영문,숫자] 4~12")){
-                return false;
-            }
-
-            if(!chk(/[0-9]/,id,"아이디에 숫자 하나 이상 포함")){
-                return false;
-            }
-
-            if(pwd.value==""){
+            if(memPwd.value==""){
                 alert("비밀번호를 입력해주세요.");
-                pwd.focus();
-                return false;
             }
-
-            if(!chk(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/,pwd1, "숫자+영문자+특수문자 조합으로 4~12글자를 입력해주세요.")){            
-	        return false;
-            }
+            
+            $.ajax({
+       			url: "/mommyson/member/login",
+    				type: 'post',
+    				data: {
+    					memId : memId,
+    					memPwd : memPwd
+    				},
+    				success: function(data) {
+    					switch(data){
+    						case "main" : location.href="${ pageContext.servletContext.contextPath }/"; break;
+    						case "manager" : location.href="${ pageContext.servletContext.contextPath }/management/management_board"; break;
+    						default : alert(data); break;
+    					}
+    				}
+       		});
         }
 
         function chk(re, ele, msg){
-                if(!re.test(ele.value)){
-                    alert(msg);
-                    ele.select();
-                    return false;
-                }
-                return true;
+            if(!re.test(ele.value)){
+                alert(msg);
+                ele.select();
+                return false;
+            }
+            return true;
         }
+		
+   		
 
     </script>           
 </body>
