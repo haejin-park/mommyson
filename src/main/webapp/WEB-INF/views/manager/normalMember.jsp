@@ -28,7 +28,7 @@
         <div class="side-2 side_menu">
             <nav id="sidebar">
                 <ul class="list-unstyled components sidebar_list">
-                    <li class="active">
+                    <li class="active" id="active_menu">
                         <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회원관리</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu1">
                             <li>
@@ -46,10 +46,10 @@
                         <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">게시글 관리</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu2">
                             <li>
-                                <a href="#">공지사항</a>
+                                <a href="noticeSelect.html">공지사항</a>
                             </li>
                             <li>
-                                <a href="#">자주하는 질문</a>
+                                <a href="oftenQuestion.html">자주하는 질문</a>
                             </li>
                         </ul>
                     </li>
@@ -57,10 +57,10 @@
                         <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">1:1 문의</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu3">
                             <li>
-                                <a href="#">사업자</a>
+                                <a href="businessInquiry.html">사업자</a>
                             </li>
                             <li>
-                                <a href="#">소비자</a>
+                                <a href="normalInquiry.html">소비자</a>
                             </li>
                         </ul>
                     </li>
@@ -68,7 +68,7 @@
                         <a href="#homeSubmenu4" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">신고 관리</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu4">
                             <li>
-                                <a href="#">가게 신고 현황</a>
+                                <a href="statusStoreWarning.html">가게 신고 현황</a>
                             </li>
                         </ul>
                     </li>
@@ -87,16 +87,21 @@
                         <a href="#homeSubmenu6" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">관리자 관리</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu6">
                             <li>
-                                <a href="#">관리자 조회</a>
+                                <a href="manageManager.html">관리자 조회</a>
                             </li>
                             <li>
-                                <a href="#">관리자 아이디 생성</a>
+                                <a href="createManager.html">관리자 아이디 생성</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </nav>
         </div>
+        <script>
+            $(document).ready(function () {
+                $('#active_menu').toggleClass('active');
+            });
+        </script>
         <div class="board_container">
             <h2>회원관리</h2>
             <div class="top_box">
@@ -200,12 +205,6 @@
         </div>
     </div>
 
-   <script>
-       $("#chk_all").click(function(){
-        $(this).parent
-       });
-   </script>
-
     <footer class="at-container">
         <ul class="df_ul ft_list">
             <li>
@@ -243,5 +242,14 @@
             <p>(주말과 공휴일은 휴무입니다.)</p>
         </div>
     </footer>
+
+    <script>
+        $("#chk_all").click(function(){
+         $(this).parent
+        });
+ 
+         $("#homeSubmenu1").addClass("show");
+         $("#homeSubmenu1 > li:first-child > a").css("color","#F89E91");
+     </script>
 </body>
 </html>

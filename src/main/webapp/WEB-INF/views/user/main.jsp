@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>마미손맛</title>
+
     <script src="https:/cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/main.css">
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/slick.css">
@@ -20,6 +21,7 @@
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
+
                     <img src="${ pageContext.servletContext.contextPath }/resources/images/main_label.png" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
@@ -70,6 +72,7 @@
                 <div class="col-sm-12">
                     <div class="menu_bar" align="center">
                         <div class="recommend-img">
+
                             <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                             <div class="menu_div">
                                 <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
@@ -80,6 +83,7 @@
                             </div>
                         </div>
                         <div class="recommend-img">
+
                             <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                             <div class="menu_div">
                                 <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
@@ -90,6 +94,7 @@
                             </div>
                         </div>
                         <div class="recommend-img">
+
                             <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                             <div class="menu_div">
                                 <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
