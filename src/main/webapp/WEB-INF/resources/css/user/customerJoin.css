@@ -1,0 +1,73 @@
+h1{
+    text-align: center;
+}
+
+.div{
+    margin-left: 20%;
+}
+
+.container1{
+display: inline-block;
+width:100%;
+}
+
+.container1 .image{
+    float:left;
+    width: 50%;
+    text-align: center;
+    padding-top:50px;
+}
+
+.container1 .image .logo{
+    width: 700px; 
+    height: 600px;
+    padding-left: 150px;
+}
+.container1 .text{
+    float:left;
+    width:50%;
+}
+
+.container1 .text form{
+    padding-left:100px;
+
+}
+
+.container1 .text form .input1{
+    width: 300px; 
+    height: 40px;
+    border-radius: 9px;
+}
+#idcheck
+{
+    height:40px;
+    width:100px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+    }    
+
+#button{
+    height:40px;
+    width:100px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+    }
+
+#searchZipCode{
+    height:40px;
+    width:100px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+
+
+}    
+
+#goJoin{
+    height:40px;
+    width:100px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}
+
+
+

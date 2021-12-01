@@ -1,0 +1,105 @@
+.cart1{
+    margin-left: 11%;
+    margin-top: 50px;
+}
+#table1{
+    width: 80%;
+    margin-left:10%;
+    text-align: center;
+    border :1px solid black;
+}
+#table1 #tr1{
+    background: rgb(220, 225, 232);
+    padding : 20px;
+    font-size: 25px;
+    border :1px solid black;
+}
+
+#table1 #tr2 td{
+    
+    border: 1px;
+    padding : 30px;
+    font-size: 15px;
+}
+
+.restaurantLogo001{
+    width: 100px;
+    height: 100px;
+}
+
+.chicken{
+    width: 100px;
+    height: 100px;
+}
+
+#selectDelete{
+    border-radius: 9px;
+    padding :5px;
+    margin-left:10%;
+    background-color:rgb(255, 255, 255);
+}
+
+
+#div1{
+    border :1px solid black;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#table2{
+    margin-left:70%;
+
+}
+
+#totalAmountByStore{
+    padding: 5px;
+    color:rgb(242, 119, 78);
+}
+
+#div2{
+    border :1px solid black;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#table3{
+
+    margin-left:65%;
+    font-size: 20px;
+}
+
+#p1{
+    margin-left:78%;
+}
+
+
+#paymentAmount{
+    color:rgb(242, 119, 78);
+    font-size: 20px;
+    border: 1px;
+    padding: 5px;
+}
+
+#package{
+    margin-left:63%;
+    width:100px;
+    height:40px;
+    border: 2px solid black; 
+    border-radius: 9px;
+    background-color:rgb(255, 255, 255);
+    color : black;
+
+}
+
+
+#delivery{
+    width:100px;
+    height:40px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}
+

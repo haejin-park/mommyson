@@ -1,0 +1,42 @@
+#tablecol1 {
+  width: 10%;
+} 
+#tablecol2 {
+  width: 50%;
+
+} 
+#tablecol3 {
+  width: 20%;
+
+} 
+#tablecol4 {
+  width: 20%;
+
+} 
+
+
+.storeimg{
+  width: 100px;
+  height: 100px;
+}
+.urBtn {
+  background-color: rgba(248, 158, 145, 1);
+     border: none; 
+     border-radius: 5px;
+     color: white; 
+     width: 70px;
+     margin-bottom: 3px;
+}
+table *{
+  text-align: center;
+}
+table thead{
+  background-color: #EDEDED;
+}
+
+table table {
+  width: 1050px;
+}
+#pagetitle sub{
+  color: #9B9B9B;
+}
