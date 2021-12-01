@@ -6,12 +6,12 @@
     height: 350px;
 }
 .center .id{
-    width: 300px; 
+    width: 320px; 
     height: 40px;
 }
 
 .center .pwd{
-    width: 300px; 
+    width: 320px; 
     height: 40px;
 }
 
@@ -23,10 +23,6 @@
 .center .reset {
     height:40px;
     width:100px;
-}
-
-#pwd{
-    border-radius: 9px;
 }
 
 
