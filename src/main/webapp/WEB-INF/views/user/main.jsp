@@ -9,11 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../../resources/css/main.css">
-    <link rel="stylesheet" href="../../resources/css/colorset.css">
-    <link rel="stylesheet" href="../../resources/css/slick.css">
-    <link rel="stylesheet" href="../../resources/css/slick-theme.css">
-    <script src="../../resources/js/slick.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/main.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/colorset.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/slick.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/slick-theme.css">
+    <script src="${pageContext.servletContext.contextPath }/resources/js/slick.min.js"></script>
 </head>
 <body>
     
@@ -24,13 +24,13 @@
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img src="../../resources/images/main_label.png" class="d-block w-100" alt="...">
+                    <img src="${pageContext.servletContext.contextPath }/resources/images/main_label.png" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="../../resources/images/baner2.jpg" class="d-block w-100" alt="...">
+                    <img src="${pageContext.servletContext.contextPath }/resources/images/baner2.jpg" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="../../resources/images/baner1.jpg" class="d-block w-100" alt="...">
+                    <img src="${pageContext.servletContext.contextPath }/resources/images/baner1.jpg" class="d-block w-100" alt="...">
                   </div>
                 </div>
                <button class="carousel-control-prev" type="button" data-target="#carouselExampleControls" data-slide="prev">
@@ -74,7 +74,7 @@
                 <div class="col-sm-12">
                     <div class="menu_bar" align="center">
                         <div class="recommend-img">
-                            <img src="../../resources/images/menu1.jpg">
+                            <img src="${pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                             <div class="menu_div">
                                 <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                                 <pre> <strong>5,440원</strong></pre>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="recommend-img">
-                            <img src="../../resources/images/menu1.jpg">
+                            <img src="${pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                             <div class="menu_div">
                                 <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                                 <pre> <strong>5,440원</strong></pre>
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="recommend-img">
-                            <img src="../../resources/images/menu1.jpg">
+                            <img src="${pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                             <div class="menu_div">
                                 <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                                 <pre> <strong>5,440원</strong></pre>
