@@ -25,7 +25,7 @@
                     <a href="#">장바구니</a>
                   </li>
                    <li>
-                    <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/profile">${ sessionScope.loginMember.nickname}</a>
+                    <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img src="${ pageContext.servletContext.contextPath }/resources/images/profile">${ sessionScope.loginMember.nickname}</a>
                   </li>
                   <li>
                     <a href="#">로그아웃</a>
@@ -39,7 +39,7 @@
                     <a  href="${ pageContext.servletContext.contextPath }/member/login">로그인</a>
                   </li>
                   <li >
-                    <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain">회원가입</a>
+                    <a href="">회원가입</a>
                   </li>
                  </c:if>
               </ul>
