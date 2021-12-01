@@ -7,11 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/owner/*")
 public class OwnerController {
-
-	public OwnerController() {
-		System.out.println("sdsdsdsddsds");
-	}
 	
+	/* 사업자 마이페이지 메인화면 */
 	@GetMapping("ownerMain")
 	public void ownerMypage() {}
+	
+	/* 상품등록 */
+	@GetMapping("productRegist")
+	public void productRegist(){
+		
+	}
+	
+	/* 판매상품 관리 */
+	@GetMapping("productManagement")
+	public void productManagement() {}
+	
+	
 }

@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/mypage-sidebar.css">
+
 </head>
 <body>
 		<div class="side-all">
@@ -30,16 +31,16 @@
   
               <ul class="list-unstyled components">
                   <li>
-                      <a href="#">가게관리</a>
+                      <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain">가게관리</a>
                   </li><hr>
                   <li class="active">
                             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">상품관리</a><hr>
                             <ul class="collapse list-unstyled" id="homeSubmenu">
                                 <li>
-                                    <a href="../owners/product-regist.html">상품등록</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">상품등록</a>
                                 </li>
                                 <li>
-                                    <a href="../owners/productManagement.html">판매 상품 관리</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">판매 상품 관리</a>
                                 </li>
                                 <li>
                                     <a href="#">오늘의 메뉴</a>
