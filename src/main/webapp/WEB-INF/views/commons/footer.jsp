@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../resources/css/colorset.css">
+    <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
 </head>
 <body>
     <footer class="at-container">
@@ -26,9 +26,9 @@
             </li>
         </ul>
         <div class="ft_img_line">
-            <img src="../../resources/images/ft_img01.png" alt="소비자중심경영">
-            <img src="../../resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-            <img src="../../resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
         </div>
         <div class="ft_info">
             <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
@@ -39,7 +39,7 @@
         <div class="manager_center">
             <h4>고객센터</h4>
             <div class="callNum">
-                <img src="../../resources/images/callImg.png" alt="call">
+                <img src="${ pageContext.servletContext.contextPath }/resources/images/callImg.png" alt="call">
                 <span>1644 - 1234</span>    
             </div>
             <p>평일 10:00~18:50</p>
