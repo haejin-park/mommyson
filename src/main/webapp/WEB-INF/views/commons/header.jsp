@@ -25,7 +25,7 @@
                     <a href="#">장바구니</a>
                   </li>
                    <li>
-                    <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                    <a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   </li>
                   <li>
                     <a href="#">로그아웃</a>
