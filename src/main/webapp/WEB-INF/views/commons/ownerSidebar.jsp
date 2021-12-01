@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/mypage-sidebar.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 		<div class="side-all">
@@ -22,8 +24,20 @@
 
                 <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px;">연장하기</button>
                 <hr>
-                <button id="button1" style="margin-top: 10px;">영업시작</button>
+                <button id="button3" style="margin-top: 10px;">영업시작</button>
             </div>
+            
+            <script>
+            $(function(){
+                $("#button3").click(function(){
+                  if($("#button3").html() == "영업시작"){
+                    $(this).css("background-color","#777777").html("영업정지");
+                  } else{
+                    $(this).css("background-color","#F89E91").html("영업시작");
+                  }
+                });
+            });
+            </script>
             
             <div class="side-2" style="width: 300px; ">
               <nav id="sidebar" style="min-width: 295px; max-width: 295px;">
