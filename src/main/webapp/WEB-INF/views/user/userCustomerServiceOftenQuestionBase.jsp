@@ -165,7 +165,7 @@
                  </li>
               </ul>
           </nav>
-          <img src="../../resources/images/customerServiceImg.png" id="customerguide">
+          <!-- <img src="../../resources/images/customerServiceImg.png" id="customerguide"> -->
           </div>
           <script>
             $(document).ready(function () {
