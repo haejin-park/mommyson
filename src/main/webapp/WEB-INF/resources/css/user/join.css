@@ -1,0 +1,33 @@
+.center{
+    text-align : center;
+}
+
+.center .logo{
+    width: 350px;
+    height: 350px;
+}
+
+#customer{
+    width:100px; 
+    height:45px;
+    margin-left: 40%;
+    padding: 10px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}
+
+#businessman{
+    width:100px; 
+    height:45px;
+    padding: 10px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}
+
+#goMoin{
+    width:100px; 
+    height:45px;
+    padding: 10px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}

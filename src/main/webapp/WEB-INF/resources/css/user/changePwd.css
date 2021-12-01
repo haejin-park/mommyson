@@ -1,0 +1,34 @@
+.center{
+    text-align: center;
+}
+
+.center .logo{
+    width: 350px; 
+    height: 350px;
+}
+
+.center .pwd1{
+    width: 300px; 
+    height: 40px;
+}
+
+.center .pwd2{
+    width: 300px; 
+    height: 40px;
+}
+
+
+#pwd1{
+    border-radius: 9px;
+}
+
+#pwd2{
+    border-radius: 9px;
+}
+
+#button{
+    width:100px; 
+    height:40px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}

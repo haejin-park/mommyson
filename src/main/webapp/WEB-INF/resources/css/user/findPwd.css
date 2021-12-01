@@ -1,0 +1,37 @@
+.center{
+    text-align: center
+}
+.center .logo{
+    width: 350px; 
+    height: 350px;
+}
+
+.text{
+    margin-left:41%
+}
+.text .id{
+    width: 300px; 
+    height: 40px;
+}
+.text .email{
+    width: 300px; 
+    height: 40px;
+}
+
+.text .code{
+    width: 300px; 
+    height: 40px;
+}
+
+
+#email{
+    border-radius: 9px;
+}
+
+#button{
+    width:100px; 
+    height:40px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+    text-align : center;
+}
