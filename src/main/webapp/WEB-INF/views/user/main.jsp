@@ -353,6 +353,10 @@
                 </div>
             </div>
         </div>
+        
+        <div id="cart_logo">
+        	<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img class="store_logo" src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
+        </div>
 
     </section>
 

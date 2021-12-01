@@ -18,7 +18,7 @@
           <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/mainlogo.png" style="width: 300px;"></a>
           <br><br><br>
             <div class="bodyLeft">
-                <ul class="df_ul headerItem" style=" margin-left: 1150px;">
+              <ul class="df_ul headerItem" style=" margin-left: 1150px;">
                   <li>
                     <a href="#">장바구니</a>
                   </li>

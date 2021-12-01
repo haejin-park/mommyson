@@ -170,6 +170,24 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
   padding: 0 5px;
 }
 
+#cart_logo {
+	position: absolute;
+	right: 50px;
+	bottom: 100px;
+}
+
+#cart_logo button {
+	background: none;
+	outline: none;
+	border: none;
+	overflow: hidden;
+}
+
+#cart_logo img {
+	width: 100px;
+	border: none;
+}
+
 
 /* @media screen and (max-width: 600px) {
   .search-container {
