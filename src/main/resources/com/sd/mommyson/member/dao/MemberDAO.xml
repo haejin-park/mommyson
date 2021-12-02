@@ -57,4 +57,12 @@
 		 WHERE A.IS_DELETED = 'N'
 		   AND A.MEM_ID = #{ memId }
 	</select>
+	
+	<select id="selectLocation" resultType="hashmap">
+		SELECT 
+			   A.LOCATION_CODE
+			 , A.LOCATION_NAME
+		  FROM LOCATION A
+	</select>
+	
 </mapper>

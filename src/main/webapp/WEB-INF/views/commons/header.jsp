@@ -20,25 +20,38 @@
           <br><br><br>
             <div class="bodyLeft" style="display: block;">
                 <ul class="df_ul headerItem">
+                <!-- 로그인 후 -->
                 <c:if test="${ sessionScope.loginMember != null }">
-                   <li>
-                   <c:if test="${ sessionScope.loginMember.memType = }">
-                    <a href="#">장바구니</a>
+                	<!-- 소비자의 경우 -->
+                    <c:if test="${ sessionScope.loginMember.memType == 'user' }">
+	                  	<li>
+	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
+	                  	</li>
                     </c:if>
-                    <c:if test="">
-                    <a href="#">장바구니</a>
+                    <!-- 사업자의 경우 -->
+                    <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
+	                  	<li>
+	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">상점관리</a>
+	                  	</li>
                     </c:if>
-                  </li>
-                   <li>
-                    <a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                    <!-- 관리자의 경우 -->
+                    <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
+	                  	<li>
+	                    	<a href="${ pageContext.servletContext.contextPath }/manager/normalMember">관리페이지</a>
+	                  	</li>
+                    </c:if>
+                  <li>
+                  	<a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   </li>
                   <li>
                     <a href="#">로그아웃</a>
                   </li>
                   <li >
-                    <a  href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
+                    <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
                   </li>
                 </c:if>
+                
+                <!-- 로그인 전 -->
                 <c:if test="${ sessionScope.loginMember == null }">
                   <li>
                     <a  href="${ pageContext.servletContext.contextPath }/member/login">로그인</a>
@@ -46,7 +59,7 @@
                   <li >
                     <a href="">회원가입</a>
                   </li>
-                 </c:if>
+                </c:if>
               </ul>
           </div>
         </div>
@@ -63,39 +76,39 @@
                 <div class="dropdown-content" aria-labelledby="navbarDropdown">
                     <div class="row">
                         <div class="col-2">
-                        <a href="#">무침</a>
-                        <a href="#">볶음</a>
-                        <a href="#">조림</a>
-                        <a href="#">김치/젓갈</a>
+	                        <a href="#">무침</a>
+	                        <a href="#">볶음</a>
+	                        <a href="#">조림</a>
+	                        <a href="#">김치/젓갈</a>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                        <a href="#">전/생선</a>
-                        <a href="#">국/찌개/탕</a>
-                        <a href="#">메인요리</a>
-                        <a href="#">곡류/양념</a>
+	                        <a href="#">전/생선</a>
+	                        <a href="#">국/찌개/탕</a>
+	                        <a href="#">메인요리</a>
+	                        <a href="#">곡류/양념</a>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                        <a href="#">어린이 반찬</a>
-                        <a href="#">부모님 반찬</a>
-                        <a href="#">제철 반찬</a>
+	                        <a href="#">어린이 반찬</a>
+	                        <a href="#">부모님 반찬</a>
+	                        <a href="#">제철 반찬</a>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                        <a href="#">대용량 반찬</a>
-                        <a href="#">묶음 반찬</a>
-                        <a href="#">냉동 반찬</a>
-                        <a href="#">할인 반찬</a>
+	                        <a href="#">대용량 반찬</a>
+	                        <a href="#">묶음 반찬</a>
+	                        <a href="#">냉동 반찬</a>
+	                        <a href="#">할인 반찬</a>
                         </div>
                     </div>
                 </div>
             </div> 
             </li>
-            <a href="#home" style="margin-left: 100px;">오늘의 추천</a>
-            <a href="#news">우리동네 인기 맛집</a>
-            <a href="#news">오늘 할인</a>
-            <a href="#news">이벤트</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend" style="margin-left: 100px;">오늘의 추천</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/famous">우리동네 인기 맛집</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/sale">오늘만 할인</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend">이벤트</a>
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
