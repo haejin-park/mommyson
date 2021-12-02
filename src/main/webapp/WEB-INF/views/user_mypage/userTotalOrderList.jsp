@@ -242,7 +242,7 @@
                   </ul>
                   <ul>
                       <img class="glass" src="../../resources/images/glass.png">
-                      <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요"></li>
+                      <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요."></li>
                       <button type="submit" class="searchbutton">검색하기</button></li>
                    </ul>
                 </nav>
