@@ -22,7 +22,12 @@
                 <ul class="df_ul headerItem">
                 <c:if test="${ sessionScope.loginMember != null }">
                    <li>
+                   <c:if test="${ sessionScope.loginMember.memType = }">
                     <a href="#">장바구니</a>
+                    </c:if>
+                    <c:if test="">
+                    <a href="#">장바구니</a>
+                    </c:if>
                   </li>
                    <li>
                     <a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>

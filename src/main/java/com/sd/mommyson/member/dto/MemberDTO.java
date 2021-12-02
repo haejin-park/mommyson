@@ -18,12 +18,13 @@ public class MemberDTO {
 	private Date enrollDate;
 	private String isDeleted;
 	private UserDTO user;
+	private CeoDTO ceo;
 	
 	public MemberDTO() {}
 
 	public MemberDTO(int memCode, String email, String memPwd, String address, String postCode, String dAddress,
 			String phone, String memType, String locationCode, String nickname, String memId, Date enrollDate,
-			String isDeleted, UserDTO user) {
+			String isDeleted, UserDTO user, CeoDTO ceo) {
 		super();
 		this.memCode = memCode;
 		this.email = email;
@@ -39,6 +40,7 @@ public class MemberDTO {
 		this.enrollDate = enrollDate;
 		this.isDeleted = isDeleted;
 		this.user = user;
+		this.ceo = ceo;
 	}
 
 	public int getMemCode() {
@@ -153,14 +155,19 @@ public class MemberDTO {
 		this.user = user;
 	}
 
+	public CeoDTO getCeo() {
+		return ceo;
+	}
+
+	public void setCeo(CeoDTO ceo) {
+		this.ceo = ceo;
+	}
+
 	@Override
 	public String toString() {
 		return "MemberDTO [memCode=" + memCode + ", email=" + email + ", memPwd=" + memPwd + ", address=" + address
 				+ ", postCode=" + postCode + ", dAddress=" + dAddress + ", phone=" + phone + ", memType=" + memType
 				+ ", locationCode=" + locationCode + ", nickname=" + nickname + ", memId=" + memId + ", enrollDate="
-				+ enrollDate + ", isDeleted=" + isDeleted + ", user=" + user + "]";
+				+ enrollDate + ", isDeleted=" + isDeleted + ", user=" + user + ", ceo=" + ceo + "]";
 	}
-	
-	
-	
 }
