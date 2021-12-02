@@ -75,8 +75,13 @@
             <script>
 	            $(function() {
 	            	// 카테고리 리스트 불러오기
-	            	<c:forEach items="${ sessionScope.locationList }" var="locationList">
-	            	
+	            	<c:set var="i" value="0"/>
+	            	<c:forEach items="${ sessionScope.categoryList }" var="categoryList" varStatus="status">
+	            		$('#categoryList').append(
+	            				'<div class="col-2">' +
+	            				'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE[status.index] }">' +
+	            				
+	            		);
 	            	</c:forEach>
 	        	})
             </script>
