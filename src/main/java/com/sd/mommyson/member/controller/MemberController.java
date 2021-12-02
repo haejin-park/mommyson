@@ -50,6 +50,6 @@ public class MemberController {
 	@GetMapping("logout")
 	public String logout(SessionStatus status) {
 		status.setComplete();
-		return "redirect:user/main";
+		return "redirect:/main";
 	}
 }
