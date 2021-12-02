@@ -19,10 +19,15 @@ public class UserController {
 		this.userService = userService;
 	}
 	
-	@GetMapping("myOrderList")
-	public String myOrderList() {
+	@GetMapping(value = "MTMConsult")
+	public String userCustomerServiceCenterMTMConsult() {
 		
-		return "user_mypage/review_change";
+		return "user/userCustomerServiceCenterMTMConsult";
 	}
-
+	
+	@GetMapping(value = "MTMQnA")
+	public String userCustomerServiceCenterMTMQnA() {
+		
+		return "user/userCustomerServiceCenterMTMQnA";
+	}
 }
