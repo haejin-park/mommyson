@@ -15,13 +15,21 @@
 <body>
     
     <jsp:include page="../commons/header.jsp"></jsp:include>
+    
+    <script>
+    	$(function() {
+    		<c:forEach items="${ sessionScope.locationList }" var="locationList">
+			$('#location').append('<option value = ' + '<c:out value = "${ locationList.LOCATION_CODE }"/>' + '>'
+						 + '<c:out value = "${ locationList.LOCATION_NAME }" /></option>')
+			</c:forEach>
+    	})
+    </script>
 	
     <section>
-        <div style="width: 100%; height: 450px;">
+        <div style="width: 100%; height: 450px; margin-bottom: 100px;">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-
                     <img src="${ pageContext.servletContext.contextPath }/resources/images/main_label.png" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
@@ -46,11 +54,10 @@
 
             <c:if test="${ sessionScope.loginMember == null }">
             	<div style="margin : 50px;">
-                <span style="font-size: 14pt;">동네 설정&nbsp;</span>
-                <select name="location" id="location">
-                    <option value="1">마포구</option>
-                </select>
-            </div>
+	                <span style="font-size: 14pt;">동네 설정&nbsp;</span>
+	                <select name="location" id="location">
+	                </select>
+	            </div>
             </c:if>
             <!-- 슬라이더 세팅 -->
             <script>
@@ -361,9 +368,11 @@
             </div>
         </div>
         
-        <div id="cart_logo">
-        	<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img class="store_logo" src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
-        </div>
+        <c:if test="${ sessionScope.loginMember != null }">
+        	<div id="cart_logo">
+        		<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img class="store_logo" src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
+        	</div>
+        </c:if>
 
     </section>
 

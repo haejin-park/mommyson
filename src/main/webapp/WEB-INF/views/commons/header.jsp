@@ -76,39 +76,39 @@
                 <div class="dropdown-content" aria-labelledby="navbarDropdown">
                     <div class="row">
                         <div class="col-2">
-                        <a href="#">무침</a>
-                        <a href="#">볶음</a>
-                        <a href="#">조림</a>
-                        <a href="#">김치/젓갈</a>
+	                        <a href="#">무침</a>
+	                        <a href="#">볶음</a>
+	                        <a href="#">조림</a>
+	                        <a href="#">김치/젓갈</a>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                        <a href="#">전/생선</a>
-                        <a href="#">국/찌개/탕</a>
-                        <a href="#">메인요리</a>
-                        <a href="#">곡류/양념</a>
+	                        <a href="#">전/생선</a>
+	                        <a href="#">국/찌개/탕</a>
+	                        <a href="#">메인요리</a>
+	                        <a href="#">곡류/양념</a>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                        <a href="#">어린이 반찬</a>
-                        <a href="#">부모님 반찬</a>
-                        <a href="#">제철 반찬</a>
+	                        <a href="#">어린이 반찬</a>
+	                        <a href="#">부모님 반찬</a>
+	                        <a href="#">제철 반찬</a>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                        <a href="#">대용량 반찬</a>
-                        <a href="#">묶음 반찬</a>
-                        <a href="#">냉동 반찬</a>
-                        <a href="#">할인 반찬</a>
+	                        <a href="#">대용량 반찬</a>
+	                        <a href="#">묶음 반찬</a>
+	                        <a href="#">냉동 반찬</a>
+	                        <a href="#">할인 반찬</a>
                         </div>
                     </div>
                 </div>
             </div> 
             </li>
-            <a href="#home" style="margin-left: 100px;">오늘의 추천</a>
-            <a href="#news">우리동네 인기 맛집</a>
-            <a href="#news">오늘 할인</a>
-            <a href="#news">이벤트</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend" style="margin-left: 100px;">오늘의 추천</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/famous">우리동네 인기 맛집</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/sale">오늘만 할인</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend">이벤트</a>
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
