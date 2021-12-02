@@ -22,23 +22,6 @@
                 <ul class="df_ul headerItem">
                 <!-- 로그인 후 -->
                 <c:if test="${ sessionScope.loginMember != null }">
-<%-- <<<<<<< HEAD
-                   <li>
-                   <c:if test="${ sessionScope.loginMember.memType == 'user' }">
-                    <a href="#">장바구니</a>
-                    </c:if>
-                  </li>
-                   <li>
-                    <c:if test="${ sessionScope.loginMember.memType == 'user' }">
-                   	<a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
-                    </c:if>
-                    <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
-                    <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 30px" src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.nickname}</a>
-                    </c:if>
-                    <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
-                    <a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
-                    </c:if>
-======= --%>
                 	<!-- 소비자의 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'user' }">
 	                  	<li id="ca_lo">
@@ -71,7 +54,6 @@
                     <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
                   </li>
                 </c:if>
-                
                 <!-- 로그인 전 -->
                 <c:if test="${ sessionScope.loginMember == null }">
                   <li>
