@@ -63,6 +63,7 @@
 			   A.LOCATION_CODE
 			 , A.LOCATION_NAME
 		  FROM LOCATION A
+		 WHERE LOCATION_CODE != 'L0'
 	</select>
 	
 	<select id="selectCategoryList" resultType="hashmap">

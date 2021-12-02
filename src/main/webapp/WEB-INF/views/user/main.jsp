@@ -20,7 +20,7 @@
     	$(function() {
     		<c:forEach items="${ sessionScope.locationList }" var="locationList">
 			$('#location').append('<option value = ' + '<c:out value = "${ locationList.LOCATION_CODE }"/>' + '>'
-						 + '<c:out value = "${ locationList.LOCATION_NAME }" /></option>')
+						 + '<c:out value = "${ locationList.LOCATION_NAME }"/></option>')
 			</c:forEach>
     	})
     </script>
