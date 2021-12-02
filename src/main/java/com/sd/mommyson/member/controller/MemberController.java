@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
@@ -44,5 +45,11 @@ public class MemberController {
 		}
 		
 		return message;
+	}
+	
+	@GetMapping("logout")
+	public String logout(SessionStatus status) {
+		status.setComplete();
+		return "redirect:/";
 	}
 }

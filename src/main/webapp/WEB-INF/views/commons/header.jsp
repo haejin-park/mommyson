@@ -44,7 +44,7 @@
                   	<a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   </li>
                   <li>
-                    <a href="#">로그아웃</a>
+                    <a href="${ pageContext.servletContext.contextPath }/user/logout">로그아웃</a>
                   </li>
                   <li >
                     <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
@@ -70,11 +70,19 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="margin-left: 50px; font-weight: 700; color: black">
-                  전체 카테고리
+                	전체 카테고리
                 </a>
+            <script>
+	            $(function() {
+	            	// 카테고리 리스트 불러오기
+	            	<c:forEach items="${ sessionScope.locationList }" var="locationList">
+	            	
+	            	</c:forEach>
+	        	})
+            </script>
             <div class="dropdown-menu">
                 <div class="dropdown-content" aria-labelledby="navbarDropdown">
-                    <div class="row">
+                    <div class="row" id="categoryList">
                         <div class="col-2">
 	                        <a href="#">무침</a>
 	                        <a href="#">볶음</a>
