@@ -25,14 +25,12 @@ public class OwnerController {
 	}
 	
 	/* 사업자 마이페이지 메인화면 */
-	@PostMapping("ownerMain")
+	@GetMapping("ownerMain")
 	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member) {
 		
 		String id =  member.getMemId();
 		
 		System.out.println(id);
-		
-		
 		
 		
 		return "owner/ownerMain/";
