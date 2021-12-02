@@ -12,6 +12,10 @@ public class OwnerController {
 	@GetMapping("ownerMain")
 	public void ownerMypage() {}
 	
+	/* 가게정보 수정 */
+	@GetMapping("modifyStore")
+	public void modifyStore(){}
+	
 	/* 상품등록 */
 	@GetMapping("productRegist")
 	public void productRegist(){

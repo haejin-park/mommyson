@@ -41,83 +41,85 @@
             
             <div class="side-2" style="width: 300px; ">
               <nav id="sidebar" style="min-width: 295px; max-width: 295px;">
-  
               <ul class="list-unstyled components">
-                  <li>
-                      <a href="#">가게관리</a>
-                      <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain">가게관리</a>
-                  </li><hr>
-                  <li class="active">
-                            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">상품관리</a><hr>
-                            <ul class="collapse list-unstyled" id="homeSubmenu">
-                                <li>
-                                    <a href="../owners/product-regist.html">상품등록</a>
-                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">상품등록</a>
-                                </li>
-                                <li>
-                                    <a href="../owners/productManagement.html">판매 상품 관리</a>
-                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">판매 상품 관리</a>
-                                </li>
-                                <li>
-                                    <a href="#">오늘의 메뉴</a>
-                                </li>
-                                <li>
-                                    <a href="#">오늘의 할인</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">주문관리</a><hr>
-                            <ul class="collapse list-unstyled" id="pageSubmenu">
-                                <li>
-                                    <a href="#">주문접수</a>
-                                </li>
-                                <li>
-                                    <a href="#">완료된 주문</a>
-                                </li>
-                            
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">쿠폰발행</a>
-                        </li><hr>
-                        <li>
-                            <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">매출내역</a><hr>
-                            <ul class="collapse list-unstyled 1" id="pageSubmenu1">
-                                <li>
-                                    <a href="#">일별 매출</a>
-                                </li>
-                                <li>
-                                    <a href="#">월별 매출</a>
-                                </li>
-                                <li>
-                                    <a href="#">정산</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false">고객관리</a><hr>
-                            <ul class="collapse list-unstyled" id="pageSubmenu2">
-                                <li>
-                                    <a href="#">리뷰관리</a>
-                                </li>                                                            
-                            </ul>
-                        </li>
-                        
-                        <li>
-                            <a href="#">탈퇴하기</a>
-                        </li>
-              </ul>
+	             <li>
+                   <a href="#pageSubmenu3" data-toggle="collapse" aria-expanded="false">정보변경</a><hr>
+                   <ul class="collapse list-unstyled" id="pageSubmenu3">
+                       <li>
+                           <a href="${ pageContext.servletContext.contextPath }/owner/modifyStore">가게정보 변경</a>
+                       </li>
+                       <li>
+                           <a href="#">개인정보 변경</a>
+                       </li>
+                   </ul>
+                </li>
+            	 <li class="active">
+                   <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">상품관리</a><hr>
+                   <ul class="collapse list-unstyled" id="homeSubmenu">
+                       <li>
+                           <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">상품등록</a>
+                       </li>
+                       <li>
+                           <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">판매 상품 관리</a>
+                       </li>
+                       <li>
+                           <a href="#">오늘의 메뉴</a>
+                       </li>
+                       <li>
+                           <a href="#">오늘의 할인</a>
+                       </li>
+                   </ul>
+               </li>
+               <li>
+                   <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">주문관리</a><hr>
+                   <ul class="collapse list-unstyled" id="pageSubmenu">
+                       <li>
+                           <a href="#">주문접수</a>
+                       </li>
+                       <li>
+                           <a href="#">완료된 주문</a>
+                       </li>
+                   
+                   </ul>
+               </li>
+               <li>
+                   <a href="#">쿠폰발행</a>
+               </li><hr>
+               <li>
+                   <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">매출내역</a><hr>
+                   <ul class="collapse list-unstyled 1" id="pageSubmenu1">
+                       <li>
+                           <a href="#">일별 매출</a>
+                       </li>
+                       <li>
+                           <a href="#">월별 매출</a>
+                       </li>
+                       <li>
+                           <a href="#">정산</a>
+                       </li>
+                   </ul>
+               </li>
+               <li>
+                   <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false">고객관리</a><hr>
+                   <ul class="collapse list-unstyled" id="pageSubmenu2">
+                       <li>
+                           <a href="#">리뷰관리</a>
+                       </li>                                                            
+                   </ul>
+               </li>
+               <li>
+                   <a href="#">탈퇴하기</a>
+               </li>
+            </ul>
           </nav>
-      
       </div>
-        <script>
-        $(document).ready(function () {
-                $('#sidebarCollapse').on('click', function () {
-                    $('#sidebar').toggleClass('active');
-                });
-            });
-        </script>
     </div>
+     <script>
+      $(document).ready(function () {
+              $('#sidebarCollapse').on('click', function () {
+                  $('#sidebar').toggleClass('active');
+              });
+          });
+      </script> 
 </body>
 </html>

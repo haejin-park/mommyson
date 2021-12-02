@@ -22,15 +22,20 @@
                 <ul class="df_ul headerItem">
                 <c:if test="${ sessionScope.loginMember != null }">
                    <li>
-                   <c:if test="${ sessionScope.loginMember.memType = }">
-                    <a href="#">장바구니</a>
-                    </c:if>
-                    <c:if test="">
+                   <c:if test="${ sessionScope.loginMember.memType == 'user' }">
                     <a href="#">장바구니</a>
                     </c:if>
                   </li>
                    <li>
-                    <a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                    <c:if test="${ sessionScope.loginMember.memType == 'user' }">
+                   	<a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                    </c:if>
+                    <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
+                    <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 30px" src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.nickname}</a>
+                    </c:if>
+                    <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
+                    <a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                    </c:if>
                   </li>
                   <li>
                     <a href="#">로그아웃</a>
