@@ -38,9 +38,6 @@ public class MemberController {
 		System.out.println(loginMember);
 		if(loginMember == null) {
 			message = "회원정보와 일치하지 않습니다.";
-		} else if(loginMember.getMemType().equals("manager")) {
-			message = "manager";
-			model.addAttribute("loginMember", loginMember);
 		} else {
 			message = "main";
 			model.addAttribute("loginMember", loginMember);

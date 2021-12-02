@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,12 +44,14 @@
         
         <div class="container">
 
-            <div style="margin : 50px;">
+            <c:if test="${ sessionScope.loginMember == null }">
+            	<div style="margin : 50px;">
                 <span style="font-size: 14pt;">동네 설정&nbsp;</span>
                 <select name="location" id="location">
                     <option value="1">마포구</option>
                 </select>
             </div>
+            </c:if>
             <!-- 슬라이더 세팅 -->
             <script>
                 $(document).ready(function(){

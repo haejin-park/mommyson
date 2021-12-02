@@ -98,7 +98,6 @@
     				success: function(data) {
     					switch(data){
     						case "main" : location.href="${ pageContext.servletContext.contextPath }/"; break;
-    						case "manager" : location.href="${ pageContext.servletContext.contextPath }/management/management_board"; break;
     						default : alert(data); break;
     					}
     				}
