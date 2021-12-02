@@ -44,7 +44,7 @@
                   	<a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   </li>
                   <li>
-                    <a href="${ pageContext.servletContext.contextPath }/user/logout">로그아웃</a>
+                    <a href="${ pageContext.servletContext.contextPath }/member/logout">로그아웃</a>
                   </li>
                   <li >
                     <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
