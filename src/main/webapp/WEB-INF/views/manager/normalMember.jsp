@@ -25,78 +25,9 @@
     </header>
     <div class="head_line"></div>
     <div class="at-container total_container">
-        <div class="side-2 side_menu">
-            <nav id="sidebar">
-                <ul class="list-unstyled components sidebar_list">
-                    <li class="active" id="active_menu">
-                        <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회원관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu1">
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/normalMember">일반 회원 조회</a>
-                            </li>
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/buisnessMember">사업자 회원 조회</a>
-                            </li>
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/blackMember">블랙 회원 조회</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">게시글 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu2">
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/noticeSelect">공지사항</a>
-                            </li>
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/oftenQuestion">자주하는 질문</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">1:1 문의</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu3">
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/businessInquiry">사업자</a>
-                            </li>
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/normalInquiry">소비자</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu4" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">신고 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu4">
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/statusStoreWarning">가게 신고 현황</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu5" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">설정 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu5">
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/bannerManage">배너 설정</a>
-                            </li>
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/tagManage">태그 설정</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu6" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">관리자 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu6">
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/manageManager">관리자 조회</a>
-                            </li>
-                            <li>
-                                <a href="${ pageContext.servletContext.contextPath }/manager/createManager">관리자 아이디 생성</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+    
+        <jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
+        
         <div class="board_container">
             <h2>회원관리</h2>
             <div class="top_box">
