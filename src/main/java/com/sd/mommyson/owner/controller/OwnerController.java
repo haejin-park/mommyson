@@ -38,9 +38,7 @@ public class OwnerController {
 		return "owner/ownerMain/";
 	}
 	
-	@PostMapping("ownerMain")
-	
-	
+
 	/* 가게정보 수정 */
 	@GetMapping("modifyStore")
 	public void modifyStore(){}

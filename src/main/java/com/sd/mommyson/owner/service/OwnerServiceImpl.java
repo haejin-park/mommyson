@@ -1,11 +1,10 @@
-package com.sd.mommyson.owner.controller;
+package com.sd.mommyson.owner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
-import com.sd.mommyson.owner.service.OwnerService;
 
 @Service
 public class OwnerServiceImpl implements OwnerService{
