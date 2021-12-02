@@ -32,6 +32,12 @@
 	    <form>
 	        <input type="text" placeholder="상품명을 입력해주세요." style="height: 60px; font-size: large;">
 	        <br><br>
+	        <select>
+            <option>기타</option>
+           <option>육류</option>
+           <option>채소</option>
+           <option></option>
+       	   </select><br>
 	        <h3>#</h3>
 	        <select>
 	            <option>선택</option>
@@ -55,7 +61,64 @@
 	           <option>냉동반찬</option>
 	           <option>할인반찬</option>
 	       </select><br><br>
-	       <input type="image" placeholder="이미지를 추가하세요" style="width: 300px; height: 300px;">
+	    <div id="review_pic"><br>
+        <img src="${ pageContext.servletContext.contextPath }/resources/images/photo.png" id="review_img">
+    	</div>	
+	       <div style="padding-top: 50px;">
+        <button type="button" id="button1" data-toggle="modal" data-target="#exampleModal">
+           	 사진등록
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="preview-image" style="width: 400px;">
+                    <hr>
+                    <input type="file" id="input-image">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="button1" data-dismiss="modal">취소</button>
+                  <button type="button" class="button1" id="save_img">저장</button>
+                </div>
+                <script>
+                    // 이미지 미리보기
+                    function readImage(input) {
+
+                        if(input.files && input.files[0]) {
+
+                            const reader = new FileReader()
+
+                            reader.onload = e => {
+                                const previewImage = document.getElementById("preview-image")
+                                previewImage.src = e.target.result
+                            }
+
+                            reader.readAsDataURL(input.files[0])
+                        }
+                    }
+
+                    const inputImage = document.getElementById("input-image")
+                    inputImage.addEventListener("change", e => {
+                        readImage(e.target)
+                    })
+
+                    // 저장 버튼 클릭 시 리뷰 사진 등록 (ajax로 수정해야함)
+                    $('#save_img').on('click',function() {
+                        let img = $('#preview-image').attr('src')
+                        $('#review_img').attr('src',img);
+                        $('#exampleModal').modal('hide');
+                    })
+                </script>
+              </div>
+            </div>
+        </div>
+    </div>
 	       <br><br>
 	       <textarea placeholder="간단한 상품 설명을 작성해주세요." style="width: 400px; height: 100px;"></textarea>
 	       <br> <br>
