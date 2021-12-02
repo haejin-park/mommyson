@@ -53,4 +53,12 @@ public class MemberServiceImpl implements MemberService {
 		return locationList;
 	}
 
+	@Override
+	public List<HashMap<String, String>> selectCategoryList() {
+		
+		List<HashMap<String, String>> categoryList = memberDAO.selectCategoryList();
+		
+		return categoryList;
+	}
+
 }

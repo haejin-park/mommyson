@@ -22,9 +22,26 @@
                 <ul class="df_ul headerItem">
                 <!-- 로그인 후 -->
                 <c:if test="${ sessionScope.loginMember != null }">
+<%-- <<<<<<< HEAD
+                   <li>
+                   <c:if test="${ sessionScope.loginMember.memType == 'user' }">
+                    <a href="#">장바구니</a>
+                    </c:if>
+                  </li>
+                   <li>
+                    <c:if test="${ sessionScope.loginMember.memType == 'user' }">
+                   	<a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                    </c:if>
+                    <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
+                    <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 30px" src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.nickname}</a>
+                    </c:if>
+                    <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
+                    <a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                    </c:if>
+======= --%>
                 	<!-- 소비자의 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'user' }">
-	                  	<li>
+	                  	<li id="ca_lo">
 	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
 	                  	</li>
                     </c:if>
@@ -48,7 +65,7 @@
                   	<a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   </li>
                   <li>
-                    <a href="#">로그아웃</a>
+                    <a href="${ pageContext.servletContext.contextPath }/member/logout">로그아웃</a>
                   </li>
                   <li >
                     <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
@@ -74,11 +91,24 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="margin-left: 50px; font-weight: 700; color: black">
-                  전체 카테고리
+                	전체 카테고리
                 </a>
+            <script>
+	            $(function() {
+	            	// 카테고리 리스트 불러오기
+	            	<c:set var="i" value="0"/>
+	            	<c:forEach items="${ sessionScope.categoryList }" var="categoryList" varStatus="status">
+	            		$('#categoryList').append(
+	            				'<div class="col-2">' +
+	            				'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE[status.index] }">' +
+	            				
+	            		);
+	            	</c:forEach>
+	        	})
+            </script>
             <div class="dropdown-menu">
                 <div class="dropdown-content" aria-labelledby="navbarDropdown">
-                    <div class="row">
+                    <div class="row" id="categoryList">
                         <div class="col-2">
 	                        <a href="#">무침</a>
 	                        <a href="#">볶음</a>
@@ -96,6 +126,7 @@
                         <div class="col-2">
 	                        <a href="#">어린이 반찬</a>
 	                        <a href="#">부모님 반찬</a>
+	                        <a href="#">제철 반찬</a>
 	                        <a href="#">제철 반찬</a>
                         </div>
                         <div class="col-1"></div>

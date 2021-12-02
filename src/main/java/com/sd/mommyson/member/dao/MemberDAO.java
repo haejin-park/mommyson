@@ -15,4 +15,6 @@ public interface MemberDAO {
 	public String selectEncPassword(MemberDTO member);
 
 	public List<HashMap<String, String>> selectLocation();
+
+	public List<HashMap<String, String>> selectCategoryList();
 }

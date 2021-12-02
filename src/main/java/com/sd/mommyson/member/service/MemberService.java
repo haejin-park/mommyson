@@ -13,4 +13,6 @@ public interface MemberService  {
 	public MemberDTO selectMember(MemberDTO member);
 
 	public List<HashMap<String, String>> selectLoation();
+
+	public List<HashMap<String, String>> selectCategoryList();
 }
