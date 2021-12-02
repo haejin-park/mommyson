@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="KO">
 <head>
@@ -16,13 +17,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </head>
 <body>
+
+	
 	<div class="side-2 side_menu">
 		<nav id="sidebar">
 		    <ul class="list-unstyled components sidebar_list">
 		    	<li>
-		    		<select>
-		    			<option>전체</option>
-		    		</select>
+		    		<select name="location" id="location" class="manager_location"></select>
 		    	</li>
 		        <li class="active" id="active_menu">
 		            <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회원관리</a>
@@ -77,6 +78,9 @@
 		                <li>
 		                    <a href="${ pageContext.servletContext.contextPath }/manager/tagManage">태그 설정</a>
 		                </li>
+		                <li>
+		                	<a href="${ pageContext.servletContext.contextPath }/manager/categoryManage">카테고리 설정</a>
+		                </li>
 		            </ul>
 		        </li>
 		        <li class="active">
@@ -93,5 +97,14 @@
 	        </ul>
     	</nav>
 	</div>
+	<script>
+    	$(function() {
+    		<c:forEach items="${ sessionScope.locationList }" var="locationList">
+			$('#location').append('<option value = ' + '<c:out value = "${ locationList.LOCATION_CODE }"/>' + '>'
+						 + '<c:out value = "${ locationList.LOCATION_NAME }" /></option>')
+			</c:forEach>
+    	})
+    </script>
+	
 </body>
 </html>
