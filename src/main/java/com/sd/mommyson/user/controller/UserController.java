@@ -1,7 +1,6 @@
 package com.sd.mommyson.user.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +16,10 @@ public class UserController {
 	}
 	
 	@GetMapping("category/{category}")
-	public void categoryPage(ModelAndView model,@PathVariable String category) {
-		model.addObject("category", category);
-		model.setViewName("user/category_page");
+	public ModelAndView categoryPage(ModelAndView mv,@PathVariable String category) {
+		mv.addObject("category", category);
+		mv.setViewName("user/category_page");
+		
+		return mv;
 	}
 }
