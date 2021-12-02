@@ -1,10 +1,18 @@
 package com.sd.mommyson.member.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dao.MemberDAO;
+import com.sd.mommyson.member.dto.LocationDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
 @Service
@@ -35,6 +43,22 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		return loginMember;
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectLoation() {
+		
+		List<HashMap<String, String>> locationList = memberDAO.selectLocation();
+		
+		return locationList;
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectCategoryList() {
+		
+		List<HashMap<String, String>> categoryList = memberDAO.selectCategoryList();
+		
+		return categoryList;
 	}
 
 }

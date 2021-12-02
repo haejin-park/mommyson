@@ -57,4 +57,19 @@
 		 WHERE A.IS_DELETED = 'N'
 		   AND A.MEM_ID = #{ memId }
 	</select>
+	
+	<select id="selectLocation" resultType="hashmap">
+		SELECT 
+			   A.LOCATION_CODE
+			 , A.LOCATION_NAME
+		  FROM LOCATION A
+	</select>
+	
+	<select id="selectCategoryList" resultType="hashmap">
+		SELECT 
+			   A.CATEGORY_CODE
+			 , A.CATEGORY_NAME
+		  FROM CATEGORY_TBL A
+	</select>
+	
 </mapper>
