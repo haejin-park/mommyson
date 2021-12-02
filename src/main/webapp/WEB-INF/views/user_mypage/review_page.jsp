@@ -13,75 +13,7 @@
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/store_page.css">
 </head>
 <body>
-    <header class="header">
-        <div class="headerTop">
-            <div class="headerBody">
-                    <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/mainlogo.png" style="width: 300px;"></a>
-                <div class="bodyLeft">
-                    <ul class="df_ul headerItem">
-                        <li>
-                          <a href="#">장바구니</a>
-                        </li>
-                        <li>
-                          <a  href="#">로그인</a>
-                        </li>
-                        <li >
-                          <a href="#">회원가입</a>
-                        </li>
-                        <li >
-                          <a  href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
-                        </li>
-                      </ul>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="navbar" >
-      <div class="dropdown">
-        <button class="dropbtn" style="font-size: 20px;">전체 카테고리 
-          <i class="fa fa-caret-down" style="padding-left: 20px;"></i>
-        </button>
-        <div class="dropdown-content"> 
-          <div class="row">
-            <div class="column">
-              <a href="#">무침</a>
-              <a href="#">볶음</a>
-              <a href="#">조림</a>
-              <a href="#">김치/절임/젓갈</a>
-            </div>
-            <div class="column">
-              <a href="#">전/생선</a>
-              <a href="#">국/찌개/탕</a>
-              <a href="#">메인요리</a>
-              <a href="#">곡류/양념</a>
-            </div>
-            <div class="column">
-              <a href="#">어린이 반찬</a>
-              <a href="#">부모님 반찬</a>
-              <a href="#">제철 반찬</a>
-            </div>
-            <div class="column">
-              <a href="#">대용량 반찬</a>
-              <a href="#">묶음 반찬</a>
-              <a href="#">냉동 반찬</a>
-              <a href="#">할인 반찬</a>
-            </div>
-          </div>
-        </div>
-      </div> 
-       <a href="#home">오늘의 추천</a>
-       <a href="#news">우리동네 인기 맛집</a>
-       <a href="#news">오늘 할인</a>
-       <a href="#news">이벤트</a>
-       <div class="search-container"></div>
-       <form action="#" method="get">
-        <input type="text" placeholder="Search.." name="search">
-        <button type="submit" id="but"><i class="fa fa-search" style="size: 50px;"></i></button>
-       </form>
-      </div>
-      </div>
-
+      <jsp:include page="../commons/header.jsp"></jsp:include>
     <section>
         <div class="at-container" style="width: 80%;">
             <div class="main_box">

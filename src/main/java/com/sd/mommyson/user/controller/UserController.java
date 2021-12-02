@@ -22,7 +22,7 @@ public class UserController {
 	@GetMapping("myOrderList")
 	public String myOrderList() {
 		
-		return "user/userCustomerServiceOftenQuestionBase";
+		return "user_mypage/userTotalOrderList";
 	}
 
 }
