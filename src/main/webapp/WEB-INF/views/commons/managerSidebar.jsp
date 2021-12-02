@@ -19,6 +19,11 @@
 	<div class="side-2 side_menu">
 		<nav id="sidebar">
 		    <ul class="list-unstyled components sidebar_list">
+		    	<li>
+		    		<select>
+		    			<option>전체</option>
+		    		</select>
+		    	</li>
 		        <li class="active" id="active_menu">
 		            <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회원관리</a>
 		            <ul class="collapse list-unstyled" id="homeSubmenu1">
