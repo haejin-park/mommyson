@@ -26,7 +26,7 @@
 .side-1{
     background-color: rgba(252, 235, 233, 1);
     /* border-style: solid; */
-    height: 400px;
+    height: 430px;
     margin: auto 0px;
     width: 300px;
     border-radius: 20px;
@@ -74,7 +74,7 @@
     color: white; 
     width: 80px;
 }
-.modal-body h4{
+.modal-body h4, .modal-body h6{
     display: inline;
     margin-right: 50px;
     margin-left: 20px;

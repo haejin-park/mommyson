@@ -5,13 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>쿠폰 발행</title>
-<link rel="stylesheet" href="../../resources/css/coupon.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/coupon.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script></head>
 <body>
 	<!-- header -->
-	<jsp:include page="${ pageContext.servletContext.contextPath }/view/commons/header.jsp"/>
+	<jsp:include page="../commons/header.jsp"/>
 
     <br><br>
     <div class="page-text" style="width: 1550px; margin: 0 auto;">
@@ -23,12 +27,12 @@
         <div class="body-inside">
         
         <!-- sidebar  -->
-        <jsp:include page="${ pageContext.servletContext.contextPath }/view/commons/ownerSidebar.jsp"/>
+        <jsp:include page="../commons/ownerSidebar.jsp"/>
         
         <div style="text-align: center;">
         <br><br>
-        <img src="../../resources/images/owner-logo.png" width="200px">
-        <br><br><br><br>
+        <img src="../resources/images/owner-logo.png" width="300px"><br><br>
+        <br><br>
         <div style="margin-left: 450px;" id="before">
         <h3 style="font-weight: 900; text-align: left; margin-left: 70px;">발행한 쿠폰</h3>
         <br><br>
@@ -92,8 +96,8 @@
 	        <div class="modal-body" style="margin: 0 auto;">
 	          <br>
 	          <h4>쿠폰이름</h4><input type="text" min="0" placeholder="쿠폰이름을 작성해주세요"><br><br>
-	          <h4>할인율</h4><input type="number" min="0" style="width: 80px; margin-left: 20px;"><h4>%</h4><br><br>
-	          <h4>할인조건</h4><input type="text" name="" id=""><br><br>
+	          <h4>할인금액</h4><input type="number" min="0" style="width: 80px; margin-left: 20px;"><h4>원</h4><br><br>
+	          <h4>할인조건</h4><input type="number" min="0" name="" id="" style="width: 80px"><h6>원 이상 사용 가능</h6><br><br>
 	          <h4>유효기간</h4><input type="date">
 	          <br><br>
 	        </div>
@@ -107,7 +111,7 @@
 	  </div>
 	  
 	  <!-- footer -->
-	  <jsp:include page="${ pageContext.servletContext.contextPath }/view/commons/footer.jsp"/>
+	  <jsp:include page="../commons/footer.jsp"/>
 	  
 </body>
 </html>

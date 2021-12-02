@@ -1,4 +1,5 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,25 +15,25 @@
                 <br>
                 <form>
                     <img src="${ pageContext.servletContext.contextPath }/resources/images/owner-logo.png" width="150px"><br> <hr>
-                    <h3>김미숙 사장님</h3>
+                    <h3>ê¹ë¯¸ì ì¬ì¥ë</h3>
                     <br>
                     <h5>21-11-22 ~</h5>
-                    <h6>정액제 사용중</h6>
-                    <h6>만료일 : 22-2-22</h6>
+                    <h6>ì ì¡ì  ì¬ì©ì¤</h6>
+                    <h6>ë§ë£ì¼ : 22-2-22</h6>
                 </form><br>
 
-                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px;">연장하기</button>
+                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px;">ì°ì¥íê¸°</button>
                 <hr>
-                <button id="button3" style="margin-top: 10px;">영업시작</button>
+                <button id="button3" style="margin-top: 10px;">ìììì</button>
             </div>
             
             <script>
             $(function(){
                 $("#button3").click(function(){
-                  if($("#button3").html() == "영업시작"){
-                    $(this).css("background-color","#777777").html("영업정지");
+                  if($("#button3").html() == "ìììì"){
+                    $(this).css("background-color","#777777").html("ììì ì§");
                   } else{
-                    $(this).css("background-color","#F89E91").html("영업시작");
+                    $(this).css("background-color","#F89E91").html("ìììì");
                   }
                 });
             });
@@ -43,68 +44,68 @@
   
               <ul class="list-unstyled components">
                   <li>
-                      <a href="#">가게관리</a>
-                      <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain">가게관리</a>
+                      <a href="#">ê°ê²ê´ë¦¬</a>
+                      <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain">ê°ê²ê´ë¦¬</a>
                   </li><hr>
                   <li class="active">
-                            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">상품관리</a><hr>
+                            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">ìíê´ë¦¬</a><hr>
                             <ul class="collapse list-unstyled" id="homeSubmenu">
                                 <li>
-                                    <a href="../owners/product-regist.html">상품등록</a>
-                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">상품등록</a>
+                                    <a href="../owners/product-regist.html">ìíë±ë¡</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">ìíë±ë¡</a>
                                 </li>
                                 <li>
-                                    <a href="../owners/productManagement.html">판매 상품 관리</a>
-                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">판매 상품 관리</a>
+                                    <a href="../owners/productManagement.html">íë§¤ ìí ê´ë¦¬</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">íë§¤ ìí ê´ë¦¬</a>
                                 </li>
                                 <li>
-                                    <a href="#">오늘의 메뉴</a>
+                                    <a href="#">ì¤ëì ë©ë´</a>
                                 </li>
                                 <li>
-                                    <a href="#">오늘의 할인</a>
+                                    <a href="#">ì¤ëì í ì¸</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">주문관리</a><hr>
+                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">ì£¼ë¬¸ê´ë¦¬</a><hr>
                             <ul class="collapse list-unstyled" id="pageSubmenu">
                                 <li>
-                                    <a href="#">주문접수</a>
+                                    <a href="#">ì£¼ë¬¸ì ì</a>
                                 </li>
                                 <li>
-                                    <a href="#">완료된 주문</a>
+                                    <a href="#">ìë£ë ì£¼ë¬¸</a>
                                 </li>
                             
                             </ul>
                         </li>
                         <li>
-                            <a href="#">쿠폰발행</a>
+                            <a href="#">ì¿ í°ë°í</a>
                         </li><hr>
                         <li>
-                            <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">매출내역</a><hr>
+                            <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">ë§¤ì¶ë´ì­</a><hr>
                             <ul class="collapse list-unstyled 1" id="pageSubmenu1">
                                 <li>
-                                    <a href="#">일별 매출</a>
+                                    <a href="#">ì¼ë³ ë§¤ì¶</a>
                                 </li>
                                 <li>
-                                    <a href="#">월별 매출</a>
+                                    <a href="#">ìë³ ë§¤ì¶</a>
                                 </li>
                                 <li>
-                                    <a href="#">정산</a>
+                                    <a href="#">ì ì°</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false">고객관리</a><hr>
+                            <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false">ê³ ê°ê´ë¦¬</a><hr>
                             <ul class="collapse list-unstyled" id="pageSubmenu2">
                                 <li>
-                                    <a href="#">리뷰관리</a>
+                                    <a href="#">ë¦¬ë·°ê´ë¦¬</a>
                                 </li>                                                            
                             </ul>
                         </li>
                         
                         <li>
-                            <a href="#">탈퇴하기</a>
+                            <a href="#">íí´íê¸°</a>
                         </li>
               </ul>
           </nav>

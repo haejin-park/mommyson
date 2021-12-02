@@ -34,7 +34,7 @@
 	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">상점관리</a>
 	                  	</li>
 	                  	<li>
-                  		<a href="${ pageContext.servletContext.contextPath }/owner/productRegist"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  		<a href="${ pageContext.servletContext.contextPath }/owner/coupon"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   		</li>
                     </c:if>
                     <!-- 관리자의 경우 -->

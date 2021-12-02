@@ -25,4 +25,8 @@ public class OwnerController {
 	/* 쿠폰 발행 */
 	@GetMapping("coupon")
 	public void coupon() {}
+	
+	/* 리뷰 */
+	@GetMapping("review")
+	public void review() {}
 }

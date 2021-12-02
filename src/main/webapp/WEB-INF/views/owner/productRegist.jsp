@@ -17,7 +17,7 @@
 	<jsp:include page="../commons/header.jsp"/>
 	
 	<div class="page-text" style="width: 1550px; margin: 0 auto;">
-        <br><h3 style="margin-left: 100px; font-weight: 900;">상품 등록</h3>
+        <br><h2 style="margin-left: 100px; font-weight: 900;">상품 등록</h2>
         <hr>
     </div>
     
@@ -36,7 +36,7 @@
             <option>기타</option>
            <option>육류</option>
            <option>채소</option>
-           <option></option>
+           <option>해산물</option>
        	   </select><br>
 	        <h3>#</h3>
 	        <select>
