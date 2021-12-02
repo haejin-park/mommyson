@@ -9,6 +9,17 @@
 		<result property="repCount" column="REP_COUNT"/>
 	</resultMap>
 
+	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="account" column="ACCOUNT"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="no" column="STORE_NO"/>
+		<result property="name" column="CEO_NAME"/>
+		<result property="img" column="STORE_IMG"/>
+		<result property="openingTime" column="OPENING_TIME"/>
+		<result property="storeInfo" column="STORE_INFO"/>
+	</resultMap>
+
 	<resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="email" column="EMAIL"/>
@@ -24,6 +35,7 @@
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
 		<collection property="user" resultMap="userResultMap"/>
+		<collection property="ceo" resultMap="ceoResultMap"/>
 	</resultMap>
 
 	<select id="selectAll" resultType="_int">
@@ -52,8 +64,15 @@
 			 , A.ENROLL_DATE
 			 , B.NAME
 			 , B.REP_COUNT
+			 , C.MEM_CODE
+		     , C.ACCOUNT
+			 , C.START_DATE
+			 , C.STORE_NO
+			 , C.CEO_NAME
+			 , C.STORE_IMG
 		  FROM MEMBER_TBL A
 		  LEFT JOIN USER_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+		  LEFT JOIN CEO_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 		 WHERE A.IS_DELETED = 'N'
 		   AND A.MEM_ID = #{ memId }
 	</select>
