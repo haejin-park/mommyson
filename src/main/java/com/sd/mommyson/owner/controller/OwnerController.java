@@ -13,7 +13,7 @@ public class OwnerController {
 	public void ownerMypage() {}
 	
 	/* 상품등록 */
-	@GetMapping("productRegist")
+	@GetMapping("productRegist") 
 	public void productRegist(){
 		
 	}
@@ -22,5 +22,7 @@ public class OwnerController {
 	@GetMapping("productManagement")
 	public void productManagement() {}
 	
-	
+	/* 쿠폰 발행 */
+	@GetMapping("coupon")
+	public void coupon() {}
 }
