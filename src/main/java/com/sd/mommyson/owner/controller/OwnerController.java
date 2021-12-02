@@ -13,30 +13,32 @@ import com.sd.mommyson.owner.service.OwnerService;
 
 @Controller
 @RequestMapping("/owner/*")
-@SessionAttributes("loginMember")
 public class OwnerController {
 	
-	private OwnerService ownerService;
-	
-	@Autowired
-	public OwnerController(OwnerService ownerService) {
-		
-		this.ownerService = ownerService;
-	}
+//	private OwnerService ownerService;
+//	
+//	@Autowired
+//	public OwnerController(OwnerService ownerService) {
+//		
+//		this.ownerService = ownerService;
+//	}
 	
 	/* 사업자 마이페이지 메인화면 */
 	@GetMapping("ownerMain")
-	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member) {
+	public void ownerMypage() {
 		
-		String id =  member.getMemId();
-		
-		System.out.println(id);
-		
-		
-		return "owner/ownerMain/";
 	}
-	
-	@PostMapping("ownerMain")
+
+//	@GetMapping("ownerMain")
+//	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member) {
+//		
+//		String id =  member.getMemId();
+//		
+//		System.out.println(id);
+//		
+//		
+//		return "owner/ownerMain";
+//	}
 	
 	
 	/* 가게정보 수정 */
