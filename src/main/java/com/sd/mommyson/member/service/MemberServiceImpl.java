@@ -53,4 +53,10 @@ public class MemberServiceImpl implements MemberService {
 		return locationList;
 	}
 
+	@Override
+	public List<HashMap<String, String>> selectTags() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

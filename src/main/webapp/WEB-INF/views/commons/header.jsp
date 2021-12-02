@@ -24,7 +24,7 @@
                 <c:if test="${ sessionScope.loginMember != null }">
                 	<!-- 소비자의 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'user' }">
-	                  	<li>
+	                  	<li id="ca_lo">
 	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
 	                  	</li>
                     </c:if>
@@ -92,6 +92,7 @@
                         <div class="col-2">
 	                        <a href="#">어린이 반찬</a>
 	                        <a href="#">부모님 반찬</a>
+	                        <a href="#">제철 반찬</a>
 	                        <a href="#">제철 반찬</a>
                         </div>
                         <div class="col-1"></div>
