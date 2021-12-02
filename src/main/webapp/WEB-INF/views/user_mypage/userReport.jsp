@@ -21,37 +21,8 @@
       <div class="container">
         <div class="row">
           <div class="col-md-3">
-            <nav id="sidebar">
-              <div class="sidebar-header">
-                  <h3>마이페이지</h3>
-              </div>
-  
-              <ul class="list-unstyled components">
-                  <li>
-                      <a href="#">주문내역</a>
-                  </li>                 
-                  <li>
-                      <a href="#">개인정보변경</a>
-                  </li>
-                  <li>
-                      <a href="#">회원탈퇴</a>
-                  </li>
-                  <li>
-                    <a href="#">쿠폰함</a>
-                </li>
-                <li>
-                  <a href="#">내가 쓴 리뷰</a>
-              </li>
-              <li>
-                <a href="#">자주찾는가게</a>
-               </li>
-               <li>
-                <a href="#">나의 신고 내역</a>
-              </li>
-              </ul>
-              
-          </nav>
-          <!-- <img src="${ pageContext.servletContext.contextPath }/resources/images/customerServiceImg.png" id="customerguide"> -->
+              <jsp:include page="../commons/userMyPageSidebar.jsp"></jsp:include>
+            
           </div>
           <div class="col-md-9">
             <div id="userCouponHead">
@@ -89,15 +60,6 @@
         </div>
       </div>
     </section>
-    <script>
-      $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-        });
-    </script>
-
-
 
       <footer class="at-container">
         <ul class="df_ul ft_list">

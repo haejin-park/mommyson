@@ -21,35 +21,9 @@
       <div class="container">
         <div class="row">
           <div class="col-md-3">
-            <nav id="sidebar">
-              <div class="sidebar-header">
-                  <h3>고객센터</h3>
-              </div>
-  
-              <ul class="list-unstyled components">
-                  <li>
-                      <a href="#">공지사항</a>
-                  </li>                 
-                  <li>
-                      <a href="#">자주하는 질문</a>
-                  </li>
-                  <li>
-                    <a href="#">1:1 문의</a>
-                  </li>
-                  <li>
-                    <a href="#">1:1 상담 내역</a>
-                 </li>
-              </ul>
-          </nav>
-         <!--  <img src="${ pageContext.servletContext.contextPath }/resources/images/customerServiceImg.png" id="customerguide"> -->
+              <jsp:include page="../commons/userCustomerServiceCenterSidebar.jsp"></jsp:include>
           </div>
-          <script>
-            $(document).ready(function () {
-                  $('#sidebarCollapse').on('click', function () {
-                      $('#sidebar').toggleClass('active');
-                  });
-              });
-          </script>
+
           <div class="col-md-9">
             <div class="board_container">
               <br>

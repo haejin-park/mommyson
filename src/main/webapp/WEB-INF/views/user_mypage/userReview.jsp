@@ -22,47 +22,9 @@
       <div class="container">
         <div class="row">
           <div class="col-md-3">
-            <nav id="sidebar">
-              <div class="sidebar-header">
-                  <h3>마이페이지</h3>
-              </div>
-  
-              <ul class="list-unstyled components">
-                  <li>
-                      <a href="#">주문내역</a>
-                  </li>                 
-                  <li>
-                      <a href="#">개인정보변경</a>
-                  </li>
-                  <li>
-                      <a href="#">회원탈퇴</a>
-                  </li>
-                  <li> 
-                    <a href="#">쿠폰함</a>
-                </li>
-                <li>
-                  <a href="#">내가 쓴 리뷰</a>
-              </li>
-              <li>
-                <a href="#">자주찾는가게</a>
-              </li>
-              <li>
-                <a href="#">나의 신고 내역</a>
-              </li>
-              </ul>
-              
-          </nav>
-          <!-- <img src=""${ pageContext.servletContext.contextPath }/images/customerServiceImg.png" id="customerguide"> -->
-          </div>
-          <script>
-            $(document).ready(function () {
-                  $('#sidebarCollapse').on('click', function () {
-                      $('#sidebar').toggleClass('active');
-                  });
-              });
-          </script>
-
-          <div class="col-md-9">
+               <jsp:include page="../commons/userMyPageSidebar.jsp"></jsp:include>
+      </div>
+      <div class="col-md-9">
             <div id="pagetitle">
               <br><br>
               <h3><strong>내가쓴 리뷰</strong> &nbsp;&nbsp;<sub>고객님이 현재까지 작성한 리뷰 내역 입니다. </sub></h3>

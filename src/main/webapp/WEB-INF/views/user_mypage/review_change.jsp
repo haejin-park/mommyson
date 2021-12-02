@@ -15,7 +15,8 @@
 <body>
     <jsp:include page="../commons/header.jsp"></jsp:include>
     <section>
-        <div class="at-container" style="width: 80%;">
+<!--     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+ -->        <div class="at-container" style="width: 80%;">
             <div class="main_box">
                 <h1 align="center">리뷰 수정</h1>
                 <div class="sub_box">
