@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.owner.service.OwnerService;
 
 @Controller
 @RequestMapping("/owner/*")
