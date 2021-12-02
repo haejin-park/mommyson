@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sd.mommyson.user.service.UserService;
 
-@Controller("/user/*")
+@Controller
+@RequestMapping("/user/*")
 public class UserController {
 	
 	private UserService userService;
@@ -18,10 +19,10 @@ public class UserController {
 		this.userService = userService;
 	}
 	
-	@RequestMapping("myOrderList")
+	@GetMapping("myOrderList")
 	public String myOrderList() {
 		
-		return "userReview";
+		return "user_mypage/userReview";
 	}
 
 }
