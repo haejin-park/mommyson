@@ -6,9 +6,9 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="../../resources/css/colorset.css">
-  <link rel="stylesheet" href="../../resources/css/user/signoutUser.css">
-  <link rel="stylesheet" href="../../resources/css/user/userMyPageSideBar.css">
+  <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
+  <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/user/signoutUser.css">
+  <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/user/userMyPageSideBar.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
   <header class="header">
     <div class="headerTop">
       <div class="headerBody">
-        <a href="#"><img src="../../resources/images/mainlogo.png" style="width: 300px;"></a>
+        <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/mainlogo.png" style="width: 300px;"></a>
         <br><br><br>
           <div class="bodyLeft">
               <ul class="df_ul headerItem" style=" margin-left: 1150px;">
@@ -36,7 +36,7 @@
                   <a href="#">회원가입</a>
                 </li>
                 <li >
-                  <a  href="#"><img src="../../resources/images/bell.png"></a>
+                  <a  href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
                 </li>
             </ul>
         </div>
@@ -181,7 +181,7 @@
               </ul>
               
           </nav>
-          <!-- <img src="../../resources/images/customerServiceImg.png" id="customerguide"> -->
+          <!-- <img src="${ pageContext.servletContext.contextPath }/resources/images/customerServiceImg.png" id="customerguide"> -->
           </div>
           <div class="col-md-9">
             <div>
@@ -236,9 +236,9 @@
           </li>
         </ul>
         <div class="ft_img_line">
-          <img src="../../../resources/images/ft_img01.png" alt="소비자중심경영">
-        <img src="../../../resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-        <img src="../../../resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
+          <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
+        <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
+        <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
       </div>
       <div class="ft_info">
         <p>(주)마미손맛 자세히 보기</p>

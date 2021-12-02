@@ -22,7 +22,7 @@
                 <ul class="df_ul headerItem">
                 <c:if test="${ sessionScope.loginMember != null }">
                    <li>
-                   <c:if test="${ sessionScope.loginMember.memType = }">
+                   <c:if test="${ sessionScope.loginMember.memType = user}">
                     <a href="#">장바구니</a>
                     </c:if>
                     <c:if test="">
