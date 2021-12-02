@@ -74,47 +74,49 @@
                 </a>
             <script>
 	            $(function() {
-	            	// 카테고리 리스트 불러오기
-	            	<c:set var="i" value="0"/>
-	            	<c:forEach items="${ sessionScope.categoryList }" var="categoryList" varStatus="status">
-	            		$('#categoryList').append(
-	            				'<div class="col-2">' +
-	            				'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE[status.index] }">' +
-	            				
-	            		);
-	            	</c:forEach>
-	        	})
+	        	// 카테고리 리스트 불러오기
+	        	$('#categoryList').append(
+	        				'<div class="col-2">' +
+	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" end="3">
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+	        		</c:forEach>
+	        				'</div>' +
+	        				'<div class="col-1"></div>'
+	        		);
+	        	
+	        	$('#categoryList').append(
+	        				'<div class="col-2">' +
+	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" begin="4" end="7">
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+	        		</c:forEach>
+	        				'</div>' +
+	        				'<div class="col-1"></div>'
+	        		);
+	        	
+	        	$('#categoryList').append(
+	        				'<div class="col-2">' +
+	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" begin="8" end="11">
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+	        		</c:forEach>
+	        				'</div>' +
+	        				'<div class="col-1"></div>'
+	        		);
+	        	
+	        	$('#categoryList').append(
+	        				'<div class="col-2">' +
+	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" begin="12" end="15">
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+	        		</c:forEach>
+	        				'</div>' +
+	        				'<div class="col-1"></div>'
+	        		);
+	    		})
             </script>
+            
             <div class="dropdown-menu">
                 <div class="dropdown-content" aria-labelledby="navbarDropdown">
+                <!-- 카테고리 리스트 -->
                     <div class="row" id="categoryList">
-                        <div class="col-2">
-	                        <a href="#">무침</a>
-	                        <a href="#">볶음</a>
-	                        <a href="#">조림</a>
-	                        <a href="#">김치/젓갈</a>
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="col-2">
-	                        <a href="#">전/생선</a>
-	                        <a href="#">국/찌개/탕</a>
-	                        <a href="#">메인요리</a>
-	                        <a href="#">곡류/양념</a>
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="col-2">
-	                        <a href="#">어린이 반찬</a>
-	                        <a href="#">부모님 반찬</a>
-	                        <a href="#">제철 반찬</a>
-	                        <a href="#">제철 반찬</a>
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="col-2">
-	                        <a href="#">대용량 반찬</a>
-	                        <a href="#">묶음 반찬</a>
-	                        <a href="#">냉동 반찬</a>
-	                        <a href="#">할인 반찬</a>
-                        </div>
                     </div>
                 </div>
             </div> 
