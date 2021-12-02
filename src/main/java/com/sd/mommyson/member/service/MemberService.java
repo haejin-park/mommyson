@@ -14,5 +14,5 @@ public interface MemberService  {
 
 	public List<HashMap<String, String>> selectLoation();
 
-	public List<HashMap<String, String>> selectTags();
+	public List<HashMap<String, String>> selectCategoryList();
 }

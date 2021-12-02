@@ -65,4 +65,11 @@
 		  FROM LOCATION A
 	</select>
 	
+	<select id="selectCategoryList" resultType="hashmap">
+		SELECT 
+			   A.CATEGORY_CODE
+			 , A.CATEGORY_NAME
+		  FROM CATEGORY_TBL A
+	</select>
+	
 </mapper>

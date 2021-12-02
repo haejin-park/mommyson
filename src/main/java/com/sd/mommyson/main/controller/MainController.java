@@ -28,10 +28,10 @@ public class MainController {
 	public String main(Model model) {
 		
 		List<HashMap<String, String>> locationList = memberService.selectLoation();
-		List<HashMap<String, String>> tagList = memberService.selectTags();
+		List<HashMap<String, String>> categoryList = memberService.selectCategoryList();
 		
 		model.addAttribute("locationList", locationList);
-		model.addAttribute("tagList", tagList);
+		model.addAttribute("categoryList", categoryList);
 		
 		return "user/main";
 	}

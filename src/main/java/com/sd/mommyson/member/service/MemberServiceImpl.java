@@ -54,9 +54,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectTags() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<HashMap<String, String>> selectCategoryList() {
+		
+		List<HashMap<String, String>> categoryList = memberDAO.selectCategoryList();
+		
+		return categoryList;
 	}
 
 }
