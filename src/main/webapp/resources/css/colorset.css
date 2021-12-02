@@ -153,7 +153,7 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
   position: absolute;
   right: 0;
   top: 340px;
-  z-index: 1;
+  z-index: 2;
   background: white;
   width: 500px;
   padding: 20px;
