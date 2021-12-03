@@ -17,7 +17,7 @@
 	
     <jsp:include page="../commons/header.jsp"/>
     
-    <section>
+    <section class="at-container">
        	<c:if test="${ requestScope.category != '오늘만 할인' && requestScope.category != '오늘의 추천' && requestScope.category != '우리동네 인기 맛집' }">
        		<div style="display: flex; justify-content: space-between; align-items: center; width: 83%;">
 	            <h4 style="float: left; margin-left: 50px; margin-top: 80px;">반찬조회 > ${ requestScope.category }</h4>
@@ -197,6 +197,12 @@
 	             </nav>
 	       </div>
         </div>
+        
+        <c:if test="${ sessionScope.loginMember != null }">
+        	<div id="cart_logo">
+        		<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img class="store_logo" src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
+        	</div>
+        </c:if>
       </section>
 
       <footer class="at-container" style="margin-top: 150px;">

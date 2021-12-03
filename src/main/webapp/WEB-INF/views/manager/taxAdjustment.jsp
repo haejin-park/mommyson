@@ -13,9 +13,9 @@
             <p>메인화면으로</p>
         </a>
     </header>
-        <div class="head_line"></div>
+    <div class="head_line"></div>
     <div class="at-container total_container">
-        
+    
         <jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
         
         <div class="board_container">
@@ -150,12 +150,13 @@
         </div>
     </div>
 
+	<jsp:include page="../commons/footer.jsp"></jsp:include>
+	
    <script>
        $("#chk_all").click(function(){
         $(this).parent
        });
    </script>
     
-     <jsp:include page="../commons/footer.jsp"></jsp:include>
 </body>
 </html>
