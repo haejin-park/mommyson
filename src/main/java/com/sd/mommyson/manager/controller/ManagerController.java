@@ -73,4 +73,12 @@ public class ManagerController {
 	/* 관리자 아이디 생성 */
 	@GetMapping("createManager")
 	public void createManager() {}
+	
+	/* 관리자 정산 */
+	@GetMapping("taxAdjustment")
+	public void taxAdjustment() {}
+	
+	/* 중개이용료 리스트 */
+	@GetMapping("taxDetailAdjustment")
+	public void taxDetailAdjustment() {}
 }
