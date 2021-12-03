@@ -3,9 +3,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>일반회원조회</title>
 </head>
 <body>
@@ -56,30 +53,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row"><input type="checkbox" name="ch1"></th>
-                        <td>1</td>
-                        <td>user01</td>
-                        <td>혜찌마요</td>
-                        <td>heju@greedy.com</td>
-                        <td>2021-11-01</td>
-                        <td>123</td>
-                        <td>7,000,000</td>
-                        <td>1</td>
-                        <td>시민</td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><input type="checkbox" name="ch1"></th>
-                        <td>1</td>
-                        <td>user01</td>
-                        <td>혜찌마요</td>
-                        <td>heju@greedy.com</td>
-                        <td>2021-11-01</td>
-                        <td>123</td>
-                        <td>7,000,000</td>
-                        <td>2</td>
-                        <td>시민</td>
-                    </tr>
                     <tr>
                         <th scope="row"><input type="checkbox" name="ch1"></th>
                         <td>1</td>
