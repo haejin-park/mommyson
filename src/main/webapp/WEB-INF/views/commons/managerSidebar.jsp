@@ -93,6 +93,14 @@
 	                    </li>
 	                </ul>
 	            </li>
+	            <li class="active">
+                        <a href="#homeSubmenu7" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">정산</a>
+                        <ul class="collapse list-unstyled" id="homeSubmenu7">
+                            <li>
+                                <a href="${ pageContext.servletContext.contextPath }/manager/taxAdjustment ">관리자 정산</a>
+                            </li>
+                        </ul>
+                    </li>
 	        </ul>
     	</nav>
 	</div>
