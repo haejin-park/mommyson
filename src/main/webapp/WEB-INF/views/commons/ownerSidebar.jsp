@@ -13,8 +13,8 @@
             <div class="side-1">
                 <br>
                 <form>
-                    <img src="${ pageContext.servletContext.contextPath }/resources/images/owner-logo.png" width="150px"><br> <hr>
-                    <h3>김미숙 사장님</h3>
+                    <img src="${ sessionScope.owner.ceo.store.storeImg }" width="150px"><br> <hr>
+                    <h3>${ sessionScope.owner.ceo.name }사장님</h3>
                     <br>
                     <h5>21-11-22 ~</h5>
                     <h6>정액제 사용중</h6>

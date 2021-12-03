@@ -6,18 +6,16 @@ public class CeoDTO {
 
 	private int memCode;
 	private String account;
-	private Date startDate;
 	private String name;
 	private String no;
 	private StoreDTO store;
 	
 	public CeoDTO() {}
 
-	public CeoDTO(int memCode, String account, Date startDate, String name, String no, StoreDTO store) {
+	public CeoDTO(int memCode, String account, String name, String no, StoreDTO store) {
 		super();
 		this.memCode = memCode;
 		this.account = account;
-		this.startDate = startDate;
 		this.name = name;
 		this.no = no;
 		this.store = store;
@@ -37,14 +35,6 @@ public class CeoDTO {
 
 	public void setAccount(String account) {
 		this.account = account;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
 	}
 
 	public String getName() {
@@ -73,7 +63,7 @@ public class CeoDTO {
 
 	@Override
 	public String toString() {
-		return "CeoDTO [memCode=" + memCode + ", account=" + account + ", startDate=" + startDate + ", name=" + name
+		return "CeoDTO [memCode=" + memCode + ", account=" + account + ", name=" + name
 				+ ", no=" + no + ", store=" + store + "]";
 	}
 

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dao.MemberDAO;
-import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
 @Service

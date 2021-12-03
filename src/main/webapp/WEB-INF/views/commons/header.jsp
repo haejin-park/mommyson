@@ -23,6 +23,7 @@
                 <!-- 로그인 후 -->
                 <c:if test="${ sessionScope.loginMember != null }">
                    <li>
+                   <!-- 소비자의 경우 -->
                    <c:if test="${ sessionScope.loginMember.memType == 'user' }">
                     <a href="#">장바구니</a>
                     </c:if>
@@ -37,24 +38,12 @@
                     <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
                     <a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                     </c:if>
-                	<%-- <!-- 소비자의 경우 -->
-                    <c:if test="${ sessionScope.loginMember.memType == 'user' }">
-	                  	<li id="ca_lo">
-	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
-	                  	</li>
-                    </c:if>
-                    <!-- 사업자의 경우 -->
-                    <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
-	                  	<li>
-	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">상점관리</a>
-	                  	</li>
-                    </c:if>
                     <!-- 관리자의 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
 	                  	<li>
 	                    	<a href="${ pageContext.servletContext.contextPath }/manager/normalMember">관리페이지</a>
 	                  	</li>
-                    </c:if> --%>
+                    </c:if> 
                     <a href="${ pageContext.servletContext.contextPath }/member/logout">로그아웃</a>
                   </li>
                   <li >
