@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -81,6 +82,11 @@
                 </div>
             </div>
         </div>
+        <c:if test="${ sessionScope.loginMember != null }">
+	       	<div id="cart_logo">
+	       		<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
+	       	</div>
+      	</c:if>
     </section>
 
     <footer class="at-container" style="margin-top: 0;">
