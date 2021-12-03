@@ -35,8 +35,9 @@
                           $(this).css("background-color","#F89E91").html("영업시작");
                         }
                       });
+           		 });
             });
-            </script>
+                </script> 
             
             <div class="side-2" style="width: 300px; ">
               <nav id="sidebar" style="min-width: 295px; max-width: 295px;">
@@ -115,7 +116,7 @@
 		              </ul>
 		          </nav>
 	     		<script>
-		      		$(document).ready(function () ({
+		      		$(document).ready(function(){
 		              $('#sidebarCollapse').on('click', function () {
 		                  $('#sidebar').toggleClass('active');
 		              });

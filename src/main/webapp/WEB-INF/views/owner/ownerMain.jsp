@@ -32,37 +32,33 @@
 	
 		<div class="body-center" style="text-align: center;">
         <br><br>
-        <img src="${ sessionScope.loginMember.ceo.img }" width="300px" style="margin-left: 60px;">
+        <img src="${ owner.ceo.store.storeImg }" width="300px" style="margin-left: 60px;">
         <br><br><br><br>
             <table class="tg">
                 <tbody>
                 <tr>
                     <th class="tg-c3ow">상호명</th>
-                    <th class="tg-0pky">${ sessionScope.loginMember.nickname }</th>
+                    <th class="tg-0pky">${ owner.ceo.store.storeName }</th>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">주소</td>
-                    <td class="tg-0pky">${ sessionScope.loginMember.address }${ sessionScope.loginMember.dAddress }</td>
+                    <td class="tg-0pky">${ owner.address }${ owner.dAddress }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">영업시간</td>
-                    <td class="tg-0pky">08:00 ~ 21:00</td>
+                    <td class="tg-0pky">${ owner.ceo.store.workTime }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">전화번호 </td>
-                    <td class="tg-0pky">${ sessionScope.loginMember.phone }</td>
+                    <td class="tg-0pky">${ owner.phone }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">가게소개</td>
-                    <td class="tg-0pky"><br>저희 가게는 모든 반찬을 국내산으로 만들고 있으며 내 자식이 먹는다는 <br>생각을 가지고 정성껏 만들고 있습니다. 안심하시고 드셔도됩니다. 올 ㅋ<br><br><br></td>
+                    <td class="tg-0pky">${ owner.ceo.store.storeInfo }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">대표자명</td>
-                    <td class="tg-0pky">${ sessionScope.loginMember.ceo.name }</td>
-                </tr>
-                <tr>
-                    <td class="tg-c3ow">사업자 등록번호</td>
-                    <td class="tg-0pky">678-43-21456</td>
+                    <td class="tg-0pky">${ owner.ceo.name }</td>
                 </tr>
                 </tbody>
             </table>
