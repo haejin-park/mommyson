@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,30 +50,16 @@
               </tr>
             </thead>
             <tbody>
+			<c:forEach var="cp" items="${ coupon }">
               <tr>
                 <th scope="row"><input type="checkbox" name="ch1"></th>
-                <td>2021-11-23</td>
-                <td>자주 이용해주세요~</td>
-                <td>10%</td>
-                <td>10000원 이상 구매시</td>
-                <td>2021-11-30</td>
+                <td>${ cp.startDate }</td>
+                <td>${ cp.cpName }</td>
+                <td>${ cp.disWon }</td>
+                <td>${ cp.dCcon }</td>
+                <<td>${ cp.endDate }</td> 
               </tr>
-              <tr>
-                <th scope="row"><input type="checkbox" name="ch1"></th>
-                <td>2021-11-23</td>
-                <td>자주 이용해주세요~</td>
-                <td>15%</td>
-                <td>10000원 이상 구매시</td>
-                <td>2021-11-30</td>
-              </tr>
-              <tr>
-                <th scope="row"><input type="checkbox" name="ch1"></th>
-                <td>2021-11-23</td>
-                <td>자주 이용해주세요~</td>
-                <td>20%</td>
-                <td>10000원 이상 구매시</td>
-                <td>2021-11-30</td>
-              </tr>
+             </c:forEach>
             </tbody>
           </table>
           <br><br>
@@ -97,7 +84,7 @@
 	        <div class="modal-body" style="margin: 0 auto;">
 	          <br>
 	          <h4>쿠폰이름</h4><input type="text" name="" min="0" placeholder="쿠폰이름을 작성해주세요"><br><br>
-	          <h4>할인금액</h4><input type="number" min="0" style="width: 80px; margin-left: 20px;"><h4>원</h4><br><br>
+	          <h4>할인금액</h4><input type="number" min="0" style="width: 80px; "><h4>원</h4><br><br>
 	          <h4>할인조건</h4><input type="number" min="0" name="" id="" style="width: 80px"><h6>원 이상 사용 가능</h6><br><br>
 	          <h4>유효기간</h4><input type="date">
 	          <br><br>

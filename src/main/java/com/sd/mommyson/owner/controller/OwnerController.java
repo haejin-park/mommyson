@@ -1,5 +1,7 @@
 package com.sd.mommyson.owner.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.service.OwnerService;
 
 @Controller
@@ -37,6 +41,19 @@ public class OwnerController {
 		return "owner/ownerMain";
 	}
 	
+	/* 쿠폰 발행 */
+	@RequestMapping("coupon")
+	public String coupon(@ModelAttribute("owner") MemberDTO member, Model model) {
+		
+		List<CouponDTO> coupon = ownerService.selectCoupon(member);
+		System.out.println(coupon);
+		
+		//					items 이름 , 리스트이름
+		model.addAttribute( "coupon" ,coupon);
+		
+		
+		return "owner/coupon";
+	}
 	
 	/* 가게정보 수정 */
 	@GetMapping("modifyStore")
@@ -52,9 +69,6 @@ public class OwnerController {
 	@GetMapping("productManagement")
 	public void productManagement() {}
 	
-	/* 쿠폰 발행 */
-	@GetMapping("coupon")
-	public void coupon() {}
 	
 	/* 리뷰 */
 	@GetMapping("review")
