@@ -27,7 +27,6 @@
 		<result property="workTime" column="WORK_TIME"/>
 	</resultMap>
 	
-
 	<resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="email" column="EMAIL"/>
@@ -94,25 +93,24 @@
 	
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
-		      A.ADDRESS
-		    , A.POST_CODE
-		    , A.D_ADDRESS
-		    , A.PHONE
-		    , A.LOCATION_CODE
-		    , A.NICKNAME
-		    , B.ACCOUNT
-		    , B.START_DATE
-		    , B.STORE_NO
-		    , B.CEO_NAME
-		    , C.STORE_NAME
-		    , C.STORE_IMG
-		    , C.STORE_INFO
-		    , C.WORK_TIME
-		 FROM MEMBER_TBL A
-		 LEFT JOIN CEO_TBL B ON(A.MEM_CODE = B.MEM_CODE)
-		 LEFT JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
-		 WHERE A.IS_DELETED = 'N'
-		   AND A.MEM_ID = #{ memId }
+		        A.ADDRESS
+		     ,  A.POST_CODE
+		     ,  A.D_ADDRESS
+		     ,  A.PHONE
+		     ,  A.LOCATION_CODE
+		     ,  A.NICKNAME
+		     ,  B.ACCOUNT
+		     ,  B.STORE_NO
+		     ,  B.CEO_NAME
+		     ,  C.STORE_NAME
+		     ,  C.STORE_IMG
+		     ,  C.STORE_INFO
+		     ,  C.WORK_TIME
+		  FROM  MEMBER_TBL A
+		  LEFT  JOIN CEO_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+		  LEFT  JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+	     WHERE  A.IS_DELETED = 'N'
+		   AND  A.MEM_ID = #{ memId }
 	</select>
 	
 </mapper>

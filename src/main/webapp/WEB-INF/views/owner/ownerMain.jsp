@@ -14,6 +14,12 @@
 <title>사업자 마이페이지</title>
 </head>
 <body>
+<script>
+	const msg = "${msg}"
+	if(msg != null){
+		alert('수정이 완료되었습니다.')
+	}
+</script>
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
 	

@@ -27,7 +27,7 @@ public class OwnerController {
 	}
 	
 	/* 사업자 마이페이지 메인화면 */
-	@RequestMapping("ownerMain")
+	@GetMapping("ownerMain")
 	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
 		MemberDTO owner = ownerService.selectOwner(member);
@@ -43,6 +43,13 @@ public class OwnerController {
 	/* 가게정보 수정 */
 	@GetMapping("modifyStore")
 	public void modifyStore(){}
+	
+	@PostMapping("modifyStore")
+	public String updateModifytStore(@ModelAttribute MemberDTO member, Model model) {
+		
+
+		return "owner/ownerMain/";
+	}
 	
 	/* 상품등록 */
 	@GetMapping("productRegist")
