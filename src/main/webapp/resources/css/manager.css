@@ -13,6 +13,7 @@
 .total_container .side_menu #sidebar .sidebar_list > li > ul {  }
 .total_container .side_menu #sidebar .sidebar_list > li > ul > li { margin-bottom: 10px; }
 .total_container .side_menu #sidebar .sidebar_list > li > ul > li a { padding: 0 !important; font-size: 16px !important; color: #6D6D6D; font-weight: 300; }
+.total_container .side_menu #sidebar .sidebar_list > li .manager_location { width: 100%; padding: 5px; outline: none; border: 0; background-color: #F89E91; color: #FFF; }
 
 /* 관리자 게시판 틀 css */
 .total_container .board_container { float: right; width: 1160px; padding-left: 80px; }

@@ -33,15 +33,19 @@
 	                  	<li>
 	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">상점관리</a>
 	                  	</li>
+	                  	<li>
+                  		<a href="${ pageContext.servletContext.contextPath }/owner/coupon"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  		</li>
                     </c:if>
                     <!-- 관리자의 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
 	                  	<li>
 	                    	<a href="${ pageContext.servletContext.contextPath }/manager/normalMember">관리페이지</a>
 	                  	</li>
+	                  	
                     </c:if>
                   <li>
-                  	<a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  	<a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname }</a>
                   </li>
                   <li>
                     <a href="${ pageContext.servletContext.contextPath }/member/logout">로그아웃</a>
@@ -50,7 +54,6 @@
                     <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
                   </li>
                 </c:if>
-                
                 <!-- 로그인 전 -->
                 <c:if test="${ sessionScope.loginMember == null }">
                   <li>

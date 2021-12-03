@@ -50,6 +50,6 @@ public class MemberController {
 	@GetMapping("logout")
 	public String logout(SessionStatus status) {
 		status.setComplete();
-		return "redirect:/main";
+		return "redirect:/main"; // redirect: jsp페이지를 매핑하고 있는 해당 서블릿으로 redirect 시켜준다.
 	}
 }

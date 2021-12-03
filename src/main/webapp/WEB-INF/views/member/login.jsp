@@ -79,41 +79,30 @@
             let memId = $('#id').val();
             let memPwd = $('#pwd').val();
        
-            if(memId.value==""){
+            if(memId ==""){
                 alert("아이디를 입력해주세요.");
                 memId.focus();
             }
 
-            if(memPwd.value==""){
+            if(memPwd ==""){
                 alert("비밀번호를 입력해주세요.");
             }
             
             $.ajax({
        			url: "/mommyson/member/login",
-    				type: 'post',
-    				data: {
-    					memId : memId,
-    					memPwd : memPwd
-    				},
-    				success: function(data) {
-    					switch(data){
-    						case "main" : location.href="${ pageContext.servletContext.contextPath }/"; break;
-    						default : alert(data); break;
-    					}
-    				}
+   				type: 'post',
+   				data: {
+   					memId : memId,
+   					memPwd : memPwd
+   				},
+   				success: function(data) {
+   					switch(data){
+   						case "main" : location.href="${ pageContext.servletContext.contextPath }/"; break;
+   						default : alert(data); break;
+   					}
+   				}
        		});
         }
-
-        function chk(re, ele, msg){
-            if(!re.test(ele.value)){
-                alert(msg);
-                ele.select();
-                return false;
-            }
-            return true;
-        }
-		
-   		
 
     </script>           
 </body>

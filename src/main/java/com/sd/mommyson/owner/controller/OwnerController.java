@@ -1,19 +1,51 @@
 package com.sd.mommyson.owner.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.sd.mommyson.member.dto.MemberDTO;
 
 @Controller
 @RequestMapping("/owner/*")
 public class OwnerController {
 	
+//	private OwnerService ownerService;
+//	
+//	@Autowired
+//	public OwnerController(OwnerService ownerService) {
+//		
+//		this.ownerService = ownerService;
+//	}
+	
 	/* 사업자 마이페이지 메인화면 */
 	@GetMapping("ownerMain")
-	public void ownerMypage() {}
+	public void ownerMypage() {
+		
+	}
+
+//	@GetMapping("ownerMain")
+//	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member) {
+//		
+//		String id =  member.getMemId();
+//		
+//		System.out.println(id);
+//		
+//		
+//		return "owner/ownerMain";
+//	}
+	
+	
+	/* 가게정보 수정 */
+	@GetMapping("modifyStore")
+	public void modifyStore(){}
 	
 	/* 상품등록 */
-	@GetMapping("productRegist")
+	@GetMapping("productRegist") 
 	public void productRegist(){
 		
 	}
@@ -22,5 +54,11 @@ public class OwnerController {
 	@GetMapping("productManagement")
 	public void productManagement() {}
 	
+	/* 쿠폰 발행 */
+	@GetMapping("coupon")
+	public void coupon() {}
 	
+	/* 리뷰 */
+	@GetMapping("review")
+	public void review() {}
 }

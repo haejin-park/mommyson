@@ -4,28 +4,37 @@ import java.sql.Date;
 
 public class CeoDTO {
 
-	private int no;
-	private String name;
 	private int memCode;
 	private String account;
-	private java.sql.Date startDate;
+	private Date startDate;
+	private String name;
+	private String no;
+	private String img;
+	private String openingTime;
+	private String storeInfo;
 	
 	public CeoDTO() {}
 
-	public CeoDTO(int no, String name, int memCode, String account, Date startDate) {
+
+	public CeoDTO(int memCode, String account, Date startDate, String name, String no, String img, String openingTime,
+			String storeInfo) {
 		super();
-		this.no = no;
-		this.name = name;
 		this.memCode = memCode;
 		this.account = account;
 		this.startDate = startDate;
+		this.name = name;
+		this.no = no;
+		this.img = img;
+		this.openingTime = openingTime;
+		this.storeInfo = storeInfo;
 	}
 
-	public int getNo() {
+
+	public String getNo() {
 		return no;
 	}
 
-	public void setNo(int no) {
+	public void setNo(String no) {
 		this.no = no;
 	}
 
@@ -60,10 +69,37 @@ public class CeoDTO {
 	public void setStartDate(java.sql.Date startDate) {
 		this.startDate = startDate;
 	}
+	
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+	
+	public String getOpeningTime() {
+		return openingTime;
+	}
+
+
+	public void setOpeningTime(String openingTime) {
+		this.openingTime = openingTime;
+	}
+
+
+	public String getStoreInfo() {
+		return storeInfo;
+	}
+
+
+	public void setStoreInfo(String storeInfo) {
+		this.storeInfo = storeInfo;
+	}
 
 	@Override
 	public String toString() {
-		return "CeoDTO [no=" + no + ", name=" + name + ", memCode=" + memCode + ", account=" + account + ", startDate="
-				+ startDate + "]";
+		return "CeoDTO [memCode=" + memCode + ", account=" + account + ", startDate=" + startDate + ", name=" + name
+				+ ", no=" + no + ", img=" + img + ", openingTime=" + openingTime + ", storeInfo=" + storeInfo + "]";
 	}
 }

@@ -1,4 +1,5 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +7,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/mypage-sidebar.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 <body>
 		<div class="side-all">
@@ -23,30 +23,36 @@
 
                 <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px;">연장하기</button>
                 <hr>
-                <button id="button3" style="margin-top: 10px;">영업시작</button>
-            </div>
-            
+                <button id="button3" style="margin-top: 10px;">영업시작</button> 
+                </div>
             <script>
             $(function(){
                 $("#button3").click(function(){
-                  if($("#button3").html() == "영업시작"){
-                    $(this).css("background-color","#777777").html("영업정지");
-                  } else{
-                    $(this).css("background-color","#F89E91").html("영업시작");
-                  }
-                });
+                	$("#button3").click(function(){
+                        if($("#button3").html() == "영업시작"){
+                          $(this).css("background-color","#777777").html("영업정지");
+                        } else{
+                          $(this).css("background-color","#F89E91").html("영업시작");
+                        }
+                      });
             });
             </script>
             
             <div class="side-2" style="width: 300px; ">
               <nav id="sidebar" style="min-width: 295px; max-width: 295px;">
-  
               <ul class="list-unstyled components">
-                  <li>
-                      <a href="#">가게관리</a>
-                      <a href="${ pageContext.servletContext.contextPath }/owner/ownerMain">가게관리</a>
-                  </li><hr>
-                  <li class="active">
+	             <li>
+                   <a href="#pageSubmenu3" data-toggle="collapse" aria-expanded="false">정보변경</a><hr>
+                   <ul class="collapse list-unstyled" id="pageSubmenu3">
+                       <li>
+                           <a href="${ pageContext.servletContext.contextPath }/owner/modifyStore">가게정보 변경</a>
+                       </li>
+                       <li>
+                           <a href="#">개인정보 변경</a>
+                       </li>
+                   </ul>
+                </li>
+            	  <li class="active">
                             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">상품관리</a><hr>
                             <ul class="collapse list-unstyled" id="homeSubmenu">
                                 <li>
@@ -106,17 +112,16 @@
                         <li>
                             <a href="#">탈퇴하기</a>
                         </li>
-              </ul>
-          </nav>
-      
-      </div>
-        <script>
-        $(document).ready(function () {
-                $('#sidebarCollapse').on('click', function () {
-                    $('#sidebar').toggleClass('active');
-                });
-            });
-        </script>
-    </div>
+		              </ul>
+		          </nav>
+	     		<script>
+		      		$(document).ready(function () ({
+		              $('#sidebarCollapse').on('click', function () {
+		                  $('#sidebar').toggleClass('active');
+		              });
+		          	});
+	      	</script> 
+     	 </div>
+   	 </div>
 </body>
 </html>
