@@ -7,9 +7,9 @@
 </head>
 <body>
 	<header class="manager_header at-container">
-        <img src="../../../resources/images/managerLogo.png" alt="마미손맛 MANAGEMENT">
+        <img src="${ pageContext.servletContext.contextPath }/resources/images/managerLogo.png" alt="마미손맛 MANAGEMENT">
         <a href="../main.html" class="home_btn">
-            <img src="../../../resources/images/mainHome.png" alt="메인화면으로">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/mainHome.png" alt="메인화면으로">
             <p>메인화면으로</p>
         </a>
     </header>
