@@ -24,7 +24,7 @@
         <br><br>
         <input type="text" name="memId" class="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
         <br><br>
-        <input type="password" name="memPwd" class="pwd" id="pwd" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
+        <input type="password" name="memPwd" class="pwd" id="pwd" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자"  onKeypress="javascript:if(event.keyCode==13) {validate();}">
         <br><br>
 
          <!-- 아이디와 비밀번호가 일치하면  메인페이지 이동하기 -->
