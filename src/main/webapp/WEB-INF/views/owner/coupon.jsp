@@ -12,7 +12,8 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script></head>
+
+</head>
 <body>
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
@@ -95,7 +96,7 @@
 	        </div>
 	        <div class="modal-body" style="margin: 0 auto;">
 	          <br>
-	          <h4>쿠폰이름</h4><input type="text" min="0" placeholder="쿠폰이름을 작성해주세요"><br><br>
+	          <h4>쿠폰이름</h4><input type="text" name="" min="0" placeholder="쿠폰이름을 작성해주세요"><br><br>
 	          <h4>할인금액</h4><input type="number" min="0" style="width: 80px; margin-left: 20px;"><h4>원</h4><br><br>
 	          <h4>할인조건</h4><input type="number" min="0" name="" id="" style="width: 80px"><h6>원 이상 사용 가능</h6><br><br>
 	          <h4>유효기간</h4><input type="date">
