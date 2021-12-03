@@ -50,4 +50,5 @@
 	<!-- dao 추가 샘플입니다~ -->
 	<!-- <mybatis-spring:scan base-package="com.greedy.spring.member.model.dao"/> -->
 	<mybatis-spring:scan base-package="com.sd.mommyson.member.dao"/>
+	<mybatis-spring:scan base-package="com.sd.mommyson.manager.dao"/>
 </beans>

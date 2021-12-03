@@ -1,11 +1,8 @@
 package com.sd.mommyson.manager.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.sd.mommyson.manager.service.ManagerService;
 
 @Controller
 @RequestMapping("/manager/*")
@@ -33,6 +30,15 @@ public class ManagerController {
 	/* 공지사항 */
 	@GetMapping("noticeSelect")
 	public void noticeSelect() {}
+	
+//	@GetMapping("noticeSelect")
+//	public String noticeSelect(@ModelAttribute Pagination pagination, @RequestParam(defaultValue="1") int pageNo, ) {
+//		
+//		
+//		
+//		
+//		return "manager/noticeSelect";
+//	}
 	
 	/* 공지사항 상세보기 */
 	@GetMapping("noticeDetailView")
