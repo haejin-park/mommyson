@@ -40,7 +40,7 @@
                 <div class="sub_box">
                     <h3>대표이미지</h3>
                     <div id="review_pic">
-                        <input type="image" src="${ sessionScope.loginMember.ceo.img }" id="review_img">
+                        <input type="image" src="${ sessionScope.owner.ceo.store.storeImg }" id="review_img">
                     </div>
                     <div>
                         <button type="button" class="pink_btn" data-toggle="modal" data-target="#exampleModal">
@@ -101,34 +101,34 @@
                  <div style="width: 1000px; margin-right: 200px">
 		            <br><br><br>
 		          <div class="changeUserInfo">
-		            <label>상호명</label><input type="text" name="nickname" placeholder="${ sessionScope.loginMember.nickname }">
+		            <label>상호명</label><input type="text" name="nickname" placeholder="${ sessionScope.owner.ceo.store.storeName }">
 		          </div>
 		          <div class="changeUserInfo" style="margin-left: 98px">
-		            <div style="display: inline-block;"><label>주소</label><input type="text" name="address" id="address" placeholder="${ sessionScope.loginMember.address }"></div>
+		            <div style="display: inline-block;"><label>주소</label><input type="text" name="address" id="address" placeholder="${ owner.address }"></div>
 		            <div style="display: inline-block;">&nbsp;&nbsp;&nbsp;
 		            <input type="button" value="주소검색" onclick="sample6_execDaumPostcode()" class="pink_btn" style="width: 78px; height: 30px; padding: 0; box-shadow : none">
 		            </div>
 		          </div>
 		          <div class="changeUserInfo"> 
-		            <label>상세주소</label><input type="text" name="dAddress"id="dAddress" placeholder="${ sessionScope.loginMember.dAddress }">
+		            <label>상세주소</label><input type="text" name="dAddress"id="dAddress" placeholder="${ sessionScope.owner.dAddress }">
 		          </div>
 		          <div class="changeUserInfo">
-		            <label>우편번호</label><input type="text" name="postCode" id="postCode" placeholder="${ sessionScope.loginMember.postCode }">
+		            <label>우편번호</label><input type="text" name="postCode" id="postCode" placeholder="${ sessionScope.owner.postCode }">
 		          </div>
 		          <div class="changeUserInfo">
-		            <label>영업시간</label><input type="text" name="openingTime" placeholder="${ sessionScope.loginMember.ceo.openingTime }">
+		            <label>영업시간</label><input type="text" name="openingTime" placeholder="${ sessionScope.owner.ceo.store.workTime }">
 		          </div>
 		          <div class="changeUserInfo">
-		            <label>전화번호</label><input type="text" name="phone" placeholder="${ sessionScope.loginMember.phone }">
+		            <label>전화번호</label><input type="text" name="phone" placeholder="${ sessionScope.owner.phone }">
 		          </div>
 		          <div class="changeUserInfo">
-		            <label>대표자명</label><input type="text" name="name" placeholder="${ sessionScope.loginMember.ceo.name }">
+		            <label>대표자명</label><input type="text" name="name" placeholder="${ sessionScope.owner.ceo.name }">
 		          </div>
 		        </div>
 		          <div class="changeUserInfo" style="margin: 40px 0 100px 0">
 		            <h3>가게소개</h3>
 		            <br><br><br>
-                    <textarea name="contents" id="contents" cols="90" rows="10" placeholder="${ sessionScope.loginMember.ceo.storeInfo }" style="resize: none; padding: 10px;" name="storeInfo"></textarea>
+                    <textarea name="contents" id="contents" cols="90" rows="10" placeholder="${ sessionScope.owner.ceo.store.storeInfo }" style="resize: none; padding: 10px;" name="storeInfo"></textarea>
 		          </div>
                 </div>
                 <input type="submit" class="pink_btn" style="background: #AEAEAE; margin-right: 20px" value="취소">

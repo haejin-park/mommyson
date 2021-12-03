@@ -43,6 +43,7 @@
     border-bottom: 1px solid rgba(177, 177, 177, 1);
     border-left: 1px solid rgba(177, 177, 177, 1);
     padding: 10px;
+    width: 30px;
 }
 .tg th:first-child,.tg td:first-child {
     border-left: none;
