@@ -71,7 +71,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin: 0 auto;">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" style="margin-right: 180px;">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="margin-left: 50px; font-weight: 700; color: black">
                 	전체 카테고리
                 </a>
@@ -124,10 +124,10 @@
                 </div>
             </div> 
             </li>
-            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend" style="margin-left: 100px;">오늘의 추천</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/category/famous">우리동네 인기 맛집</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/category/sale">오늘만 할인</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend">이벤트</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend">오늘의 추천</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/famousStore/famous">우리동네 인기 맛집</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a>
+            <a href="${ pageContext.servletContext.contextPath }/user/famousStore/new">신규 반찬 가게</a>
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
