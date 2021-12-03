@@ -1,22 +1,25 @@
 package com.sd.mommyson.manager.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sd.mommyson.manager.service.ManagerService;
+import com.sd.mommyson.member.dto.ManagerDTO;
 
 @Controller
 @RequestMapping("/manager/*")
 public class ManagerController {
 	
-//	private ManagerService managerService;
-//	
-//	@Autowired
-//	public ManagerController(ManagerService managerService) {
-//		this.managerService = managerService;
-//	}
+	private ManagerService managerService;
+	
+	@Autowired
+	public ManagerController(ManagerService managerService) {
+		this.managerService = managerService;
+	}
 	
 	/* 일반 회원 조회 */
 	@GetMapping("normalMember")
@@ -68,7 +71,10 @@ public class ManagerController {
 	
 	/* 관리자 조회 */
 	@GetMapping("manageManager")
-	public void manageManager() {}
+	public void manageManager() {
+		
+		List<ManagerDTO> managerList = managerService.selectManagers();
+	}
 	
 	/* 관리자 아이디 생성 */
 	@GetMapping("createManager")
