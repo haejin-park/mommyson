@@ -2,6 +2,7 @@ package com.sd.mommyson.manager.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.dao.ManagerDAO;
@@ -13,9 +14,12 @@ import com.sd.mommyson.member.dto.MemberDTO;
 public class ManagerServiceImpl implements ManagerService {
 
 	private ManagerDAO managerDAO;
+	private MemberDAO memberDAO;
 	
-	public ManagerServiceImpl(ManagerDAO managerDAO) {
+	@Autowired
+	public ManagerServiceImpl(ManagerDAO managerDAO, MemberDAO memberDAO) {
 		this.managerDAO = managerDAO;
+		this.memberDAO = memberDAO;
 	}
 	
 	@Override
@@ -31,7 +35,7 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public List<ManagerDTO> selectManagers() {
 		
-		List<ManagerDTO> managerList = managerDAO.selectManagers();
+		List<ManagerDTO> managerList = memberDAO.selectManagers();
 		
 		return managerList;
 	}

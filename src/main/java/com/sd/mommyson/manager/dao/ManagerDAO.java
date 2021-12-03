@@ -7,8 +7,6 @@ import com.sd.mommyson.member.dto.MemberDTO;
 
 public interface ManagerDAO {
 
-	List<ManagerDTO> selectManagers();
-
 	MemberDTO normalMemberSelect(MemberDTO member);
 
 }
