@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html lang="en">
   <head>
@@ -20,6 +21,18 @@
     		display: flex;
     		flex-direction: column;
     	}
+    	
+    	.container-xl {
+    		max-width: 1300px !important;
+    	}
+    	
+    	.row {
+   		    padding-left: 70px;
+    	}
+    	
+    	.store_name {
+   		    margin-bottom: 20px;
+    	}
     </style>
 </head>
 <body>
@@ -30,9 +43,10 @@
     
     <jsp:include page="../commons/header.jsp"/>
 
-      <div class="store-all" style="text-align: center;">
+    <section class="at-container">
+    	  <div class="store-all" style="text-align: center;">
         <br><br>
-        <h1 style="margin-top: 100px;">${ requestScope.type }</h1>
+        <h1 style="margin-top: 80px;">${ requestScope.type }</h1>
         <br><br><br><br>
         <div class="container-xl" style="margin-top: 50px;">
             <div class="row">
@@ -194,6 +208,12 @@
         </div>
       </div>
 
+      <c:if test="${ sessionScope.loginMember != null }">
+       	<div id="cart_logo">
+       		<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
+       	</div>
+      </c:if>
+    </section>
 
       <footer class="at-container">
         <ul class="df_ul ft_list">
