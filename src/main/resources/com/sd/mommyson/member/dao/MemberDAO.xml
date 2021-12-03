@@ -9,6 +9,17 @@
 		<result property="repCount" column="REP_COUNT"/>
 	</resultMap>
 
+	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="lastLogin" column="LAST_LOGIN"/>
+		<collection property="authDTO" resultMap="authResultMap"/>
+	</resultMap>
+
+	<resultMap type="com.sd.mommyson.member.dto.AuthDTO" id="authResultMap">
+		<id property="code" column="CODE"/>
+		<result property="auth" column="AUTH"/>
+	</resultMap>
+
 	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="account" column="ACCOUNT"/>
@@ -36,6 +47,7 @@
 		<result property="isDeleted" column="IS_DELETED"/>
 		<collection property="user" resultMap="userResultMap"/>
 		<collection property="ceo" resultMap="ceoResultMap"/>
+		<collection property="manager" resultMap="managerResultMap"/>
 	</resultMap>
 
 	<select id="selectAll" resultType="_int">

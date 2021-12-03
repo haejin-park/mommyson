@@ -19,13 +19,13 @@ public class MemberDTO {
 	private String isDeleted;
 	private UserDTO user;
 	private CeoDTO ceo;
-	private ManagerDTO managerDTO;
+	private ManagerDTO manager;
 	
 	public MemberDTO() {}
 
 	public MemberDTO(int memCode, String email, String memPwd, String address, String postCode, String dAddress,
 			String phone, String memType, String locationCode, String nickname, String memId, Date enrollDate,
-			String isDeleted, UserDTO user, CeoDTO ceo, ManagerDTO managerDTO) {
+			String isDeleted, UserDTO user, CeoDTO ceo, ManagerDTO manager) {
 		super();
 		this.memCode = memCode;
 		this.email = email;
@@ -42,7 +42,7 @@ public class MemberDTO {
 		this.isDeleted = isDeleted;
 		this.user = user;
 		this.ceo = ceo;
-		this.managerDTO = managerDTO;
+		this.manager = manager;
 	}
 
 	public int getMemCode() {
@@ -165,12 +165,12 @@ public class MemberDTO {
 		this.ceo = ceo;
 	}
 
-	public ManagerDTO getManagerDTO() {
-		return managerDTO;
+	public ManagerDTO getManager() {
+		return manager;
 	}
 
-	public void setManagerDTO(ManagerDTO managerDTO) {
-		this.managerDTO = managerDTO;
+	public void setManager(ManagerDTO manager) {
+		this.manager = manager;
 	}
 
 	@Override
@@ -178,8 +178,8 @@ public class MemberDTO {
 		return "MemberDTO [memCode=" + memCode + ", email=" + email + ", memPwd=" + memPwd + ", address=" + address
 				+ ", postCode=" + postCode + ", dAddress=" + dAddress + ", phone=" + phone + ", memType=" + memType
 				+ ", locationCode=" + locationCode + ", nickname=" + nickname + ", memId=" + memId + ", enrollDate="
-				+ enrollDate + ", isDeleted=" + isDeleted + ", user=" + user + ", ceo=" + ceo + ", managerDTO="
-				+ managerDTO + "]";
+				+ enrollDate + ", isDeleted=" + isDeleted + ", user=" + user + ", ceo=" + ceo + ", manager=" + manager
+				+ "]";
 	}
 
 	
