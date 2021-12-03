@@ -23,6 +23,8 @@
 						 + '<c:out value = "${ locationList.LOCATION_NAME }"/></option>')
 			</c:forEach>
     	})
+    	
+    	
     </script>
 	
     <section>
