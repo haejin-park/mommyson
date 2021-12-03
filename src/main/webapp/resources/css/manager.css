@@ -1,12 +1,11 @@
 .head_line { height: 1px; background-color: #E8E3E3; margin-bottom: 90px; }
 .tal { text-align: left; }
-.nbdr { border-right: 0 !important; }
 
 /* 관리자 페이지 사이드 바 메뉴 css 수정 */
 .total_container { display: flow-root; }
 .total_container .side_menu { width: 300px; display: inline-block; }
 .total_container .side_menu #sidebar {  }
-.total_container .side_menu #sidebar .sidebar_list { margin-bottom: 0; border: 1px solid #000; }
+.total_container .side_menu #sidebar .sidebar_list { margin-bottom: 0; border-bottom-color: #000; }
 .total_container .side_menu #sidebar .sidebar_list > li { padding-bottom: 25px; }
 .total_container .side_menu #sidebar .sidebar_list > li:last-child { padding-bottom: 0; }
 .total_container .side_menu #sidebar .sidebar_list > li > a { font-size: 22px; line-height: 24px; color: #333; font-weight: 600; padding: 0; margin-bottom: 15px; }
@@ -14,6 +13,7 @@
 .total_container .side_menu #sidebar .sidebar_list > li > ul {  }
 .total_container .side_menu #sidebar .sidebar_list > li > ul > li { margin-bottom: 10px; }
 .total_container .side_menu #sidebar .sidebar_list > li > ul > li a { padding: 0 !important; font-size: 16px !important; color: #6D6D6D; font-weight: 300; }
+.total_container .side_menu #sidebar .sidebar_list > li .manager_location { width: 100%; padding: 5px; outline: none; border: 0; background-color: #F89E91; color: #FFF; }
 
 /* 관리자 게시판 틀 css */
 .total_container .board_container { float: right; width: 1160px; padding-left: 80px; }
@@ -21,8 +21,7 @@
 .total_container .board_container .top_box { display: flex; align-items: center; margin-bottom: 15px; }
 .total_container .board_container .top_box p { font-size: 22px; line-height: 20px; color: #333; margin-top:8px; margin-bottom: 4px; font-weight: bold; }
 .total_container .board_container .top_box.space { margin-bottom: 40px !important; }
-.total_container .board_container .top_box input { margin: 0 0 0 auto; width: 90px; height:35px; padding: 10px 0; border: 0; border-radius: 7px; background-color: #D7D4D4; font-size: 14px; line-height: 16px; color: #fff; }
-.total_container .board_container .top_box .calendar { margin: 0 0 0 auto; width: 90px; height:35px; padding: 12px 0; border: 0; border-radius: 0; background-color: white; font-size: 14px; line-height: 16px; color: #fff; }
+.total_container .board_container .top_box input { margin: 0 0 0 auto; width: 90px; height:35px; padding: 12px 0; border: 0; border-radius: 10px; background-color: #D7D4D4; font-size: 14px; line-height: 16px; color: #fff; }
 .total_container .board_container .top_box .top_btn { margin: 0 0 0 auto; }
 
 .total_container .board_container .board_table {  }
@@ -218,16 +217,6 @@
    background-color: #F89E91 !important;
 }
 
-.gray_btn {
-    border: 1px solid #D7D4D4;
-    background-color: #D7D4D4;
-    width: 60px;
-    height: 30px;
-    border-radius: 5px;
-    color: white;
-    
-}
-
 .cre_btn {
     width: 250px;
     height: 36px;
@@ -304,14 +293,15 @@
 }
 
 .glass {
-    width: 40px;
-    
+    width: 30px;
+    height: 30px;
 }
 
 .searchtext {
     margin: 20px 0 12% 0;
     width: 400px;
     height: 32px;
+    border-radius: 1px !important;
   }
   
 .searchbutton{
@@ -332,7 +322,7 @@
   .top_box2 input:active{
       color: #F89E91;
   }
-  
+
 /* 날짜 div */
   .date_box {
       /* border: 1px solid salmon; */
@@ -373,3 +363,4 @@
     z-index: 1;
     cursor: pointer;
   }
+
