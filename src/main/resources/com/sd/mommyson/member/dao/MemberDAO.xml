@@ -92,4 +92,10 @@
 		  FROM CATEGORY_TBL A
 	</select>
 	
+	<!-- 아이디 중복 검사 -->
+	<select id="idChk" resultType="int">
+		SELECT COUNT(*) 
+	      FROM MEMBER_TBL
+	     WHERE MEM_ID = #{memId} 
+	</select>
 </mapper>

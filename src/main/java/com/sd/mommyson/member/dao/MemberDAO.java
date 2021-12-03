@@ -17,4 +17,7 @@ public interface MemberDAO {
 	public List<HashMap<String, String>> selectLocation();
 
 	public List<HashMap<String, String>> selectCategoryList();
+
+	/*  아이디 중복검사 */
+	public int idChk(String memId);
 }

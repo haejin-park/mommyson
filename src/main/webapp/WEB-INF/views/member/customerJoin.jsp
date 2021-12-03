@@ -7,17 +7,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 회원가입</title>
-    <!-- 파라미터를 이용하여 자동으로 로딩되는것을 막기 -->
-    <!-- <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script> -->
-    <!-- <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script> -->
+
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>   
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="../../resources/css/user/customerJoin.css">
-    <link rel="stylesheet" type="text/css" href="../../resources/css/colorset.css">
+    <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/customerJoin.css">
+    <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    // 아이디 중복확인
+    function idChk1(){
+    	let id = $('#id').val();
+    	$.ajax({
+    		url : "${ pageContext.servletContext.contextPath }/member/idChk",
+    		type : "post",
+    		data : {
+    			id : id
+    		},
+    		async: false,
+    		success:function(data){
+    			if(data == '1'){
+    				alert("중복된 아이디 입니다.");
+    			} else if(data == '0') {
+    				$('#idChk').attr("value","Y");
+    				alert("사용가능한 아이디 입니다.");
+    			}
+    			
+    		},
+    		error:function(error){
+    			alert(error);
+    		}
+    	});
+        
+    }
+    </script>
 </head>
 <body>
     <br><br>
@@ -25,38 +50,39 @@
     <br>
     <div class="container1" >
         <div class="image">
-            <img class=logo src="../../resources/logoimage/logo.png">
+            <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         </div>
         <div class="text">
-            <form onsubmit="return validate();">
+            <form action="#" method="POST" onsubmit="return validate();"> 
+   <!--      <form action="/member/customerJoin" method="post" id="regForm"> -->
             <!-- 아이디가 이미 있을 경우 이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.(영어와 숫자를 사용하여 6~8글자를 입력해주세요.) -->
-            <input type="text" class="input1" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
-            <button type="submit" id="idcheck">중복확인</button>
+            <input type="text" class="input1" name="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
+            <button type="button" name="idChk" id="idChk" onclick="idChk1()" value="N">중복확인</button>
             <br><br>
             <!-- 비밀번호가 일치하지 않을 경우 비밀번호가 존재하지않습니다. 비밀번호를 다시 입력해주세요.  -->
-            <input type="text" class="input1" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
+            <input type="password" class="input1" name="pwd1" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
             <br><br>
-            <input type="password" class="input1" id="pwd2" placeholder="비밀번호 확인">
+            <input type="password" class="input1" name="pwd2" id="pwd2" placeholder="비밀번호 확인">
             <br><br>
-            <input type="text" class="input1" id="name" placeholder="이름을 입력해주세요">
+            <input type="text" class="input1" name="name" id="name" placeholder="이름을 입력해주세요">
             <br><br>
-            <input type="text" class="input1" id="nickName" placeholder="닉네임을 입력해주세요">
+            <input type="text" class="input1" name="nickName" id="nickName" placeholder="닉네임을 입력해주세요">
             <br><br>
-            <input type="text" class="input1" id="phone" placeholder="전화번호를 입력해주세요">
+            <input type="text" class="input1" name="phone" id="phone" placeholder="전화번호를 입력해주세요">
             <br><br>
             <!-- 이메일주소가 올바르지 않을경우 @를 포함하여 이메일주소를 올바르게 입력해주세요 -->
-            <input type="email" class="input1" id="email" placeholder="이메일을 입력해주세요">
+            <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
             <button type="submit" id="button">전송</button>
             <br><br>
-            <input type="text" class="input1" id="code" placeholder="인증번호를 입력해주세요">
+            <input type="text" class="input1" name="code" id="code" placeholder="인증번호를 입력해주세요">
             <button type="button" id="button">확인</button>
             <br><br>
             <input type="text" class="input1" name="zipCode" id="zipCode" placeholder="우편번호를 입력해주세요" readonly>
             <input type="button" id="searchZipCode" value="검색">
             <br><br>
-            <input type="text" class="input1" id="address" placeholder="주소를 입력해주세요" readonly>
+            <input type="text" class="input1" name="address1" id="address1" placeholder="주소를 입력해주세요" readonly>
             <br><br>
-            <input type="text" class="input1" id="detailedAddress" placeholder="상세주소를 입력해주세요" required>
+            <input type="text" class="input1" name="address2" id="address2" placeholder="상세주소를 입력해주세요" required>
             <br><br>
             <!-- 모달 띄우기 -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"id="terms">약관 보기</button> 
@@ -103,7 +129,7 @@
                 </div>
             </div> 
             <input type=checkbox id="all">
-            <span>약관 전체 동의<span> 
+            <span>약관 전체 동의</span> 
             <br>
             <input type=checkbox name="checkbox">
             <span>만 14세 이상<strong>(필수)</strong></span>
@@ -119,69 +145,66 @@
             <button type="submit" id="button">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
-        </form>        
+    <!--     </form>     -->    
+   		</form>
         </div>
     </div>
-    <footer class="at-container" style="margin:0 auto">
-        <ul class="df_ul ft_list">
-            <li>
-                <a href="">마미손맛 소개</a>   
-            </li>
-            <li>
-                <a href="">이용약관</a>
-            </li>
-            <li>
-                <a href="">개인정보처리방침</a>
-            </li>
-            <li>
-                <a href="">전자금융거래이용약관</a>
-            </li>
-        </ul>
-        <div class="ft_img_line">
-            <img src="../../resources/images/ft_img01.png" alt="소비자중심경영">
-            <img src="../../resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-            <img src="../../resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
-        </div>
-        <div class="ft_info">
-            <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
-            <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
-            <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
-            <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
-        </div>
-        <div class="manager_center">
-            <h4>고객센터</h4>
-            <div class="callNum">
-                <img src="../../resources/images/callImg.png" alt="call">
-                <span>1644 - 1234</span>    
-            </div>
-            <p>평일 10:00~18:50</p>
-            <p>점심시간 12:00~13:00</p>
-            <p>(주말과 공휴일은 휴무입니다.)</p>
-        </div>
-    </footer>
+    <jsp:include page="../commons/footer.jsp"/>
     
-    <script>
+   <!--  <script type="text/javascript">
+    
+    $("#button").on("click", function(){
+    	
+    	if($("#id").val()==""){
+    		alert("아이디를 입력해주세요.");
+    		$("#id").focus();
+    		return false;
+    		
+    	}
+    	
+    	 if($("#pwd1").val() == ""){
+             alert("비밀번호를 입력해주세요.");
+             $("#pwd1").focus()
+             return false;
+         }
 
-        //// 아이디 중복확인
-        // $('#id').on('keyup', function(){
-        //     const name= $('#id').val();
-        //     $.ajax({
-        //         url: 
-        //         data:{name : name},
-        //         type:"POST",
-        //         success:function(data){
-        //             if(data == 0){
-        //                 $('#idcheck').text('사용 가능한 아이디 입니다.');
-        //             } else {
-        //                 4('#idcheck').text('중복된 아이디 입니다.');
-        //             }
-        //         },
-        //         error : function(xhr, status, error){
 
-        //         }
-        //     });
-        // });
+    	 
+         if(!chk(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/,("#pwd1").val(), "숫자+영문자+특수문자 조합으로 4~12글자를 입력해주세요.")){            
+	        return false;
+         }
+         
+  
+      	 if($("#name").val() == ""){
+    		 alert("성명을 입력해주세요");
+    		 $("#name").focus()
+			 return false;
+    	 }
 
+      	 
+      	 var idChkVal = $("#idChk").val();
+      	 if(idChkVal == "N"){
+      		 alert("중복확인 버튼을 눌러주세요");
+      		 
+      	 } else if(idChkVal == "Y"){
+      		 $("#regForm").submit();
+      		 
+      	 }
+         
+         function chk(re, ele, msg){
+             if(!re.test(ele.val())){
+                 alert(msg);
+                 ele.select();
+                 return false;
+             }
+             return true;
+     }
+    	
+   });
+    
+    </script> -->
+    
+     <script> 
         function validate(){
             var id = document.getElementById("id");
             var pwd1 = document.getElementById("pwd1");
@@ -237,6 +260,13 @@
                 return false;
             }
             
+
+            if(nickName.value == ""){
+                alert("닉네임을 입력해주세요.")
+                nickName.focus()
+                return false;
+            }
+            
             if(phone.value == ""){
                 alert("전화번호를 입력해주세요.")
                 phone.focus()
@@ -273,7 +303,7 @@
                 return false;
             }
             if(zipCode.value == ""){
-                alert("우편번호 입력해주세요.")
+                alert("우편번호 검색해주세요.")
                 zipCode.focus()
                 return false;
             }
@@ -306,7 +336,9 @@
         }
 
         
-    </script>
+    </script> 
+    
+    
     
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
