@@ -85,7 +85,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#">쿠폰발행</a>
+                            <a href="${ pageContext.servletContext.contextPath }/owner/coupon">쿠폰발행</a>
                         </li><hr>
                         <li>
                             <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">매출내역</a><hr>

@@ -6,82 +6,14 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../../resources/css/colorset.css">
-    <link rel="stylesheet" href="../../resources/css/store_page.css">
+    <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
+    <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/store_page.css">
 </head>
 <body>
-    <header class="header">
-        <div class="headerTop">
-            <div class="headerBody">
-                    <a href="#"><img src="../../resources/images/mainlogo.png" style="width: 300px;"></a>
-                <div class="bodyLeft">
-                    <ul class="df_ul headerItem">
-                        <li>
-                          <a href="#">장바구니</a>
-                        </li>
-                        <li>
-                          <a  href="#">로그인</a>
-                        </li>
-                        <li >
-                          <a href="#">회원가입</a>
-                        </li>
-                        <li >
-                          <a  href="#"><img src="../../resources/images/bell.png"></a>
-                        </li>
-                      </ul>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="navbar" >
-      <div class="dropdown">
-        <button class="dropbtn" style="font-size: 20px;">전체 카테고리 
-          <i class="fa fa-caret-down" style="padding-left: 20px;"></i>
-        </button>
-        <div class="dropdown-content"> 
-          <div class="row">
-            <div class="column">
-              <a href="#">무침</a>
-              <a href="#">볶음</a>
-              <a href="#">조림</a>
-              <a href="#">김치/절임/젓갈</a>
-            </div>
-            <div class="column">
-              <a href="#">전/생선</a>
-              <a href="#">국/찌개/탕</a>
-              <a href="#">메인요리</a>
-              <a href="#">곡류/양념</a>
-            </div>
-            <div class="column">
-              <a href="#">어린이 반찬</a>
-              <a href="#">부모님 반찬</a>
-              <a href="#">제철 반찬</a>
-            </div>
-            <div class="column">
-              <a href="#">대용량 반찬</a>
-              <a href="#">묶음 반찬</a>
-              <a href="#">냉동 반찬</a>
-              <a href="#">할인 반찬</a>
-            </div>
-          </div>
-        </div>
-      </div> 
-       <a href="#home">오늘의 추천</a>
-       <a href="#news">우리동네 인기 맛집</a>
-       <a href="#news">오늘 할인</a>
-       <a href="#news">이벤트</a>
-       <div class="search-container"></div>
-       <form action="#" method="get">
-        <input type="text" placeholder="Search.." name="search">
-        <button type="submit" id="but"><i class="fa fa-search" style="size: 50px;"></i></button>
-       </form>
-      </div>
-      </div>
-
+      <jsp:include page="../commons/header.jsp"></jsp:include>
     <section>
         <div class="at-container" style="width: 80%;">
             <div class="main_box">
@@ -89,7 +21,7 @@
                 <div class="sub_box">
                     <h3>사진</h3>
                     <div id="review_pic">
-                        <img src="../../resources/images/no-image.png" id="review_img">
+                        <img src="${ pageContext.servletContext.contextPath }/resources/images/no-image.png" id="review_img">
                     </div>
                     <div style="padding-top: 200px;">
                         <button type="button" class="pink_btn" data-toggle="modal" data-target="#exampleModal">
@@ -223,9 +155,9 @@
             </li>
         </ul>
         <div class="ft_img_line">
-            <img src="../../resources/images/ft_img01.png" alt="소비자중심경영">
-            <img src="../../resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-            <img src="../../resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
         </div>
         <div class="ft_info">
             <p>(주)마미손맛 자세히 보기</p>

@@ -14,7 +14,7 @@ import com.sd.mommyson.member.service.MemberService;
 
 @Controller
 @RequestMapping("/*")
-@SessionAttributes({"locationList","tagList"})
+@SessionAttributes({"locationList","categoryList"})
 public class MainController {
 	
 	private MemberService memberService;
@@ -29,7 +29,7 @@ public class MainController {
 		
 		List<HashMap<String, String>> locationList = memberService.selectLoation();
 		List<HashMap<String, String>> categoryList = memberService.selectCategoryList();
-		
+		System.out.println(categoryList);
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
 		

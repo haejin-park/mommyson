@@ -16,15 +16,14 @@
 <body>
 	
     <jsp:include page="../commons/header.jsp"/>
-
+    
     <section>
-    	
-        <c:if test="${ requestScope.category == 'category' }">
-        	<div style="display: flex; justify-content: space-between; align-items: center; width: 83%;">
-	            <h4 style="float: left; margin-left: 50px; margin-top: 80px;">반찬조회 > 무침</h4>
+       	<c:if test="${ requestScope.category != '오늘만 할인' && requestScope.category != '오늘의 추천' && requestScope.category != '우리동네 인기 맛집' }">
+       		<div style="display: flex; justify-content: space-between; align-items: center; width: 83%;">
+	            <h4 style="float: left; margin-left: 50px; margin-top: 80px;">반찬조회 > ${ requestScope.category }</h4>
 	            <div></div>
 	        </div>
-        </c:if>
+       	</c:if>
         <!--
             오늘만 할인 페이지로 들어올 경우 div
             <div class="col-3">
@@ -51,7 +50,7 @@
             </div>
 
         -->
-        <h1 align="center">${ requestScope.category }</h1>
+        <h1 align="center" style="margin-top: 100px;">${ requestScope.category }</h1>
         <div class="container-xl" style=" margin-top: 150px;">
             <div class="row">
                 <div class="col-3">
