@@ -11,12 +11,12 @@ import com.sd.mommyson.manager.service.ManagerService;
 @RequestMapping("/manager/*")
 public class ManagerController {
 	
-//	private ManagerService managerService;
-//	
-//	@Autowired
-//	public ManagerController(ManagerService managerService) {
-//		this.managerService = managerService;
-//	}
+	private ManagerService managerService;
+	
+	@Autowired
+	public ManagerController(ManagerService managerService) {
+		this.managerService = managerService;
+	}
 	
 	/* 일반 회원 조회 */
 	@GetMapping("normalMember")

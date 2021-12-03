@@ -4,5 +4,5 @@ import com.sd.mommyson.member.dto.MemberDTO;
 
 public interface ManagerService {
 
-	public MemberDTO normalMemberSelect();
+	public MemberDTO normalMemberSelect(MemberDTO member);
 }
