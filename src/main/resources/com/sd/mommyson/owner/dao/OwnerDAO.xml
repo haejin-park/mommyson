@@ -93,4 +93,28 @@
 		 WHERE  B.MEM_CODE = #{ memCode }
 	</select>
 	
+	<update id="modifyInfo">
+		UPDATE MEMBER_TBL
+   		   SET ADDRESS = #{ address }
+     		 , POST_CODE = #{ postCode }
+     		 , D_ADDRESS = #{ dAddress }
+     		 , PHONE = #{ phone }
+ 		 WHERE MEM_CODE = #{ memCode }
+	</update>
+	
+	<update id="modifyCeo">
+		UPDATE CEO_TBL
+		   SET CEO_NAME = #{ name }
+		 WHERE MEM_CODE = #{ memCode }  
+	</update>
+	
+	<update id="modifyStore">
+		UPDATE STORE_TBL
+		   SET STORE_NAME = #{ storeName }
+		     , STORE_IMG  = #{ fileName }
+			 , STORE_INFO = #{ storeInfo }
+			 , WORK_TIME  = #{ workTime }
+	 	 WHERE MEM_CODE = #{ memCode }  				 
+	</update>
+	
 </mapper>
