@@ -21,4 +21,7 @@ public interface MemberDAO {
 	public MemberDTO selectOwner(MemberDTO member);
 
 	public List<ManagerDTO> selectManagers(String memId);
+
+	/*  아이디 중복검사 */
+	public int idChk(String memId);
 }

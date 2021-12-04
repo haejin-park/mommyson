@@ -38,7 +38,7 @@ width:100%;
     height: 40px;
     border-radius: 9px;
 }
-#idcheck
+#idChk
 {
     height:40px;
     width:100px;
@@ -52,6 +52,14 @@ width:100%;
     border-radius: 9px;
     background-color:rgb(247, 170, 145);
     }
+
+
+#submit{
+    height:40px;
+    width:100px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}
 
 #searchZipCode{
     height:40px;

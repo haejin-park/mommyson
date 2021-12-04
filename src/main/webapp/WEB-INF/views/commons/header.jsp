@@ -58,7 +58,7 @@
                     <a  href="${ pageContext.servletContext.contextPath }/member/login">로그인</a>
                   </li>
                   <li >
-                    <a href="">회원가입</a>
+                    <a href="${ pageContext.servletContext.contextPath }/member/join">회원가입</a>
                   </li>
                 </c:if>
                 
