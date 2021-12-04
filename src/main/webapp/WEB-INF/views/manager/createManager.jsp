@@ -33,11 +33,11 @@
             })
         });
 
-        function buttonClick(){
+        function validate(){
 
             let regExp = /^[a-z]+$/
 
-            if($('#id').val() == '' || !regExp.test($('#id').val())) {
+            if($('#id').val() == '') {
                 alert("아이디를 확인해주세요.");
                 return false;
             }
@@ -45,12 +45,13 @@
                 alert("비밀번호를 확인해주세요.");
                 return false;
             }
-            if($('#mng').val() == 'none'){
+            if($('#mng').val() == ''){
                 alert("관리자 파트를 선택해주세요.");
                 return false;
             }
             
             alert("아이디가 생성되었습니다.");
+            return true;
         }
         
     </script>
@@ -69,40 +70,42 @@
         <jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
         
         <div class="board_container">
-            <h1>관리자 관리</h1>
-            <div class="top_box space">
-                <p>관리자 아이디 생성</p>
-            </div>
-            <div>
-                <label>아이디</label>
-            </div>
-            <div>
-            <input type="text" id="id" class="manager_text">
-            &nbsp;&nbsp;&nbsp;<a id="idCheck"></a>
-            </div>
-            <div>
-                <label>비밀번호</label>
-            </div>
-            <input type="password" id="pwd1" class="manager_text">
-            <div>
-                <label>비밀번호확인</label>
-            </div>
-            <input type="password" id="pwd2" class="manager_text">
-            &nbsp;&nbsp;&nbsp;<a id="pwdCheck"></a>
-            <div>
-                <label>관리자파트선택</label>
-            </div>
-            <select name="part" class="manager2">
-                <option id="mng" value="none">선택해주세요</option>
-                <option id="mng" value="회원관리">회원 관리</option>
-                <option id="mng" value="가게관리">가게 관리</option>
-                <option id="mng" value="게시글관리">게시글 관리</option>
-                <option id="mng" value="고객센터관리">고객센터 관리</option>
-                <option id="mng" value="관리책임자">관리책임자</option>
-            </select>
-            <div>
-                <input type="button" class="cre_btn" value="관리자 아이디 만들기" onclick="buttonClick()">
-            </div>
+            <form action="${ pageContext.servletContext.contextPath }/manager/createManager" method="POST" onsubmit="return validate();">
+            	<h1>관리자 관리</h1>
+	            <div class="top_box space">
+	                <p>관리자 아이디 생성</p>
+	            </div>
+	            <div>
+	                <label>아이디</label>
+	            </div>
+	            <div>
+	            <input type="text" name="memId" id="id" class="manager_text">
+	            &nbsp;&nbsp;&nbsp;<a id="idCheck"></a>
+	            </div>
+	            <div>
+	                <label>비밀번호</label>
+	            </div>
+	            <input type="password" name="memPwd" id="pwd1" class="manager_text">
+	            <div>
+	                <label>비밀번호확인</label>
+	            </div>
+	            <input type="password" id="pwd2" class="manager_text">
+	            &nbsp;&nbsp;&nbsp;<a id="pwdCheck"></a>
+	            <div>
+	                <label>관리자파트선택</label>
+	            </div>
+	            <select name="code" id="mng" class="manager2">
+	                <option value="">선택해주세요</option>
+	                <option value="1">회원 관리</option>
+	                <option value="2">게시글 관리</option>
+	                <option value="3">신고 관리</option>
+	                <option value="4">설정 관리</option>
+	                <option value="5">정산 관리</option>
+	            </select>
+	            <div>
+	                <button type="submit" class="cre_btn">관리자 아이디 만들기</button>
+	            </div>
+            </form>
         </div>
     </div>
 
