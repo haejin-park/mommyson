@@ -182,20 +182,20 @@ public class MemberController {
 //	 * (이메일 인증하는 화면을 별개로 안만들고 jsp를 하나로 만들었는데 그럼 이건 어떻게해야할까요?)
 //	 * */
 //	@RequestMapping(value ="emailVerification.do${dice}", method = RequestMethod.POST)
-//	public ModelAndView emailVerification(String emailVerification, @PathVariable String dice, HttpServletResponse response_equals) throws IOException {
+//	public ModelAndView emailVerification(String code, @PathVariable String dice, HttpServletResponse response_equals) throws IOException {
 //		
-//		System.out.println("마지막 emailVerification : " + emailVerification);
+//		System.out.println("마지막 code : " + code);
 //		System.out.println("마지막 dice : " + dice);
 //		
 //		//페이지 이동과 자료를 동시에 하기위해 ModelAndView를 사용해서 이동할 페이지와 자료를 담음
 //		ModelAndView mv = new ModelAndView();
 //		mv.setViewName("customerJoin");
-//		mv.addObject("email", emailVerification);
-//		if(emailVerification.contentEquals(dice)) {
+//		mv.addObject("email", code);
+//		if(code.contentEquals(dice)) {
 //			//인증번호가 일치할 경우 인증번호가 맞다는 창을 출력하고 회원가입창으로 이동함 
 //		
 //			mv.setViewName("customerJoin");
-//			mv.addObject("email",emailVerification);
+//			mv.addObject("email",code);
 //			//만약 인증번호가 같다면 이메일을 회원가입 페이지로 같이넘겨서 이메일을 다시 입력할 필요가 없게된다 
 //			response_equals.setContentType("text/html; charset=UTF-8");
 //			PrintWriter out_equals = response_equals.getWriter();
@@ -204,7 +204,7 @@ public class MemberController {
 //			return mv;
 //			
 //			
-//		} else if(emailVerification != dice) {
+//		} else if(code != dice) {
 //			
 //			ModelAndView mv2 = new ModelAndView();
 //			mv2.setViewName("customerJoin");
