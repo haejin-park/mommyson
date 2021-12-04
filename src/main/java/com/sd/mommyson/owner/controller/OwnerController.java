@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.service.OwnerService;
 
@@ -107,7 +105,7 @@ public class OwnerController {
 		
 		String orginFileName = img.getOriginalFilename();
 		String ext = orginFileName.substring(orginFileName.indexOf("."));
-		String savedName = UUID.randomUUID().toString().replace("-", "");
+		String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
 		
 		try {
 			img.transferTo(new File(filePath + "/" + savedName));
@@ -127,7 +125,6 @@ public class OwnerController {
 				
 				model.addAttribute("message","변경이 완료되었습니다.");
 			}
-			
 			
 		} catch (IllegalStateException | IOException e) {
 			new File(filePath + "/" + savedName).delete();

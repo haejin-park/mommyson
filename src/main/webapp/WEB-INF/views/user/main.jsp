@@ -28,7 +28,7 @@
     </script>
 	
     <section>
-        <div style="width: 100%; height: 450px; margin-bottom: 100px;">
+        <div style="width: 100%; height: 450px; margin-bottom: 100px; padding: 0 !important;" class="at-container">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
@@ -230,7 +230,7 @@
         </div>
         
         <!-- 핫 키워드 -->
-        <div>
+        <div class="at-container">
             <div id="hot" style="padding: 0 200px;">
                 <div class="keywords"><img style="width: 22px; height: 32px;" src="${ pageContext.servletContext.contextPath }/resources/images/fire.png">&nbsp;&nbsp;<h4>핫 키워드</h4></div>
                 <div class="tags">

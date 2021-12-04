@@ -10,7 +10,7 @@
     <title>header</title>
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     </head>
 <body>
     <header class="header at-container">
@@ -24,7 +24,7 @@
                 <c:if test="${ sessionScope.loginMember != null }">
                    <!-- 소비자의 경우 -->
                 	<c:if test="${ sessionScope.loginMember.memType == 'user' }">
-                   		<li>
+                   		<li id="ca_lo">
                     		<a href="#">장바구니</a>
                   		</li>
                  		 <li>
@@ -67,7 +67,7 @@
         </div>
       </div>  
     </header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin: 0 auto;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light at-container" style="margin: 0 auto;">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown" style="margin-right: 180px;">
@@ -123,10 +123,10 @@
                 </div>
             </div> 
             </li>
-            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend">오늘의 추천</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/famousStore/famous">우리동네 인기 맛집</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/famousStore/new">신규 반찬 가게</a>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/category/recommend">오늘의 추천</a></li>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore/famous">우리동네 인기 맛집</a></li>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a></li>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore/new">신규 반찬 가게</a></li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">

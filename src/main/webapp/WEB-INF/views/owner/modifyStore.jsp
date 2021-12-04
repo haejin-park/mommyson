@@ -129,7 +129,7 @@
 		            <h3>가게소개</h3>
 		            <br><br><br>
                     <textarea name="storeInfo" id="contents" cols="90" rows="10" placeholder="${ sessionScope.owner.ceo.store.storeInfo }" style="resize: none; padding: 10px;" name="storeInfo"></textarea>
-                    <input type="hidden" name="memCode" value="${ sessionScope.owner.memCode }">
+                    <input type="hidden" name="memCode" value="${ sessionScope.loginMember.memCode }">
 		          </div>
                 </div>
                 <input type="submit" class="pink_btn" style="background: #AEAEAE; margin-right: 20px" value="취소">

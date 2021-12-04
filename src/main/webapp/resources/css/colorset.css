@@ -63,7 +63,7 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
 }
 
 .headerItem #ca_lo{
-  background-image: url("../../resources/images/cart.png");
+  background: url("../../resources/images/cart.png");
   background-repeat: no-repeat;
   padding-left: 36px;
 }
@@ -96,7 +96,7 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
 
 
 .navbar a {
-  margin-right: 20px;
+  margin-right: 50px;
 }
 
 .dropdown-toggle::after {
@@ -109,10 +109,7 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
 
 .dropdown-menu.show{
   width: 1500px;
-  border-top: 3px solid #F89E91;
-  border-bottom: 3px solid #F89E91;
-  border-left: 3px solid #F89E91;
-  border-right: 3px solid #F89E91;
+  border: 5px solid #F89E91;
 }
 
 .column {
@@ -192,6 +189,9 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
 	border: none;
 }
 
+.navbar-expand-lg .navbar-nav .dropdown-menu{
+	left : -15px;
+}
 
 /* @media screen and (max-width: 600px) {
   .search-container {
