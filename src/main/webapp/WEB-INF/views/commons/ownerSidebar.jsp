@@ -20,9 +20,9 @@
                     <h6>만료일 : 22-2-22</h6>
                 </form><br>
 
-                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px;">연장하기</button>
+                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; margin-bottom: 10px; ">연장하기</button>
                 <hr>
-                <button id="button3" style="margin-top: 10px;">영업시작</button> 
+                <button id="button3" style="margin-top: 10px; margin-bottom: 30px;">영업시작</button> 
                 </div>
             <script>
             $(function(){
@@ -48,7 +48,7 @@
                            <a href="${ pageContext.servletContext.contextPath }/owner/modifyStore">가게정보 변경</a>
                        </li>
                        <li>
-                           <a href="#">개인정보 변경</a>
+                           <a href="${ pageContext.servletContext.contextPath }/owner/modifyOwnerInfo">비밀번호 변경</a>
                        </li>
                    </ul>
                 </li>

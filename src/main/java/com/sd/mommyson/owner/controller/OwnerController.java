@@ -135,6 +135,11 @@ public class OwnerController {
 		return "redirect:ownerMain";
 	}
 	
+	/* 비밀번호 변경 */
+	@GetMapping("modifyOwnerInfo")
+	public void modifyOwnerInfo() {}
+	
+	
 	/* 상품등록 */
 	@GetMapping("productRegist") 
 	public void productRegist(){

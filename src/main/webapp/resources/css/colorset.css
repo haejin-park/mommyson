@@ -81,6 +81,10 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
   margin: 0 auto;
 } */
 
+.navbar {
+	padding : 8px 16px;
+}
+
 .navbar a {
   display: block;
   font-size: 20px;
