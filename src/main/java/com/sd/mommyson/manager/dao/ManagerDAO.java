@@ -3,6 +3,7 @@ package com.sd.mommyson.manager.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -22,5 +23,9 @@ public interface ManagerDAO {
 	int insertNewManager(Map<String, Object> map);
 
 	Map<String, String> selectManagerByMemCode(int memCode);
+
+	public int selectNoticeTotalCount(Map<String, String> searchMap);
+
+	public List<Pagination> selectNoticeList(Pagination pagination);
 
 }
