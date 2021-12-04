@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>마미손맛</title>
-    <script src="https:/cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https:/cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/main.css">
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/slick.css">
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/slick-theme.css">
@@ -23,10 +23,12 @@
 						 + '<c:out value = "${ locationList.LOCATION_NAME }"/></option>')
 			</c:forEach>
     	})
+    	
+    	
     </script>
 	
     <section>
-        <div style="width: 100%; height: 450px; margin-bottom: 100px;">
+        <div style="width: 100%; height: 450px; margin-bottom: 100px; padding: 0 !important;" class="at-container">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
@@ -228,7 +230,7 @@
         </div>
         
         <!-- 핫 키워드 -->
-        <div>
+        <div class="at-container">
             <div id="hot" style="padding: 0 200px;">
                 <div class="keywords"><img style="width: 22px; height: 32px;" src="${ pageContext.servletContext.contextPath }/resources/images/fire.png">&nbsp;&nbsp;<h4>핫 키워드</h4></div>
                 <div class="tags">

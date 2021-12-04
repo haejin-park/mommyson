@@ -9,21 +9,21 @@
 <body>
 	<nav id="sidebar">
          <div class="sidebar-header">
-             <h3>고객센터</h3>
+             <h3 style="border-bottom: black solid 2px;"><a href="${ pageContext.servletContext.contextPath }/user/ucc" style="color: black;">고객센터</a></h3>
          </div>
 
          <ul class="list-unstyled components">
              <li>
-                 <a href="#">공지사항</a>
+                 <a href="${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeSelect">공지사항</a>
              </li>                 
              <li>
-                 <a href="#">자주하는 질문</a>
+                 <a href="${ pageContext.servletContext.contextPath }/user/ucc/uccOftenQuestion">자주하는 질문</a>
              </li>
              <li>
-                 <a href="#">1:1 문의</a>
+                 <a href="${ pageContext.servletContext.contextPath }/user/ucc/MTMQnA">1:1 문의</a>
              </li>
              <li>
-               <a href="#">1:1 상담 내역</a>
+               <a href="${ pageContext.servletContext.contextPath }/user/ucc/MTMConsult">1:1 상담 내역</a>
            </li>
          </ul>
      </nav>

@@ -10,30 +10,30 @@
 <body>
             <nav id="sidebar">
               <div class="sidebar-header">
-                  <h3>마이페이지</h3>
+                  <h3 style="border-bottom: black solid 2px;"><a href="${ pageContext.servletContext.contextPath }/userMyPage/" style="color: black;">마이페이지</a></h3>
               </div>
   
               <ul class="list-unstyled components">
                   <li>
-                      <a href="#">주문내역</a>
+                      <a href="${ pageContext.servletContext.contextPath }/userMyPage/myOrderList">주문내역</a>
                   </li>                 
                   <li>
-                      <a href="#">개인정보변경</a>
+                      <a href="${ pageContext.servletContext.contextPath }/userMyPage/userInfoChange">개인정보변경</a>
                   </li>
                   <li>
-                      <a href="#">회원탈퇴</a>
+                      <a href="${ pageContext.servletContext.contextPath }/userMyPage/userSignOut1">회원탈퇴</a>
                   </li>
                   <li>
-                    <a href="#">쿠폰함</a>
+                    <a href="${ pageContext.servletContext.contextPath }/userMyPage/userCoupon">쿠폰함</a>
                 </li>
                 <li>
-                  <a href="#">내가 쓴 리뷰</a>
+                  <a href="${ pageContext.servletContext.contextPath }/userMyPage/userReview">내가 쓴 리뷰</a>
               </li>
               <li>
-                <a href="#">자주찾는가게</a>
+                <a href="${ pageContext.servletContext.contextPath }/userMyPage/userRecommendStore">자주찾는가게</a>
                </li>
                <li>
-                <a href="#">나의 신고 내역</a>
+                <a href="${ pageContext.servletContext.contextPath }/userMyPage/userReport">나의 신고 내역</a>
                </li>
               </ul>
               

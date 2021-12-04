@@ -4,16 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/owners.css">
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https:/cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 <title>사업자 마이페이지</title>
 </head>
 <body>
+<script>
+	if(${ requestScope.message != null && requestScope.message != '' }){
+		alert(${ requestScope.message });
+	}
+</script>
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
 	
@@ -32,37 +34,33 @@
 	
 		<div class="body-center" style="text-align: center;">
         <br><br>
-        <img src="${ sessionScope.loginMember.ceo.img }" width="300px" style="margin-left: 60px;">
+        <img src="${ owner.ceo.store.storeImg }" width="300px" style="margin-left: 60px;">
         <br><br><br><br>
             <table class="tg">
                 <tbody>
                 <tr>
                     <th class="tg-c3ow">상호명</th>
-                    <th class="tg-0pky">${ sessionScope.loginMember.nickname }</th>
+                    <th class="tg-0pky">${ owner.ceo.store.storeName }</th>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">주소</td>
-                    <td class="tg-0pky">${ sessionScope.loginMember.address }${ sessionScope.loginMember.dAddress }</td>
+                    <td class="tg-0pky">${ owner.address }${ owner.dAddress }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">영업시간</td>
-                    <td class="tg-0pky">08:00 ~ 21:00</td>
+                    <td class="tg-0pky">${ owner.ceo.store.workTime }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">전화번호 </td>
-                    <td class="tg-0pky">${ sessionScope.loginMember.phone }</td>
+                    <td class="tg-0pky">${ owner.phone }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">가게소개</td>
-                    <td class="tg-0pky"><br>저희 가게는 모든 반찬을 국내산으로 만들고 있으며 내 자식이 먹는다는 <br>생각을 가지고 정성껏 만들고 있습니다. 안심하시고 드셔도됩니다. 올 ㅋ<br><br><br></td>
+                    <td class="tg-0pky">${ owner.ceo.store.storeInfo }</td>
                 </tr>
                 <tr>
                     <td class="tg-c3ow">대표자명</td>
-                    <td class="tg-0pky">${ sessionScope.loginMember.ceo.name }</td>
-                </tr>
-                <tr>
-                    <td class="tg-c3ow">사업자 등록번호</td>
-                    <td class="tg-0pky">678-43-21456</td>
+                    <td class="tg-0pky">${ owner.ceo.name }</td>
                 </tr>
                 </tbody>
             </table>
