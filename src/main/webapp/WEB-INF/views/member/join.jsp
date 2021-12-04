@@ -24,9 +24,9 @@
         <h2 class=h2>회원구분을 선택해 주세요</h2>
         <br>
     </div>    
-    <button type="button" id=customer><a href="${ pageContext.servletContext.contextPath }/member/goCustomerJoin">사용자</a></button>
+    <button type="button" id=customer><a href="${ pageContext.servletContext.contextPath }/member/customerJoin">사용자</a></button>
     &nbsp; &nbsp; 
-    <button type="button" id=businessman><a href="${ pageContext.servletContext.contextPath }/member/goBusinessJoin">사업자</a></button>
+    <button type="button" id=businessman><a href="${ pageContext.servletContext.contextPath }/member/businessJoin">사업자</a></button>
     &nbsp; &nbsp; 
     <button type="reset" id="goMoin"><a href="${ pageContext.servletContext.contextPath }/">취소하기</a></button>
     <br><br><br><br><br><br>

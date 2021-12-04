@@ -53,13 +53,10 @@
             <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         </div>
         <div class="text">
-            <form action="#" method="POST" onsubmit="return validate();"> 
-   <!--      <form action="/member/customerJoin" method="post" id="regForm"> -->
-            <!-- 아이디가 이미 있을 경우 이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.(영어와 숫자를 사용하여 6~8글자를 입력해주세요.) -->
+            <form action="auth.do" method="POST" onsubmit="return validate();"> 
             <input type="text" class="input1" name="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
             <button type="button" name="idChk" id="idChk" onclick="idChk1()" value="N">중복확인</button>
             <br><br>
-            <!-- 비밀번호가 일치하지 않을 경우 비밀번호가 존재하지않습니다. 비밀번호를 다시 입력해주세요.  -->
             <input type="password" class="input1" name="pwd1" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
             <br><br>
             <input type="password" class="input1" name="pwd2" id="pwd2" placeholder="비밀번호 확인">
@@ -70,13 +67,6 @@
             <br><br>
             <input type="text" class="input1" name="phone" id="phone" placeholder="전화번호를 입력해주세요">
             <br><br>
-            <!-- 이메일주소가 올바르지 않을경우 @를 포함하여 이메일주소를 올바르게 입력해주세요 -->
-            <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
-            <button type="submit" id="button">전송</button>
-            <br><br>
-            <input type="text" class="input1" name="code" id="code" placeholder="인증번호를 입력해주세요">
-            <button type="button" id="button">확인</button>
-            <br><br>
             <input type="text" class="input1" name="zipCode" id="zipCode" placeholder="우편번호를 입력해주세요" readonly>
             <input type="button" id="searchZipCode" value="검색">
             <br><br>
@@ -84,6 +74,15 @@
             <br><br>
             <input type="text" class="input1" name="address2" id="address2" placeholder="상세주소를 입력해주세요" required>
             <br><br>
+            </form>
+            <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
+            <button type="submit" name="submit" id="submit">전송</button>
+            <br><br>
+            <form action="emailVerification.do${dice}" method="post">
+            <input type="number" class="input1" name="code" id="code" placeholder="인증번호를 입력해주세요">
+            <button type="submit" name="submit" id="submit">확인</button>
+            <br><br>
+            </form>
             <!-- 모달 띄우기 -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"id="terms">약관 보기</button> 
             <br>
@@ -145,65 +144,12 @@
             <button type="submit" id="button">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
-    <!--     </form>     -->    
-   		</form>
+
+   		
         </div>
     </div>
     <jsp:include page="../commons/footer.jsp"/>
-    
-   <!--  <script type="text/javascript">
-    
-    $("#button").on("click", function(){
-    	
-    	if($("#id").val()==""){
-    		alert("아이디를 입력해주세요.");
-    		$("#id").focus();
-    		return false;
-    		
-    	}
-    	
-    	 if($("#pwd1").val() == ""){
-             alert("비밀번호를 입력해주세요.");
-             $("#pwd1").focus()
-             return false;
-         }
-
-
-    	 
-         if(!chk(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/,("#pwd1").val(), "숫자+영문자+특수문자 조합으로 4~12글자를 입력해주세요.")){            
-	        return false;
-         }
-         
-  
-      	 if($("#name").val() == ""){
-    		 alert("성명을 입력해주세요");
-    		 $("#name").focus()
-			 return false;
-    	 }
-
-      	 
-      	 var idChkVal = $("#idChk").val();
-      	 if(idChkVal == "N"){
-      		 alert("중복확인 버튼을 눌러주세요");
-      		 
-      	 } else if(idChkVal == "Y"){
-      		 $("#regForm").submit();
-      		 
-      	 }
-         
-         function chk(re, ele, msg){
-             if(!re.test(ele.val())){
-                 alert(msg);
-                 ele.select();
-                 return false;
-             }
-             return true;
-     }
-    	
-   });
-    
-    </script> -->
-    
+   
      <script> 
         function validate(){
             var id = document.getElementById("id");
