@@ -225,6 +225,27 @@ public class ManagerController {
 		return "redirect:/manager/manageManager";
 	}
 	
+	/* 관리자 아이디 중복체크 */
+	@PostMapping(value = "idDupCheck", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String idDupCheck(@RequestParam("memId") String memId) {
+		
+		String message = "";
+		
+		int count = managerService.idDupCheck(memId);
+		System.out.println(count);
+		
+		if(count > 0) {
+			message = "사용이 불가능한 아이디입니다.";
+		} else {
+			message = "사용 가능한 아이디입니다.";
+		}
+		
+		System.out.println(message);
+		
+		return message;
+	}
+	
 	/* 관리자 정산 */
 	@GetMapping("taxAdjustment")
 	public void taxAdjustment() {}

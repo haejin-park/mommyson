@@ -30,4 +30,6 @@ public interface ManagerDAO {
 
 	public List<Pagination> selectNoticeList(Pagination pagination);
 
+	int idDupCheck(String memId);
+
 }

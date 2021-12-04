@@ -88,5 +88,11 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectNoticeList(pagination);
 	}
 
+	@Override
+	public int idDupCheck(String memId) {
+		int count = managerDAO.idDupCheck(memId);
+		return count;
+	}
+
 	
 }

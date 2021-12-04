@@ -247,4 +247,13 @@
 	  WHERE C.RNUM >= #{ startRow } 
        ]]>
    </select>
+   
+   <select id="idDupCheck" parameterType="string" resultType="int">
+       SELECT 
+       		  COUNT(*) 
+       	 FROM MEMBER_TBL 
+       	WHERE MEM_ID = #{ memId }
+       	  AND IS_DELETED = 'N'
+       	  AND MEM_TYPE = 'manager'
+   </select>
 </mapper>

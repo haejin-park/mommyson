@@ -27,7 +27,7 @@
                 <input type="button" value="삭제" class="del_btn" onclick="deleteManager();">
                 <script>
                 	if(${ requestScope.result != null }) {
-                		alert(${ requestScope.result });
+                		alert('${ requestScope.result }');
                 	}
                 
                 	// 관리자 삭제
@@ -64,7 +64,7 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row"><input type="checkbox" name="ch1"></th>
+                        <th scope="row"></th>
                         <td>
                         	슈퍼관리자
                         </td>

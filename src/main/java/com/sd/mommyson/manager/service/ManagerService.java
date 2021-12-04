@@ -32,4 +32,6 @@ public interface ManagerService {
 	/* 공지사항 리스트 */
 	public List<Pagination> selectNoticeList(Pagination pagination);
 
+	public int idDupCheck(String memId);
+
 }
