@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.mommyson.manager.dao.ManagerDAO">
+
+   <resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="email" column="EMAIL"/>
+      <result property="memPwd" column="MEM_PWD"/>
+      <result property="address" column="ADDRESS"/>
+      <result property="postCode" column="POST_CODE"/>
+      <result property="dAddress" column="D_ADDRESS"/>
+      <result property="phone" column="PHONE"/>
+      <result property="memType" column="MEM_TYPE"/>
+      <result property="locationCode" column="LOCATION_CODE"/>
+      <result property="nickname" column="NICKNAME"/>
+      <result property="memId" column="MEM_ID"/>
+      <result property="enrollDate" column="ENROLL_DATE"/>
+      <result property="isDeleted" column="IS_DELETED"/>
+      <!-- <collection property="user" resultMap="userResultMap"/>
+      <collection property="ceo" resultMap="ceoResultMap"/>
+      <collection property="manager" resultMap="managerResultMap"/> -->
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="lastLogin" column="LAST_LOGIN"/>
+      <!-- <collection property="authDTO" resultMap="authResultMap"/> -->
+   </resultMap>
+   
+   <resultMap id="PostResultMap" type="com.sd.mommyson.manager.dto.postDTO" >
+ 	  <id property="postNo" column="POST_NO"/>
+   	  <result property="boardCode" column="BOARD_CODE"/>
+   	  <result property="postTitle" column="POST_TITLE"/>
+   	  <result property="memCode" column="MEM_CODE"/>
+   	  <result property="postContent" column="POST_CONTENT"/>
+   	  <result property="postDate" column="POST_DATE"/>
+   	  <result property="ansStatus" column="ANS_STATUS"/>
+   	  <result property="queNo" column="QUE_NO"/>
+   	  <result property="status" column="STATUS"/>
+   </resultMap>
+
+   <select id="normalMemberSelect" resultMap="memberResultMap">
+       SELECT 
+            A.MEM_CODE
+          , A.EMAIL
+          , A.ADDRESS
+          , A.POST_CODE
+          , A.D_ADDRESS
+          , A.PHONE
+          , A.MEM_TYPE
+          , A.LOCATION_CODE
+          , A.NICKNAME
+          , A.MEM_ID
+          , A.ENROLL_DATE
+          , B.NAME
+          , B.REP_COUNT
+          , C.MEM_CODE
+           , C.ACCOUNT
+          , C.STORE_NO
+          , C.CEO_NAME
+          , D.STORE_IMG
+        FROM MEMBER_TBL A
+        LEFT JOIN USER_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+        LEFT JOIN CEO_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+        LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
+       WHERE A.IS_DELETED = 'N'
+         AND A.MEM_TYPE = 'user'
+   </select>
+   
+   <!-- 공지사항 게시글 수 조회 -->
+   <select id="selectNoticeTotalCount" resultType="_int">
+   	  SELECT
+   	  	  COUNT(*)
+   	  	 FROM POST_TBL A
+   	  	<where>
+   	  	  <if test='searchValue != null'>
+   	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	  	  </if>
+   	  	  <if test="searchCondition == '전체'">
+   	  	    A.BOARD_CODE IN('1','2','3','4','5')
+   	  	  </if>
+   	  	  <if test="searchCondition == '공지'">
+   	  	   A.BOARD_CODE = '1'
+   	  	  </if>
+   	  	  <if test="searchCondition == '안내'">
+   	  	   A.BOARD_CODE = '2'
+   	  	  </if>
+   	  	  <if test="searchCondition == '점검'">
+   	  	   A.BOARD_CODE = '3'
+   	  	  </if>
+   	  	  <if test="searchCondition == '이벤트'">
+   	  	   A.BOARD_CODE = '4'
+   	  	  </if>
+   	  	  <if test="searchCondition == '사업자'">
+   	  	   A.BOARD_CODE = '5'
+   	  	  </if>
+   	  	</where>
+   </select>
+ 
+   <!-- 공지사항 리스트 조회  -->
+   <select id="selectNoticeList" resultMap="PostResultMap">
+	   SELECT
+	    C.RNUM
+	   ,C.POST_NO
+	   ,C.BOARD_CODE
+	   ,C.POST_TITLE
+	   ,C.MEM_CODE
+	   ,C.POST_CONTENT
+	   ,C.POST_DATE
+	   ,C.ANS_STATUS
+	   ,C.QUE_NO
+	   ,C.STATUS
+	   FROM (SELECT
+	            ROWNUM RNUM
+	           ,B.POST_NO
+	           ,B.BOARD_CODE
+	           ,B.POST_TITLE
+	           ,B.MEM_CODE
+	           ,B.POST_CONTENT
+	           ,B.POST_DATE
+	           ,B.ANS_STATUS
+	           ,B.QUE_NO
+	           ,B.STATUS
+	         FROM (SELECT
+	                    A.POST_NO
+	                   ,A.BOARD_CODE
+	                   ,A.POST_TITLE
+	                   ,A.MEM_CODE
+	                   ,A.POST_CONTENT
+	                   ,A.POST_DATE
+	                   ,A.ANS_STATUS
+	                   ,A.QUE_NO
+	                   ,A.STATUS
+	                   FROM POST_TBL A
+	                  <where>
+			   	  	  <if test='searchValue != null'>
+			   	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == '전체'">
+			   	  	    A.BOARD_CODE IN('1','2','3','4','5')
+			   	  	  </if>
+			   	  	  <if test="searchCondition == '공지'">
+			   	  	   A.BOARD_CODE = '1'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == '안내'">
+			   	  	   A.BOARD_CODE = '2'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == '점검'">
+			   	  	   A.BOARD_CODE = '3'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == '이벤트'">
+			   	  	   A.BOARD_CODE = '4'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == '사업자'">
+			   	  	   A.BOARD_CODE = '5'
+			   	  	  </if>
+			   	  	  </where>
+	                  ORDER BY A.POST_DATE DESC)B
+	          <![CDATA[        
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)C
+	   <![CDATA[
+	  WHERE C.RNUM >= #{ startRow } 
+       ]]>
+   </select>
+</mapper>

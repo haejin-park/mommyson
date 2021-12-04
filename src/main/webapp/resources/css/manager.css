@@ -372,3 +372,19 @@
     z-index: 1;
     cursor: pointer;
   }
+
+    /* 공지사항 추가 */
+  .sel_notice {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    
+      border-radius: 5px;
+      padding: 0 40px 0 20px;
+
+      font-size: 17px;
+      margin-bottom: 10px;
+  
+      background: url('../images/select_arrow.png') no-repeat 97%;
+      background-size: 20px;
+    }

@@ -1,5 +1,6 @@
 package com.sd.mommyson.manager.common;
 
+@SuppressWarnings("serial")
 public class Pagination implements java.io.Serializable{
 
 	private int pageNo;					//현재페이지
@@ -34,12 +35,12 @@ public class Pagination implements java.io.Serializable{
 		this.searchValue = searchValue;
 	}
 	
-	public Pagination pagination(int pageNo, int totalCount, int limit, int buttonAmount) {
+	public static Pagination getPagination(int pageNo, int totalCount, int limit, int buttonAmount) {
 		
-		return pagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		return getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
 	}
 
-	public Pagination pagination(int pageNo, int totalCount, int limit, int buttonAmount, String searchCondition, String searchValue) {
+	public static Pagination getPagination(int pageNo, int totalCount, int limit, int buttonAmount, String searchCondition, String searchValue) {
 		/* pageNo와 totalCount가 넘어온 상태이기 때문에
 		 * 페이징처리에 필요한 나머지 변수만 선언을 한다.
 		 * */

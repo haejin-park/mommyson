@@ -21,6 +21,14 @@
         <div class="board_container">
             <h2>공지사항</h2>
             <form action="">
+	            <select class="sel_notice" name="" id="">
+	                    <option value="">전체</option>
+	                    <option value="">안내</option>
+	                    <option value="">공지</option>
+	                    <option value="">점검</option>
+	                    <option value="">이벤트</option>
+	                    <option value="">사업자</option>
+	             </select>
                 <table class="table board_table">
                     <colgroup>
                         <col width=""/>
