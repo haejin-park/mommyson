@@ -18,15 +18,44 @@
 		<result property="memId" column="MEM_ID"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
-		<!-- <collection property="user" resultMap="userResultMap"/>
+		<collection property="user" resultMap="userResultMap"/>
 		<collection property="ceo" resultMap="ceoResultMap"/>
-		<collection property="manager" resultMap="managerResultMap"/> -->
+		<collection property="manager" resultMap="managerResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="lastLogin" column="LAST_LOGIN"/>
-		<!-- <collection property="authDTO" resultMap="authResultMap"/> -->
+		<collection property="authDTO" resultMap="authResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="account" column="ACCOUNT"/>
+		<result property="no" column="STORE_NO"/>
+		<result property="name" column="CEO_NAME"/>
+		<collection property="store" resultMap="storeResultMap"></collection>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="storeName" column="STORE_NAME"/>
+		<result property="storeImg" column="STORE_IMG"/>
+		<result property="storeInfo" column="STORE_INFO"/>
+		<result property="grade" column="GRADE"/>
+		<result property="delCost" column="DEL_COST"/>
+		<result property="workTime" column="WORK_TIME"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.AuthDTO" id="authResultMap">
+		<id property="code" column="CODE"/>
+		<result property="auth" column="AUTH"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="name" column="NAME"/>
+		<result property="repCount" column="REP_COUNT"/>
 	</resultMap>
 	
 	<select id="normalMemberSelect" resultMap="memberResultMap">
@@ -69,11 +98,6 @@
 	     </where>
 	</update>
 	
-	<resultMap type="com.sd.mommyson.member.dto.AuthDTO" id="authResultMap">
-		<id property="code" column="CODE"/>
-		<result property="auth" column="AUTH"/>
-	</resultMap>
-	
 	<select id="selectAuth" resultMap="authResultMap">
 		SELECT
 			   A.CODE
@@ -105,7 +129,6 @@
 		 WHERE A.MEM_CODE = #{ memCode }
 	</select>
 	
-<<<<<<< HEAD
 	<update id="deleteManager" parameterType="list">
 		UPDATE MEMBER_TBL
 		   SET IS_DELETED = 'Y'
@@ -114,31 +137,6 @@
 		 	#{ memCode }
 		 </foreach>
 	</update>
-=======
-   <resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
-      <id property="memCode" column="MEM_CODE"/>
-      <result property="email" column="EMAIL"/>
-      <result property="memPwd" column="MEM_PWD"/>
-      <result property="address" column="ADDRESS"/>
-      <result property="postCode" column="POST_CODE"/>
-      <result property="dAddress" column="D_ADDRESS"/>
-      <result property="phone" column="PHONE"/>
-      <result property="memType" column="MEM_TYPE"/>
-      <result property="locationCode" column="LOCATION_CODE"/>
-      <result property="nickname" column="NICKNAME"/>
-      <result property="memId" column="MEM_ID"/>
-      <result property="enrollDate" column="ENROLL_DATE"/>
-      <result property="isDeleted" column="IS_DELETED"/>
-      <!-- <collection property="user" resultMap="userResultMap"/>
-      <collection property="ceo" resultMap="ceoResultMap"/>
-      <collection property="manager" resultMap="managerResultMap"/> -->
-   </resultMap>
-   
-   <resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
-      <id property="memCode" column="MEM_CODE"/>
-      <result property="lastLogin" column="LAST_LOGIN"/>
-      <!-- <collection property="authDTO" resultMap="authResultMap"/> -->
-   </resultMap>
    
    <resultMap id="PostResultMap" type="com.sd.mommyson.manager.dto.postDTO" >
  	  <id property="postNo" column="POST_NO"/>
@@ -152,34 +150,7 @@
    	  <result property="status" column="STATUS"/>
    </resultMap>
 
-   <select id="normalMemberSelect" resultMap="memberResultMap">
-       SELECT 
-            A.MEM_CODE
-          , A.EMAIL
-          , A.ADDRESS
-          , A.POST_CODE
-          , A.D_ADDRESS
-          , A.PHONE
-          , A.MEM_TYPE
-          , A.LOCATION_CODE
-          , A.NICKNAME
-          , A.MEM_ID
-          , A.ENROLL_DATE
-          , B.NAME
-          , B.REP_COUNT
-          , C.MEM_CODE
-           , C.ACCOUNT
-          , C.STORE_NO
-          , C.CEO_NAME
-          , D.STORE_IMG
-        FROM MEMBER_TBL A
-        LEFT JOIN USER_TBL B ON (A.MEM_CODE = B.MEM_CODE)
-        LEFT JOIN CEO_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-        LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
-       WHERE A.IS_DELETED = 'N'
-         AND A.MEM_TYPE = 'user'
-   </select>
-   
+  
    <!-- 공지사항 게시글 수 조회 -->
    <select id="selectNoticeTotalCount" resultType="_int">
    	  SELECT
@@ -276,5 +247,4 @@
 	  WHERE C.RNUM >= #{ startRow } 
        ]]>
    </select>
->>>>>>> dc5f6879ca76aaeb19db36b88399a9cfc7751671
 </mapper>
