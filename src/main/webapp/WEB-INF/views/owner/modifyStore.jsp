@@ -132,13 +132,20 @@
                     <input type="hidden" name="memCode" value="${ sessionScope.loginMember.memCode }">
 		          </div>
                 </div>
-                <input type="submit" class="pink_btn" style="background: #AEAEAE; margin-right: 20px" value="취소">
+                <input type="button" class="pink_btn" id="btn" style="background: #AEAEAE; margin-right: 20px" value="취소">
                 <input type="submit"class="pink_btn" value="완료">
               </div>
              </form>
           </div>
         </div>
       </div>  
+    <script>
+    	$(function() {
+			$("#btn").click(function() {
+				location.href="${ pageContext.servletContext.contextPath }/owner/ownerMain"
+			});
+		});
+    </script>
    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
    <script>
     function sample6_execDaumPostcode() {
