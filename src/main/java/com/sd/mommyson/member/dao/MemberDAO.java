@@ -19,5 +19,5 @@ public interface MemberDAO {
 
 	public List<HashMap<String, String>> selectCategoryList();
 
-	public List<ManagerDTO> selectManagers();
+	public List<ManagerDTO> selectManagers(String memId);
 }
