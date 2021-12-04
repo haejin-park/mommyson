@@ -3,12 +3,18 @@ package com.sd.mommyson.manager.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.AuthDTO;
+import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
 public interface ManagerDAO {
 
-	MemberDTO normalMemberSelect(MemberDTO member);
+	List<ManagerDTO> selectManagers();
+
+	List<MemberDTO> normalMemberSelect(MemberDTO member);
+
+	int deleteMembers(List<Integer> deleteMemberList);
 
 	List<AuthDTO> selectAuth();
 
@@ -19,5 +25,9 @@ public interface ManagerDAO {
 	Map<String, String> selectManagerByMemCode(int memCode);
 
 	int deleteManager(List<String> list);
+
+	public int selectNoticeTotalCount(Map<String, String> searchMap);
+
+	public List<Pagination> selectNoticeList(Pagination pagination);
 
 }

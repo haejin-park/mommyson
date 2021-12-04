@@ -214,7 +214,7 @@
         });
  
          $("#homeSubmenu1").addClass("show");
-         $("#homeSubmenu1 > li:nth-child(2) > a").css("color","#F89E91");
+         $("#homeSubmenu1 > li:nth-child(2) > a").attr("style","color: #F89E91 !important");
      </script>
 </body>
 </html>

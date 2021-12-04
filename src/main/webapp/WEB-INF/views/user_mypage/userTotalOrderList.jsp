@@ -85,8 +85,10 @@
                   </ul>
                   <ul>
                       <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                      <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요."></li>
+                      <form action="" method="get">
+                      <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요." name="searchProduct"></li>
                       <button type="submit" class="searchbutton">검색하기</button></li>
+                      </form>
                    </ul>
                 </nav>
 

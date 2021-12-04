@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
@@ -25,13 +26,13 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 	
 	@Override
-	public MemberDTO normalMemberSelect(MemberDTO member) {
+	public List<MemberDTO> normalMemberSelect(MemberDTO member) {
 		
-		MemberDTO normalMemberList = null;
+		List<MemberDTO> normalMemberList = null;
 		
 		normalMemberList = managerDAO.normalMemberSelect(member);
 		
-		return null;
+		return normalMemberList;
 	}
 
 	@Override
@@ -43,6 +44,13 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
+	public boolean deleteMembers(List<Integer> deleteMemberList) {
+		
+		int result = managerDAO.deleteMembers(deleteMemberList);
+		
+		return result > 0? true : false;
+	}
+
 	public List<AuthDTO> selectAuth() {
 		List<AuthDTO> authList = managerDAO.selectAuth();
 		return authList;
@@ -70,6 +78,14 @@ public class ManagerServiceImpl implements ManagerService {
 	public int deleteManager(List<String> list) {
 		int result = managerDAO.deleteManager(list);
 		return result;
+	}
+	
+	public int selectNoticeTotalCount(Map<String, String> searchMap) {
+		return managerDAO.selectNoticeTotalCount(searchMap);
+	}
+
+	public List<Pagination> selectNoticeList(Pagination pagination) {
+		return managerDAO.selectNoticeList(pagination);
 	}
 
 	

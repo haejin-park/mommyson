@@ -26,7 +26,6 @@
 .side-1{
     background-color: rgba(252, 235, 233, 1);
     /* border-style: solid; */
-    height: 430px;
     margin: auto 0px;
     width: 300px;
     border-radius: 20px;
@@ -43,6 +42,7 @@
     border-bottom: 1px solid rgba(177, 177, 177, 1);
     border-left: 1px solid rgba(177, 177, 177, 1);
     padding: 10px;
+    width: 30px;
 }
 .tg th:first-child,.tg td:first-child {
     border-left: none;

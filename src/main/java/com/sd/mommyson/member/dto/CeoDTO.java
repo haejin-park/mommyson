@@ -6,44 +6,19 @@ public class CeoDTO {
 
 	private int memCode;
 	private String account;
-	private Date startDate;
 	private String name;
 	private String no;
-	private String img;
-	private String openingTime;
-	private String storeInfo;
+	private StoreDTO store;
 	
 	public CeoDTO() {}
 
-
-	public CeoDTO(int memCode, String account, Date startDate, String name, String no, String img, String openingTime,
-			String storeInfo) {
+	public CeoDTO(int memCode, String account, String name, String no, StoreDTO store) {
 		super();
 		this.memCode = memCode;
 		this.account = account;
-		this.startDate = startDate;
 		this.name = name;
 		this.no = no;
-		this.img = img;
-		this.openingTime = openingTime;
-		this.storeInfo = storeInfo;
-	}
-
-
-	public String getNo() {
-		return no;
-	}
-
-	public void setNo(String no) {
-		this.no = no;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		this.store = store;
 	}
 
 	public int getMemCode() {
@@ -62,44 +37,34 @@ public class CeoDTO {
 		this.account = account;
 	}
 
-	public java.sql.Date getStartDate() {
-		return startDate;
+	public String getName() {
+		return name;
 	}
 
-	public void setStartDate(java.sql.Date startDate) {
-		this.startDate = startDate;
-	}
-	
-	public String getImg() {
-		return img;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setImg(String img) {
-		this.img = img;
-	}
-	
-	public String getOpeningTime() {
-		return openingTime;
+	public String getNo() {
+		return no;
 	}
 
-
-	public void setOpeningTime(String openingTime) {
-		this.openingTime = openingTime;
+	public void setNo(String no) {
+		this.no = no;
 	}
 
-
-	public String getStoreInfo() {
-		return storeInfo;
+	public StoreDTO getStore() {
+		return store;
 	}
 
-
-	public void setStoreInfo(String storeInfo) {
-		this.storeInfo = storeInfo;
+	public void setStore(StoreDTO store) {
+		this.store = store;
 	}
 
 	@Override
 	public String toString() {
-		return "CeoDTO [memCode=" + memCode + ", account=" + account + ", startDate=" + startDate + ", name=" + name
-				+ ", no=" + no + ", img=" + img + ", openingTime=" + openingTime + ", storeInfo=" + storeInfo + "]";
+		return "CeoDTO [memCode=" + memCode + ", account=" + account + ", name=" + name
+				+ ", no=" + no + ", store=" + store + "]";
 	}
+
 }

@@ -168,7 +168,7 @@
         });
  
          $("#homeSubmenu1").addClass("show");
-         $("#homeSubmenu1 > li:last-child > a").css("color","#F89E91");
+         $("#homeSubmenu1 > li:last-child > a").attr("style","color: #F89E91 !important");
      </script>
 </body>
 </html>

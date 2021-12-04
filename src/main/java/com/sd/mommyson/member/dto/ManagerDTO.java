@@ -46,5 +46,7 @@ public class ManagerDTO {
 		return "ManagerDTO [memCode=" + memCode + ", lastLogin=" + lastLogin + ", authDTO=" + authDTO + "]";
 	}
 
-	
 }
+
+   
+
