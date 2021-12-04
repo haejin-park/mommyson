@@ -18,4 +18,6 @@ public interface ManagerDAO {
 
 	Map<String, String> selectManagerByMemCode(int memCode);
 
+	int deleteManager(List<String> list);
+
 }

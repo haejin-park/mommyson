@@ -20,4 +20,6 @@ public interface ManagerService {
 	public int insertNewManager(Map<String, Object> map);
 
 	public Map<String, String> selectManagerByMemCode(int memCode);
+
+	public int deleteManager(List<String> list);
 }

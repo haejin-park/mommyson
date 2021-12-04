@@ -66,5 +66,11 @@ public class ManagerServiceImpl implements ManagerService {
 		return map;
 	}
 
+	@Override
+	public int deleteManager(List<String> list) {
+		int result = managerDAO.deleteManager(list);
+		return result;
+	}
+
 	
 }

@@ -1,5 +1,6 @@
 package com.sd.mommyson.manager.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,9 +123,22 @@ public class ManagerController {
 	
 	/* 관리자 삭제 */
 	@GetMapping("deleteManager/{cks}")
-	public String deleteManager(@PathVariable("cks") String[] arr) {
+	public String deleteManager(@PathVariable("cks") String[] arr, Model model) {
 		
-		return "redirect:/manager/mamageManager";
+		List<String> list = new ArrayList<String>();
+		for(String b : arr) {
+			list.add(b);
+		}
+		
+		int result = managerService.deleteManager(list);
+		
+		if(result > 0) {
+			model.addAttribute("result", "삭제에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "삭제에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/manageManager";
 	}
 	
 	/* 관리자 정산 */
