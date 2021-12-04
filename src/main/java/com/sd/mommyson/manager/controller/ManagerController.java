@@ -39,7 +39,7 @@ public class ManagerController {
 	
 	/* 회원삭제 */
 	@PostMapping("deleteMember")
-	public void deleteMember(@RequestParam("chkMember") int[] deleteMember) {
+	public String deleteMember(@RequestParam("chkMember") int[] deleteMember) {
 		for(int deleteMembers : deleteMember) {
 			System.out.println(deleteMembers);
 		}
@@ -54,6 +54,7 @@ public class ManagerController {
 		
 		managerService.deleteMembers(deleteMemberList);
 		
+		return "redirect:normalMember";
 	}
 	
 	/* 사업자 회원 조회 */

@@ -62,7 +62,7 @@
 	           MEMBER_TBL A
 	       SET A.IS_DELETED = 'Y'
 	     <where>
-	     	A.MEM_CODE =
+	     	A.MEM_CODE IN
 	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
 	     		#{ item }
 	     	</foreach>

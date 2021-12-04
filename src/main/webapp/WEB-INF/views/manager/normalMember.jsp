@@ -110,7 +110,7 @@
         });
  
          $("#homeSubmenu1").addClass("show");
-         $("#homeSubmenu1 > li:first-child > a").css("color","#F89E91");
+         $("#homeSubmenu1 > li:first-child > a").attr("style","color: #F89E91 !important");
          
          $("#chk_all").click(function(){
         	 let chk = $(this).is(":checked");

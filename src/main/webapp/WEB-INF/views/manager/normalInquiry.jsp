@@ -112,7 +112,7 @@
 
     <script>
          $("#homeSubmenu3").addClass("show");
-         $("#homeSubmenu3 > li:last-child > a").css("color","#F89E91");
+         $("#homeSubmenu3 > li:last-child > a").attr("style","color: #F89E91 !important");
      </script>
 </body>
 </html>
