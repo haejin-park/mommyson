@@ -26,17 +26,84 @@ public class UserController {
 		this.userService = userService;
 	}
 	
-	@GetMapping(value = "MTMConsult")
+	
+	/**@author 양윤제
+	 * @category 고객센터 메인
+	 */
+	@GetMapping("ucc")
+	public String userCustomerServiceMain() {
+		
+		return "user/userCustomerServiceMain";
+	}
+	
+	/**
+	 * @author 양윤제
+	 * @category1:1 상담내역
+	 */
+	@GetMapping("ucc/MTMConsult")
 	public String userCustomerServiceCenterMTMConsult() {
 		
 		return "user/userCustomerServiceCenterMTMConsult";
 	}
 	
-	@GetMapping(value = "MTMQnA")
+	/**
+	 * @author 양윤제
+	 * @category 1:1문의
+	 */
+	@GetMapping("ucc/MTMQnA")
 	public String userCustomerServiceCenterMTMQnA() {
 		
 		return "user/userCustomerServiceCenterMTMQnA";
 	}
+	
+	/**@author 양윤제
+	 * @category 1:1상담내용 수정
+	 */
+	@GetMapping("ucc/MTMChange")
+	public String userCustomerServiceCenterMTMQnAChange() {
+		
+		return "user/userCustomerServiceCenterMTMQnAChange";
+	}
+	
+	
+	/**@author 양윤제
+	 * @category 1:1상담내용 열람
+	 */
+	@GetMapping("ucc/MTMOpen")
+	public String userCustomerServiceCenterMTMQnADetail() {
+		
+		return "user/userCustomerServiceCenterMTMQnADetail";
+	}
+	
+	/**@author 양윤제
+	 * @category 공지사항 출력
+	 */
+	@GetMapping("ucc/uccNoticeSelect")
+	public String userCustomerServiceCenterNoticeSelect() {
+		
+		return "user/userCustomerServiceCenterNoticeSelect";
+	}
+	
+	/**@author 양윤제
+	 * @category 공지사항 내용 출력
+	 */
+	@GetMapping("ucc/uccNoticeDetail")
+	public String userCustomerServiceCenterNoticeDetail() {
+		
+		return "user/userCustomerServiceCenterNoticeDetail";
+	}
+	
+	/**@author 양윤제
+	 * @category 자주하는 질문
+	 */
+	@GetMapping("ucc/uccOftenQuestion")
+	public String userCustomerServiceOftenQuestionBase() {
+		
+		return "user/userCustomerServiceOftenQuestionBase";
+	}
+	
+
+	
 	@GetMapping("cart")
 	public String cart() {
 		return "user/shoppingBasket";
