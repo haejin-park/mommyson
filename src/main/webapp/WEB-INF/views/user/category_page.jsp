@@ -10,14 +10,14 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../../resources/css/colorset.css">
+    <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	
     <jsp:include page="../commons/header.jsp"/>
     
-    <section>
+    <section class="at-container">
        	<c:if test="${ requestScope.category != '오늘만 할인' && requestScope.category != '오늘의 추천' && requestScope.category != '우리동네 인기 맛집' }">
        		<div style="display: flex; justify-content: space-between; align-items: center; width: 83%;">
 	            <h4 style="float: left; margin-left: 50px; margin-top: 80px;">반찬조회 > ${ requestScope.category }</h4>
@@ -27,7 +27,7 @@
         <!--
             오늘만 할인 페이지로 들어올 경우 div
             <div class="col-3">
-                <img src="../../resources/images/menu1.jpg">
+                <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                 <div class="menu_div">
                     <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                     <pre><strong>5,440원</strong>  <label style="text-decoration: line-through; color: lightgray;">6,800원</label></pre>
@@ -39,7 +39,7 @@
 
             반찬조회 및 오늘의 추천 페이지로 들어올 경우 div
             <div class="col-3">
-                <img src="../../resources/images/menu1.jpg">
+                <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                 <div class="menu_div">
                     <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                     <pre> <strong>5,440원</strong></pre>
@@ -54,7 +54,7 @@
         <div class="container-xl" style=" margin-top: 150px;">
             <div class="row">
                 <div class="col-3">
-                    <img src="../../resources/images/menu1.jpg">
+                    <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                     <div class="menu_div">
                         <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                         <pre> <strong>5,440원</strong></pre>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <img src="../../resources/images/menu1.jpg">
+                    <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                     <div class="menu_div">
                         <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                         <pre> <strong>5,440원</strong></pre>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <img src="../../resources/images/menu1.jpg">
+                    <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                     <div class="menu_div">
                         <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                         <pre> <strong>5,440원</strong></pre>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <img src="../../resources/images/menu1.jpg">
+                    <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
                     <div class="menu_div">
                         <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
                         <pre> <strong>5,440원</strong></pre>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -104,7 +104,7 @@
 	               </div>
 	           </div>
 	           <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -114,7 +114,7 @@
 	               </div>
 	           </div>
 	           <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -124,7 +124,7 @@
 	               </div>
 	           </div>
 	           <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -134,7 +134,7 @@
 	               </div>
 	           </div>
 	           <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -144,7 +144,7 @@
 	               </div>
 	           </div>
 	           <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -154,7 +154,7 @@
 	               </div>
 	           </div>
 	           <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -164,7 +164,7 @@
 	               </div>
 	           </div>
 	           <div class="col-3">
-	               <img src="../../resources/images/menu1.jpg">
+	               <img src="${ pageContext.servletContext.contextPath }/resources/images/menu1.jpg">
 	               <div class="menu_div">
 	                   <a href="#" class="menu_name">사리곰탕(300g/1인분)</a>
 	                   <pre> <strong>5,440원</strong></pre>
@@ -197,6 +197,12 @@
 	             </nav>
 	       </div>
         </div>
+        
+        <c:if test="${ sessionScope.loginMember != null }">
+        	<div id="cart_logo">
+        		<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img class="store_logo" src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
+        	</div>
+        </c:if>
       </section>
 
       <footer class="at-container" style="margin-top: 150px;">
@@ -215,9 +221,9 @@
             </li>
         </ul>
         <div class="ft_img_line">
-            <img src="../../resources/images/ft_img01.png" alt="소비자중심경영">
-            <img src="../../resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-            <img src="../../resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
         </div>
         <div class="ft_info">
             <p>(주)마미손맛 자세히 보기</p>

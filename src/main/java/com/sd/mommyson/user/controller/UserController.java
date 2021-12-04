@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,15 +54,29 @@ public class UserController {
 		}
 		
 		if(cg.equals("")) {
-			switch(category) {
-				case "recommend" : cg = "오늘의 추천"; break;
-				case "famous" : cg = "우리동네 인기 맛집"; break;
-				case "sale" : cg = "오늘만 할인"; break;
-			}
+			cg = "오늘의 추천";
 		}
 		
 		mv.addObject("category", cg);
 		mv.setViewName("user/category_page");
+		
+		return mv;
+	}
+	
+	@GetMapping("sale")
+	public void todaySale() {}
+	
+	@GetMapping("famousStore/{type}")
+	public ModelAndView famousStore(ModelAndView mv, @PathVariable String type, Model model) {
+		
+		String cg = "";
+		switch(type) {
+			case "new" : cg = "신규 반찬 가게"; break;
+			case "famous" : cg = "우리동네 인기 맛집"; break;
+		}
+		
+		mv.addObject("type", cg);
+		mv.setViewName("user/famousStore");
 		
 		return mv;
 	}
