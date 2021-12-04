@@ -37,10 +37,20 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public boolean deleteMembers(int[] deleteMember) {
+	public boolean deleteMembers(List<Integer> deleteMemberList) {
 		
-		return managerDAO.deleteMembers(deleteMember) > 0? true : false;
+		int result = managerDAO.deleteMembers(deleteMemberList);
+		
+		return result > 0? true : false;
 	}
+
+//	@Override
+//	public boolean deleteMembers(int[] deleteMember) {
+//		
+//		int[] result = managerDAO.deleteMembers(deleteMember);
+//		
+//		return result.length > 0? true : false;
+//	}
 
 	
 }

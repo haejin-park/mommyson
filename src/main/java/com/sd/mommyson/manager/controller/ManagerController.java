@@ -39,13 +39,20 @@ public class ManagerController {
 	
 	/* 회원삭제 */
 	@PostMapping("deleteMember")
-	public void deleteMember(@RequestParam("chkMember") int[] deleteMembers) {
+	public void deleteMember(@RequestParam("chkMember") int[] deleteMember) {
+		for(int deleteMembers : deleteMember) {
+			System.out.println(deleteMembers);
+		}
 		
+		System.out.println(deleteMember.length);
 		
+		List<Integer> deleteMemberList = new ArrayList<>();
 		
+		for(int i = 0; i < deleteMember.length; i++) {
+			deleteMemberList.add(deleteMember[i]);
+		}
 		
-		
-		managerService.deleteMembers(deleteMembers);
+		managerService.deleteMembers(deleteMemberList);
 		
 	}
 	

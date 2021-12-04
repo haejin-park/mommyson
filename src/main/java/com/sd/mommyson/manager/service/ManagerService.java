@@ -11,5 +11,5 @@ public interface ManagerService {
 
 	public List<ManagerDTO> selectManagers();
 
-	public boolean deleteMembers(int[] deleteMember);
+	public boolean deleteMembers(List<Integer> deleteMemberList);
 }

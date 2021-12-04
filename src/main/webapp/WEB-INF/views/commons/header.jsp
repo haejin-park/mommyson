@@ -68,7 +68,7 @@
         </div>
       </div>  
     </header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin: 0 auto;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light at-container" style="margin: 0 auto;">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown" style="margin-right: 180px;">

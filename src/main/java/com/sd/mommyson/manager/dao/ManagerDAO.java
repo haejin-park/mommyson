@@ -11,6 +11,7 @@ public interface ManagerDAO {
 
 	List<MemberDTO> normalMemberSelect(MemberDTO member);
 
-	int deleteMembers(int[] deleteMember);
+	int deleteMembers(List<Integer> deleteMemberList);
+
 
 }

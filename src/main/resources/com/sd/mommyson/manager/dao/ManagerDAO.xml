@@ -57,10 +57,15 @@
 		   AND A.MEM_TYPE = 'user'
 	</select>
 	
-	<update id="deleteMembers">
+	<update id="deleteMembers" parameterType="list">
 	    UPDATE
 	           MEMBER_TBL A
 	       SET A.IS_DELETED = 'Y'
-	     WHERE A.MEM_CODE = #{ deleteMember }
+	     <where>
+	     	A.MEM_CODE =
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	     </where>
 	</update>
 </mapper>
