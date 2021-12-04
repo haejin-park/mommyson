@@ -2,8 +2,8 @@ package com.sd.mommyson.member.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
 public interface MemberDAO {
@@ -17,4 +17,6 @@ public interface MemberDAO {
 	public List<HashMap<String, String>> selectLocation();
 
 	public List<HashMap<String, String>> selectCategoryList();
+	
+	public MemberDTO selectOwner(MemberDTO member);
 }

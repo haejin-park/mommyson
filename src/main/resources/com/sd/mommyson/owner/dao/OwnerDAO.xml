@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.mommyson.owner.dao.OwnerDAO">
+
+	<resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="name" column="NAME"/>
+		<result property="repCount" column="REP_COUNT"/>
+	</resultMap>
+
+	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="account" column="ACCOUNT"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="no" column="STORE_NO"/>
+		<result property="name" column="CEO_NAME"/>
+		<collection property="store" resultMap="storeResultMap"></collection>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="storeName" column="STORE_NAME"/>
+		<result property="storeImg" column="STORE_IMG"/>
+		<result property="storeInfo" column="STORE_INFO"/>
+		<result property="grade" column="GRADE"/>
+		<result property="delCost" column="DEL_COST"/>
+		<result property="workTime" column="WORK_TIME"/>
+	</resultMap>
+	
+
+	<resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="memPwd" column="MEM_PWD"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="postCode" column="POST_CODE"/>
+		<result property="dAddress" column="D_ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="memType" column="MEM_TYPE"/>
+		<result property="locationCode" column="LOCATION_CODE"/>
+		<result property="nickname" column="NICKNAME"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+		<collection property="user" resultMap="userResultMap"/>
+		<collection property="ceo" resultMap="ceoResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
+		<id property="cpCode" column="CP_CODE"/>
+		<result property="cpName" column="CP_NAME"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="disWon" column="DISCOUNT_WON"/>
+		<result property="endDate" column="END_DATE"/>
+		<result property="dCcon" column="DC_CONDITION"/>
+	</resultMap>
+	
+	<select id="selectOwner" resultMap="memberResultMap">
+		SELECT
+		      A.ADDRESS
+		    , A.POST_CODE
+		    , A.D_ADDRESS
+		    , A.PHONE
+		    , A.LOCATION_CODE
+		    , A.NICKNAME
+		    , B.ACCOUNT
+		    , B.START_DATE
+		    , B.STORE_NO
+		    , B.CEO_NAME
+		    , C.STORE_NAME
+		    , C.STORE_IMG
+		    , C.STORE_INFO
+		    , C.WORK_TIME
+		 FROM MEMBER_TBL A
+		 LEFT JOIN CEO_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+		 LEFT JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+		 WHERE A.IS_DELETED = 'N'
+		   AND A.MEM_ID = #{ memId }
+	</select>
+	
+	<select id="selectCoupon" resultMap="couponResultMap">
+		SELECT
+			    A.CP_CODE,
+			    A.CP_NAME, 
+			    A.START_DATE, 
+			    A.DISCOUNT_WON, 
+			    A.END_DATE, 
+			    A.DC_CONDITION
+		  FROM  COUPON_TBL A
+		  JOIN  COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
+		 WHERE  B.MEM_CODE = #{ memCode }
+	</select>
+	
+	<update id="modifyInfo">
+		UPDATE MEMBER_TBL
+   		   SET ADDRESS = #{ address }
+     		 , POST_CODE = #{ postCode }
+     		 , D_ADDRESS = #{ dAddress }
+     		 , PHONE = #{ phone }
+ 		 WHERE MEM_CODE = #{ memCode }
+	</update>
+	
+	<update id="modifyCeo">
+		UPDATE CEO_TBL
+		   SET CEO_NAME = #{ name }
+		 WHERE MEM_CODE = #{ memCode }  
+	</update>
+	
+	<update id="modifyStore">
+		UPDATE STORE_TBL
+		   SET STORE_NAME = #{ storeName }
+		     , STORE_IMG  = #{ fileName }
+			 , STORE_INFO = #{ storeInfo }
+			 , WORK_TIME  = #{ workTime }
+	 	 WHERE MEM_CODE = #{ memCode }  				 
+	</update>
+	
+</mapper>

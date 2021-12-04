@@ -10,7 +10,7 @@
     <title>header</title>
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     </head>
 <body>
     <header class="header at-container">
@@ -22,38 +22,36 @@
                 <ul class="df_ul headerItem">
                 <!-- 로그인 후 -->
                 <c:if test="${ sessionScope.loginMember != null }">
-                	<!-- 소비자의 경우 -->
-                    <c:if test="${ sessionScope.loginMember.memType == 'user' }">
-	                  	<li id="ca_lo">
-	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
-	                  	</li>
-                    </c:if>
-                    <!-- 사업자의 경우 -->
-                    <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
-	                  	<li>
-	                    	<a href="${ pageContext.servletContext.contextPath }/user/cart">상점관리</a>
-	                  	</li>
-	                  	<li>
-                  		<a href="${ pageContext.servletContext.contextPath }/owner/coupon"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                   <!-- 소비자의 경우 -->
+                	<c:if test="${ sessionScope.loginMember.memType == 'user' }">
+                   		<li id="ca_lo">
+                    		<a href="#">장바구니</a>
                   		</li>
+                 		 <li>
+                  			<a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  		</li>
+                   </c:if>
+                   
+                   <!-- 사업자인 경우 -->
+                    <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
+                   		<li>
+                    		<a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 30px" src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.nickname}</a>
+                    	</li>
                     </c:if>
+                    
                     <!-- 관리자의 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
 	                  	<li>
 	                    	<a href="${ pageContext.servletContext.contextPath }/manager/normalMember">관리페이지</a>
 	                  	</li>
-	                  	
-                    </c:if>
-                  <li>
-                  	<a href="#"><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname }</a>
-                  </li>
-                  <li>
-                    <a href="${ pageContext.servletContext.contextPath }/member/logout">로그아웃</a>
-                  </li>
-                  <li >
-                    <a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
-                  </li>
-                </c:if>
+                    </c:if> 
+                    	<li>
+                    		<a href="${ pageContext.servletContext.contextPath }/member/logout">로그아웃</a>
+                 	   </li>
+                  		<li>
+                    		<a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
+                  		</li>
+                  </c:if> 
                 <!-- 로그인 전 -->
                 <c:if test="${ sessionScope.loginMember == null }">
                   <li>
@@ -63,6 +61,7 @@
                     <a href="">회원가입</a>
                   </li>
                 </c:if>
+                
               </ul>
           </div>
         </div>
@@ -124,10 +123,10 @@
                 </div>
             </div> 
             </li>
-            <a href="${ pageContext.servletContext.contextPath }/user/category/recommend">오늘의 추천</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/famousStore/famous">우리동네 인기 맛집</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a>
-            <a href="${ pageContext.servletContext.contextPath }/user/famousStore/new">신규 반찬 가게</a>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/category/recommend">오늘의 추천</a></li>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore/famous">우리동네 인기 맛집</a></li>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a></li>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore/new">신규 반찬 가게</a></li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
