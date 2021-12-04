@@ -32,34 +32,35 @@
               <br><br>
               <h3><strong>개인정보 변경</strong></h3>
             </div>
+            <form action="" method="post">
             <div class="changeUserInfo">
-              <label>새비밀번호</label><input type="password">
+              <label>새비밀번호</label><input type="password" name="password">
             </div>
             <div class="changeUserInfo">
               <label>새비밀번호 확인</label><input type="password">
             </div>
             <div class="changeUserInfo">
-              <label>이름</label><input type="text">
+              <label>이름</label><input type="text" name="name">
             </div>
             <div class="changeUserInfo">
-              <label>닉네임</label><input type="text">
+              <label>닉네임</label><input type="text" name="nickname">
             </div>
             <div class="changeUserInfo">
-              <label>이메일</label><input type="email">
+              <label>이메일</label><input type="email" name="email">
             </div>
             <div class="changeUserInfo">
-              <label>우편번호</label><input type="text">
+              <label>우편번호</label><input type="text" name="zipcode">
             </div>
             <div class="changeUserInfo">
-              <label>주소</label><input type="text">
+              <label>주소</label><input type="text" name="address">
             </div>
             <div class="changeUserInfo">
-              <label>상세주소</label><input type="text">
+              <label>상세주소</label><input type="text" name="datailAdress">
             </div>
             <div id="confirmInfobtn">
-              <button>&nbsp;&nbsp;확 &nbsp;&nbsp; 인</button>
+              <button type="submit">&nbsp;&nbsp;확 &nbsp;&nbsp; 인</button>
             </div>
-            
+            </form>
           </div>
         </div>
       </div>
