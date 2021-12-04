@@ -9,6 +9,8 @@ public interface ManagerDAO {
 
 	List<ManagerDTO> selectManagers();
 
-	MemberDTO normalMemberSelect(MemberDTO member);
+	List<MemberDTO> normalMemberSelect(MemberDTO member);
+
+	int deleteMembers(int[] deleteMember);
 
 }

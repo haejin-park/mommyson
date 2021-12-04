@@ -1,14 +1,21 @@
 package com.sd.mommyson.manager.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.ManagerDTO;
+import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.service.MemberService;
 
 @Controller
 @RequestMapping("/manager/*")
@@ -23,7 +30,24 @@ public class ManagerController {
 	
 	/* 일반 회원 조회 */
 	@GetMapping("normalMember")
-	public void normalMember() {}
+	public void normalMember(MemberDTO member, Model model) {
+		
+		List<MemberDTO> normalMemberList = managerService.normalMemberSelect(member);
+		System.out.println("normalMemberList : " + normalMemberList);
+		model.addAttribute("normalMemberList", normalMemberList);
+	}
+	
+	/* 회원삭제 */
+	@PostMapping("deleteMember")
+	public void deleteMember(@RequestParam("chkMember") int[] deleteMembers) {
+		
+		
+		
+		
+		
+		managerService.deleteMembers(deleteMembers);
+		
+	}
 	
 	/* 사업자 회원 조회 */
 	@GetMapping("buisnessMember")

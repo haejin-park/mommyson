@@ -78,7 +78,6 @@
 			 , B.REP_COUNT
 			 , C.MEM_CODE
 		     , C.ACCOUNT
-			 , C.START_DATE
 			 , C.STORE_NO
 			 , C.CEO_NAME
 			 , D.STORE_IMG

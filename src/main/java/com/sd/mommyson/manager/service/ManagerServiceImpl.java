@@ -19,13 +19,13 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 	
 	@Override
-	public MemberDTO normalMemberSelect(MemberDTO member) {
+	public List<MemberDTO> normalMemberSelect(MemberDTO member) {
 		
-		MemberDTO normalMemberList = null;
+		List<MemberDTO> normalMemberList = null;
 		
 		normalMemberList = managerDAO.normalMemberSelect(member);
 		
-		return null;
+		return normalMemberList;
 	}
 
 	@Override
@@ -34,6 +34,12 @@ public class ManagerServiceImpl implements ManagerService {
 		List<ManagerDTO> managerList = managerDAO.selectManagers();
 		
 		return managerList;
+	}
+
+	@Override
+	public boolean deleteMembers(int[] deleteMember) {
+		
+		return managerDAO.deleteMembers(deleteMember) > 0? true : false;
 	}
 
 	

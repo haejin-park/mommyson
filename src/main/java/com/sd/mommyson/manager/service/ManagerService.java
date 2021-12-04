@@ -7,7 +7,9 @@ import com.sd.mommyson.member.dto.MemberDTO;
 
 public interface ManagerService {
 
-	public MemberDTO normalMemberSelect(MemberDTO member);
+	public List<MemberDTO> normalMemberSelect(MemberDTO member);
 
 	public List<ManagerDTO> selectManagers();
+
+	public boolean deleteMembers(int[] deleteMember);
 }
