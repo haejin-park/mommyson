@@ -17,9 +17,9 @@
 	</bean>
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
 		<!-- db 아이디 설정 -->
-		<property name="url" value="jdbc:oracle:thin:@tjoeunkn.iptime.org:1881:xe"/>
+		<property name="url" value="jdbc:log4jdbc:oracle:thin:@tjoeunkn.iptime.org:1881:xe"/>
 		<property name="username" value="C##MOMMYSON"/>
 		<property name="password" value="MOMMYSON"/>
 		<property name="defaultAutoCommit" value="false"/>
@@ -29,6 +29,21 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<!--Gmail -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="7777"/>
+		<property name="username" value="luckyhaejin1126@gmail.com"/>
+		<property name="password" value="godqhrgkwk!"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+	
 	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
@@ -51,4 +66,5 @@
 	<!-- <mybatis-spring:scan base-package="com.greedy.spring.member.model.dao"/> -->
 	<mybatis-spring:scan base-package="com.sd.mommyson.member.dao"/>
 	<mybatis-spring:scan base-package="com.sd.mommyson.owner.dao"/>
+	<mybatis-spring:scan base-package="com.sd.mommyson.manager.dao"/>
 </beans>

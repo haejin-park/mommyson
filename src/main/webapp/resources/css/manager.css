@@ -217,6 +217,16 @@
    background-color: #F89E91 !important;
 }
 
+.gray_btn {
+    border: 1px solid #D7D4D4;
+    background-color: #D7D4D4;
+    width: 60px;
+    height: 30px;
+    border-radius: 5px;
+    color: white;
+    
+}
+
 .cre_btn {
     width: 250px;
     height: 36px;
@@ -293,15 +303,14 @@
 }
 
 .glass {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    
 }
 
 .searchtext {
     margin: 20px 0 12% 0;
     width: 400px;
     height: 32px;
-    border-radius: 1px !important;
   }
   
 .searchbutton{
@@ -322,4 +331,60 @@
   .top_box2 input:active{
       color: #F89E91;
   }
+  
+/* 날짜 div */
+  .date_box {
+      /* border: 1px solid salmon; */
+      vertical-align:middle;
+      display: inline-block;
+      text-align: center;
+      margin: 2% 0 4% 22%;
 
+  }
+
+  .date_box .calendar {
+      margin: 0 10px;
+
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border: 1px solid #D7D4D4;
+      font-size: 17px;
+      width: 200px;
+  
+      background:url('../images/sel_triangle1.png') no-repeat 97%;
+  }
+
+  .text_email{
+      width: 85%; border: 1px solid #EDEDED; padding-left: 3px;
+  }
+
+  .adjustment_table {
+    text-align: center;
+    border: 0.2px solid #ddd;
+  }
+
+  .adjustment_table tr th, .adjustment_table tr td { border-bottom: 0; border: 1px solid #ddd; height: 40px; }
+
+
+  input[type="date"]::-webkit-calendar-picker-indicator{
+    opacity:0;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+    /* 공지사항 추가 */
+  .sel_notice {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    
+      border-radius: 5px;
+      padding: 0 40px 0 20px;
+
+      font-size: 17px;
+      margin-bottom: 10px;
+  
+      background: url('../images/select_arrow.png') no-repeat 97%;
+      background-size: 20px;
+    }

@@ -61,4 +61,15 @@ public class MemberServiceImpl implements MemberService {
 		return categoryList;
 	}
 
+	
+	/* 아이디 중복 검사 */
+	@Override
+	public int idChk(String memId){
+		
+		int result = memberDAO.idChk(memId);
+		
+		return result;
+	}
+	
+
 }

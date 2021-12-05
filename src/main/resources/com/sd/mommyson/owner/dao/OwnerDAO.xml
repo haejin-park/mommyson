@@ -57,6 +57,15 @@
 		<result property="dCcon" column="DC_CONDITION"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="img" column="RV_IMG"/>
+		<result property="content" column="RV_CONTENT"/>
+		<result property="grade" column="RV_GRADE"/>
+		<result property="rvCode" column="RV_CODE"/>
+	</resultMap>
+	
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
 		      A.ADDRESS
@@ -115,5 +124,22 @@
 		)
 		
 	</insert>
+	
+	<select id="selectReview" resultMap="reviewResultMap">
+		SELECT
+				A.RV_CODE
+			  , A.MEM_CODE
+			  , A.RV_COMTENT
+			  , B.NICKNAME
+		  FROM REVIEW_TBL A
+		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
+		  JOIN ORDER_TBL C ON ()
+		 WHERE B.IS_DELETED = 'N'
+		   AND B.MEM_TYPE = 'user'
+		   AND C.STORE_NAME = #{ }
+		  
+				
+	
+	</select>
 	
 </mapper>

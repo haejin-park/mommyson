@@ -1,6 +1,7 @@
 package com.sd.mommyson.owner.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -16,5 +17,12 @@ public interface OwnerDAO {
 	public CouponDTO insertCoupon(CouponDTO coupon);
 
 	public List<ReviewDTO> selectReview(ReviewDTO review);
+	
+	public int modifyInfo(Map<String, String> modifyInfo);
+
+	public int modifyCeo(Map<String, String> modifyInfo);
+
+	public int modifyStore(Map<String, String> modifyInfo);
+
 	
 }

@@ -3,7 +3,7 @@ package com.sd.mommyson.member.dao;
 import java.util.HashMap;
 import java.util.List;
 
-import com.sd.mommyson.member.dto.CeoDTO;
+import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
 public interface MemberDAO {
@@ -19,4 +19,9 @@ public interface MemberDAO {
 	public List<HashMap<String, String>> selectCategoryList();
 	
 	public MemberDTO selectOwner(MemberDTO member);
+
+	public List<ManagerDTO> selectManagers(String memId);
+
+	/*  아이디 중복검사 */
+	public int idChk(String memId);
 }

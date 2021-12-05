@@ -20,7 +20,7 @@
 <body>
 
 	<jsp:include page="../commons/header.jsp"/>
-	
+	<br>
 	<form>
 	    <img class=cart1 src="${ pageContext.servletContext.contextPath }/resources/images/cart1.png" >
 	    <table id="table1">
@@ -38,17 +38,17 @@
 	        <td><img class=chicken src="${ pageContext.servletContext.contextPath }/resources/images/chicken.png"><br>고추장 야채 찜닭</td>
 	        <td>10,000원</td>
 	        <td>
-	          <div class="number">
-	            <a href="#" id="decreaseQuantity"> - </a>
+          	<div class="number">
+            	<a href="#" id="decreaseQuantity"> - </a>
 	            <span id="numberUpDown">1</span>
 	            <a href="#" id="increaseQuantity"> + </a>
-	          </div>
+         	</div>
 	        </td>
 	        <td>10,000원</td>
 	      </tr>
 	    </table>
-	    <div id="div1">
-	      <table id="table2">
+    	<div id="div1">
+		  <table id="table2">
 	        <tr>
 	          <th>가게별 총 제품 금액(배달시 배송비 별도)</th>
 	          <td id="totalAmountByStore">10,000원</td>
@@ -66,79 +66,13 @@
 	    <br> 
 	    <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
 	    <br>  
-	      <button type="button" id="selectDelete">선택삭제</button>
-	      <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="package">방문포장</button>
-	      <button type="submit" id="delivery"><a href="deliveryPay.html">배달예약</a></button>
-	    
-	
-	      <br>  
-	
+      	<button type="button" id="selectDelete">선택삭제</button>
+      	<button type="submit" id="package">방문포장</button>
+      	<button type="submit" id="delivery">배달예약</button>
 	</form>  
-	<br><br><br><br>
-	<footer class="at-container" style="margin:0 auto">
-	  <ul class="df_ul ft_list">
-	      <li>
-	          <a href="">마미손맛 소개</a>   
-	      </li>
-	      <li>
-	          <a href="">이용약관</a>
-	      </li>
-	      <li>
-	          <a href="">개인정보처리방침</a>
-	      </li>
-	      <li>
-	          <a href="">전자금융거래이용약관</a>
-	      </li>
-	  </ul>
-	  <div class="ft_img_line">
-	      <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
-	      <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-	      <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
-	  </div>
-	  <div class="ft_info">
-	      <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
-	      <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
-	      <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
-	      <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
-	  </div>
-	  <div class="manager_center">
-	      <h4>고객센터</h4>
-	      <div class="callNum">
-	          <img src="${ pageContext.servletContext.contextPath }/resources/images/callImg.png" alt="call">
-	          <span>1644 - 1234</span>    
-	      </div>
-	      <p>평일 10:00~18:50</p>
-	      <p>점심시간 12:00~13:00</p>
-	      <p>(주말과 공휴일은 휴무입니다.)</p>
-	  </div>
-	</footer>
-	
-	<script>
-	  // 태그 div 출력 이벤트
-	  $('#search').on('keyup', function() {
-	    let text = $('#search').val();
-	    if(text.charAt(text.length-1) == '#') {
-	     $('#tags').css('display', 'block');
-	    } else {
-	     $('#tags').css('display', 'none');
-	    }
-	  });
-	
-	  // 태그 클릭 이벤트
-	  $('.tag').on('click',function(e) {
-	   
-	   let text = $('#search').val();
-	   let index = text.lastIndexOf('#');
-	   let replace = text.replaceAt(index, e.target.value + ", ");
-	   $('#search').val(replace);
-	   $('#tags').css('display', 'none');
-	   $('#search').focus();
-	  });
-	
-	  String.prototype.replaceAt=function(index, character) {
-	    return this.substr(0, index) + character + this.substr(index+character.length); 
-	  }
-	</script>
+	<br><br><br><br><br>
+    <jsp:include page="../commons/footer.jsp"/>
+
 	<script>
 	 
 	  /* 전체 체크, 해제 */
