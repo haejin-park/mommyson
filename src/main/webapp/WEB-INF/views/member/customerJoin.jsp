@@ -43,6 +43,7 @@
         
     }
     </script>
+
 </head>
 <body>
     <br><br>
@@ -53,7 +54,7 @@
             <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         </div>
         <div class="text">
-            <form action="auth.do" method="POST" onsubmit="return validate();"> 
+            <form action="#" method="POST" onsubmit="return validate();"> 
             <input type="text" class="input1" name="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
             <button type="button" name="idChk" id="idChk" onclick="idChk1()" value="N">중복확인</button>
             <br><br>
@@ -71,16 +72,17 @@
             <input type="button" id="searchZipCode" value="검색">
             <br><br>
             <input type="text" class="input1" name="address1" id="address1" placeholder="주소를 입력해주세요" readonly>
+            <button type="button" name="locationCode" id="locationCode" onclick="locationCode1()">지역코드</button>
             <br><br>
             <input type="text" class="input1" name="address2" id="address2" placeholder="상세주소를 입력해주세요" required>
             <br><br>
-            </form>
             <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
-            <button type="submit" name="submit" id="submit">전송</button>
+            <button  type="submit" class ="submit"  name="submit" id="submit">전송</button>
             <br><br>
-            <form action="emailVerification.do${dice}" method="post">
-            <input type="number" class="input1" name="code" id="code" placeholder="인증번호를 입력해주세요">
+            <input type="number" class="mail_check_button" name="code" id="code" placeholder="인증번호를 입력해주세요">
             <button type="submit" name="submit" id="submit">확인</button>
+            <div class = "clearfix"></div>
+            <span id="mail_check_input_box_warn"></span>
             <br><br>
             </form>
             <!-- 모달 띄우기 -->
@@ -149,6 +151,10 @@
         </div>
     </div>
     <jsp:include page="../commons/footer.jsp"/>
+   
+   <!-- 인증번호 이메일 전송 -->
+
+   
    
      <script> 
         function validate(){
@@ -233,21 +239,7 @@
                 return false;
             }
 
-            if(email.value == ""){
-                alert("이메일을 입력해주세요.")
-                email.focus()
-                return false;
-            }
 
-            if(!chk(/^[\w]{4,}@[\w]+(\.[\w]+){1,3}$/,email,"이메일 형식에 어긋납니다.")){
-                return false;
-            }
-
-            if(code.value == ""){
-                alert("인증 번호를 입력해주세요.")
-                code.focus()
-                return false;
-            }
             if(zipCode.value == ""){
                 alert("우편번호 검색해주세요.")
                 zipCode.focus()
@@ -264,14 +256,33 @@
                 return false;
             }
 
+        
+            
+            if(email.value == ""){
+                alert("이메일을 입력해주세요.")
+                email.focus()
+                return false;
+            }
+
+            if(!chk(/^[\w]{4,}@[\w]+(\.[\w]+){1,3}$/,email,"이메일 형식에 어긋납니다.")){
+                return false;
+            }
+
+            if(code.value == ""){
+                alert("인증 번호를 입력해주세요.")
+                code.focus()
+                return false;
+            }
+            
+
             if(all.checked == ""){
                 alert("약관 전체 동의를 체크해주세요.");
                 agree.focus();
                 return false;
             }
-        
         }
-
+        
+        
         function chk(re, ele, msg){
                 if(!re.test(ele.value)){
                     alert(msg);
@@ -283,7 +294,65 @@
 
         
     </script> 
+        
+    <script>
+    function locationCode1(){
+    	let address1 = $('#address1').val();
+    	$.ajax({
+    		url : "${ pageContext.servletContext.contextPath }/member/locationCode",
+    		type : "post",
+    		data : {
+    			address1 : address1
+    		},
+    		async: false,
+    		success:function(data){
+    		},
+    		error:function(error){
+    			alert(error);
+    		}
+    	
+    	});
+    }
+    </script>
     
+
+    <script>
+		
+        var code =""; /* 이메일전송 인증번호 저장을 위한 코드 */
+        
+        $(".submit").click(function(){
+    		
+    		var email = $("#email").val(); /* 입력한 이메일 */
+    		$.ajax({
+    			type:"GET",
+    			url:"mailCheck?email=" + email,
+    			success:function(data){  /* memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 */
+    				console.log("data : " + data);  
+    				code = data;
+    			}
+    		});
+    	});
+        
+         /* 인증번호 비교(해당 메서드는 인증번호 입력란에 데이터를 입력한 뒤 마우스로 다른 곳을 클릭 시에 실행이 됩니다.) 
+	        일치할 경우 span태그에 "인증번호가 입치합니다."라는 문구와 class속성이 correct(초록색)로 변경됩니다. 
+			불일치할 경우 span태그에 "인증번호를 다시 확인해주세요."라는 문구와 class속성이 incorrect(빨간색)로 변경됩니다. 
+        */
+        
+        $(".code").blur(function(){
+        	var inputCode = $(".code").val(); /* 입력코드 */
+			var checkResult = $("#mail_check_input_box_warn"); /* 비교결과 */
+			
+			if(inputCode == code){
+				checkResult.html("인증번호가 일치합니다.");
+				checkResult.attr("class", "correct");
+			} else {
+				checkResult.html("인증번호를 다시 확인해주세요.");
+				checkResult.attr("class", "incorrect")
+				
+			}	
+			
+        });
+    </script>
     
     
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -305,13 +374,7 @@
 
 	</script>
 
-    <script>
-		const $goJoin = document.getElementById("goJoin");
-            $goJoin.onclick = function() {
-                location.href = "${ pageContext.servletContext.contextPath }";
-            }
 
-    </script>
     <script>
         // 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선텍 된다
         $("#all").on("change",function(){
@@ -333,6 +396,13 @@
 
     </script>
     
+    <script>
+		const $goJoin = document.getElementById("goJoin");
+            $goJoin.onclick = function() {
+                location.href = "${ pageContext.servletContext.contextPath }";
+            }
+
+    </script>
 
 
 </body>

@@ -19,11 +19,13 @@ public interface MemberService  {
 
 	/*  아이디 중복검사 */
 	public int idChk(String memId);
-	
-	
-	/* 회원 가입 */
-//	public void join(Map<String, Object>map, MemberDTO dto);
 
-	/* 회원 인증 */
-//	public void authentication(MemberDTO dto);
+	/* 회원가입시 지역코드 조회 */
+	public String locationCode(String locationName);
+	
+	
+	/* 사용자 회원가입 */
+//	public void customerJoin(Map<String, Object>map, MemberDTO dto);
+
+
 }

@@ -38,6 +38,7 @@ width:100%;
     height: 40px;
     border-radius: 9px;
 }
+
 #idChk
 {
     height:40px;
@@ -46,6 +47,8 @@ width:100%;
     background-color:rgb(247, 170, 145);
     }    
 
+
+
 #button{
     height:40px;
     width:100px;
@@ -53,6 +56,12 @@ width:100%;
     background-color:rgb(247, 170, 145);
     }
 
+#locationCode{
+	height:40px;
+    width:100px;
+    border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}
 
 #submit{
     height:40px;
@@ -77,5 +86,19 @@ width:100%;
     background-color:rgb(247, 170, 145);
 }
 
+ 
+.correct{
+    color : green;
+}
 
+.incorrect{
+    color : red;
+}
+
+#code{
+	width: 300px; 
+    height: 40px;
+    border-radius: 9px;
+}
+ 
 
