@@ -57,6 +57,13 @@
 		<result property="dCcon" column="DC_CONDITION"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
+		<id property="tagNo" column="TAG_NO"/>
+		<result property="tagName" column="TAG"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+	
+	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
 		      A.ADDRESS
@@ -80,6 +87,7 @@
 		   AND A.MEM_ID = #{ memId }
 	</select>
 	
+	<!-- 사업자의 쿠폰을 불러오는 쿼리문 -->
 	<select id="selectCoupon" resultMap="couponResultMap">
 		SELECT
 			    A.CP_CODE,
@@ -93,28 +101,159 @@
 		 WHERE  B.MEM_CODE = #{ memCode }
 	</select>
 	
-	<update id="modifyInfo">
+	<!-- 사업자 가게정보 변경 쿼리문 -->
+	<update id="modifyInfo" >
 		UPDATE MEMBER_TBL
-   		   SET ADDRESS = #{ address }
-     		 , POST_CODE = #{ postCode }
-     		 , D_ADDRESS = #{ dAddress }
-     		 , PHONE = #{ phone }
- 		 WHERE MEM_CODE = #{ memCode }
+   		   SET ADDRESS =
+   		   <choose>
+   		   	<when test="address != null and address != ''">
+   		   		#{ address }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.address }
+   		   	</otherwise>
+   		   </choose>
+     		 , POST_CODE = 
+     		<choose>
+   		   	<when test="postCode != null and postCode != ''">
+   		   		#{ postCode }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.postCode }
+   		   	</otherwise>
+   		   </choose>
+     		 , D_ADDRESS = 
+     		<choose>
+   		   	<when test="dAddress != null and dAddress != ''">
+   		   		#{ dAddress }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.dAddress }
+   		   </otherwise>
+   		   </choose>
+		   , PHONE =
+		   <choose>
+   		   	<when test="phone != null and phone != ''">
+   		   		#{ phone }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.phone }
+   		   	</otherwise>
+   		   </choose>
+ 		 WHERE MEM_CODE = #{ member.memCode }
 	</update>
 	
+	<!-- 사업자 가게정보 변경 쿼리문 -->
 	<update id="modifyCeo">
 		UPDATE CEO_TBL
-		   SET CEO_NAME = #{ name }
-		 WHERE MEM_CODE = #{ memCode }  
+		   SET CEO_NAME = 
+		   <choose>
+   		   	<when test="name != null and name != ''">
+   		   		#{ name }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.ceo.name }
+   		   	</otherwise>
+   		   </choose>
+   		    , STORE_NO = 
+   		    <choose>
+   		   	<when test="no != null and no != ''">
+   		   		#{ no }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.ceo.no }
+   		   	</otherwise>
+   		   </choose>
+		 WHERE MEM_CODE = #{ member.memCode }  
 	</update>
 	
+	<!-- 사업자 가게정보 변경 쿼리문 -->
 	<update id="modifyStore">
 		UPDATE STORE_TBL
-		   SET STORE_NAME = #{ storeName }
-		     , STORE_IMG  = #{ fileName }
-			 , STORE_INFO = #{ storeInfo }
-			 , WORK_TIME  = #{ workTime }
-	 	 WHERE MEM_CODE = #{ memCode }  				 
+		   SET STORE_NAME = 
+		   	<choose>
+   		   	<when test="storeName != null and storeName != ''">
+   		   		#{ storeName }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.ceo.store.storeName }
+   		    </otherwise>
+   		   </choose>
+		     , STORE_IMG  = 
+		    <choose>
+   		   	<when test="fileName != null and fileName != ''">
+   		   		#{ fileName }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.ceo.store.storeImg }
+   		   </otherwise>
+   		   </choose>
+			 , STORE_INFO = 
+			<choose>
+   		   	<when test="storeInfo != null and storeInfo != ''">
+   		   		 #{ storeInfo }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.ceo.store.storeInfo }
+   		   	</otherwise>
+   		   </choose>
+   		   , WORK_TIME =
+   		   <choose>
+   		   	<when test="workTime != null and workTime != ''">
+   		   		 #{ workTime }
+   		   	</when>
+   		   	<otherwise>
+   		   		#{ member.ceo.store.workTime }
+   		   </otherwise>
+   		   </choose>
+	 	 WHERE MEM_CODE = #{ member.memCode }  				 
 	</update>
+	
+	<!-- 사업자 비밀번호 변경 쿼리문 -->
+	<update id="modifyPwd">
+		UPDATE MEMBER_TBL
+		   SET MEM_PWD = #{ memPwd }
+		 WHERE MEM_CODE = #{ memCode }   
+	</update>
+	
+	<!-- 태그에 대한 내용을 가져오는 쿼리문 -->
+	<select id="selectTag" resultMap="tagResultMap">
+		SELECT
+		       TAG_NO
+		     , TAG
+  		  FROM TAGS_TBL
+  		 WHERE STATUS = 'Y'  
+	</select>
+	
+	<!-- 상품등록을 위한 쿼리문 -->
+	<insert id="registProduct" parameterType="hashmap">
+		INSERT ALL
+		  INTO PRODUCT_TBL 
+		VALUES
+	    (
+		  SEQ_PRODUCT.NEXTVAL,
+		  #{ product.sdName },
+		  #{ product.mDate },
+		  #{ product.price },
+		  #{ product.ingredient },
+		  #{ product.volume },
+		  #{ fileName },
+		  #{ product.category },
+		  default,
+		  #{ memCode },
+		  #{ product.orderableStatus },
+		  #{ product.eDate },
+		  default,
+		  #{ product.categoryCode },
+		  #{ product.storageMethod },
+		  #{ product.detail }
+	    )
+	    <foreach collection="tagList" item="item">
+	    INTO PRODUCT_TAG_TBL 
+	    VALUES
+	      (SEQ_PRODUCT.CURRVAL, #{ item }) 
+	      </foreach>
+	    SELECT * FROM DUAL
+	</insert>
 	
 </mapper>

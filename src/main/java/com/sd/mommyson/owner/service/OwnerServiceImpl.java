@@ -13,6 +13,7 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 @Service
 public class OwnerServiceImpl implements OwnerService{
@@ -40,7 +41,7 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int modifyInfo(Map<String, String> modifyInfo) {
+	public int modifyInfo(Map<String, Object> modifyInfo) {
 
 		System.out.println(modifyInfo);
 		
@@ -50,7 +51,7 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int modifyCeo(Map<String, String> modifyInfo) {
+	public int modifyCeo(Map<String, Object> modifyInfo) {
 		
 		int result = ownerDAO.modifyCeo(modifyInfo);
 		
@@ -58,9 +59,31 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int modifyStore(Map<String, String> modifyInfo) {
+	public int modifyStore(Map<String, Object> modifyInfo) {
 
 		int result = ownerDAO.modifyStore(modifyInfo);
+		
+		return result;
+	}
+
+	@Override
+	public int modifyPwd(MemberDTO member) {
+		
+		int result = ownerDAO.modifyPwd(member);
+		
+		return result;
+	}
+
+	@Override
+	public List<TagDTO> selectTag() {
+
+		return ownerDAO.selectTag();
+	}
+
+	@Override
+	public int registProduct(Map<String, Object> productInfo) {
+
+		int result = ownerDAO.registProduct(productInfo);
 		
 		return result;
 	}
