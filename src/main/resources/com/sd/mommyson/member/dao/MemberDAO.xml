@@ -104,7 +104,7 @@
 		    , A.LOCATION_CODE
 		    , A.NICKNAME
 		    , B.ACCOUNT
-		    , B.START_DATE
+		    <!-- , B.START_DATE -->
 		    , B.STORE_NO
 		    , B.CEO_NAME
 		    , C.STORE_NAME

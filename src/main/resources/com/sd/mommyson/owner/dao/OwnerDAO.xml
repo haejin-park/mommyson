@@ -93,4 +93,27 @@
 		 WHERE  B.MEM_CODE = #{ memCode }
 	</select>
 	
+	<insert id="insertCoupon" >
+		INSERT
+		  INTO COUPON_TBL
+		(
+			CP_CODE, 
+			CP_NAME, 
+			START_DATE, 
+			DISCOUNT_WON, 
+			END_DATE, 
+			DC_CONDITION
+		)
+		VALUES
+		(
+			SEQ_CP_CODE, 
+			#{ cpName }, 
+			SYSDATE, 
+			#{ disWon }, 
+			#{ endDate }, 
+			#{ dCcon }
+		)
+		
+	</insert>
+	
 </mapper>

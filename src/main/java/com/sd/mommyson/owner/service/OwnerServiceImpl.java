@@ -10,6 +10,7 @@ import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
 public class OwnerServiceImpl implements OwnerService{
@@ -35,6 +36,20 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return ownerDAO.selectCoupon(member);
 	}
+
+	@Override
+	public CouponDTO insertCoupon(CouponDTO coupon) {
+		
+		return ownerDAO.insertCoupon(coupon);
+	}
+
+	@Override
+	public List<ReviewDTO> selectReview(ReviewDTO review) {
+		
+		return ownerDAO.selectReview(review);
+	}
+
+	
 	
 
 }

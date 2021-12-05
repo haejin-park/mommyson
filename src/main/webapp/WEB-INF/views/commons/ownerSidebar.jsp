@@ -58,17 +58,14 @@
                             <ul class="collapse list-unstyled" id="homeSubmenu">
                                 <li>
                                     <a href="../owners/product-regist.html">상품등록</a>
-                                    <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">상품등록</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/productRegist">상품등록</a>
                                 </li>
                                 <li>
                                     <a href="../owners/productManagement.html">판매 상품 관리</a>
                                     <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">판매 상품 관리</a>
                                 </li>
                                 <li>
-                                    <a href="#">오늘의 메뉴</a>
-                                </li>
-                                <li>
-                                    <a href="#">오늘의 할인</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/todayDiscount">오늘의 할인</a>
                                 </li>
                             </ul>
                         </li>
@@ -76,7 +73,7 @@
                             <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">주문관리</a><hr>
                             <ul class="collapse list-unstyled" id="pageSubmenu">
                                 <li>
-                                    <a href="#">주문접수</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/productRegist">주문접수</a>
                                 </li>
                                 <li>
                                     <a href="#">완료된 주문</a>
@@ -105,7 +102,7 @@
                             <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false">고객관리</a><hr>
                             <ul class="collapse list-unstyled" id="pageSubmenu2">
                                 <li>
-                                    <a href="#">리뷰관리</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/review">리뷰관리</a>
                                 </li>                                                            
                             </ul>
                         </li>

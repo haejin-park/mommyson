@@ -2,18 +2,21 @@ package com.sd.mommyson.owner.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.service.OwnerService;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -42,7 +45,7 @@ public class OwnerController {
 	}
 	
 	/* 쿠폰 발행 */
-	@RequestMapping("coupon")
+	@GetMapping("coupon")
 	public String coupon(@ModelAttribute("owner") MemberDTO member, Model model) {
 		
 		List<CouponDTO> coupon = ownerService.selectCoupon(member);
@@ -53,6 +56,17 @@ public class OwnerController {
 		
 		
 		return "owner/coupon";
+	}
+	
+	@PostMapping("coupon")
+	public String couponInsert(@ModelAttribute CouponDTO coupon, Model model, HttpSession session) {
+	
+		coupon.setCpName("cpName");
+		coupon.setdCcon(Integer.parseInt("dCcon"));
+		coupon.setDisWon(Integer.parseInt("disWon"));
+//		coupon.setEndDate(java.sql.Date("endDate"));
+		
+		return "redirect:/coupon";
 	}
 	
 	/* 가게정보 수정 */
@@ -72,5 +86,18 @@ public class OwnerController {
 	
 	/* 리뷰 */
 	@GetMapping("review")
-	public void review() {}
+	public String review(@ModelAttribute ReviewDTO review, Model model) {
+		
+		List<ReviewDTO> reviews = ownerService.selectReview(review);
+		System.out.println(reviews);
+		
+		return "";	
+		
+	}
+	
+	
+	
+	
+	
+	
 }
