@@ -214,7 +214,7 @@ public class UserController {
 			case "famous" : cg = "우리동네 인기 맛집"; break;
 		}
 		
-		
+				
 		mv.addObject("type", cg);
 		mv.setViewName("user/famousStore");
 		
