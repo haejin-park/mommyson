@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
+import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
@@ -80,7 +81,7 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public List<Pagination> selectNoticeList(Pagination pagination) {
+	public List<PostDTO> selectNoticeList(Pagination pagination) {
 		return managerDAO.selectNoticeList(pagination);
 	}
 
