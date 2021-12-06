@@ -56,6 +56,11 @@
 		<collection property="ceo" resultMap="ceoResultMap"/>
 		<collection property="manager" resultMap="managerResultMap"/>
 	</resultMap>
+	
+	<resultMap id="locationResultMap" type="com.sd.mommyson.member.dto.LocationDTO">
+		<id property="locationCode" column="LOCATION_CODE"/>
+		<result property="locationName" column="LOCATION_NAME"/>
+	</resultMap>
 
 	<select id="selectAll" resultType="_int">
 		SELECT * FROM TEST
