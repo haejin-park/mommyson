@@ -2,7 +2,6 @@ package com.sd.mommyson.user.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
-import com.sd.mommyson.member.dto.StoreDTO;
-import com.sd.mommyson.user.dto.PostDTO;
 import com.sd.mommyson.user.service.UserService;
 
 @Controller
