@@ -114,5 +114,13 @@ public class ManagerServiceImpl implements ManagerService {
 		
 		return result > 0? true : false;
 	}
+
+	@Override
+	public List<MemberDTO> selectSearchMemberList(String searchMember) {
+		
+		List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
+		
+		return searchMemberList;
+	}
 	
 }

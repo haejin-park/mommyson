@@ -124,7 +124,7 @@
                 	<div class="search_box">
 	                    <ul class="df_ul">
 	                        <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
-	                        <li><input type="search" class="searchtext" placeholder="회원 닉네임으로 검색하기"></li>
+	                        <li><input type="search" class="searchtext" name="searchTxt" placeholder="찾고싶은 내용 검색하기"></li>
 	                        <li><button type="submit" class="searchbutton">검색하기</button></li>
 	                    </ul>
                     </div>

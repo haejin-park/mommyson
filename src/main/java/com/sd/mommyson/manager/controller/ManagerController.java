@@ -79,6 +79,14 @@ public class ManagerController {
 		return result? "1" : "2";
 	}
 	
+	/* 회원검색 */
+	@GetMapping("searchMember")
+	public void searchMemberList(@RequestParam("searchTxt") String searchMember, Model model) {
+		
+		List<MemberDTO> searchMemberList = managerService.selectSearchMemberList(searchMember);
+		model.addAttribute("searchMemberList", searchMemberList);
+	}
+	
 	/* 사업자 회원 조회 */
 	@GetMapping("buisnessMember")
 	public void buisnessMember(MemberDTO member, Model model) {

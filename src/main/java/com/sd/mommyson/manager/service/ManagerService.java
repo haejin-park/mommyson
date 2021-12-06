@@ -43,4 +43,7 @@ public interface ManagerService {
 	/* 회원 블랙등록 */
 	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList);
 
+	/* 일반회원 검색 */
+	public List<MemberDTO> selectSearchMemberList(String searchMember);
+
 }
