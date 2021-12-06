@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,9 +43,11 @@
             <tbody>
               <tr>
                 <th scope="row"><input type="checkbox" name="" id=""></th>
+                <c:forEach var="review" items="${ reviews }">
                 <th>${ loginMember.nickname }</th>
                 <td>로찜마</td>
                 <td>로제찜닭 너무 맛있네요~</td>
+                </c:forEach>
               </tr>
              
             </tbody>
@@ -100,6 +103,7 @@
                   <tbody>
                   <tr>
                       <td><input type="checkbox" name="" id=""></td>
+                      
                       <td>01</td>
                       <td>자주 이용해주세요~</td>
                       <td>21-11-22</td>

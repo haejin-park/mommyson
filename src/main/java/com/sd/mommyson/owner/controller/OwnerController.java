@@ -76,10 +76,11 @@ public class OwnerController {
 		
 		//					items 이름 , 리스트이름
 		model.addAttribute( "coupon" ,coupon);
-		
-		
+	
 		return "owner/coupon";
 	}
+	
+
 	
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
 	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session,  HttpServletRequest request) {
@@ -300,21 +301,24 @@ public class OwnerController {
 		return "redirect:productManagement";
 	}
 	
+	/* 리뷰 관리 */
+	@GetMapping("review")
+	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
+		
+		List<ReviewDTO> reviews = ownerService.selectReview(review);
+		System.out.println(reviews);	
+		
+		return "owner/review";	
+		
+	}
+	
+	
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
 	public void productManagement() {}
 	
 	
-	/* 리뷰 */
-	@GetMapping("review")
-	public String review(@ModelAttribute ReviewDTO review, Model model) {
-		
-		List<ReviewDTO> reviews = ownerService.selectReview(review);
-		System.out.println(reviews);
-		
-		return "";	
-		
-	}
+
 	
 	
 	

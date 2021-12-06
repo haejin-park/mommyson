@@ -17,11 +17,11 @@
 </head>
 <body>
 	<!-- 페이지가 로드되기 전에 메세지가 있으면 메세지에 대한 알럿을 띄워준다. // model을 requestScope 영역 안에서 사용된다. -->
-	<script>
+<script>
 	if(${ requestScope.message != null && requestScope.message != ''}){
 		alert('${ requestScope.message }');
 	}
-	</script>
+</script>
 	
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
