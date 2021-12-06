@@ -191,7 +191,7 @@ public class UserController {
 		String searchValue = (String) model.getAttribute("searchValue");
 		
 		Map<String, String> searchMap = new HashMap<>();
-		
+		System.out.println("");
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = managerService.selectNoticeTotalCount(searchMap);
 		
