@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.user.dao.UserDAO;
-import com.sd.mommyson.user.dto.PostDTO;
 
 @Service
 public class UserServiceImpl implements UserService{
