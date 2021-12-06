@@ -54,7 +54,6 @@
 		<collection property="user" resultMap="userResultMap"/>
 		<collection property="ceo" resultMap="ceoResultMap"/>
 		<collection property="manager" resultMap="managerResultMap"/>
-		<collection property="locationCode" column="locationResultMap"/>
 	</resultMap>
 	
 	<resultMap id="locationResultMap" type="com.sd.mommyson.member.dto.LocationDTO">
