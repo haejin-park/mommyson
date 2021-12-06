@@ -16,6 +16,7 @@
     	<result property="Status" column="STATUS"/>
     </resultMap>
     
+    <!-- 연습 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
     	       A.POST_NO
@@ -30,5 +31,22 @@
 		FROM POST_TBL A		
     
     </select>
+    
+    <!-- 공지사항 페이지네이션 페이지수  -->
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+               COUNT(*)
+          FROM POST_TBL A
+	      JOIN BOARD_TBL B ON(A.CATEGORY_CODE = B.CATEGORY_CODE)
+    	<where>
+    		<if test="searchCondition != null">
+				B.D_TYPE = #{ searchCondition }
+    		</if>
+			<if test="searchValue != null">
+	        	A.POST_TITLE LIKE '%' || #{ searchValue } || '%' 	
+			</if>
+			A.STATUS = 'N'
+    	</where>
+	</select>
     
     </mapper>

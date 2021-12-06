@@ -1,6 +1,9 @@
 package com.sd.mommyson.user.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,13 @@ public class UserServiceImpl implements UserService{
 		List<PostDTO> noticeList = userDAO.selectNotice();
 		
 		return noticeList;
+	}
+
+	@Override
+	public int selectTotalCount(HttpSession session, Map<String, String> searchMap) {
+		
+		int totalCount = userDAO.selectTotalCount(session,searchMap);
+		return totalCount;
 	}
 
 }

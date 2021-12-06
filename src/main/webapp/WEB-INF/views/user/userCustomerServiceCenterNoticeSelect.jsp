@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,10 +88,18 @@
                     <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
                   </ul>
                   <ul>
-                  	<form action="{ pageContext.servletContext.contextPath }/ucc/uccNoticeSelect" method="post">
-                      <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                      <input type="text" class="searchtext" name="currentPage" value="1" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                      <button type="submit" class="searchbutton">검색하기</button></li>
+                  	<form action="${ pageContext.servletContext.contextPath }/ucc/uccNoticeSelect" method="get">
+                  	    <input type="hidden" name="currentPage" value="1">
+                  	     <select id="searchCondition" name="searchCondition">
+							<option value="notice" ${ requestScope.selectCriteria.searchCondition eq "notice"? "selected": "" }>카테고리</option>
+							<option value="guide" ${ requestScope.selectCriteria.searchCondition eq "guide"? "selected": "" }>작성자</option>
+							<option value="check" ${ requestScope.selectCriteria.searchCondition eq "check"? "selected": "" }>제목</option>
+							<option value="event" ${ requestScope.selectCriteria.searchCondition eq "event"? "selected": "" }>내용</option>
+							<option value="store" ${ requestScope.selectCriteria.searchCondition eq "store"? "selected": "" }>내용</option>
+						</select>
+                        <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+                        <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요">
+                        <button type="submit" class="searchbutton">검색하기</button>
                   	</form>
                    </ul>
                 </nav>
