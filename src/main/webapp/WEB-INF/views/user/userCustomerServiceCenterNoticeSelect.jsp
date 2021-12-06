@@ -72,20 +72,8 @@
               <!-- 페이징 -->
               <nav class="page_box" aria-label="Page navigation example">
                   <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                  <!--   <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li> -->
+                  	<jsp:include page="../commons/userPagination.jsp"></jsp:include>
                   </ul>
                   <ul>
                   	<form action="${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeSelect" method="get">

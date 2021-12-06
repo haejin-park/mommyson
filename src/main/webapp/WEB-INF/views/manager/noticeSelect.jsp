@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,14 +21,14 @@
         
         <div class="board_container">
             <h2>공지사항</h2>
-            <form action="">
-	            <select class="sel_notice" name="" id="">
-	                    <option value="">전체</option>
-	                    <option value="">안내</option>
-	                    <option value="">공지</option>
-	                    <option value="">점검</option>
-	                    <option value="">이벤트</option>
-	                    <option value="">사업자</option>
+            <form action="${ pageContext.servletContext.contextPath }/manager/noticeSelect" method="GET">
+	            <select class="sel_notice" name="searchCondition" id="">
+	                    <option value="all">전체</option>
+	                    <option value="notice">공지</option>
+	                    <option value="guide">안내</option>
+	                    <option value="check">점검</option>
+	                    <option value="event">이벤트</option>
+	                    <option value="owner">사업자</option>
 	             </select>
                 <table class="table board_table">
                     <colgroup>
@@ -39,7 +40,7 @@
                     </colgroup>
                     <thead style="background-color: #EDEDED;">
                         <tr>
-                            <th><input type="checkbox" name="ch1"></th>
+                            <th><input type="checkbox" name="ch1" id="chk_all"></th>
                             <th>번호</th>
                             <th>제목</th>
                             <th>작성일</th>
@@ -56,59 +57,28 @@
                             <td>2021-11-01</td>
                             <td>123</td>
                         </tr>
+                        <c:forEach items="${ requestScope.noticeList }" var="nl">
                         <tr>
                             <th scope="row"><input type="checkbox" name="ch1"></th>
-                            <td>1</td>
+                            <td>${ nl.postNo }</td>
                             <td class="tal">
-                                <a href="noticeDetailView.html">[안내] 방역수칙을 준수하는 안전한 외식생활 캠페인</a>
+                                <a href="noticeDetailView.html">${ nl.postTitle }</a>
                             </td>
-                            <td>2021-11-01</td>
-                            <td>500</td>
+                            <td>${ nl.postDate }</td>
+                            <td>${ nl.viewCnt }</td>
                         </tr>
-                        <tr>
-                            <th scope="row"><input type="checkbox" name="ch1"></th>
-                            <td>2</td>
-                            <td class="tal">
-                                <a href="noticeDetailView.html">[공지] 고객센터 일부 서비스 중단 안내(10일,12일)</a>
-                            </td>
-                            <td>2021-11-01</td>
-                            <td>200</td>
-                        </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
                 <input type="submit" value="삭제하기" class="black_btn delete_btn">
                 <a href="noticeWrite.html" class="black_btn write_btn" style="background-color: #F89E91;">작성하기</a>
             </form>
-            <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-                </ul>
-                <form action="">
-                    <ul>
-                        <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                        <button type="submit" class="searchbutton">검색하기</button></li>
-                    </ul>
-                </form>
-            </nav>
+            
+            <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
 
-    <jsp:include page="../commons/footer.jsp"></jsp:include>
+    <jsp:include page="../commons/footer.jsp"/>
 
     <script>
         $("#chk_all").click(function(){
@@ -118,5 +88,7 @@
          $("#homeSubmenu2").addClass("show");
          $("#homeSubmenu2 > li:first-child > a").attr("style","color: #F89E91 !important");
      </script>
+     
+   
 </body>
 </html>
