@@ -7,6 +7,7 @@ import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 
 public interface OwnerDAO {
@@ -26,5 +27,7 @@ public interface OwnerDAO {
 	public List<TagDTO> selectTag();
 
 	public int registProduct(Map<String, Object> productInfo);
+
+	public List<ProductDTO> selectProduct(int memCode);
 	
 }

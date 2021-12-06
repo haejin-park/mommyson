@@ -19,6 +19,7 @@ public class ProductDTO {
 	private String categoryCode;
 	private String storageMethod;
 	private String detail;
+	private String isDeleted;
 	
 	
 	public ProductDTO() {
@@ -28,7 +29,7 @@ public class ProductDTO {
 
 	public ProductDTO(int sdCode, String sdName, Date mDate, int price, String ingredient, String volume, String sdImg,
 			String category, float discountRate, int memCode, String orderableStatus, int eDate, String categoryCode,
-			String storageMethod, String detail) {
+			String storageMethod, String detail, String isDeleted) {
 		super();
 		this.sdCode = sdCode;
 		this.sdName = sdName;
@@ -45,6 +46,7 @@ public class ProductDTO {
 		this.categoryCode = categoryCode;
 		this.storageMethod = storageMethod;
 		this.detail = detail;
+		this.isDeleted = isDeleted;
 	}
 
 
@@ -197,6 +199,15 @@ public class ProductDTO {
 		this.detail = detail;
 	}
 
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 
 	@Override
 	public String toString() {
@@ -204,6 +215,7 @@ public class ProductDTO {
 				+ ", ingredient=" + ingredient + ", volume=" + volume + ", sdImg=" + sdImg + ", category=" + category
 				+ ", discountRate=" + discountRate + ", memCode=" + memCode + ", orderableStatus=" + orderableStatus
 				+ ", eDate=" + eDate + ", categoryCode=" + categoryCode + ", storageMethod=" + storageMethod
-				+ ", detail=" + detail + "]";
+				+ ", detail=" + detail + ", isDeleted=" + isDeleted + "]";
 	}
+
 }

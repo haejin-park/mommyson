@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -273,7 +272,17 @@ public class OwnerController {
 	
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
-	public void productManagement() {}
+	public void productManagement(Model model, HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
+		
+		int memCode = member.getMemCode();
+		
+		List<ProductDTO> productList = ownerService.selectProduct(memCode);
+		
+		model.addAttribute("productList",productList);
+		
+	}
 	
 	
 	/* 리뷰 */

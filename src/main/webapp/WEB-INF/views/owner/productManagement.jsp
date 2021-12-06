@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,30 +48,24 @@
               </tr>
             </thead>
             <tbody>
+              <c:forEach var="list" items="${ productList }">
               <tr>
                 <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">1</th>
-                <td>두부 무침</td>
-                <td>2021-11-23</td>
+                <th scope="row">${ list.sdCode}</th>
+                <td>${ list.sdName }</td>
+                <td>${ list.mDate }</td>
                 <td>2021-11-30</td>
-                <td><button class="couponBtn" id="btn1">판매</button></td>
+                <td>
+	               	<c:if test="${ list.orderableStatus eq 'Y' }">
+	                <button class="couponBtn" id="btn1">판매</button>
+	                </c:if>
+	                
+	                <c:if test="${ list.orderableStatus eq 'N' }">
+	                <button class="couponBtn" style="background-color : #777777;" id="btn1">판매중단</button>
+	                </c:if>
+                </td>
               </tr>
-              <tr>
-                <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">2</th>
-                <td>오뎅 볶음</td>
-                <td>2021-11-23</td>
-                <td>2021-11-30</td>
-                <td><button class="couponBtn" id="btn2" style="background-color: #777777;">판매 중단</button></td>
-              </tr>
-              <tr>
-                <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">3</th>
-                <td>로제찜닭마요</td>
-                <td>2021-11-24</td>
-                <td>2021-11-30</td>
-                <td><button class="couponBtn">판매</button></td>
-              </tr>
+              </c:forEach>
             </tbody>
           </table>
         </div>
