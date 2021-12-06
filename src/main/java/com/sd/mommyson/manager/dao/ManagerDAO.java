@@ -24,8 +24,12 @@ public interface ManagerDAO {
 
 	Map<String, String> selectManagerByMemCode(int memCode);
 
+	int deleteManager(List<String> list);
+
 	public int selectNoticeTotalCount(Map<String, String> searchMap);
 
 	public List<Pagination> selectNoticeList(Pagination pagination);
+
+	int idDupCheck(String memId);
 
 }

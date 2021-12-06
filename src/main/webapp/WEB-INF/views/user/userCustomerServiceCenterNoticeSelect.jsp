@@ -86,9 +86,11 @@
                     <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
                   </ul>
                   <ul>
+                  	<form action="{ pageContext.servletContext.contextPath }/ucc/uccNoticeSelect" method="post">
                       <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                      <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+                      <input type="text" class="searchtext" name="currentPage" value="1" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
                       <button type="submit" class="searchbutton">검색하기</button></li>
+                  	</form>
                    </ul>
                 </nav>
           </div>

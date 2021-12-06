@@ -146,7 +146,8 @@
 		  LEFT JOIN MANAGER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
 		  LEFT JOIN AUTH_TBL C ON (B.CODE = C.CODE)
 		 WHERE A.MEM_ID != #{ memId }
-		   AND MEM_TYPE = 'manager'
+		   AND A.MEM_TYPE = 'manager'
+		   AND A.IS_DELETED = 'N'
 	</select>
 	
 	<!-- 아이디 중복 검사 -->

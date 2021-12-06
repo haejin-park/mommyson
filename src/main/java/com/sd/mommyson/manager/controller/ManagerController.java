@@ -207,9 +207,43 @@ public class ManagerController {
 	
 	/* 관리자 삭제 */
 	@GetMapping("deleteManager/{cks}")
-	public String deleteManager(@PathVariable("cks") String[] arr) {
+	public String deleteManager(@PathVariable("cks") String[] arr, Model model) {
 		
-		return "redirect:/manager/mamageManager";
+		List<String> list = new ArrayList<String>();
+		for(String b : arr) {
+			list.add(b);
+		}
+		
+		int result = managerService.deleteManager(list);
+		
+		if(result > 0) {
+			model.addAttribute("result", "삭제에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "삭제에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/manageManager";
+	}
+	
+	/* 관리자 아이디 중복체크 */
+	@PostMapping(value = "idDupCheck", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String idDupCheck(@RequestParam("memId") String memId) {
+		
+		String message = "";
+		
+		int count = managerService.idDupCheck(memId);
+		System.out.println(count);
+		
+		if(count > 0) {
+			message = "사용이 불가능한 아이디입니다.";
+		} else {
+			message = "사용 가능한 아이디입니다.";
+		}
+		
+		System.out.println(message);
+		
+		return message;
 	}
 	
 	/* 관리자 정산 */

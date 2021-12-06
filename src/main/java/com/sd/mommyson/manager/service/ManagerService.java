@@ -23,11 +23,15 @@ public interface ManagerService {
 	public int insertNewManager(Map<String, Object> map);
 
 	public Map<String, String> selectManagerByMemCode(int memCode);
+
+	public int deleteManager(List<String> list);
 	
 	/* 공지사항 총 게시글 갯수 */
 	public int selectNoticeTotalCount(Map<String, String> searchMap);
 
 	/* 공지사항 리스트 */
 	public List<Pagination> selectNoticeList(Pagination pagination);
+
+	public int idDupCheck(String memId);
 
 }

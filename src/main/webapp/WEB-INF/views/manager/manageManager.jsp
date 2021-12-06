@@ -24,13 +24,20 @@
             <div class="top_box">
                 <p>관리자 조회</p>
                 <div class="top_btn">
-                <input type="button" value="수정" class="rev_btn">
                 <input type="button" value="삭제" class="del_btn" onclick="deleteManager();">
                 <script>
+                	if(${ requestScope.result != null }) {
+                		alert('${ requestScope.result }');
+                	}
+                
                 	// 관리자 삭제
                 	function deleteManager() {
-                		let cks = $("input:checkbox[name='ch1']:checked").val();
-                		location.href='${ pageContext.servletContext.contextPath }/manager/updateManager/' + cks;
+                		let cks = [];
+                		$("input:checkbox[name='ch1']:checked").each(function(i, ival) {
+                			cks.push($(this).val());
+                		});
+                		console.log(cks);
+                		location.href='${ pageContext.servletContext.contextPath }/manager/deleteManager/' + cks;
                 	}
                 </script>
                 </div>
@@ -57,7 +64,7 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row"><input type="checkbox" name="ch1"></th>
+                        <th scope="row"></th>
                         <td>
                         	슈퍼관리자
                         </td>
