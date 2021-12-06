@@ -75,13 +75,23 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
+	public int deleteManager(List<String> list) {
+		int result = managerDAO.deleteManager(list);
+		return result;
+	}
+	
 	public int selectNoticeTotalCount(Map<String, String> searchMap) {
 		return managerDAO.selectNoticeTotalCount(searchMap);
 	}
 
-	@Override
 	public List<Pagination> selectNoticeList(Pagination pagination) {
 		return managerDAO.selectNoticeList(pagination);
+	}
+
+	@Override
+	public int idDupCheck(String memId) {
+		int count = managerDAO.idDupCheck(memId);
+		return count;
 	}
 
 	

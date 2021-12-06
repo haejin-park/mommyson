@@ -128,6 +128,15 @@
 		  JOIN MANAGER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
 		 WHERE A.MEM_CODE = #{ memCode }
 	</select>
+	
+	<update id="deleteManager" parameterType="list">
+		UPDATE MEMBER_TBL
+		   SET IS_DELETED = 'Y'
+		 WHERE MEM_CODE IN
+		 <foreach collection="list" item="memCode" separator="," open="(" close=")">
+		 	#{ memCode }
+		 </foreach>
+	</update>
    
    <resultMap id="PostResultMap" type="com.sd.mommyson.manager.dto.postDTO" >
  	  <id property="postNo" column="POST_NO"/>
@@ -237,5 +246,14 @@
 	   <![CDATA[
 	  WHERE C.RNUM >= #{ startRow } 
        ]]>
+   </select>
+   
+   <select id="idDupCheck" parameterType="string" resultType="int">
+       SELECT 
+       		  COUNT(*) 
+       	 FROM MEMBER_TBL 
+       	WHERE MEM_ID = #{ memId }
+       	  AND IS_DELETED = 'N'
+       	  AND MEM_TYPE = 'manager'
    </select>
 </mapper>
