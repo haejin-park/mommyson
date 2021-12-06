@@ -106,7 +106,7 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public boolean memberAddBlack(List<Integer> memberAddBlackList) {
+	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList) {
 		
 		int result = managerDAO.memberAddBlack(memberAddBlackList);
 		

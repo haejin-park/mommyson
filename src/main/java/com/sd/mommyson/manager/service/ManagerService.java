@@ -40,6 +40,6 @@ public interface ManagerService {
 	public List<MemberDTO> blackMemberSelect(MemberDTO member);
 	
 	/* 회원 블랙등록 */
-	public boolean memberAddBlack(List<Integer> memberAddBlackList);
+	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList);
 
 }

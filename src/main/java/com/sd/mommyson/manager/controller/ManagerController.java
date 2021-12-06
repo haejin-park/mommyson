@@ -62,17 +62,24 @@ public class ManagerController {
 	}
 	
 	/* 회원블랙등록 */
-	@PostMapping("memberAddBlack")
+	@PostMapping("registBlack")
 	@ResponseBody
 	public boolean memberAddBlack(@RequestParam("chkMember") int[] chkMemberBlack) {
+		System.out.println("확인용");
+
 		
 		List<Integer> memberAddBlackList = new ArrayList<>();
 		
 		for(int i = 0; i < chkMemberBlack.length; i++) {
 			memberAddBlackList.add(chkMemberBlack[i]);
+			
 		}
 		
-		boolean result = managerService.memberAddBlack(memberAddBlackList);
+		for(Integer memberList : memberAddBlackList) {
+			System.out.println("memberList : " + memberList);
+		}
+		
+		boolean result = managerService.modifyMemberAddBlack(memberAddBlackList);
 		
 		return result;
 	}

@@ -73,23 +73,32 @@
 	                    </c:forEach>
 	                </tbody>
 	            </table>
-            	<input type="button" name="blackAdd" id="black_add" value="블랙등록" class="black_btn">
             </form>
+            	<input type="button" name="blackAdd" id="black_add" value="블랙등록" class="black_btn">
             
             <script>
             	$("#black_add").on('click', function(){
             		
             		let changeList = $(".board_table > tbody > tr");
-            		let chkMember = $(".chkbox:checked").val();
+            		let chkMember = [];
             		
+            		$("input:checkbox[name='chkMember']:checked").each(function(i, ival) {
+            			chkMember.push($(this).val());
+                     });
+            		
+            	
             		$.ajax({
-            			url : '/mommyson/manager/memberAddBlack',
+            			url : '${ pageContext.servletContext.contextPath }/manager/registBlack',
             			type : 'POST',
             			data : {
-            				chkMember : chkMember
+            				"chkMember" : chkMember
             			},
             			success: function(data){
-            				changeList.css('display','none');
+            				console.log(data);
+            				$(location).attr('href',"${ pageContext.servletContext.contextPath }");
+            			},
+            			error: function(error){
+            				console.log(error);
             			}
             		});
             	});
