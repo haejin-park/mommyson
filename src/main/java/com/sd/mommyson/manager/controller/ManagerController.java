@@ -62,26 +62,19 @@ public class ManagerController {
 	}
 	
 	/* 회원블랙등록 */
-	@PostMapping("registBlack")
+	@GetMapping(value = "registBlack/{chkMember}", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
-	public boolean memberAddBlack(@RequestParam("chkMember") int[] chkMemberBlack) {
-		System.out.println("확인용");
-
+	public String memberAddBlack(@PathVariable("chkMember") int[] chkMemberBlack) {
 		
 		List<Integer> memberAddBlackList = new ArrayList<>();
 		
 		for(int i = 0; i < chkMemberBlack.length; i++) {
 			memberAddBlackList.add(chkMemberBlack[i]);
-			
-		}
-		
-		for(Integer memberList : memberAddBlackList) {
-			System.out.println("memberList : " + memberList);
 		}
 		
 		boolean result = managerService.modifyMemberAddBlack(memberAddBlackList);
 		
-		return result;
+		return result? "1" : "2";
 	}
 	
 	/* 사업자 회원 조회 */

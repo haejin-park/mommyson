@@ -84,18 +84,16 @@
             		
             		$("input:checkbox[name='chkMember']:checked").each(function(i, ival) {
             			chkMember.push($(this).val());
+            			console.log(chkMember);
                      });
             		
             	
             		$.ajax({
-            			url : '${ pageContext.servletContext.contextPath }/manager/registBlack',
-            			type : 'POST',
-            			data : {
-            				"chkMember" : chkMember
-            			},
+            			url : '${ pageContext.servletContext.contextPath }/manager/registBlack/' + chkMember,
+            			type : 'GET',
             			success: function(data){
             				console.log(data);
-            				$(location).attr('href',"${ pageContext.servletContext.contextPath }");
+            				location.href="${ pageContext.servletContext.contextPath }/manager/normalMember";
             			},
             			error: function(error){
             				console.log(error);
