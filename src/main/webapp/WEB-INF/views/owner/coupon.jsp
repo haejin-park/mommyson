@@ -16,6 +16,13 @@
 
 </head>
 <body>
+	<!-- 페이지가 로드되기 전에 메세지가 있으면 메세지에 대한 알럿을 띄워준다. // model을 requestScope 영역 안에서 사용된다. -->
+	<script>
+	if(${ requestScope.message != null && requestScope.message != ''}){
+		alert('${ requestScope.message }');
+	}
+	</script>
+	
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
 
@@ -41,7 +48,7 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="ch1"></th>
+                <th scope="col"><input type="checkbox" name="ch1" id="allCheck"></th>
                 <th scope="col">발행일</th>
                 <th scope="col">쿠폰이름</th>
                 <th scope="col">할인율</th>
@@ -81,7 +88,7 @@
 	            <span aria-hidden="true">&times;</span>
 	          </button>
 	        </div>
-	        <form action="${ pageContext.servletContext.contextPath }/owner/coupon" method="post" >
+	        <form action="${ pageContext.servletContext.contextPath }/owner/coupon" method="post">
 	        <div class="modal-body" style="margin: 0 auto;">
 	          <br>
 	          <h4>쿠폰이름</h4><input type="text" name="cpName" min="0" placeholder="쿠폰이름을 작성해주세요"><br><br>
@@ -99,6 +106,16 @@
 	    </div>
 	    </div>
 	  </div>
+	  
+	  <script>
+	  $("#allCheck").click(function(){
+	      if($("#allCheck").prop("checked")){
+	        $("input[type=checkbox]").prop("checked",true);
+	      } else{
+	        $("input[type=checkbox]").prop("checked",false);
+	      }
+	    });
+	  </script>
 	  
 	  <!-- footer -->
 	  <jsp:include page="../commons/footer.jsp"/>

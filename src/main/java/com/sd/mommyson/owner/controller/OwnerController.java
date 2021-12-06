@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
@@ -55,7 +56,7 @@ public class OwnerController {
 	
 	/* 쿠폰 발행 */
 	@GetMapping("coupon")
-	public String coupon(@ModelAttribute("owner") MemberDTO member, Model model) {
+	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
 		List<CouponDTO> coupon = ownerService.selectCoupon(member);
 		System.out.println(coupon);
@@ -67,15 +68,30 @@ public class OwnerController {
 		return "owner/coupon";
 	}
 	
-	@PostMapping("coupon")
-	public String couponInsert(@ModelAttribute CouponDTO coupon, Model model, HttpSession session) {
-	
-		coupon.setCpName("cpName");
-		coupon.setdCcon(Integer.parseInt("dCcon"));
-		coupon.setDisWon(Integer.parseInt("disWon"));
-//		coupon.setEndDate(java.sql.Date("endDate"));
+	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
+	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session,  HttpServletRequest request) {
+															  // 리다이렉트를 해줄때 값을 넘겨주는...........
+		// @ModelAttribute 을 사용하는 순간 DTO에 필드값이랑 name값이 같으면 자동으로 값을 DTO에 담아서 보낸다. 
 		
-		return "redirect:/coupon";
+		System.out.println("결과를 말하라" + coupon);
+		
+		// root-contect에서 insert는 regist로 시작으로 지정해놓았다
+		int result = ownerService.registCoupon(coupon);
+		
+		//세션에서 memCode를 담아서 넘겨준다.
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		
+		int result2 = ownerService.registCouponStore(memCode);
+		
+		if(result > 0 && result2 > 0) {
+			ra.addFlashAttribute("message","쿠폰 등록에 성공하였습니다.");
+		} else {
+			ra.addFlashAttribute("message","쿠폰 등록에 실패하였습니다.");
+		}
+		
+		
+		return "redirect:coupon"; // getMapping으로 보내준다
 	}
 	
 	/* 가게정보 수정 */

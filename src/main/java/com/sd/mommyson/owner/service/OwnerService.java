@@ -14,14 +14,15 @@ public interface OwnerService {
 
 	public 	List<CouponDTO> selectCoupon(MemberDTO member);
 
-	public CouponDTO insertCoupon(CouponDTO coupon);
-
 	public List<ReviewDTO> selectReview(ReviewDTO review);
-
 	
 	public int modifyInfo(Map<String, String> modifyInfo);
 
 	public int modifyCeo(Map<String, String> modifyInfo);
 
 	public int modifyStore(Map<String, String> modifyInfo);
+
+	public int registCoupon(CouponDTO coupon);
+
+	public int registCouponStore(int memCode);
 }

@@ -40,11 +40,6 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerDAO.selectCoupon(member);
 	}
 
-	@Override
-	public CouponDTO insertCoupon(CouponDTO coupon) {
-		
-		return ownerDAO.insertCoupon(coupon);
-	}
 
 	@Override
 	public List<ReviewDTO> selectReview(ReviewDTO review) {
@@ -74,6 +69,22 @@ public class OwnerServiceImpl implements OwnerService{
 	public int modifyStore(Map<String, String> modifyInfo) {
 
 		int result = ownerDAO.modifyStore(modifyInfo);
+		
+		return result;
+	}
+
+	@Override
+	public int registCoupon(CouponDTO coupon) {
+		
+		int result = ownerDAO.registCoupon(coupon);
+		
+		return result;
+	}
+
+	@Override
+	public int registCouponStore(int memCode) {
+		
+		int result = ownerDAO.registCouponStore(memCode);
 		
 		return result;
 	}

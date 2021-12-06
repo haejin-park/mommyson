@@ -102,7 +102,7 @@
 		 WHERE  B.MEM_CODE = #{ memCode }
 	</select>
 	
-	<insert id="insertCoupon" >
+	<insert id="registCoupon" >
 		INSERT
 		  INTO COUPON_TBL
 		(
@@ -115,17 +115,31 @@
 		)
 		VALUES
 		(
-			SEQ_CP_CODE, 
+			SEQ_CP_CODE.NEXTVAL, 
 			#{ cpName }, 
 			SYSDATE, 
 			#{ disWon }, 
 			#{ endDate }, 
 			#{ dCcon }
 		)
+	</insert>
+	
+	<insert id="registCouponStore">
+		INSERT
+		  INTO COUPON_STORE_TBL
+		(
+			MEM_CODE,
+			CP_CODE
+		)
+		VALUES
+		(
+			#{ memCode },
+			SEQ_CP_CODE.CURRVAL
+		)
 		
 	</insert>
 	
-	<select id="selectReview" resultMap="reviewResultMap">
+	<!-- <select id="selectReview" resultMap="reviewResultMap">
 		SELECT
 				A.RV_CODE
 			  , A.MEM_CODE
@@ -140,6 +154,6 @@
 		  
 				
 	
-	</select>
+	</select> -->
 	
 </mapper>

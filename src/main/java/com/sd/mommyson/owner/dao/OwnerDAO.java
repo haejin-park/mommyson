@@ -24,5 +24,9 @@ public interface OwnerDAO {
 
 	public int modifyStore(Map<String, String> modifyInfo);
 
+	public int registCoupon(CouponDTO coupon);
+
+	public int registCouponStore(int memCode);
+
 	
 }
