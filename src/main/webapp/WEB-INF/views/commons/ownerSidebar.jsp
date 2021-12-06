@@ -56,11 +56,10 @@
                             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">상품관리</a><hr>
                             <ul class="collapse list-unstyled" id="homeSubmenu">
                                 <li>
-                                    <a href="../owners/product-regist.html">상품등록</a>
+
                                     <a href="${ pageContext.servletContext.contextPath }/owner/productRegist">상품등록</a>
                                 </li>
                                 <li>
-                                    <a href="../owners/productManagement.html">판매 상품 관리</a>
                                     <a href="${ pageContext.servletContext.contextPath }/owner/productManagement">판매 상품 관리</a>
                                 </li>
                                 <li>

@@ -88,6 +88,7 @@
 			 , C.STORE_NO
 			 , C.CEO_NAME
 			 , D.STORE_IMG
+			 , D.STORE_NAME
 		  FROM MEMBER_TBL A
 		  LEFT JOIN USER_TBL B ON (A.MEM_CODE = B.MEM_CODE)
 		  LEFT JOIN CEO_TBL C ON (A.MEM_CODE = C.MEM_CODE)
@@ -113,7 +114,8 @@
 	
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
-		        A.ADDRESS
+		     	A.MEM_CODE
+		     ,  A.ADDRESS
 		     ,  A.POST_CODE
 		     ,  A.D_ADDRESS
 		     ,  A.PHONE

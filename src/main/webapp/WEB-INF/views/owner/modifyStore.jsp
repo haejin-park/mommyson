@@ -113,7 +113,7 @@
 		            <label>상세주소</label><input type="text" name="dAddress"id="dAddress" placeholder="${ sessionScope.owner.dAddress }">
 		          </div>
 		          <div class="changeUserInfo">
-		            <label>우편번호</label><input type="text" name="postCode" id="postCode" placeholder="${ sessionScope.owner.postCode }">
+		            <label>우편번호</label><input type="text" name="postCode" id="postCode"  placeholder="${ sessionScope.owner.postCode }">
 		          </div>
 		          <div class="changeUserInfo">
 		            <label>영업시간</label><input type="text" name="workTime" placeholder="${ sessionScope.owner.ceo.store.workTime }">
@@ -123,6 +123,9 @@
 		          </div>
 		          <div class="changeUserInfo">
 		            <label>대표자명</label><input type="text" name="name" placeholder="${ sessionScope.owner.ceo.name }">
+		          </div>
+		          <div class="changeUserInfo">
+		            <label>사업자 등록번호</label><input type="text" name="no" placeholder="${ sessionScope.owner.ceo.no }">
 		          </div>
 		        </div>
 		          <div class="changeUserInfo" style="margin: 40px 0 100px 0">
