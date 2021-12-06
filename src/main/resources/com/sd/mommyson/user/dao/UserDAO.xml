@@ -16,6 +16,7 @@
     	<result property="Status" column="STATUS"/>
     </resultMap>
     
+    <!-- 연습 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
     	       A.POST_NO
@@ -27,8 +28,56 @@
 			 , A.ANS_STATUS
 			 , A.QUE_NO
 			 , A.STATUS				
-		FROM POST_TBL A		
+		FROM (SELECT
+				   B.POST_NO
+				 , B.BOARD_CODE
+				 , B.POST_TITLE
+				 , B.MEM_CODE
+				 , B.POST_CONTENT
+				 , B.POST_DATE
+				 , B.ANS_STATUS
+				 , B.QUE_NO
+				 , B.STATUS	
+			  FROM (SELECT
+						   C.POST_NO
+						 , C.BOARD_CODE
+						 , C.POST_TITLE
+						 , C.MEM_CODE
+						 , C.POST_CONTENT
+						 , C.POST_DATE
+						 , C.ANS_STATUS
+						 , C.QUE_NO
+						 , C.STATUS	
+					  FROM POST_TBL C 
+					  )B
+					  
+					  )A
+		 	
     
     </select>
+    
+    <!-- 공지사항 페이지네이션 페이지수  -->
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+               COUNT(*)
+          FROM POST_TBL A
+	      JOIN BOARD_TBL B ON(A.BOARD_CODE = B.BOARD_CODE)
+    	<where>
+    		<if test="searchCondition != null">
+				B.D_TYPE = #{ searchCondition }
+    		</if>
+			<if test="searchValue != null">
+	        	A.POST_TITLE LIKE '%' || #{ searchValue } || '%' 	
+			</if>
+			A.STATUS = 'N'
+    	</where>
+	</select>
+	
+	<!-- 공지사항 출력 및 검색 -->
+	<select id="selectNotice" resultMap="postResultMap">
+	
+	</select>
+	
+	
     
     </mapper>
