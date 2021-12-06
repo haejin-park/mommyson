@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,78 +21,56 @@
         
         <div class="board_container">
             <h2>회원관리</h2>
-            <div class="top_box">
-                <p>사업자 회원 조회</p>
-                <input type="button" value="회원삭제">
-            </div>
-
-            <table class="table board_table">
-                <colgroup>
-                    <col width=""/>
-                    <col width=""/>
-                    <col width=""/>
-                    <col width=""/>
-                    <col width=""/>
-                    <col width=""/>
-                    <col width=""/>
-                    <col width=""/>
-                    <col width=""/>
-                </colgroup>
-                <thead style="background-color: #EDEDED;">
-                <tr>
-                    <th><input type="checkbox" name="ch1"></th>
-                    <th>번호</th>
-                    <th>아이디</th>
-                    <th>대표자</th>
-                    <th>이메일</th>
-                    <th>가입일</th>
-                    <th>가게</th>
-                    <th>상태</th>
-                    <th>-</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row"><input type="checkbox" name="ch1"></th>
-                    <td>1</td>
-                    <td>user01</td>
-                    <td>혜찌마요</td>
-                    <td>heju@greedy.com</td>
-                    <td>2021-11-01</td>
-                    <td>도미노피자</td>
-                    <td>멤버쉽</td>
-                    <td>
-                        <a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><input type="checkbox" name="ch1"></th>
-                    <td>1</td>
-                    <td>user01</td>
-                    <td>혜찌마요</td>
-                    <td>heju@greedy.com</td>
-                    <td>2021-11-01</td>
-                    <td>치킨마루</td>
-                    <td>멤버쉽</td>
-                    <td>
-                        <a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><input type="checkbox" name="ch1"></th>
-                    <td>1</td>
-                    <td>user01</td>
-                    <td>혜찌마요</td>
-                    <td>heju@greedy.com</td>
-                    <td>2021-11-01</td>
-                    <td>행복한찜닭</td>
-                    <td>멤버쉽</td>
-                    <td>
-                        <a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <form action="${ pageContext.servletContext.contextPath }/manager/deleteCeoMember" method="POST">
+	            <div class="top_box">
+	                <p>사업자 회원 조회</p>
+	                <input type="button" value="회원삭제">
+	            </div>
+	
+	            <table class="table board_table">
+	                <colgroup>
+	                    <col width=""/>
+	                    <col width=""/>
+	                    <col width=""/>
+	                    <col width=""/>
+	                    <col width=""/>
+	                    <col width=""/>
+	                    <col width=""/>
+	                    <col width=""/>
+	                    <col width=""/>
+	                </colgroup>
+	                <thead style="background-color: #EDEDED;">
+		                <tr>
+		                    <th><input type="checkbox" name="ch1"></th>
+		                    <th>번호</th>
+		                    <th>아이디</th>
+		                    <th>대표자</th>
+		                    <th>이메일</th>
+		                    <th>가입일</th>
+		                    <th>가게</th>
+		                    <th>상태</th>
+		                    <th>-</th>
+		                </tr>
+	                </thead>
+	                <tbody>
+		                <c:forEach items="${ requestScope.buisnessMemberList }" var="nm">
+		                	<c:if test="${ nm.memType == 'ceo' }">
+			                    <tr>
+			                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }"></th>
+			                        <td>${ nm.memCode }</td>
+			                        <td>${ nm.memId }</td>
+			                        <td>${ nm.ceo.name }</td>
+			                        <td>${ nm.email }</td>
+			                        <td>${ nm.enrollDate }</td>
+			                        <td>${ nm.ceo.store.storeName }</td>
+			                        <td></td>
+			                        <td><a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
+			                    </tr>
+		                    </c:if>
+	                    </c:forEach>
+	                </tbody>
+	            </table>
+            </form>
             
             <!-- 페이징 -->
             <nav class="page_box" aria-label="Page navigation example">

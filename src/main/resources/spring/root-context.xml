@@ -73,4 +73,8 @@
 	<mybatis-spring:scan base-package="com.sd.mommyson.member.dao"/>
 	<mybatis-spring:scan base-package="com.sd.mommyson.owner.dao"/>
 	<mybatis-spring:scan base-package="com.sd.mommyson.manager.dao"/>
+	<mybatis-spring:scan base-package="com.sd.mommyson.user.dao"/>
+	<mybatis-spring:scan base-package="com.sd.mommyson.usermypage.dao"/>
+	
+	
 </beans>

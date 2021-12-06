@@ -35,7 +35,7 @@
                    <!-- 사업자인 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
                    		<li>
-                    		<a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 30px" src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.nickname}</a>
+                    		<a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 30px" src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.ceo.store.storeName }</a>
                     	</li>
                     </c:if>
                     

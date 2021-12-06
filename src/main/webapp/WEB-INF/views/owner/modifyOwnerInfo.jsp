@@ -15,6 +15,11 @@
 <title>비밀번호 변경</title>
 </head>
 <body>
+<script>
+	if(${ requestScope.message != null && requestScope.message != ''}){
+		alert('${ requestScope.message }');
+	}
+</script>
 
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
@@ -32,8 +37,11 @@
         <jsp:include page="../commons/ownerSidebar.jsp"/>
 	
 		<div class="body-center" style="text-align: center;">
-        <form action="${ pageContext.servletContext.contextPath }/owner/modifyStore" method="post">
+        <form action="${ pageContext.servletContext.contextPath }/owner/modifyOwnerInfo" method="post">
             <div class="main_box" style="display : table;">
+            	<br><br><br>
+            	<br><br><br>
+            	<br><br><br>
                 <h1 align="center">비밀번호 변경</h1>
                  <div style="width: 1000px; margin-right: 200px">
 		            <br><br><br>

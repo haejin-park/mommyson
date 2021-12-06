@@ -4,57 +4,6 @@
 <html lang="ko">
 <head>
     <title>관리자 아이디 섕성</title>
-
-    <script>
-        // 아이디 확인
-        $(function(){
-                $('#id').keyup(function(){
-                    let regExp = /^[a-z]+$/;
-
-                    if(!regExp.test($(this).val())){
-                        $(this).focus().css('background','lightgray');
-                        $('#idCheck').html('아이디는 영어소문자로 입력해주세요.').css('color','red');
-                    } else {
-                        $(this).focus().css('background','white');
-                        $('#idCheck').html('');
-                    }
-                });
-        });
-
-        // 비밀번호 확인
-        $(function(){
-            $('#pwd2').keyup(function(){
-
-                if($('#pwd1').val() != $('#pwd2').val()){
-                    $('#pwdCheck').html('비밀번호가 일치하지 않습니다.').css('color','red');
-                }  else {
-                    $('#pwdCheck').html('비밀번호가 일치합니다.').css('color','green');
-                }
-            })
-        });
-
-        function validate(){
-
-            let regExp = /^[a-z]+$/
-
-            if($('#id').val() == '') {
-                alert("아이디를 확인해주세요.");
-                return false;
-            }
-            if($('#pwd1').val() == '' || $('#pwd1').val() != $('#pwd2').val()) {
-                alert("비밀번호를 확인해주세요.");
-                return false;
-            }
-            if($('#mng').val() == ''){
-                alert("관리자 파트를 선택해주세요.");
-                return false;
-            }
-            
-            alert("아이디가 생성되었습니다.");
-            return true;
-        }
-        
-    </script>
 </head>
 <body>
     <header class="manager_header at-container">
@@ -69,6 +18,63 @@
     
         <jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
         
+        <script>
+	        // 아이디 확인
+	        $(function(){
+	                $('#id').on('keyup',function(){
+	                    let memId = $('#id').val();
+	                    
+	                    $.ajax({
+	                    	url: '/mommyson/manager/idDupCheck',
+	                    	type: 'post',
+	                    	data: {
+	                    		memId : memId
+	                    	},
+	                    	success: function(data) {
+	                    		if(data == '사용이 불가능한 아이디입니다.') {
+	                    			$('#idCheck').text(data).css('color','red');
+	                    		} else if(data == '사용 가능한 아이디입니다.') {
+	                    			$('#idCheck').text(data).css('color','green');
+	                    		}
+	                    	}
+	                    });
+	                });
+	        });
+	
+	        // 비밀번호 확인
+	        $(function(){
+	            $('#pwd2').keyup(function(){
+	
+	                if($('#pwd1').val() != $('#pwd2').val()){
+	                    $('#pwdCheck').text('비밀번호가 일치하지 않습니다.').css('color','red');
+	                }  else {
+	                    $('#pwdCheck').text('비밀번호가 일치합니다.').css('color','green');
+	                }
+	            })
+	        });
+	
+	        function validate(){
+	
+	            let regExp = /^[a-z]+$/
+	
+	            if($('#id').val() == '') {
+	                alert("아이디를 확인해주세요.");
+	                return false;
+	            }
+	            if($('#pwd1').val() == '' || $('#pwd1').val() != $('#pwd2').val()) {
+	                alert("비밀번호를 확인해주세요.");
+	                return false;
+	            }
+	            if($('#mng').val() == ''){
+	                alert("관리자 파트를 선택해주세요.");
+	                return false;
+	            }
+	            
+	            alert("아이디가 생성되었습니다.");
+	            return true;
+	        }
+	        
+	    </script>
         <div class="board_container">
             <form action="${ pageContext.servletContext.contextPath }/manager/createManager" method="POST" onsubmit="return validate();">
             	<h1>관리자 관리</h1>
@@ -79,8 +85,8 @@
 	                <label>아이디</label>
 	            </div>
 	            <div>
-	            <input type="text" name="memId" id="id" class="manager_text">
-	            &nbsp;&nbsp;&nbsp;<a id="idCheck"></a>
+		            <input type="text" name="memId" id="id" class="manager_text" placeholder="영어 소문자, 숫자로만 입력해주세요."/>
+		            <p id="idCheck" style="margin-bottom: 10px;"></p>
 	            </div>
 	            <div>
 	                <label>비밀번호</label>
@@ -89,8 +95,10 @@
 	            <div>
 	                <label>비밀번호확인</label>
 	            </div>
-	            <input type="password" id="pwd2" class="manager_text">
-	            &nbsp;&nbsp;&nbsp;<a id="pwdCheck"></a>
+	            <div>
+	            	<input type="password" id="pwd2" class="manager_text">
+	            	<p id="pwdCheck" style="margin-bottom: 10px;"></p>
+	            </div>
 	            <div>
 	                <label>관리자파트선택</label>
 	            </div>

@@ -41,7 +41,7 @@ public class ManagerController {
 	@GetMapping("normalMember")
 	public void normalMember(MemberDTO member, Model model) {
 		
-		List<MemberDTO> normalMemberList = managerService.normalMemberSelect(member);
+		List<MemberDTO> normalMemberList = managerService.memberSelect(member);
 		System.out.println("normalMemberList : " + normalMemberList);
 		model.addAttribute("normalMemberList", normalMemberList);
 	}
@@ -49,12 +49,7 @@ public class ManagerController {
 	/* 회원삭제 */
 	@PostMapping("deleteMember")
 	public String deleteMember(@RequestParam("chkMember") int[] deleteMember) {
-		for(int deleteMembers : deleteMember) {
-			System.out.println(deleteMembers);
-		}
-		
-		System.out.println(deleteMember.length);
-		
+
 		List<Integer> deleteMemberList = new ArrayList<>();
 		
 		for(int i = 0; i < deleteMember.length; i++) {
@@ -66,13 +61,46 @@ public class ManagerController {
 		return "redirect:normalMember";
 	}
 	
+	/* 회원블랙등록 */
+	@PostMapping("memberAddBlack")
+	@ResponseBody
+	public boolean memberAddBlack(@RequestParam("chkMember") int[] chkMemberBlack) {
+		
+		List<Integer> memberAddBlackList = new ArrayList<>();
+		
+		for(int i = 0; i < chkMemberBlack.length; i++) {
+			memberAddBlackList.add(chkMemberBlack[i]);
+		}
+		
+		boolean result = managerService.memberAddBlack(memberAddBlackList);
+		
+		return result;
+	}
+	
 	/* 사업자 회원 조회 */
 	@GetMapping("buisnessMember")
-	public void buisnessMember() {}
+	public void buisnessMember(MemberDTO member, Model model) {
+		
+		List<MemberDTO> buisnessMemberList = managerService.memberSelect(member);
+		System.out.println("buisnessMemberList : " + buisnessMemberList);
+		model.addAttribute("buisnessMemberList", buisnessMemberList);
+	}
+	
+	/* 사업자 회원 삭제 */
+	@PostMapping("deleteCeoMember")
+	public String deleteCeoMember() {
+		
+		return "";
+	}
 	
 	/* 블랙 회원 조회 */
 	@GetMapping("blackMember")
-	public void blackMember() {}
+	public void blackMember(MemberDTO member, Model model) {
+		
+		List<MemberDTO> blackMemberList = managerService.blackMemberSelect(member);
+		System.out.println("blackMemberList : " + blackMemberList);
+		model.addAttribute("blackMemberList", blackMemberList);
+	}
 	
 	/* 공지사항 */
 	@GetMapping("noticeSelect")
@@ -207,9 +235,43 @@ public class ManagerController {
 	
 	/* 관리자 삭제 */
 	@GetMapping("deleteManager/{cks}")
-	public String deleteManager(@PathVariable("cks") String[] arr) {
+	public String deleteManager(@PathVariable("cks") String[] arr, Model model) {
 		
-		return "redirect:/manager/mamageManager";
+		List<String> list = new ArrayList<String>();
+		for(String b : arr) {
+			list.add(b);
+		}
+		
+		int result = managerService.deleteManager(list);
+		
+		if(result > 0) {
+			model.addAttribute("result", "삭제에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "삭제에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/manageManager";
+	}
+	
+	/* 관리자 아이디 중복체크 */
+	@PostMapping(value = "idDupCheck", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String idDupCheck(@RequestParam("memId") String memId) {
+		
+		String message = "";
+		
+		int count = managerService.idDupCheck(memId);
+		System.out.println(count);
+		
+		if(count > 0) {
+			message = "사용이 불가능한 아이디입니다.";
+		} else {
+			message = "사용 가능한 아이디입니다.";
+		}
+		
+		System.out.println(message);
+		
+		return message;
 	}
 	
 	/* 관리자 정산 */

@@ -39,7 +39,12 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println(member);
 		if(passwordEncoder.matches(member.getMemPwd(), memberDAO.selectEncPassword(member))) {
 			loginMember = memberDAO.selectMember(member);
-			System.out.println("들어왔음");
+			if(loginMember.getMemType().equals("manager")) {
+				memberDAO.updateLastLogin(member);
+				loginMember = memberDAO.selectMember(member);
+			} else {
+				loginMember = memberDAO.selectMember(member);
+			}
 		}
 		
 		return loginMember;

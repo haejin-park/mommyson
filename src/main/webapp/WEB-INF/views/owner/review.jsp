@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-<link rel="stylesheet" href="../../resources/css/coupon.css">
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/coupon.css">
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
@@ -14,7 +15,7 @@
 <body>
 
 	<!-- header -->
-	<jsp:include page="${ pageContext.servletContext.contextPath }/view/commons/header.jsp"/>
+	<jsp:include page="../commons/header.jsp"/>
 	
 	 <br><br><br>
     <div class="page-text" style="width: 1550px; margin: 0 auto;">
@@ -26,7 +27,7 @@
       <div class="body-inside">
 	
 	<!-- sidebar  -->
-      <jsp:include page="${ pageContext.servletContext.contextPath }/view/commons/ownerSidebar.jsp"/>
+      <jsp:include page="../commons/ownerSidebar.jsp"/>
       
       <div style="text-align: center;">
         <div style="margin-left: 450px;">
@@ -42,22 +43,13 @@
             <tbody>
               <tr>
                 <th scope="row"><input type="checkbox" name="" id=""></th>
-                <th>1</th>
+                <c:forEach var="review" items="${ reviews }">
+                <th>${ loginMember.nickname }</th>
                 <td>로찜마</td>
                 <td>로제찜닭 너무 맛있네요~</td>
+                </c:forEach>
               </tr>
-              <tr>
-                <th scope="row"><input type="checkbox" name="" id=""></th>
-                <th>2</th>
-                <td>혜찌마요</td>
-                <td>맛있는게 너무 많아요 다 사먹을게요 ㅎㅎ</td>
-              </tr>
-              <tr>
-                <th scope="row"><input type="checkbox" name="" id=""></th>
-                <th>3</th>
-                <td>승승마요</td>
-                <td>맛있는 반찬 잘 먹었습니다~</td>
-              </tr>
+             
             </tbody>
           </table>
           <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" >
@@ -104,21 +96,22 @@
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
-                      <th scope="col">할인율</th>
+                      <th scope="col">할인금액</th>
                   </tr>
                   </thead>
               <form>
                   <tbody>
                   <tr>
                       <td><input type="checkbox" name="" id=""></td>
+                      
                       <td>01</td>
                       <td>자주 이용해주세요~</td>
                       <td>21-11-22</td>
                       <td>
                       <select>
-                          <option>10%</option>
-                          <option>15%</option>
-                          <option>20%</option>
+                          <option>1000원</option>
+                          <option>1500원</option>
+                          <option>2000원</option>
                           <option>25%</option>
                       </select>
                       </td>
@@ -140,7 +133,7 @@
   </div>
   
   <!-- footer -->
-  <jsp:include page="${ pageContext.servletContext.contextPath }/view/commons/footer.jsp"/>
+  <jsp:include page="../commons/footer.jsp"/>
 	
 </body>
 </html>

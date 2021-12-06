@@ -25,12 +25,13 @@ public class ManagerServiceImpl implements ManagerService {
 		this.memberDAO = memberDAO;
 	}
 	
+	/**
+	 * 회원조회
+	 */
 	@Override
-	public List<MemberDTO> normalMemberSelect(MemberDTO member) {
+	public List<MemberDTO> memberSelect(MemberDTO member) {
 		
-		List<MemberDTO> normalMemberList = null;
-		
-		normalMemberList = managerDAO.normalMemberSelect(member);
+		 List<MemberDTO> normalMemberList = managerDAO.memberSelect(member);
 		
 		return normalMemberList;
 	}
@@ -43,6 +44,9 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerList;
 	}
 
+	/**
+	 * 일반회원삭제
+	 */
 	@Override
 	public boolean deleteMembers(List<Integer> deleteMemberList) {
 		
@@ -75,14 +79,38 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
+	public int deleteManager(List<String> list) {
+		int result = managerDAO.deleteManager(list);
+		return result;
+	}
+	
 	public int selectNoticeTotalCount(Map<String, String> searchMap) {
 		return managerDAO.selectNoticeTotalCount(searchMap);
 	}
 
-	@Override
 	public List<Pagination> selectNoticeList(Pagination pagination) {
 		return managerDAO.selectNoticeList(pagination);
 	}
 
+	@Override
+	public int idDupCheck(String memId) {
+		int count = managerDAO.idDupCheck(memId);
+		return count;
+	}
+
+	public List<MemberDTO> blackMemberSelect(MemberDTO member) {
+		
+		List<MemberDTO> blackMemberList = managerDAO.blackMemberSelect(member);
+		
+		return blackMemberList;
+	}
+
+	@Override
+	public boolean memberAddBlack(List<Integer> memberAddBlackList) {
+		
+		int result = managerDAO.memberAddBlack(memberAddBlackList);
+		
+		return result > 0? true : false;
+	}
 	
 }
