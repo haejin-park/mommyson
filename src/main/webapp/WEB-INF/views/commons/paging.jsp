@@ -78,7 +78,7 @@
 		$(".pageNo").click(function(){
 			let pageNo = $(this).text();
 			location.href = link + "?currentPage=" + pageNo + searchText;
-		});
+		})
 		
 	</script>
 </body>

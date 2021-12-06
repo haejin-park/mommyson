@@ -22,7 +22,7 @@
         <div class="board_container">
             <h2>공지사항</h2>
             <form action="${ pageContext.servletContext.contextPath }/manager/noticeSelect" method="GET">
-	            <select class="sel_notice" name="searchCondition" id="">
+	            <select class="sel_notice" name="searchCondition" id="searchCondition">
 	                    <option value="all">전체</option>
 	                    <option value="notice">공지</option>
 	                    <option value="guide">안내</option>
@@ -82,11 +82,15 @@
 
     <script>
         $("#chk_all").click(function(){
-         $(this).parent
+       		 $(this).parent
         });
- 
-         $("#homeSubmenu2").addClass("show");
-         $("#homeSubmenu2 > li:first-child > a").attr("style","color: #F89E91 !important");
+ 		
+        $("#homeSubmenu2").addClass("show");
+        $("#homeSubmenu2 > li:first-child > a").attr("style","color: #F89E91 !important");
+         
+        $('#searchCondition').on('change',function() {
+        	 var changedCondition = $('#searchCondition').val();
+        });
      </script>
      
    
