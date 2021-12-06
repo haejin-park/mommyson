@@ -49,12 +49,13 @@
             </thead>
             <tbody>
               <c:forEach var="list" items="${ productList }">
+              <c:set var="i" value="${ i + 1}"/>
               <tr>
                 <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">${ list.sdCode}</th>
+                <th scope="row">${ i }</th>
                 <td>${ list.sdName }</td>
                 <td>${ list.mDate }</td>
-                <td>2021-11-30</td>
+                <td>${ list.eDate }</td>
                 <td>
 	               	<c:if test="${ list.orderableStatus eq 'Y' }">
 	                <button class="couponBtn" id="btn1">판매</button>

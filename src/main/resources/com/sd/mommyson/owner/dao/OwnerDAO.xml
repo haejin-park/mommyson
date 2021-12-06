@@ -341,22 +341,12 @@
 		      SD_CODE
 		    , SD_NAME
 		    , M_DATE
-		    , PRICE
-		    , INGREDIENT
-		    , VOLUME
-		    , SD_IMG
-		    , CATEGORY
 		    , DISCOUNT_RATE
-		    , MEM_CODE
 		    , ORDERABLE_STATUS
 		    , EXPIRY_DATE
-		    , IS_DELETED
-		    , CATEGORY_CODE
-		    , STORAGE_METHOD
-		    , SD_DETAIL
 		 FROM PRODUCT_TBL
-		WHERE MEM_CODE = #{ memCode } 
+		WHERE IS_DELETED = 'N' 
+		  AND MEM_CODE = #{ memCode }
 	</select>
-	
 	
 </mapper>
