@@ -11,12 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sd.mommyson.user.dto.PostDTO;
 import com.sd.mommyson.user.service.UserService;
 
 @Controller
+//@SessionAttributes("")
 @RequestMapping("/user/*")
 public class UserController {
 	
@@ -80,7 +82,7 @@ public class UserController {
 	 * @category 공지사항 출력
 	 */
 	@GetMapping("ucc/uccNoticeSelect")
-	public String userCustomerServiceCenterNoticeSelect() {
+	public String userCustomerServiceCenterNoticeSelect(HttpSession session) {
 		System.out.println("공지사항 콘트롤러 진입");
 		List<PostDTO> noticeList = userService.selectNotice();
 		System.out.println("테스트 공지리스트 : " + noticeList);
