@@ -72,6 +72,26 @@
 		<result property="status" column="STATUS"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+		<id property="sdCode" column="SD_CODE"/>
+		<result property="sdName" column="SD_NAME"/>
+		<result property="mDate" column="M_DATE"/>
+		<result property="price" column="PRICE"/>
+		<result property="ingredient" column="INGREDIENT"/>
+		<result property="volume" column="VOLUME"/>
+		<result property="sdImg" column="SD_IMG"/>
+		<result property="category" column="CATEGORY"/>
+		<result property="discountRate" column="DISCOUNT_RATE"/>
+		<result property="memCode" column="MEM_CODE"/>
+		<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+		<result property="eDate" column="EXPIRY_DATE"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+		<result property="categoryCode" column="CATEGORY_CODE"/>
+		<result property="storageMethod" column="STORAGE_METHOD"/>
+		<result property="detail" column="SD_DETAIL"/>
+	</resultMap>
+	
+	
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
@@ -316,8 +336,27 @@
 	    SELECT * FROM DUAL
 	</insert>
 	
-	<delete id="">
-		
-	</delete>
+	<select id="selectProduct" resultMap="productResultMap">
+		SELECT
+		      SD_CODE
+		    , SD_NAME
+		    , M_DATE
+		    , PRICE
+		    , INGREDIENT
+		    , VOLUME
+		    , SD_IMG
+		    , CATEGORY
+		    , DISCOUNT_RATE
+		    , MEM_CODE
+		    , ORDERABLE_STATUS
+		    , EXPIRY_DATE
+		    , IS_DELETED
+		    , CATEGORY_CODE
+		    , STORAGE_METHOD
+		    , SD_DETAIL
+		 FROM PRODUCT_TBL
+		WHERE MEM_CODE = #{ memCode } 
+	</select>
+	
 	
 </mapper>
