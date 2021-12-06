@@ -5,13 +5,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.PostDTO;
 
 public interface UserService {
 
-	List<PostDTO> selectNotice();
-
 	int selectTotalCount(HttpSession session, Map<String, String> searchMap);
+
+	List<PostDTO> selectNotice(SelectCriteria selectCriteria);
 
 
 }

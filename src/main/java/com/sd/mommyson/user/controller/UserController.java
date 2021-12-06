@@ -150,7 +150,7 @@ public class UserController {
 		}
 		
 		System.out.println(selectCriteria);
-//		List<PostDTO> noticeList = userService.selectNotice();
+		List<PostDTO> noticeList = userService.selectNotice(selectCriteria);
 //		System.out.println("테스트 공지리스트 : " + noticeList);
 		
 		

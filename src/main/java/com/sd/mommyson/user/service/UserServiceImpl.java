@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dao.UserDAO;
 import com.sd.mommyson.user.dto.PostDTO;
 
@@ -21,19 +22,20 @@ public class UserServiceImpl implements UserService{
 		this.userDAO = userDAO;
 	}
 
-	@Override
-	public List<PostDTO> selectNotice() {
-
-		List<PostDTO> noticeList = userDAO.selectNotice();
-		
-		return noticeList;
-	}
 
 	@Override
 	public int selectTotalCount(HttpSession session, Map<String, String> searchMap) {
 		
 		int totalCount = userDAO.selectTotalCount(searchMap);
 		return totalCount;
+	}
+
+
+	@Override
+	public List<PostDTO> selectNotice(SelectCriteria selectCriteria) {
+		
+		List<PostDTO>noticeList = userDAO.selectNotice(selectCriteria);
+		return null;
 	}
 
 }
