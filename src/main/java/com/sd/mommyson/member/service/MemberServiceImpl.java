@@ -2,12 +2,10 @@ package com.sd.mommyson.member.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +38,12 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println(member);
 		if(passwordEncoder.matches(member.getMemPwd(), memberDAO.selectEncPassword(member))) {
 			loginMember = memberDAO.selectMember(member);
+			if(loginMember.getMemType().equals("manager")) {
+				memberDAO.updateLastLogin(member);
+				loginMember = memberDAO.selectMember(member);
+			} else {
+				loginMember = memberDAO.selectMember(member);
+			}
 			System.out.println("들어왔음");
 		}
 		

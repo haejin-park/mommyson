@@ -32,4 +32,5 @@ public interface MemberDAO {
 	/* 사용자 회원가입 */
 //	public void customerJoin(Map<String, Object> map, MemberDTO dto);
 
+	public void updateLastLogin(MemberDTO member);
 }

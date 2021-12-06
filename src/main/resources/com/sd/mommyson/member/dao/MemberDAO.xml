@@ -94,10 +94,13 @@
 			 , C.CEO_NAME
 			 , D.STORE_IMG
 			 , D.STORE_NAME
+			 , E.LAST_LOGIN
+			 , E.CODE
 		  FROM MEMBER_TBL A
 		  LEFT JOIN USER_TBL B ON (A.MEM_CODE = B.MEM_CODE)
 		  LEFT JOIN CEO_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 		  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
+		  LEFT JOIN MANAGER_TBL E ON (A.MEM_CODE = E.MEM_CODE)
 		 WHERE A.IS_DELETED = 'N'
 		   AND A.MEM_ID = #{ memId }
 	</select>
@@ -200,4 +203,9 @@
 		, SYSDATE		
 		)
 	</insert> -->
+	<update id="updateLastLogin">
+		UPDATE MANAGER_TBL
+		   SET LAST_LOGIN = SYSTIMESTAMP
+		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
+	</update>
 </mapper>

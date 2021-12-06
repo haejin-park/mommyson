@@ -154,7 +154,7 @@
 	<insert id="insertNewManager" parameterType="hashmap">
 		INSERT ALL
 		INTO MEMBER_TBL VALUES(SEQ_MEMBER.nextval, NULL, #{ member.memPwd }, NULL, NULL, NULL, NULL, 'manager', 'L0', '관리자', #{ member.memId }, SYSDATE, 'N')
-		INTO MANAGER_TBL VALUES(SEQ_MEMBER.currval, SYSDATE, #{ code })
+		INTO MANAGER_TBL VALUES(SEQ_MEMBER.currval, NULL, #{ code })
 		SELECT * FROM DUAL
 	</insert>
 	
