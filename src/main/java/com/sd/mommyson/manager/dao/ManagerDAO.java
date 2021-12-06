@@ -13,7 +13,7 @@ public interface ManagerDAO {
 
 	List<ManagerDTO> selectManagers();
 
-	List<MemberDTO> normalMemberSelect(MemberDTO member);
+	List<MemberDTO> memberSelect(MemberDTO member);
 
 	int deleteMembers(List<Integer> deleteMemberList);
 
@@ -25,8 +25,16 @@ public interface ManagerDAO {
 
 	Map<String, String> selectManagerByMemCode(int memCode);
 
+	int deleteManager(List<String> list);
+
 	public int selectNoticeTotalCount(Map<String, String> searchMap);
 
 	public List<PostDTO> selectNoticeList(Pagination pagination);
+
+	int idDupCheck(String memId);
+	
+	List<MemberDTO> blackMemberSelect(MemberDTO member);
+
+	int memberAddBlack(List<Integer> memberAddBlackList);
 
 }

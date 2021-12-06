@@ -12,8 +12,8 @@
 </head>
 <body>
 <script>
-	if(${ requestScope.message != null && requestScope.message != '' }){
-		alert(${ requestScope.message });
+	if(${ requestScope.message != null && requestScope.message != ''}){
+		alert('${ requestScope.message }');
 	}
 </script>
 	<!-- header -->
@@ -61,6 +61,10 @@
                 <tr>
                     <td class="tg-c3ow">대표자명</td>
                     <td class="tg-0pky">${ owner.ceo.name }</td>
+                </tr>
+                <tr>
+                    <td class="tg-c3ow">사업자 등록번호</td>
+                    <td class="tg-0pky">${ owner.ceo.no }</td>
                 </tr>
                 </tbody>
             </table>

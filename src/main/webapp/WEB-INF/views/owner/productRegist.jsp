@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,40 +28,58 @@
         <!-- sidebar  -->
         <jsp:include page="../commons/ownerSidebar.jsp"/>
         
-        
 	    <div class="body-center" style="text-align: center;">
-	    <form>
-	        <input type="text" placeholder="상품명을 입력해주세요." style="height: 60px; font-size: large;">
+	    <form action="${ pageContext.servletContext.contextPath }/owner/productRegist" method="post" enctype="multipart/form-data">
+	        <input type="text" placeholder="상품명을 입력해주세요." name="sdName" style="height: 60px; font-size: large;">
 	        <br><br>
-	        <select>
-            <option>기타</option>
-           <option>육류</option>
-           <option>채소</option>
-           <option>해산물</option>
+	        <select name="categoryCode" id="category">
+            <option>선택</option>
+           <c:forEach var="map" items="${ categoryList }" varStatus="i">
+           		<option value="<c:out value="${ map.CATEGORY_CODE }"/>"><c:out value="${ map.CATEGORY_NAME }"/></option>
+           </c:forEach>
        	   </select><br>
 	        <h3>#</h3>
-	        <select>
+	        <select id="tag1" name="tag1">
 	            <option>선택</option>
-	           <option>어린이반찬</option>
-	           <option>부모님반찬</option>
-	           <option>모두의반찬</option>
+	        	<c:forEach var="tag" items="${ tagList }">
+	           		<option value="${ tag.tagNo }">${ tag.tagName }</option>
+	       		</c:forEach>
 	       </select>
 	       <h3>#</h3>
-	        <select>
-	            <option>선택</option>
-	           <option>대용량반찬</option>
-	           <option>묶음반찬</option>
-	           <option>냉동반찬</option>
-	           <option>할인반찬</option>
+	        <select id="tag2" name="tag2">
+	           <option>선택</option>
+	           <c:forEach var="tag" items="${ tagList }">
+	           		<option  value="${ tag.tagNo }">${ tag.tagName }</option>
+	      	   </c:forEach>
 	       </select>
 	       <h3>#</h3>
-	        <select>
-	            <option>선택</option>
-	           <option>대용량반찬</option>
-	           <option>묶음반찬</option>
-	           <option>냉동반찬</option>
-	           <option>할인반찬</option>
+	        <select id="tag3" name="tag3">
+	           <option>선택</option>
+	           <c:forEach var="tag" items="${ tagList }">
+	           		<option  value="${ tag.tagNo }">${ tag.tagName }</option>
+	      	   </c:forEach>
 	       </select><br><br>
+	       
+	    <script>
+	 	$(function() {
+	 		var val ="";
+	 		var val2 = "";
+	 		$("#tag1").on("change",function(){
+	 			
+	 			 val = $("#tag1 option:selected").val();
+	 			$("#tag2 option[value='"+ val + "']").remove();
+	 		});
+	 		$("#tag2").on("change",function(){
+	 			
+	 			val = $("#tag1 option:selected").val();
+	 			$("#tag3 option[value='"+ val + "']").remove();
+	 			
+	 			 val2 = $("#tag2 option:selected").val();
+	 			$("#tag3 option[value='"+ val2 + "']").remove();
+	 		});
+	 	});
+	 </script>
+	       
 	    <div id="review_pic"><br>
         <img src="${ pageContext.servletContext.contextPath }/resources/images/photo.png" id="review_img">
     	</div>	
@@ -80,7 +99,7 @@
                 <div class="modal-body">
                     <img src="" id="preview-image" style="width: 400px;">
                     <hr>
-                    <input type="file" id="input-image">
+                    <input type="file" name="productImg" id="input-image">
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="button1" data-dismiss="modal">취소</button>
@@ -120,67 +139,67 @@
         </div>
     </div>
 	       <br><br>
-	       <textarea placeholder="간단한 상품 설명을 작성해주세요." style="width: 400px; height: 100px;"></textarea>
+	       <textarea placeholder="간단한 상품 설명을 작성해주세요." name="detail" style="width: 400px; height: 100px;"></textarea>
 	       <br> <br>
 	       <table class="tg-product">
 	        <tbody>
 	        <tr>
 	            <th class="tg-p">제조일자</th>
-	            <th class="tg-pp"><input type="date"></th>
+	            <th class="tg-pp"><input type="date" name="mDate"></th>
 	        </tr>
 	        <tr>
 	            <td class="tg-p">유효기간</td>
 	            <td class="tg-pp">
-	                <h6>제조일로부터 <input type="text" style="width: 25px;"> 일</h6>
+	                <h6>제조일로부터 <input type="text" name="eDate" style="width: 25px;"> 일</h6>
 	            </td>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">구매가능여부</td>
+	            <td class="tg-p">판매상태</td>
 	            <td class="tg-pp">
-	                <select>
-	                   <option>구매가능</option>
-	                   <option>구매불가</option>
+	                <select name="orderableStatus">
+	                   <option value="Y">판매</option>
+	                   <option value="N">판매불가</option>
 	               </select>
 	            </td>
 	        </tr>
 	        <tr>
 	            <td class="tg-p">용량</td>
-	            <td class="tg-pp"><input type="text" style="width: 80px;">  g</td>
+	            <td class="tg-pp"><input type="text" name="volume" style="width: 80px;">  g</td>
 	        </tr>
 	        <tr>
 	            <td class="tg-p">식품유형</td>
 	            <td class="tg-pp">
-	                <input type="text" placeholder="식품유형을 작성해주세요">
+	                <input type="text" name="category" placeholder=" ex)식육함유가공">
 	            </td>
 	        </tr>
 	        <tr>
 	            <td class="tg-p">원재료명</td>
 	            <td class="tg-pp">
-	                <input type="text" placeholder="원재료명을 작성해주세요" style="width: 500px;">
+	                <input type="text" name="ingredient" placeholder="원재료명을 작성해주세요" style="width: 500px;">
 	            </td>
 	        </tr>
 	        <tr>
 	            <td class="tg-p">보관법</td>
 	            <td class="tg-pp">
-	                <select>
-	                    <option>0~10º 냉장보관</option>
-	                    <option>상온보관</option>
-	                    <option>냉동보관</option>
+	                <select name="storageMethod">
+	                    <option value="0~10º 냉장보관">0~10º 냉장보관</option>
+	                    <option value="상온보관">상온보관</option>
+	                    <option value="냉동보관">냉동보관</option>
 	                </select>
 	            </td>
 	        </tr>
 	        <tr>
 	            <td class="tg-p">가격</td>
-	            <td class="tg-pp"><input type="text" style="width: 100px;">   원</td>
+	            <td class="tg-pp"><input type="text" name="price" style="width: 100px;">   원</td>
 	        </tr>
 	        </tbody>
 	    </table><br><br><br>
 	
-	    <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px;">등록하기</button>
+	    <input type="submit" value="등록하기" style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; height: 40px;">
 	    </form> 
 	   </div>  
 	 </div>
-	
+	 
 	<!-- footer -->
 	 <jsp:include page="../commons/footer.jsp"/>
 	

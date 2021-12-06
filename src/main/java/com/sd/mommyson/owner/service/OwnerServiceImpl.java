@@ -5,14 +5,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
 public class OwnerServiceImpl implements OwnerService{
@@ -39,8 +39,15 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerDAO.selectCoupon(member);
 	}
 
+
 	@Override
-	public int modifyInfo(Map<String, String> modifyInfo) {
+	public List<ReviewDTO> selectReview(ReviewDTO review) {
+		
+		return ownerDAO.selectReview(review);
+	}
+
+	@Override
+	public int modifyInfo(Map<String, Object> modifyInfo) {
 
 		System.out.println(modifyInfo);
 		
@@ -50,7 +57,7 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int modifyCeo(Map<String, String> modifyInfo) {
+	public int modifyCeo(Map<String, Object> modifyInfo) {
 		
 		int result = ownerDAO.modifyCeo(modifyInfo);
 		
@@ -58,11 +65,56 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int modifyStore(Map<String, String> modifyInfo) {
+	public int modifyStore(Map<String, Object> modifyInfo) {
 
 		int result = ownerDAO.modifyStore(modifyInfo);
 		
 		return result;
+	}
+
+	@Override
+	public int registCoupon(CouponDTO coupon) {
+		
+		int result = ownerDAO.registCoupon(coupon);
+		
+		return result;
+	
+	}
+	@Override
+	public int modifyPwd(MemberDTO member) {
+		
+		int result = ownerDAO.modifyPwd(member);
+		
+		return result;
+	}
+
+	@Override
+	public int registCouponStore(int memCode) {
+		
+		int result = ownerDAO.registCouponStore(memCode);
+		
+		return result;
+		
+	}
+	
+	@Override
+	public List<TagDTO> selectTag() {
+
+		return ownerDAO.selectTag();
+	}
+
+	@Override
+	public int registProduct(Map<String, Object> productInfo) {
+
+		int result = ownerDAO.registProduct(productInfo);
+		
+		return result;
+	}
+
+	@Override
+	public List<ProductDTO> selectProduct(int memCode) {
+		
+		return ownerDAO.selectProduct(memCode);
 	}
 	
 

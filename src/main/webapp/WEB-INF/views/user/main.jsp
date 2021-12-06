@@ -13,6 +13,11 @@
     <script src="${ pageContext.servletContext.contextPath }/resources/js/slick.min.js"></script>
 </head>
 <body>
+<script>
+	if(${ requestScope.message != null && requestScope.message != '' }){
+		alert('${ requestScope.message }');
+	}
+</script>
     
     <jsp:include page="../commons/header.jsp"></jsp:include>
     

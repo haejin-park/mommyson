@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,10 +11,14 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>     
-<title>사업자 상품등록</title>
+<title>판매상품 관리</title>
 </head>
 <body>
-
+<script>
+	if(${ requestScope.message != null && requestScope.message != ''}){
+		alert('${ requestScope.message }');
+	}
+</script>
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
 	
@@ -43,30 +48,24 @@
               </tr>
             </thead>
             <tbody>
+              <c:forEach var="list" items="${ productList }">
               <tr>
                 <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">1</th>
-                <td>두부 무침</td>
-                <td>2021-11-23</td>
+                <th scope="row">${ list.sdCode}</th>
+                <td>${ list.sdName }</td>
+                <td>${ list.mDate }</td>
                 <td>2021-11-30</td>
-                <td><button class="couponBtn" id="btn1">판매</button></td>
+                <td>
+	               	<c:if test="${ list.orderableStatus eq 'Y' }">
+	                <button class="couponBtn" id="btn1">판매</button>
+	                </c:if>
+	                
+	                <c:if test="${ list.orderableStatus eq 'N' }">
+	                <button class="couponBtn" style="background-color : #777777;" id="btn1">판매중단</button>
+	                </c:if>
+                </td>
               </tr>
-              <tr>
-                <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">2</th>
-                <td>오뎅 볶음</td>
-                <td>2021-11-23</td>
-                <td>2021-11-30</td>
-                <td><button class="couponBtn" id="btn2" style="background-color: #777777;">판매 중단</button></td>
-              </tr>
-              <tr>
-                <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">3</th>
-                <td>로제찜닭마요</td>
-                <td>2021-11-24</td>
-                <td>2021-11-30</td>
-                <td><button class="couponBtn">판매</button></td>
-              </tr>
+              </c:forEach>
             </tbody>
           </table>
         </div>
