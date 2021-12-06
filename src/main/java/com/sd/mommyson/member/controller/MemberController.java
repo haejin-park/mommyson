@@ -130,7 +130,7 @@ public class MemberController {
 	}
 	
 	/* 이메일 인증 */ 
-	@RequestMapping(value="mailCheck", method=RequestMethod.GET)
+	@RequestMapping(value="mailCheck", method=RequestMethod.POST)
 	@ResponseBody
 	public String mailCheckGet(String email) throws Exception{
 

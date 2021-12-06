@@ -68,6 +68,15 @@
             <br><br>
             <input type="text" class="input1" name="phone" id="phone" placeholder="전화번호를 입력해주세요">
             <br><br>
+            <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
+            <button  type="submit" class ="submit"  name="submit" id="submit">전송</button>
+            <br><br>
+            <input type="number" class="code" name="code" id="code" placeholder="인증번호를 입력해주세요">
+            <!-- <button type="submit" class="submit2" name="submit2" id="submit2" style=" height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">확인</button> -->
+            <br>
+            <div class = "clearfix"></div>
+            <span id="mail_check_input_box_warn"></span>
+            <br>
             <input type="text" class="input1" name="zipCode" id="zipCode" placeholder="우편번호를 입력해주세요" readonly>
             <input type="button" id="searchZipCode" value="검색">
             <br><br>
@@ -75,14 +84,6 @@
             <button type="button" name="locationCode" id="locationCode" onclick="locationCode1()">지역코드</button>
             <br><br>
             <input type="text" class="input1" name="address2" id="address2" placeholder="상세주소를 입력해주세요" required>
-            <br><br>
-            <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
-            <button  type="submit" class ="submit"  name="submit" id="submit">전송</button>
-            <br><br>
-            <input type="number" class="mail_check_button" name="code" id="code" placeholder="인증번호를 입력해주세요">
-            <button type="submit" name="submit" id="submit">확인</button>
-            <div class = "clearfix"></div>
-            <span id="mail_check_input_box_warn"></span>
             <br><br>
             </form>
             <!-- 모달 띄우기 -->
@@ -294,28 +295,7 @@
 
         
     </script> 
-        
-    <script>
-    function locationCode1(){
-    	let address1 = $('#address1').val();
-    	$.ajax({
-    		url : "${ pageContext.servletContext.contextPath }/member/locationCode",
-    		type : "post",
-    		data : {
-    			address1 : address1
-    		},
-    		async: false,
-    		success:function(data){
-    		},
-    		error:function(error){
-    			alert(error);
-    		}
-    	
-    	});
-    }
-    </script>
     
-
     <script>
 		
         var code =""; /* 이메일전송 인증번호 저장을 위한 코드 */
@@ -324,7 +304,7 @@
     		
     		var email = $("#email").val(); /* 입력한 이메일 */
     		$.ajax({
-    			type:"GET",
+    			type:"POST",
     			url:"mailCheck?email=" + email,
     			success:function(data){  /* memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 */
     				console.log("data : " + data);  
@@ -353,8 +333,7 @@
 			
         });
     </script>
-    
-    
+        
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		const $searchZipCode = document.getElementById("searchZipCode");
@@ -374,7 +353,26 @@
 
 	</script>
 
-
+	<script>
+    function locationCode1(){
+    	let address1 = $('#address1').val();
+    	$.ajax({
+    		url : "${ pageContext.servletContext.contextPath }/member/locationCode",
+    		type : "post",
+    		data : {
+    			address1 : address1
+    		},
+    		async: false,
+    		success:function(data){
+    		},
+    		error:function(error){
+    			alert(error);
+    		}
+    	
+    	});
+    }
+    </script>
+    
     <script>
         // 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선텍 된다
         $("#all").on("change",function(){
