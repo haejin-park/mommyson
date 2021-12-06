@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.service.UserService;
 
 @Controller
@@ -109,6 +110,13 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
+	/**
+	 * @author ShinHyungi
+	 * @param mv
+	 * @param category
+	 * @param session
+	 * @return mv
+	 */
 	@GetMapping("category/{category}")
 	public ModelAndView categoryPage(ModelAndView mv,@PathVariable String category, HttpSession session) {
 		List<HashMap<String, String>> categoryList = (List<HashMap<String, String>>) session.getAttribute("categoryList");
@@ -133,6 +141,13 @@ public class UserController {
 	@GetMapping("sale")
 	public void todaySale() {}
 	
+	/**
+	 * @author ShinHyungi
+	 * @param mv
+	 * @param type
+	 * @param model
+	 * @return mv
+	 */
 	@GetMapping("famousStore/{type}")
 	public ModelAndView famousStore(ModelAndView mv, @PathVariable String type, Model model) {
 		
@@ -141,10 +156,20 @@ public class UserController {
 			case "new" : cg = "신규 반찬 가게"; break;
 			case "famous" : cg = "우리동네 인기 맛집"; break;
 		}
+		StoreDTO store = null;
+		if(cg.equals("new")) {
+			
+		}
 		
 		mv.addObject("type", cg);
 		mv.setViewName("user/famousStore");
 		
 		return mv;
+	}
+	
+	@GetMapping("storepage/{memCode}")
+	public String storePage(@PathVariable String memCode) {
+		
+		return "user/store_page";
 	}
 }

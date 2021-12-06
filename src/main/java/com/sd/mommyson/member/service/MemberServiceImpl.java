@@ -1,5 +1,7 @@
 package com.sd.mommyson.member.service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,6 +41,12 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println(member);
 		if(passwordEncoder.matches(member.getMemPwd(), memberDAO.selectEncPassword(member))) {
 			loginMember = memberDAO.selectMember(member);
+			if(loginMember.getMemType().equals("manager")) {
+				memberDAO.updateLastLogin(member);
+				loginMember = memberDAO.selectMember(member);
+			} else {
+				loginMember = memberDAO.selectMember(member);
+			}
 			System.out.println("들어왔음");
 		}
 		

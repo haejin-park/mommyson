@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -25,7 +26,7 @@
                 <p>관리자 조회</p>
                 <div class="top_btn">
                 <input type="button" value="삭제" class="del_btn" onclick="deleteManager();">
-                <script>
+              	<script>
                 	if(${ requestScope.result != null }) {
                 		alert('${ requestScope.result }');
                 	}
@@ -70,7 +71,7 @@
                         </td>
                         <td>${ sessionScope.loginMember.memId }</td>
                         <td>${ sessionScope.loginMember.enrollDate }</td>
-                        <td>${ sessionScope.loginMember.manager.lastLogin }</td>
+                        <td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${ sessionScope.loginMember.manager.lastLogin }"/></td>
                       </tr>
                       <c:forEach items="${ requestScope.managerList }" var="managerList">
                       	  <tr>
@@ -90,7 +91,7 @@
 	                        </td>
 	                        <td><c:out value="${ managerList.memId }"/></td>
 	                        <td><c:out value="${ managerList.enrollDate }"/></td>
-	                        <td><c:out value="${ managerList.manager.lastLogin }"/></td>
+	                        <td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${ managerList.manager.lastLogin }"/></td>
 	                      </tr>
                       </c:forEach>
                       <script>

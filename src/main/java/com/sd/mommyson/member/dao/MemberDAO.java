@@ -24,4 +24,6 @@ public interface MemberDAO {
 
 	/*  아이디 중복검사 */
 	public int idChk(String memId);
+
+	public void updateLastLogin(MemberDTO member);
 }
