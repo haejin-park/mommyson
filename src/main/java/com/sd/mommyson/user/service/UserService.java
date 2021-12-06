@@ -13,5 +13,7 @@ public interface UserService {
 
 	int selectTotalCount(HttpSession session, Map<String, String> searchMap);
 
+	int selectStoreTotalCount(Map<String, String> searchMap);
+
 
 }

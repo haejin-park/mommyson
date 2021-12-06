@@ -48,5 +48,24 @@
 			A.STATUS = 'N'
     	</where>
 	</select>
+	
+	<select id="selectStoreTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM STORE_TBL A
+		  LEFT JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+		  LEFT JOIN REVIEW_TBL C ON(A.MEM_CODE = C.MEM_CODE)
+		<where>
+   	  	  <if test='searchValue != null'>
+   	  	   A.STORE_NAME LIKE '%' ||  #{ searchValue } || '%'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'new'">
+   	  	   B.ENROLL_DATE BETWEEN SYSDATE AND (SYSDATE - 100)
+  	      </if>
+   	  	  <if test="searchCondition == 'famous'">
+   	  	   
+  	      </if>
+   	  	</where>
+	</select>
     
     </mapper>

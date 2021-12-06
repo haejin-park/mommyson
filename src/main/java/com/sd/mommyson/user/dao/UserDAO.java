@@ -13,4 +13,6 @@ public interface UserDAO {
 
 	int selectTotalCount(Map<String, String> searchMap);
 
+	int selectStoreTotalCount(Map<String, String> searchMap);
+
 }

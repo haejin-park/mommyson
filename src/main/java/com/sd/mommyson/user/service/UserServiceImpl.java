@@ -36,4 +36,9 @@ public class UserServiceImpl implements UserService{
 		return totalCount;
 	}
 
+	@Override
+	public int selectStoreTotalCount(Map<String, String> searchMap) {
+		return userDAO.selectStoreTotalCount(searchMap);
+	}
+
 }
