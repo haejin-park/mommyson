@@ -174,7 +174,21 @@ public class MemberController {
 		String num = Integer.toString(checkNum);
 		return num;
 	}
+	
+	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
+	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
 
+		System.out.println(member);
+		logger.info("join진입");
+		
+		memberService.customerJoin(member);
+		
+		logger.info("customerJoin Service 성공");
+		
+		return "/member/login";
+		
+		
+	}
 	
 
 }

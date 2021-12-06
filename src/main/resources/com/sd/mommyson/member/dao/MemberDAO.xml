@@ -25,7 +25,7 @@
 		<result property="account" column="ACCOUNT"/>
 		<result property="no" column="STORE_NO"/>
 		<result property="name" column="CEO_NAME"/>
-		<collection property="store" resultMap="storeResultMap"></collection>
+		<collection property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -54,7 +54,7 @@
 		<collection property="user" resultMap="userResultMap"/>
 		<collection property="ceo" resultMap="ceoResultMap"/>
 		<collection property="manager" resultMap="managerResultMap"/>
-		<collection property="locationCode" column="locationResultMap"/>
+		<collection property="locationCode" resultMap="locationResultMap"/>
 	</resultMap>
 	
 	<resultMap id="locationResultMap" type="com.sd.mommyson.member.dto.LocationDTO">
@@ -160,28 +160,15 @@
 	</select>
 	
 	<!-- 지역코드 조회 -->
-	<select id="locationCode" resultType="String">
+	<select id="locationCode" resultType="String" >
 		SELECT A.LOCATION_CODE
 		  FROM LOCATION A
 		 WHERE A.LOCATION_NAME = #{ locationName }
 		  
 	</select>
-<!-- 	<insert id="customerJoin" parameterType="hashMap">
-		INSERT 
-		  INTO MEMBER_TBL M
-		( 
-		  M.MEM_CODE
-		, M.EMAIL
-		, M.MEM_PWD
-		, M.ADDRESS
-		, M.POST_CODE
-		, M.D_ADDRESS
-		, M.PHONE
-		, M.MEM_TYPE
-		, M.NICKNAME
-		, M.MEM_ID
-		, M.ENROLL_DATE
-		)
+ 	<insert id="customerJoin">
+		INSERT ALL
+		  INTO MEMBER_TBL
 		VALUES
 		( 
    		  SEQ_MEM_CODE.NEXTVAL
@@ -191,10 +178,20 @@
 		, #{ postCode }
 		, #{ dAddress }
 		, #{ phone }
-		, #{ memType }
+		, 'user'
+		, #{ locationCode }
 		, #{ nickname }
 		, #{ memId }
-		, SYSDATE		
+		, SYSDATE	
+		, 'N'	
 		)
-	</insert> -->
+		INTO USER_TBL 
+		VALUES
+		( 
+		  SEQ_MEM_CODE.CURRVAL
+		, #{ user.name }
+		, 0
+		)
+		SELECT * FROM DUAL
+	</insert> 
 </mapper>

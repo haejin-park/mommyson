@@ -15,7 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/customerJoin.css">
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+   
     <script>
     // 아이디 중복확인
     function idChk1(){
@@ -54,17 +55,17 @@
             <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         </div>
         <div class="text">
-            <form action="#" method="POST" onsubmit="return validate();"> 
-            <input type="text" class="input1" name="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
+            <form id="join_form" method="POST" onsubmit="return validate();"> 
+            <input type="text" class="input1" name="memId" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
             <button type="button" name="idChk" id="idChk" onclick="idChk1()" value="N">중복확인</button>
             <br><br>
-            <input type="password" class="input1" name="pwd1" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
+            <input type="password" class="input1" name="memPwd" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
             <br><br>
-            <input type="password" class="input1" name="pwd2" id="pwd2" placeholder="비밀번호 확인">
+            <input type="password" class="input1" name="memPwd" id="pwd2" placeholder="비밀번호 확인">
             <br><br>
-            <input type="text" class="input1" name="name" id="name" placeholder="이름을 입력해주세요">
+            <input type="text" class="input1" name="user.name" id="name" placeholder="이름을 입력해주세요">
             <br><br>
-            <input type="text" class="input1" name="nickName" id="nickName" placeholder="닉네임을 입력해주세요">
+            <input type="text" class="input1" name=nickname id="nickname" placeholder="닉네임을 입력해주세요">
             <br><br>
             <input type="text" class="input1" name="phone" id="phone" placeholder="전화번호를 입력해주세요">
             <br><br>
@@ -77,15 +78,15 @@
             <div class = "clearfix"></div>
             <span id="mail_check_input_box_warn"></span>
             <br>
-            <input type="text" class="input1" name="zipCode" id="zipCode" placeholder="우편번호를 입력해주세요" readonly>
+            <input type="text" class="input1" name="postCode" id="zipCode" placeholder="우편번호를 입력해주세요" readonly>
             <input type="button" id="searchZipCode" value="검색">
             <br><br>
-            <input type="text" class="input1" name="address1" id="address1" placeholder="주소를 입력해주세요" readonly>
+            <input type="text" class="input1" name="address" id="address1" placeholder="주소를 입력해주세요" readonly>
             <button type="button" name="locationCode" id="locationCode" onclick="locationCode1()">지역코드</button>
             <br><br>
-            <input type="text" class="input1" name="address2" id="address2" placeholder="상세주소를 입력해주세요" required>
+            <input type="text" class="input1" name="dAddress" id="address2" placeholder="상세주소를 입력해주세요" required>
             <br><br>
-            </form>
+        
             <!-- 모달 띄우기 -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"id="terms">약관 보기</button> 
             <br>
@@ -144,11 +145,11 @@
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <button type="submit" id="button">가입하기</button>
+            <button type="submit" id="joinButton"  style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
 
-   		
+   		    </form>
         </div>
     </div>
     <jsp:include page="../commons/footer.jsp"/>
@@ -401,6 +402,17 @@
             }
 
     </script>
+
+	<script>
+	
+	$(document).ready(function(){
+		$("#joinButton").click(function(){
+			$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin2");
+			$("#join_form").submit();
+		});
+	});
+	
+	</script>
 
 
 </body>
