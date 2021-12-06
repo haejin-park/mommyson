@@ -44,7 +44,6 @@ public class MemberServiceImpl implements MemberService {
 			} else {
 				loginMember = memberDAO.selectMember(member);
 			}
-			System.out.println("들어왔음");
 		}
 		
 		return loginMember;

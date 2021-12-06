@@ -46,6 +46,7 @@
 		<result property="postCode" column="POST_CODE"/>
 		<result property="dAddress" column="D_ADDRESS"/>
 		<result property="phone" column="PHONE"/>
+		<result property="locationCode" column="LOCATION_CODE"/>
 		<result property="memType" column="MEM_TYPE"/>
 		<result property="nickname" column="NICKNAME"/>
 		<result property="memId" column="MEM_ID"/>
