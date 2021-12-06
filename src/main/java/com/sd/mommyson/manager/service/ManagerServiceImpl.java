@@ -108,11 +108,19 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public boolean memberAddBlack(List<Integer> memberAddBlackList) {
+	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList) {
 		
 		int result = managerDAO.memberAddBlack(memberAddBlackList);
 		
 		return result > 0? true : false;
+	}
+
+	@Override
+	public List<MemberDTO> selectSearchMemberList(String searchMember) {
+		
+		List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
+		
+		return searchMemberList;
 	}
 	
 }

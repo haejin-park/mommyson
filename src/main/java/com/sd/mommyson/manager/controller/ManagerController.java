@@ -64,9 +64,9 @@ public class ManagerController {
 	}
 	
 	/* 회원블랙등록 */
-	@PostMapping("memberAddBlack")
+	@GetMapping(value = "registBlack/{chkMember}", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
-	public boolean memberAddBlack(@RequestParam("chkMember") int[] chkMemberBlack) {
+	public String memberAddBlack(@PathVariable("chkMember") int[] chkMemberBlack) {
 		
 		List<Integer> memberAddBlackList = new ArrayList<>();
 		
@@ -74,9 +74,17 @@ public class ManagerController {
 			memberAddBlackList.add(chkMemberBlack[i]);
 		}
 		
-		boolean result = managerService.memberAddBlack(memberAddBlackList);
+		boolean result = managerService.modifyMemberAddBlack(memberAddBlackList);
 		
-		return result;
+		return result? "1" : "2";
+	}
+	
+	/* 회원검색 */
+	@GetMapping("searchMember")
+	public void searchMemberList(@RequestParam("searchTxt") String searchMember, Model model) {
+		
+		List<MemberDTO> searchMemberList = managerService.selectSearchMemberList(searchMember);
+		model.addAttribute("searchMemberList", searchMemberList);
 	}
 	
 	/* 사업자 회원 조회 */

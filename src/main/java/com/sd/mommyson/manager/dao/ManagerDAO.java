@@ -37,4 +37,6 @@ public interface ManagerDAO {
 
 	int memberAddBlack(List<Integer> memberAddBlackList);
 
+	List<MemberDTO> selectSearchMemberList(String searchMember);
+
 }
