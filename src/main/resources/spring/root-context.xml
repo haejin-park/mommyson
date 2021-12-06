@@ -30,19 +30,25 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<!--Gmail -->
+	<!--mail -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com"/>
-		<property name="port" value="7777"/>
-		<property name="username" value="luckyhaejin1126@gmail.com"/>
-		<property name="password" value="godqhrgkwk!"/>
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-			</props>
-		</property>
-	</bean>
+		<property name="host" value="smtp.naver.com"/> 
+		<property name="port" value="587"/> 
+		<property name="username" value="sli9962@naver.com"/> <!-- 자신의 이메일 아이디 -->
+		<property name="password" value="godqhrgkwk!"/> <!-- 자신의 비밀번호 -->
+		
+		<property name="javaMailProperties"> <!-- 보안연결 SSL과 관련된 설정 -->
+	      <props>
+	      <prop key="mail.smtp.auth">true</prop>
+	      <prop key="mail.smtp.starttls.enable">true</prop>
+	      <prop key="mail.smtps.checkserveridentity">true</prop>
+	      <prop key="mail.smtps.ssl.trust">*</prop> 
+	      <prop key="mail.debug">true</prop>
+	      <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+	      </props>
+	    </property>
+    </bean>
+
 	
 	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -67,4 +73,8 @@
 	<mybatis-spring:scan base-package="com.sd.mommyson.member.dao"/>
 	<mybatis-spring:scan base-package="com.sd.mommyson.owner.dao"/>
 	<mybatis-spring:scan base-package="com.sd.mommyson.manager.dao"/>
+	<mybatis-spring:scan base-package="com.sd.mommyson.user.dao"/>
+	<mybatis-spring:scan base-package="com.sd.mommyson.usermypage.dao"/>
+	
+	
 </beans>

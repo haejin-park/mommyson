@@ -1,16 +1,17 @@
 package com.sd.mommyson.member.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class ManagerDTO {
 
 	private int memCode;
-	private Date lastLogin;
+	private Timestamp lastLogin;
 	private AuthDTO authDTO;
 	
 	public ManagerDTO() {}
 
-	public ManagerDTO(int memCode, Date lastLogin, AuthDTO authDTO) {
+	public ManagerDTO(int memCode, Timestamp lastLogin, AuthDTO authDTO) {
 		super();
 		this.memCode = memCode;
 		this.lastLogin = lastLogin;
@@ -25,11 +26,11 @@ public class ManagerDTO {
 		this.memCode = memCode;
 	}
 
-	public Date getLastLogin() {
+	public Timestamp getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(Date lastLogin) {
+	public void setLastLogin(Timestamp lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
@@ -45,6 +46,8 @@ public class ManagerDTO {
 	public String toString() {
 		return "ManagerDTO [memCode=" + memCode + ", lastLogin=" + lastLogin + ", authDTO=" + authDTO + "]";
 	}
+
+	
 
 }
 

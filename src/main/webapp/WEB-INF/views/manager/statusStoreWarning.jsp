@@ -108,7 +108,7 @@
 
     <script>
          $("#homeSubmenu4").addClass("show");
-         $("#homeSubmenu4 > li:first-child > a").css("color","#F89E91");
+         $("#homeSubmenu4 > li:first-child > a").attr("style","color: #F89E91 !important");
     </script>
 </body>
 </html>

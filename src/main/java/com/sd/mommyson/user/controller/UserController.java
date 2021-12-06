@@ -2,6 +2,7 @@ package com.sd.mommyson.user.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,17 +14,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.service.ManagerService;
+import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.user.dto.PostDTO;
 import com.sd.mommyson.user.service.UserService;
 
 @Controller
+//@SessionAttributes("")
 @RequestMapping("/user/*")
 public class UserController {
 	
 	private UserService userService;
+	private ManagerService managerService;
 	
 	@Autowired
-	public UserController(UserService userService) {
+	public UserController(UserService userService, ManagerService managerService) {
 		this.userService = userService;
+		this.managerService = managerService;
 	}
 	
 	
@@ -79,7 +87,10 @@ public class UserController {
 	 * @category 공지사항 출력
 	 */
 	@GetMapping("ucc/uccNoticeSelect")
-	public String userCustomerServiceCenterNoticeSelect() {
+	public String userCustomerServiceCenterNoticeSelect(HttpSession session) {
+		System.out.println("공지사항 콘트롤러 진입");
+		List<PostDTO> noticeList = userService.selectNotice();
+		System.out.println("테스트 공지리스트 : " + noticeList);
 		
 		return "user/userCustomerServiceCenterNoticeSelect";
 	}
@@ -109,6 +120,13 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
+	/**
+	 * @author ShinHyungi
+	 * @param mv
+	 * @param category
+	 * @param session
+	 * @return mv
+	 */
 	@GetMapping("category/{category}")
 	public ModelAndView categoryPage(ModelAndView mv,@PathVariable String category, HttpSession session) {
 		List<HashMap<String, String>> categoryList = (List<HashMap<String, String>>) session.getAttribute("categoryList");
@@ -133,6 +151,13 @@ public class UserController {
 	@GetMapping("sale")
 	public void todaySale() {}
 	
+	/**
+	 * @author ShinHyungi
+	 * @param mv
+	 * @param type
+	 * @param model
+	 * @return mv
+	 */
 	@GetMapping("famousStore/{type}")
 	public ModelAndView famousStore(ModelAndView mv, @PathVariable String type, Model model) {
 		
@@ -141,10 +166,19 @@ public class UserController {
 			case "new" : cg = "신규 반찬 가게"; break;
 			case "famous" : cg = "우리동네 인기 맛집"; break;
 		}
-		
+		if(cg.equals("new")) {
+			
+		}
+				
 		mv.addObject("type", cg);
 		mv.setViewName("user/famousStore");
 		
 		return mv;
+	}
+	
+	@GetMapping("storepage/{memCode}")
+	public String storePage(@PathVariable String memCode) {
+		
+		return "user/store_page";
 	}
 }
