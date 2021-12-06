@@ -56,23 +56,45 @@
 	                </thead>
 	                <tbody>
 	                	<c:forEach items="${ requestScope.normalMemberList }" var="nm">
-	                    <tr>
-	                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }"></th>
-	                        <td>${ nm.memCode }</td>
-	                        <td>${ nm.memId }</td>
-	                        <td>${ nm.nickname }</td>
-	                        <td>${ nm.email }</td>
-	                        <td>${ nm.enrollDate }</td>
-	                        <td>${ nm.memId }</td>
-	                        <td>${ nm.memId }</td>
-	                        <td>${ nm.memId }</td>
-	                        <td>${ nm.memId }</td>
-	                    </tr>
+		                	<c:if test="${ nm.memType == 'user' }">
+			                    <tr>
+			                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
+			                        <td>${ nm.memCode }</td>
+			                        <td>${ nm.memId }</td>
+			                        <td>${ nm.nickname }</td>
+			                        <td>${ nm.email }</td>
+			                        <td>${ nm.enrollDate }</td>
+			                        <td></td>
+			                        <td></td>
+			                        <td>${ nm.user.repCount }</td>
+			                        <td class="memberState">${ nm.isDeleted }</td>
+			                    </tr>
+		                    </c:if>
 	                    </c:forEach>
 	                </tbody>
 	            </table>
             	<input type="button" name="blakAdd" id="blak_add" value="블랙등록" class="black_btn">
             </form>
+            
+            <script>
+            	$("#blak_add").on('click', function(){
+            		
+            		let changeList = $(".board_table > tbody > tr");
+            		let chkMember = $(".chkbox:checked").val();
+            		
+            		$.ajax({
+            			url : '/mommyson/manager/memberAddBlack',
+            			type : 'POST',
+            			data : {
+            				chkMember : chkMember
+            			},
+            			success: function(data){
+            				changeList.css('display','none');
+            			}
+            		});
+            	});
+            </script>
+            
             <!-- 페이징 -->
             <nav class="page_box" aria-label="Page navigation example">
                 <ul class="pagination">
@@ -91,12 +113,14 @@
                     <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
                     <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
                 </ul>
-                <form action="">
-                    <ul>
-                        <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                        <button type="submit" class="searchbutton">검색하기</button></li>
-                    </ul>
+                <form action="${ pageContext.servletContext.contextPath }/manager/searchMember" method="GET">
+                	<div class="search_box">
+	                    <ul class="df_ul">
+	                        <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
+	                        <li><input type="search" class="searchtext" placeholder="회원 닉네임으로 검색하기"></li>
+	                        <li><button type="submit" class="searchbutton">검색하기</button></li>
+	                    </ul>
+                    </div>
                 </form>
             </nav>
         </div>
@@ -105,22 +129,23 @@
     <jsp:include page="../commons/footer.jsp"></jsp:include>
 
     <script>
-        $("#chk_all").click(function(){
-         $(this).parent
-        });
  
-         $("#homeSubmenu1").addClass("show");
-         $("#homeSubmenu1 > li:first-child > a").attr("style","color: #F89E91 !important");
-         
-         $("#chk_all").click(function(){
-        	 let chk = $(this).is(":checked");
-        	 if(chk){
-        		 $(".board_table > tbody > tr th input").prop('checked', true);
-        	 } else{
-        		 $(".board_table > tbody > tr th input").prop('checked', false);
-        	 }
-        	 
-         });
+	    $("#homeSubmenu1").addClass("show");
+	    $("#homeSubmenu1 > li:first-child > a").attr("style","color: #F89E91 !important");
+	    
+	    $("#chk_all").click(function(){
+	   	 let chk = $(this).is(":checked");
+	   	 if(chk){
+	   		 $(".board_table > tbody > tr th input").prop('checked', true);
+	   	 } else{
+	   		 $(".board_table > tbody > tr th input").prop('checked', false);
+	   	 }
+	   	 
+	    });
+	    
+	    if($(".memberState").text().charAt(0) == 'N'){
+    		$(".memberState").text("정상")
+    	}
      </script>
 </body>
 </html>

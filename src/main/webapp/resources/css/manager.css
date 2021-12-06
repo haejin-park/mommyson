@@ -142,6 +142,12 @@
 .total_container .board_container .add_tag_modal .edit_box li { display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
 .total_container .board_container .add_tag_modal .edit_box li .num { width: 34px; height: 34px; background-color: #F89E91; border-radius: 5px; font-size: 20px; color: #fff; text-align: center; display: inline-block; margin-right: 15px; }
 
+/* 검색박스 */
+.search_box { text-align: center; }
+.search_box ul { width: auto; }
+.search_box ul li { float: left; }
+.search_box ul li .searchtext { margin: 0 5px 0 0; padding: 5px; }
+
 /*== 이미지 파일 ==*/
 .photo1 {
     display: inline-block;

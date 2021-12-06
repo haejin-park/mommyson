@@ -10,8 +10,10 @@ import com.sd.mommyson.member.dto.MemberDTO;
 
 public interface ManagerService {
 
-	public List<MemberDTO> normalMemberSelect(MemberDTO member);
+	/* 회원조회 */
+	public List<MemberDTO> memberSelect(MemberDTO member);
 
+	/* 일반회원삭제 */
 	public boolean deleteMembers(List<Integer> deleteMemberList);
 	
 	public List<ManagerDTO> selectManagers(String string);
@@ -29,5 +31,11 @@ public interface ManagerService {
 
 	/* 공지사항 리스트 */
 	public List<Pagination> selectNoticeList(Pagination pagination);
+
+	/* 블랙회원조회 */
+	public List<MemberDTO> blackMemberSelect(MemberDTO member);
+	
+	/* 회원 블랙등록 */
+	public boolean memberAddBlack(List<Integer> memberAddBlackList);
 
 }

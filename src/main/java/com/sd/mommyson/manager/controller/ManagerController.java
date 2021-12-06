@@ -41,7 +41,7 @@ public class ManagerController {
 	@GetMapping("normalMember")
 	public void normalMember(MemberDTO member, Model model) {
 		
-		List<MemberDTO> normalMemberList = managerService.normalMemberSelect(member);
+		List<MemberDTO> normalMemberList = managerService.memberSelect(member);
 		System.out.println("normalMemberList : " + normalMemberList);
 		model.addAttribute("normalMemberList", normalMemberList);
 	}
@@ -49,12 +49,7 @@ public class ManagerController {
 	/* 회원삭제 */
 	@PostMapping("deleteMember")
 	public String deleteMember(@RequestParam("chkMember") int[] deleteMember) {
-		for(int deleteMembers : deleteMember) {
-			System.out.println(deleteMembers);
-		}
-		
-		System.out.println(deleteMember.length);
-		
+
 		List<Integer> deleteMemberList = new ArrayList<>();
 		
 		for(int i = 0; i < deleteMember.length; i++) {
@@ -66,13 +61,46 @@ public class ManagerController {
 		return "redirect:normalMember";
 	}
 	
+	/* 회원블랙등록 */
+	@PostMapping("memberAddBlack")
+	@ResponseBody
+	public boolean memberAddBlack(@RequestParam("chkMember") int[] chkMemberBlack) {
+		
+		List<Integer> memberAddBlackList = new ArrayList<>();
+		
+		for(int i = 0; i < chkMemberBlack.length; i++) {
+			memberAddBlackList.add(chkMemberBlack[i]);
+		}
+		
+		boolean result = managerService.memberAddBlack(memberAddBlackList);
+		
+		return result;
+	}
+	
 	/* 사업자 회원 조회 */
 	@GetMapping("buisnessMember")
-	public void buisnessMember() {}
+	public void buisnessMember(MemberDTO member, Model model) {
+		
+		List<MemberDTO> buisnessMemberList = managerService.memberSelect(member);
+		System.out.println("buisnessMemberList : " + buisnessMemberList);
+		model.addAttribute("buisnessMemberList", buisnessMemberList);
+	}
+	
+	/* 사업자 회원 삭제 */
+	@PostMapping("deleteCeoMember")
+	public String deleteCeoMember() {
+		
+		return "";
+	}
 	
 	/* 블랙 회원 조회 */
 	@GetMapping("blackMember")
-	public void blackMember() {}
+	public void blackMember(MemberDTO member, Model model) {
+		
+		List<MemberDTO> blackMemberList = managerService.blackMemberSelect(member);
+		System.out.println("blackMemberList : " + blackMemberList);
+		model.addAttribute("blackMemberList", blackMemberList);
+	}
 	
 	/* 공지사항 */
 	@GetMapping("noticeSelect")

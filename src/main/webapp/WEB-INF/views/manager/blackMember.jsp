@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -37,58 +38,34 @@
                     <col width=""/>
                 </colgroup>
                 <thead style="background-color: #EDEDED;">
-                <tr>
-                    <th><input type="checkbox" name="ch1"></th>
-                    <th>번호</th>
-                    <th>아이디</th>
-                    <th>닉네임</th>
-                    <th>이메일</th>
-                    <th>가입일</th>
-                    <th>주문횟수</th>
-                    <th>총 결제금액</th>
-                    <th>-</th>
-                </tr>
+	                <tr>
+	                    <th><input type="checkbox" name="ch1"></th>
+	                    <th>번호</th>
+	                    <th>아이디</th>
+	                    <th>닉네임</th>
+	                    <th>이메일</th>
+	                    <th>가입일</th>
+	                    <th>주문횟수</th>
+	                    <th>총 결제금액</th>
+	                    <th>-</th>
+	                </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row"><input type="checkbox" name="ch1"></th>
-                    <td>1</td>
-                    <td>user01</td>
-                    <td>혜찌마요</td>
-                    <td>heju@greedy.com</td>
-                    <td>2021-11-01</td>
-                    <td>123</td>
-                    <td>7,000,000</td>
-                    <td>
-                        <a href="" data-toggle="modal" data-target="#exampleModal">상세보기</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><input type="checkbox" name="ch1"></th>
-                    <td>1</td>
-                    <td>user01</td>
-                    <td>혜찌마요</td>
-                    <td>heju@greedy.com</td>
-                    <td>2021-11-01</td>
-                    <td>123</td>
-                    <td>7,000,000</td>
-                    <td>
-                        <a href="" data-toggle="modal" data-target="#exampleModal">상세보기</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><input type="checkbox" name="ch1"></th>
-                    <td>1</td>
-                    <td>user01</td>
-                    <td>혜찌마요</td>
-                    <td>heju@greedy.com</td>
-                    <td>2021-11-01</td>
-                    <td>123</td>
-                    <td>7,000,000</td>
-                    <td>
-                        <a href="" data-toggle="modal" data-target="#exampleModal">상세보기</a>
-                    </td>
-                </tr>
+                	<c:forEach items="${ requestScope.blackMemberList }" var="nm">
+		             	<c:if test="${ nm.isDeleted == 'B' }">
+			                <tr>
+		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }"></th>
+		                        <td>${ nm.memCode }</td>
+		                        <td>${ nm.memId }</td>
+		                        <td>${ nm.nickname }</td>
+		                        <td>${ nm.email }</td>
+		                        <td>${ nm.enrollDate }</td>
+		                        <td>${ nm.ceo.store.storeName }</td>
+		                        <td></td>
+		                        <td><a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
+			                </tr>
+		                </c:if>
+                	</c:forEach>
                 </tbody>
             </table>
 
