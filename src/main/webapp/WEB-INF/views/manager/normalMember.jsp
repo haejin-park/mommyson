@@ -73,11 +73,11 @@
 	                    </c:forEach>
 	                </tbody>
 	            </table>
-            	<input type="button" name="blakAdd" id="blak_add" value="블랙등록" class="black_btn">
+            	<input type="button" name="blackAdd" id="black_add" value="블랙등록" class="black_btn">
             </form>
             
             <script>
-            	$("#blak_add").on('click', function(){
+            	$("#black_add").on('click', function(){
             		
             		let changeList = $(".board_table > tbody > tr");
             		let chkMember = $(".chkbox:checked").val();
