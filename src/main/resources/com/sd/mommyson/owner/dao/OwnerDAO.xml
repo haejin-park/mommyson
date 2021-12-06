@@ -57,6 +57,19 @@
 		<result property="dCcon" column="DC_CONDITION"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="tatalPrice" column="TOTAL_PRICE"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="orderType" column="ORDER_TYPE"/>
+		<result property="tatalPrice" column="TOTAL_PRICE"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="storeName" column="STORE_NAME"/>
+		<result property="code" column="CODE"/>
+		
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
@@ -64,6 +77,7 @@
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
+		<collection property="orderDTO" resultMap="orderResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -110,6 +124,7 @@
 		 WHERE  B.MEM_CODE = #{ memCode }
 	</select>
 	
+	<!-- 쿠폰등록 -->
 	<insert id="registCoupon" >
 		INSERT
 		  INTO COUPON_TBL
@@ -132,6 +147,7 @@
 		)
 	</insert>
 	
+	<!-- 쿠폰등록2 -->
 	<insert id="registCouponStore">
 		INSERT
 		  INTO COUPON_STORE_TBL
@@ -147,20 +163,21 @@
 		
 	</insert>
 	
+	<!-- 리뷰 목록 가져오기 -->
 	<select id="selectReview" resultMap="reviewResultMap">
 		<!-- SELECT
 				A.RV_CODE
 			  , A.MEM_CODE
 			  , A.RV_COMTENT
 			  , B.NICKNAME
+			  , C.ORDER_CODE
+     		  , C.STORE_NAME  
 		  FROM REVIEW_TBL A
 		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
-		  JOIN ORDER_TBL C ON (B.STORE_NAME = #{  })
-		 WHERE B.IS_DELETED = 'N'
-		   AND B.MEM_TYPE = 'user'
-		   AND C.STORE_NAME = #{ } -->
-		  
+		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
+		 WHERE C.STORE_NAME =  -->
 	</select>
+	
 	<!-- 사업자 가게정보 변경 쿼리문 -->
 	<update id="modifyInfo" >
 		UPDATE MEMBER_TBL
@@ -315,9 +332,5 @@
 	      </foreach>
 	    SELECT * FROM DUAL
 	</insert>
-	
-	<delete id="">
-		
-	</delete>
 	
 </mapper>
