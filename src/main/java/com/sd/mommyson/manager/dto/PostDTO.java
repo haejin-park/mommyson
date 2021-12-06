@@ -2,7 +2,7 @@ package com.sd.mommyson.manager.dto;
 
 import java.sql.Date;
 
-public class postDTO {
+public class PostDTO {
 	
 	private int postNo;				// 게시판 번호
 	private String boardCode;		// 게시판 코드
@@ -13,13 +13,14 @@ public class postDTO {
 	private String ansStatus;		// 답변여부
 	private int queNo;				// 질문번호
 	private String status;		    // 답변상태(여기서는 N으로만 사용한다.)
+	private int viewCnt;
 
-	public postDTO() {
+	public PostDTO() {
 		super();
 	}
 
-	public postDTO(int postNo, String boardCode, String postTitle, int memCode, String postContent, Date postDate,
-			String ansStatus, int queNo, String status) {
+	public PostDTO(int postNo, String boardCode, String postTitle, int memCode, String postContent, Date postDate,
+			String ansStatus, int queNo, String status, int viewCnt) {
 		super();
 		this.postNo = postNo;
 		this.boardCode = boardCode;
@@ -30,6 +31,7 @@ public class postDTO {
 		this.ansStatus = ansStatus;
 		this.queNo = queNo;
 		this.status = status;
+		this.viewCnt = viewCnt;
 	}
 
 	public int getPostNo() {
@@ -104,11 +106,20 @@ public class postDTO {
 		this.status = status;
 	}
 
-	@Override
-	public String toString() {
-		return "postDTO [postNo=" + postNo + ", boardCode=" + boardCode + ", postTitle=" + postTitle + ", memCode="
-				+ memCode + ", postContent=" + postContent + ", postDate=" + postDate + ", ansStatus=" + ansStatus
-				+ ", queNo=" + queNo + ", status=" + status + "]";
+	public int getViewCnt() {
+		return viewCnt;
 	}
 
+	public void setViewCnt(int viewCnt) {
+		this.viewCnt = viewCnt;
+	}
+
+	@Override
+	public String toString() {
+		return "PostDTO [postNo=" + postNo + ", boardCode=" + boardCode + ", postTitle=" + postTitle + ", memCode="
+				+ memCode + ", postContent=" + postContent + ", postDate=" + postDate + ", ansStatus=" + ansStatus
+				+ ", queNo=" + queNo + ", status=" + status + ", viewCnt=" + viewCnt + "]";
+	}
+
+	
 }
