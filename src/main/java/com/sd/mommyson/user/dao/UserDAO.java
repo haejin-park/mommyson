@@ -11,6 +11,6 @@ public interface UserDAO {
 
 	List<PostDTO> selectNotice();
 
-	int selectTotalCount(HttpSession session, Map<String, String> searchMap);
+	int selectTotalCount(Map<String, String> searchMap);
 
 }

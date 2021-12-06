@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int selectTotalCount(HttpSession session, Map<String, String> searchMap) {
 		
-		int totalCount = userDAO.selectTotalCount(session,searchMap);
+		int totalCount = userDAO.selectTotalCount(searchMap);
 		return totalCount;
 	}
 

@@ -114,26 +114,29 @@ public class UserController {
 		String searchCondition = parameters.get("searchCondition");
 		String searchValue = parameters.get("searchValue");
 		
-		System.out.println(searchCondition);
-		System.out.println(searchValue);
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchValue : " + searchValue);
+		System.out.println("pageNo : " + pageNo);
 		
 		Map<String, String> searchMap = new HashMap<>();
 		searchMap.put("searchCondition", searchCondition);
 		searchMap.put("searchValue", searchValue);
+		System.out.println("searchMap : " + searchMap);
 		
+				
 
 		/* 전체 게시물 수가 필요하다.
 		 * 데이터베이스에서 먼저 전체 게시물 수를 조회해올 것이다.
 		 * 검색조건이 있는 경우 검색 조건에 맞는 전체 게시물 수를 조회한다.
 		 * */
 		
-		int totalCount = userService.selectTotalCount(session,searchMap);
+		int totalCount = userService.selectTotalCount(session, searchMap);
 		
 		System.out.println("totalBoardCount : " + totalCount);
 		
 		
-		List<PostDTO> noticeList = userService.selectNotice();
-		System.out.println("테스트 공지리스트 : " + noticeList);
+//		List<PostDTO> noticeList = userService.selectNotice();
+//		System.out.println("테스트 공지리스트 : " + noticeList);
 		
 		
 		return "user/userCustomerServiceCenterNoticeSelect";

@@ -88,7 +88,7 @@
                     <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
                   </ul>
                   <ul>
-                  	<form action="${ pageContext.servletContext.contextPath }/ucc/uccNoticeSelect" method="get">
+                  	<form action="${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeSelect" method="get">
                   	    <input type="hidden" name="currentPage" value="1">
                   	     <select id="searchCondition" name="searchCondition">
 							<option value="notice" ${ requestScope.selectCriteria.searchCondition eq "notice"? "selected": "" }>카테고리</option>

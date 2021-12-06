@@ -37,7 +37,7 @@
         SELECT
                COUNT(*)
           FROM POST_TBL A
-	      JOIN BOARD_TBL B ON(A.CATEGORY_CODE = B.CATEGORY_CODE)
+	      JOIN BOARD_TBL B ON(A.BOARD_CODE = B.BOARD_CODE)
     	<where>
     		<if test="searchCondition != null">
 				B.D_TYPE = #{ searchCondition }
