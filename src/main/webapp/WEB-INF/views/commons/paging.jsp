@@ -35,7 +35,6 @@
     </nav>
     
     <script>
-	
         const link = "${ location.href }";
 		let searchText = "";
 		
