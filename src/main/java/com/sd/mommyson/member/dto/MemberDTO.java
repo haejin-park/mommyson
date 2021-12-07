@@ -12,6 +12,7 @@ public class MemberDTO {
 	private String dAddress;
 	private String phone;
 	private String memType;
+	private String locationCode;
 	private String nickname;
 	private String memId;
 	private Date enrollDate;
@@ -19,14 +20,13 @@ public class MemberDTO {
 	private UserDTO user;
 	private CeoDTO ceo;
 	private ManagerDTO manager;
-	private LocationDTO location;
 	public MemberDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public MemberDTO(int memCode, String email, String memPwd, String address, String postCode, String dAddress,
-			String phone, String memType, String nickname, String memId, Date enrollDate, String isDeleted,
-			UserDTO user, CeoDTO ceo, ManagerDTO manager, LocationDTO location) {
+			String phone, String memType, String locationCode, String nickname, String memId, Date enrollDate,
+			String isDeleted, UserDTO user, CeoDTO ceo, ManagerDTO manager) {
 		super();
 		this.memCode = memCode;
 		this.email = email;
@@ -36,6 +36,7 @@ public class MemberDTO {
 		this.dAddress = dAddress;
 		this.phone = phone;
 		this.memType = memType;
+		this.locationCode = locationCode;
 		this.nickname = nickname;
 		this.memId = memId;
 		this.enrollDate = enrollDate;
@@ -43,7 +44,6 @@ public class MemberDTO {
 		this.user = user;
 		this.ceo = ceo;
 		this.manager = manager;
-		this.location = location;
 	}
 	public int getMemCode() {
 		return memCode;
@@ -93,6 +93,12 @@ public class MemberDTO {
 	public void setMemType(String memType) {
 		this.memType = memType;
 	}
+	public String getLocationCode() {
+		return locationCode;
+	}
+	public void setLocationCode(String locationCode) {
+		this.locationCode = locationCode;
+	}
 	public String getNickname() {
 		return nickname;
 	}
@@ -135,21 +141,15 @@ public class MemberDTO {
 	public void setManager(ManagerDTO manager) {
 		this.manager = manager;
 	}
-	public LocationDTO getLocation() {
-		return location;
-	}
-	public void setLocation(LocationDTO location) {
-		this.location = location;
-	}
 	@Override
 	public String toString() {
 		return "MemberDTO [memCode=" + memCode + ", email=" + email + ", memPwd=" + memPwd + ", address=" + address
 				+ ", postCode=" + postCode + ", dAddress=" + dAddress + ", phone=" + phone + ", memType=" + memType
-				+ ", nickname=" + nickname + ", memId=" + memId + ", enrollDate=" + enrollDate + ", isDeleted="
-				+ isDeleted + ", user=" + user + ", ceo=" + ceo + ", manager=" + manager + ", location=" + location
+				+ ", locationCode=" + locationCode + ", nickname=" + nickname + ", memId=" + memId + ", enrollDate="
+				+ enrollDate + ", isDeleted=" + isDeleted + ", user=" + user + ", ceo=" + ceo + ", manager=" + manager
 				+ "]";
 	}
-	
+
 	
 	
 }
