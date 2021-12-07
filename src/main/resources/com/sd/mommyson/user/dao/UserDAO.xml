@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <mapper namespace="com.sd.mommyson.user.dao.UserDAO">
     
-    <resultMap type="com.sd.mommyson.user.dto.PostDTO" id="postResultMap">
+    <resultMap type="com.sd.mommyson.manager.dto.PostDTO" id="postResultMap">
     	<id property="postNo" column="POST_NO"/>
     	<result property="boardCode" column="BOARD_CODE"/>
     	<result property="postTitle" column="POST_TITLE"/>

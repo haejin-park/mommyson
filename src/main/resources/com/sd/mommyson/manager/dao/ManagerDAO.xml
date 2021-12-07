@@ -177,7 +177,7 @@
 		 </foreach>
 	</update>
    
-   <resultMap id="PostResultMap" type="com.sd.mommyson.manager.dto.postDTO" >
+   <resultMap id="PostResultMap" type="com.sd.mommyson.manager.dto.PostDTO" >
  	  <id property="postNo" column="POST_NO"/>
    	  <result property="boardCode" column="BOARD_CODE"/>
    	  <result property="postTitle" column="POST_TITLE"/>

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.StoreDTO;
-import com.sd.mommyson.user.dto.PostDTO;
 import com.sd.mommyson.user.service.UserService;
 
 @Controller
