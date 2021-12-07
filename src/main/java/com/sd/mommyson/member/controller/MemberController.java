@@ -175,6 +175,8 @@ public class MemberController {
 		return num;
 	}
 	
+	
+	/* 회원가입 */
 	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
 	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
 
@@ -189,6 +191,10 @@ public class MemberController {
 		
 		
 	}
+	
+	/* 아이디 찾기 */
+	@GetMapping("findId")
+	public void findId() {}
 	
 
 }

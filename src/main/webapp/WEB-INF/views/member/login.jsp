@@ -30,7 +30,7 @@
          <!-- 아이디와 비밀번호가 일치하면  메인페이지 이동하기 -->
         <button type="submit" class="login" onclick="validate();">로그인</button>
         &nbsp; &nbsp; &nbsp; 
-        <button type="reset" class="reset"><a href="login.jsp">취소</a></button>
+        <button type="button" class="reset" id="goMain">취소</button>
         <br>
         <a href="${ pageContext.servletContext.contextPath }/member/findId">아이디 찾기</a> &nbsp; 
         <a href="${ pageContext.servletContext.contextPath }/member/findPwd">비밀번호 찾기</a> &nbsp; 
@@ -68,6 +68,14 @@
        		});
         }
 
-    </script>           
+    </script>     
+    <script>
+		const $goMain = document.getElementById("goMain");
+            $goMain.onclick = function() {
+                location.href = "${ pageContext.servletContext.contextPath }/";
+            }
+
+    </script>
+          
 </body>
 </html>

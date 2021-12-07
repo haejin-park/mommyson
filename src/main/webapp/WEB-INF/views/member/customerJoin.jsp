@@ -55,13 +55,13 @@
             <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         </div>
         <div class="text">
-            <form id="join_form" method="POST" onsubmit="return validate();"> 
+            <form name="join_form" id="join_form" method="POST" onsubmit="return validate();"> 
             <input type="text" class="input1" name="memId" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
             <button type="button" name="idChk" id="idChk" onclick="idChk1()" value="N">중복확인</button>
             <br><br>
             <input type="password" class="input1" name="memPwd" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
             <br><br>
-            <input type="password" class="input1" name="memPwd" id="pwd2" placeholder="비밀번호 확인">
+            <input type="password" class="input1"  id="pwd2" placeholder="비밀번호 확인">
             <br><br>
             <input type="text" class="input1" name="user.name" id="name" placeholder="이름을 입력해주세요">
             <br><br>
@@ -73,7 +73,6 @@
             <button  type="submit" class ="submit"  name="submit" id="submit">전송</button>
             <br><br>
             <input type="number" class="code" name="code" id="code" placeholder="인증번호를 입력해주세요">
-            <!-- <button type="submit" class="submit2" name="submit2" id="submit2" style=" height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">확인</button> -->
             <br>
             <div class = "clearfix"></div>
             <span id="mail_check_input_box_warn"></span>
@@ -82,7 +81,8 @@
             <input type="button" id="searchZipCode" value="검색">
             <br><br>
             <input type="text" class="input1" name="address" id="address1" placeholder="주소를 입력해주세요" readonly>
-            <button type="button" name="locationCode" id="locationCode" onclick="locationCode1()">지역코드</button>
+            <button type="button" id="button" onclick="locationCode1()">지역코드</button>
+            <input type="hidden" name="locationCode" id="locationCode" value="N" > 
             <br><br>
             <input type="text" class="input1" name="dAddress" id="address2" placeholder="상세주소를 입력해주세요" required>
             <br><br>
@@ -131,7 +131,8 @@
                   </div>
                 </div>
             </div> 
-            <input type=checkbox id="all">
+            <!-- <input hidden="hidden"/> -->
+            <input type=checkbox id="all" name="all">
             <span>약관 전체 동의</span> 
             <br>
             <input type=checkbox name="checkbox">
@@ -161,6 +162,7 @@
      <script> 
         function validate(){
             var id = document.getElementById("id");
+            var idChk = document.getElementById("idChk");
             var pwd1 = document.getElementById("pwd1");
             var pwd2 = document.getElementById("pwd2");
             var name = document.getElementById("name");
@@ -171,6 +173,7 @@
             var zipCode = document.getElementById("zipCode");
             var address1 = document.getElementById("address1");
             var address2 = document.getElementById("address2");
+            var locationCodeButton = document.getElementById("locationCode");
             var all = document.getElementById("all");
             
         
@@ -187,6 +190,11 @@
                 return false;
             }
 
+            if(idChk.value =='N'){
+	            alert("중복확인을 클릭해주세요.");
+	            return false;
+	        }
+            
 
             if(pwd1.value == ""){
                 alert("비밀번호를 입력해주세요.")
@@ -258,7 +266,11 @@
                 return false;
             }
 
-        
+            
+            if(locationCode.value == 'N'){
+	            alert("지역코드를 클릭해주세요.");
+	            return false;
+	        }
             
             if(email.value == ""){
                 alert("이메일을 입력해주세요.")
@@ -277,12 +289,15 @@
             }
             
 
-            if(all.checked == ""){
+            if(all.checked == false){
                 alert("약관 전체 동의를 체크해주세요.");
-                agree.focus();
                 return false;
             }
+
         }
+        
+	 
+	    
         
         
         function chk(re, ele, msg){
@@ -365,6 +380,7 @@
     		},
     		async: false,
     		success:function(data){
+    			$("#locationCode").val(data);/* 서블릿에서 가져온 로케이션코드 밸류에 넣기  */
     		},
     		error:function(error){
     			alert(error);
@@ -373,7 +389,8 @@
     	});
     }
     </script>
-    
+  
+  
     <script>
         // 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선텍 된다
         $("#all").on("change",function(){
@@ -392,30 +409,37 @@
         $('#ok').click(function(e){
             $('#staticBackdrop').modal('hide');
         });
+        
+        
 
     </script>
     
-    <script>
-		const $goJoin = document.getElementById("goJoin");
-            $goJoin.onclick = function() {
-                location.href = "${ pageContext.servletContext.contextPath }";
-            }
-
-    </script>
-
 	<script>
 	
 	$(document).ready(function(){
 		$("#joinButton").click(function(){
+ 			/* if($("#all").checked== false){
+				alert("약관을 다 체크해야함");
+ 				event.preventDefault();
+			} else */{ 
 			$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin2");
-			$("#locationCode").val();/* 서블릿에서 가져온 로케이션코드 밸류에 넣기  */
+			
 			$("#join_form").submit();
-	
+		 	} 
 			
 		});
 	});
 	
 	</script>
+	
+	<!-- 로그인화면으로 돌아가기 -->
+	<script>
+		const $goJoin = document.getElementById("goJoin");
+            $goJoin.onclick = function() {
+                location.href = "${ pageContext.servletContext.contextPath }/member/join";
+            }
+
+    </script>
 
 
 </body>

@@ -186,7 +186,7 @@
 		, #{ dAddress }
 		, #{ phone }
 		, 'user'
-		, #{ location }
+		, #{ locationCode }
 		, #{ nickname }
 		, #{ memId }
 		, SYSDATE	
