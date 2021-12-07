@@ -8,6 +8,11 @@
 .center .id{
     width: 320px; 
     height: 40px;
+   	
+}
+
+.center {
+  	border-radius: 10px;
 }
 
 .center .pwd{

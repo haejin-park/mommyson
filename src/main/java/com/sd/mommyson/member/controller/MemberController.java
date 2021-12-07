@@ -73,24 +73,18 @@ public class MemberController {
 
 	/* 회원가입 선택 페이지 이동 */
 	@GetMapping("join")
-	public void join() {
-
-	}
+	public void join() {}
 
 
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("customerJoin")
-	public void customerJoin() {
-
-	}
+	public void customerJoin() {}
 
 
 
 	/* 사업자 회원가입 페이지 이동 */
 	@GetMapping("businessJoin")
-	public void businessJoin() {
-
-	}
+	public void businessJoin() {}
 
 
 	/*  아이디 중복 검사 */
@@ -174,7 +168,33 @@ public class MemberController {
 		String num = Integer.toString(checkNum);
 		return num;
 	}
-
 	
+	
+	/* 회원가입 */
+	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
+	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
 
+		System.out.println(member);
+		logger.info("join진입");
+		
+		memberService.customerJoin(member);
+		
+		logger.info("customerJoin Service 성공");
+		
+		return "/member/login";
+		
+		
+	}
+	
+	/* 아이디 찾기 화면 띄우기 */
+	@GetMapping("findId")
+	public void findId() {}
+	
+	/* 아이디 찾기 */
+	@PostMapping("findId2")
+	public String findId2() {
+		return null;
+		
+	}
+	
 }
