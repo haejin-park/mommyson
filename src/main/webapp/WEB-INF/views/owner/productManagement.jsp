@@ -33,14 +33,38 @@
       
      <!-- sidebar  -->
       <jsp:include page="../commons/ownerSidebar.jsp"/>
-      
-      <div style="text-align: center;">
-        <div style="margin-left: 450px;">
-        <table class="table table" style="width: 1050px;">
+      <br><br><br>
+      <div style="text-align: center; float: right; margin-bottom: 150px;">
+        <div>
+         <div style="margin: 20px 0 20px 0; float: right;">
+       		 <button id="clear" class="couponBtn" style="width: 80px; margin-top: 2px;">초기화</button>
+         </div>
+        <form action="${ pageContext.servletContext.contextPath }/owner/productManagement" method="get" id="frm">
+	      <div style="margin-bottom: 20px; float: right; clear: right;"> 
+		     <p style="float: left; margin-right: 15px; font-weight: 700;">제조일 &nbsp;&nbsp;&nbsp;<input type="date" name="mDate" id="mDate" value="${ searchMap.mDate }"></p>
+		     <p style="float: left;margin-right: 15px;">~ &nbsp;&nbsp;<input type="date" name="mDate2" id="mDate2" value="${ searchMap.mDate2 }"></p>
+		     <button type="submit" class="couponBtn" style="width: 80px; margin-top: 2px;">조회하기</button>
+		  </div>
+		  <div style="margin-bottom: 20px; float: right; clear: right;"> 
+		     <p style="float: left; margin-right: 15px; font-weight: 700;">유통기한 &nbsp;&nbsp;&nbsp;<input type="date" name="eDate" id="eDate" value="${ searchMap.eDate }"></p>
+		     <p style="float: left;margin-right: 15px;">~ &nbsp;&nbsp;<input type="date" name="eDate2" id="eDate2" value="${ searchMap.eDate2 }"></p>
+		     <button type="submit" class="couponBtn" style="width: 80px; margin-top: 2px;">조회하기</button>
+		  </div>
+		  <div style="margin-bottom: 20px; float: right; clear: right;"> 
+		      <p style="float: left; font-weight: 700;">판매여부 &nbsp;&nbsp;
+		      	<select id="status" name="status" >
+		      		<option value="all">전체</option>
+		      		<option value="Y">판매</option>
+		      		<option value="N">판매중단</option>
+		     	</select>
+		      </p>
+	      </div>
+	    </form>
+        <table class="table table" style="width: 1050px; clear: right;">
             <thead style="background-color: #EDEDED;">
               <tr>
                 <th scope="col"><input type="checkbox" id="allCheck"></th>
-                <th scope="col">상품 번호</th>
+                <th scope="col">번호</th>
                 <th scope="col">상품</th>
                 <th scope="col">제조일</th>
                 <th scope="col">유통기한</th>
@@ -49,12 +73,13 @@
             </thead>
             <tbody>
               <c:forEach var="list" items="${ productList }">
+              <c:set var="i" value="${ i + 1}"/>
               <tr>
                 <th scope="col"><input type="checkbox" name="menu" id=""></th>
-                <th scope="row">${ list.sdCode}</th>
+                <th scope="row">${ i }</th>
                 <td>${ list.sdName }</td>
                 <td>${ list.mDate }</td>
-                <td>2021-11-30</td>
+                <td>${ list.eDate }</td>
                 <td>
 	               	<c:if test="${ list.orderableStatus eq 'Y' }">
 	                <button class="couponBtn" id="btn1">판매</button>
@@ -69,11 +94,12 @@
             </tbody>
           </table>
         </div>
-        <div style="float: right; margin: 20px 60px 0 0;">
+        <div style="float: right; margin: 20px 69px 0 0;">
           <button class="dateControll">제조일자 오늘로 변경</button>
           <button class="couponBtn" style="background-color: #777777;">삭제</button>
         </div>
         </div>
+        <jsp:include page="../commons/paging.jsp"/>
       </div>  
     </div>
 	<script>
@@ -94,6 +120,26 @@
 	      }
 	    });
 	
+	    $(".searchbutton").on('click',function(){
+	    	let searchValue = $('input[name=searchValue]').val();
+							// 현재 페이지 주소
+	    	location.href = "${ location.href }?searchValue=" + searchValue;
+	    }); 
+	    
+	    $(".searchtext").attr("placeholder","검색할 상품명을 입력해주세요");
+	    
+	    $("#status").change(function(){
+	    	$("#frm").submit();
+	    });
+	    
+	    $("#clear").click(function(){
+	    	$("#eDate").val("");
+	    	$("#eDate2").val("");
+	    	$("#mDate").val("");
+	    	$("#mDate2").val("");
+	    	$("#frm").submit();
+	    });
+	    
 	  });
 	</script>  
 	

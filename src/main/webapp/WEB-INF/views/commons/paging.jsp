@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
@@ -37,13 +38,11 @@
 			<!-- 마지막 페이지로 이동 버튼 -->
 				 <li class="page-item"><a class="page-link-num" id="maxPage" href="#">&raquo;</a></li> 
         </ul>
-        <form action="${ pageContext.servletContext.contextPath }/manager/noticeSelect" method="GET">
             <ul>
                 <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                <input type="text" name="searchValue" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                <button type="submit" class="searchbutton">검색하기</button></li>
+                <input type="text" name="searchValue" class="searchtext" placeholder="검색어를 입력해주세요.">
+                <button type="submit" class="searchbutton">검색하기</button>
             </ul>
-        </form>
     </nav>
     
     <script>
@@ -102,6 +101,12 @@
 			console.log(link);
 			location.href = link + "?currentPage=" + pageNo + searchText;
 		});
+		
+		 $(".searchbutton").on('click',function(){
+	    	let searchValue = $('input[name=searchValue]').val();
+							// 현재 페이지 주소
+	    	location.href = "${ location.href }?searchValue=" + searchValue;
+		 }); 
 		
 	</script>
 </body>

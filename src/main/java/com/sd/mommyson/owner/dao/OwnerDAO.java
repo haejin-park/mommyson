@@ -3,6 +3,7 @@ package com.sd.mommyson.owner.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
@@ -34,6 +35,8 @@ public interface OwnerDAO {
 
 	public int registProduct(Map<String, Object> productInfo);
 
-	public List<ProductDTO> selectProduct(int memCode);
+	public List<ProductDTO> selectProduct(Map<String, Object> searchMap);
+
+	public int selectTotalCount(Map<String, Object> searchMap);
 	
 }

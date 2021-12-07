@@ -336,27 +336,89 @@
 	    SELECT * FROM DUAL
 	</insert>
 	
-	<select id="selectProduct" resultMap="productResultMap">
+	<!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
+	<select id="selectTotalCount" resultType="_int">
 		SELECT
-		      SD_CODE
-		    , SD_NAME
-		    , M_DATE
-		    , PRICE
-		    , INGREDIENT
-		    , VOLUME
-		    , SD_IMG
-		    , CATEGORY
-		    , DISCOUNT_RATE
-		    , MEM_CODE
-		    , ORDERABLE_STATUS
-		    , EXPIRY_DATE
-		    , IS_DELETED
-		    , CATEGORY_CODE
-		    , STORAGE_METHOD
-		    , SD_DETAIL
+		      COUNT(*)
 		 FROM PRODUCT_TBL
-		WHERE MEM_CODE = #{ memCode } 
+		<where>
+		  IS_DELETED = 'N' 
+		  <if test="searchValue != null and searchValue != '' ">
+		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+		  </if>
+		  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+		  	AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+		  </if>
+		  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+		  	AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+		  </if>
+		  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+		  	AND M_DATE IN (#{ mDate } , #{ mDate2 })
+		  </if>
+		  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+		  	AND M_DATE <![CDATA[ <= ]]> #{ mDate }
+		  </if>
+		  <if test="status == 'Y'.toString() ">
+		  	AND ORDERABLE_STATUS = 'Y' 
+		  </if>
+		  <if test="status == 'N'.toString() ">
+		  	AND ORDERABLE_STATUS = 'N'
+		  </if>
+		    AND MEM_CODE = #{ memCode }
+		</where>
 	</select>
 	
+	<!-- 반찬 조회 쿼리문 -->
+	<select id="selectProduct" resultMap="productResultMap">
+		SELECT
+			 	A.RNUM
+			  ,	A.SD_CODE
+		      , A.SD_NAME
+		      , A.M_DATE
+		      , A.ORDERABLE_STATUS
+		      , A.EXPIRY_DATE 
+	       FROM (SELECT
+					 	ROWNUM RNUM
+					  ,	B.SD_CODE
+				      , B.SD_NAME
+				      , B.M_DATE
+				      , B.ORDERABLE_STATUS
+				      , B.EXPIRY_DATE 
+			   	   FROM (SELECT
+						        C.SD_CODE
+						      , C.SD_NAME
+						      , C.M_DATE
+						      , C.ORDERABLE_STATUS
+						      , C.EXPIRY_DATE
+						   FROM PRODUCT_TBL C
+						<where>
+						  C.IS_DELETED = 'N' 
+						  <if test="searchValue != null and searchValue != '' ">
+						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+						  </if>
+						  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+						  	AND C.EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+						  </if>
+						  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+						  	AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+						  </if>
+						  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+						  	AND C.M_DATE IN (#{ mDate } , #{ mDate2 })
+						  </if>
+						  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+						  	AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
+						  </if>
+						  <if test="status == 'Y'.toString() ">
+						  	AND C.ORDERABLE_STATUS = 'Y' 
+						  </if>
+						  <if test="status == 'N'.toString() ">
+						  	AND C.ORDERABLE_STATUS = 'N'
+						  </if>
+						    AND C.MEM_CODE = #{ memCode }
+						</where>
+						ORDER BY C.SD_CODE DESC ) B 
+						) A
+			WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow } 			
+	</select>
 	
 </mapper>

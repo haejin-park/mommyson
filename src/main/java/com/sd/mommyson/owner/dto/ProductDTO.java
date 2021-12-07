@@ -15,7 +15,7 @@ public class ProductDTO {
 	private float discountRate;
 	private int memCode;
 	private String orderableStatus;
-	private int eDate;
+	private Date eDate;
 	private String categoryCode;
 	private String storageMethod;
 	private String detail;
@@ -29,7 +29,7 @@ public class ProductDTO {
 
 
 	public ProductDTO(int sdCode, String sdName, Date mDate, int price, String ingredient, String volume, String sdImg,
-			String category, float discountRate, int memCode, String orderableStatus, int eDate, String categoryCode,
+			String category, float discountRate, int memCode, String orderableStatus, Date eDate, String categoryCode,
 			String storageMethod, String detail, String isDeleted, String storeName) {
 		super();
 		this.sdCode = sdCode;
@@ -162,12 +162,12 @@ public class ProductDTO {
 	}
 
 
-	public int geteDate() {
+	public Date geteDate() {
 		return eDate;
 	}
 
 
-	public void seteDate(int eDate) {
+	public void seteDate(Date eDate) {
 		this.eDate = eDate;
 	}
 
@@ -230,6 +230,6 @@ public class ProductDTO {
 				+ ", eDate=" + eDate + ", categoryCode=" + categoryCode + ", storageMethod=" + storageMethod
 				+ ", detail=" + detail + ", isDeleted=" + isDeleted + ", storeName=" + storeName + "]";
 	}
-	
+
 	
 }
