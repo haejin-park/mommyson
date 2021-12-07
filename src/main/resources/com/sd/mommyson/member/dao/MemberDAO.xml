@@ -59,7 +59,7 @@
 
 	</resultMap>
 	
-	<resultMap id="locationResultMap" type="com.sd.mommyson.member.dto.LocationDTO">
+	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap">
 		<id property="locationCode" column="LOCATION_CODE"/>
 		<result property="locationName" column="LOCATION_NAME"/>
 	</resultMap>
@@ -168,13 +168,13 @@
 	</select>
 	
 	<!-- 지역코드 조회 -->
-	<select id="locationCode" resultType="String" >
+	<select id="locationCode" resultType="String">
 		SELECT A.LOCATION_CODE
 		  FROM LOCATION A
 		 WHERE A.LOCATION_NAME = #{ locationName }
 		  
 	</select>
- 	<insert id="customerJoin">
+ 	<insert id="customerJoin" parameterMap="memberResultMap">
 		INSERT ALL
 		  INTO MEMBER_TBL
 		VALUES

@@ -164,7 +164,7 @@
             var pwd1 = document.getElementById("pwd1");
             var pwd2 = document.getElementById("pwd2");
             var name = document.getElementById("name");
-            var nickName = document.getElementById("nickName");
+            var nickName = document.getElementById("nickname");
             var phone = document.getElementById("phone");
             var email = document.getElementById("email");
             var code = document.getElementById("code");
@@ -215,9 +215,9 @@
             }
             
 
-            if(nickName.value == ""){
+            if(nickname.value == ""){
                 alert("닉네임을 입력해주세요.")
-                nickName.focus()
+                nickname.focus()
                 return false;
             }
             
@@ -408,7 +408,10 @@
 	$(document).ready(function(){
 		$("#joinButton").click(function(){
 			$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin2");
+			$("#locationCode").val();/* 서블릿에서 가져온 로케이션코드 밸류에 넣기  */
 			$("#join_form").submit();
+	
+			
 		});
 	});
 	
