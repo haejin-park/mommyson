@@ -28,6 +28,73 @@
     	<result property="rvCount" column="COUNT"/>
     </resultMap>
     
+    <!-- 공지사항 출력 및 검색 -->
+    <select id="selectNotice" resultMap="postResultMap">
+    	SELECT
+    	       A.RNUM	
+    	     , A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS				
+		FROM (SELECT ROWNUM RNUM	
+				 , B.POST_NO
+				 , B.BOARD_CODE
+				 , B.POST_TITLE
+				 , B.MEM_CODE
+				 , B.POST_CONTENT
+				 , B.POST_DATE
+				 , B.ANS_STATUS
+				 , B.QUE_NO
+				 , B.STATUS	
+			  FROM (SELECT C.POST_NO
+						 , C.BOARD_CODE
+						 , C.POST_TITLE
+						 , C.MEM_CODE
+						 , C.POST_CONTENT
+						 , C.POST_DATE
+						 , C.ANS_STATUS
+						 , C.QUE_NO
+						 , C.STATUS	
+					  FROM POST_TBL C 
+					  JOIN BOARD_TBL D ON (C.BOARD_CODE = D.BOARD_CODE)
+						  <where>
+						  	D.TYPE = 'notice'
+							AND C.STATUS = 'N' 
+							  <if test="searchCondition =='notice'">
+							  	AND D.D_TYPE = 'notice'
+							  </if>
+							  <if test="searchCondition =='guide'">
+							  	AND D.D_TYPE = 'guide'
+							  </if>
+							  <if test="searchCondition =='check'">
+							  	AND D.D_TYPE = 'check'
+							  </if>
+							  <if test="searchCondition =='event'">
+							  	AND D.D_TYPE = 'event'
+							  </if>
+							  <if test="searchCondition =='store'">
+							  	AND D.D_TYPE = 'store'
+							  </if>
+							  <if test="searchValue != null and searchValue !=''">
+							   AND C.POST_TITLE LIKE '%' || #{ searchValue } || '%'
+							  </if>
+						  </where>
+						  ORDER BY C.POST_NO DESC
+						  ) B
+					  <![CDATA[
+					  WHERE ROWNUM <= #{ endRow }
+					  ]]>
+					  ) A
+<!-- 				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	 -->  
+		 	   WHERE A.RNUM >= #{ startRow }	
+    
+    </select>
+    
     <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
     	<id property="sdCode" column="SD_CODE"/>
     	<result property="sdName" column="SD_NAME"/>
@@ -55,19 +122,14 @@
           FROM POST_TBL A
 	      JOIN BOARD_TBL B ON(A.BOARD_CODE = B.BOARD_CODE)
     	<where>
-    		<if test="searchCondition != null">
-				B.D_TYPE = #{ searchCondition }
+			A.STATUS = 'N'
+    		<if test="searchCondition != null and searchCondition != ''">
+				AND B.D_TYPE = #{ searchCondition }
     		</if>
 			<if test="searchValue != null">
-	        	A.POST_TITLE LIKE '%' || #{ searchValue } || '%' 	
+	        	AND A.POST_TITLE LIKE '%' || #{ searchValue } || '%' 	
 			</if>
-			A.STATUS = 'N'
     	</where>
-	</select>
-	
-	<!-- 공지사항 출력 및 검색 -->
-	<select id="selectNotice" resultMap="postResultMap">
-	
 	</select>
 	
 	<select id="selectStoreTotalCount" parameterType="hashmap" resultType="_int">
@@ -84,6 +146,87 @@
 		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 		 </if>
 	</select>
+	
+<!-- 	<update id="incrementBoardCount">
+        UPDATE /* com.greedy.jsp.board.model.dao.BoardDAO#incrementBoardCount() */
+               TBL_BOARD A
+           SET A.BOARD_COUNT = (SELECT B.BOARD_COUNT
+                                  FROM TBL_BOARD B
+                                 WHERE B.BOARD_NO = #{ no }
+                               ) + 1
+         WHERE A.BOARD_NO = #{ no }
+	</update> -->
+	
+	<!-- 자주하는 질문 (작업중)-->
+	<select id="selectFqa" resultMap="postResultMap">
+    	SELECT
+    	       A.RNUM	
+    	     , A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS				
+		FROM (SELECT ROWNUM RNUM	
+				 , B.POST_NO
+				 , B.BOARD_CODE
+				 , B.POST_TITLE
+				 , B.MEM_CODE
+				 , B.POST_CONTENT
+				 , B.POST_DATE
+				 , B.ANS_STATUS
+				 , B.QUE_NO
+				 , B.STATUS	
+			  FROM (SELECT C.POST_NO
+						 , C.BOARD_CODE
+						 , C.POST_TITLE
+						 , C.MEM_CODE
+						 , C.POST_CONTENT
+						 , C.POST_DATE
+						 , C.ANS_STATUS
+						 , C.QUE_NO
+						 , C.STATUS	
+					  FROM POST_TBL C 
+					  JOIN BOARD_TBL D ON (C.BOARD_CODE = D.BOARD_CODE)
+						  <where>
+						  	D.TYPE = 'fqa'
+							AND C.STATUS = 'N' 
+							  <if test="searchCondition =='memberJoinQuestion'">
+							  	AND D.D_TYPE = 'memberJoinQuestion'
+							  </if>
+							  <if test="searchCondition =='billAndOrderQuestion'">
+							  	AND D.D_TYPE = 'billAndOrderQuestion'
+							  </if>
+							  <if test="searchCondition =='reviewManagementQuestion'">
+							  	AND D.D_TYPE = 'reviewManagementQuestion'
+							  </if>
+							  <if test="searchCondition =='userQuestion'">
+							  	AND D.D_TYPE = 'userQuestion'
+							  </if>
+							  <if test="searchCondition =='inconvenienceQuestion'">
+							  	AND D.D_TYPE = 'inconvenienceQuestion'
+							  </if>
+							  <if test="searchCondition =='etcQuestion'">
+							  	AND D.D_TYPE = 'etcQuestion'
+							  </if>
+							  <if test="searchValue != null and searchValue !=''">
+							   AND C.POST_TITLE LIKE '%' || #{ searchValue } || '%'
+							  </if>
+						  </where>
+						  ORDER BY C.POST_NO DESC
+						  ) B
+					  <![CDATA[
+					  WHERE ROWNUM <= #{ endRow }
+					  ]]>
+					  ) A
+				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	  
+		 	   WHERE A.RNUM >= #{ startRow }	
+    
+    </select>
+	 
     
     <select id="selectStoreList" resultMap="storeResultMap">
     	SELECT

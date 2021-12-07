@@ -10,8 +10,6 @@ import com.sd.mommyson.user.common.SelectCriteria;
 
 public interface UserDAO {
 
-
-
 	int selectTotalCount(Map<String, String> searchMap);
 
 	List<PostDTO> selectNotice(SelectCriteria selectCriteria);

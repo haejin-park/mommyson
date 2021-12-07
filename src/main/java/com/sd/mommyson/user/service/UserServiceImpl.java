@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public int selectTotalCount(HttpSession session, Map<String, String> searchMap) {
-		
+	public int selectTotalCount(Map<String, String> searchMap) {
+		System.out.println("서비스 searchMap: " + searchMap);
 		int totalCount = userDAO.selectTotalCount(searchMap);
 		return totalCount;
 	}
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService{
 	public List<PostDTO> selectNotice(SelectCriteria selectCriteria) {
 		
 		List<PostDTO>noticeList = userDAO.selectNotice(selectCriteria);
-		return null;
+		return noticeList;
 	}
 
 
