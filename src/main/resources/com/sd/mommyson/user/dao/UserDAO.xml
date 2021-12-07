@@ -146,6 +146,8 @@
 		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 		 </if>
 	</select>
+	<!-- 공지사항 출력 및 검색 -->
+
 	
 <!-- 	<update id="incrementBoardCount">
         UPDATE /* com.greedy.jsp.board.model.dao.BoardDAO#incrementBoardCount() */

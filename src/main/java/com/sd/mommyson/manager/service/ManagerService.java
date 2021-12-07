@@ -12,7 +12,10 @@ import com.sd.mommyson.member.dto.MemberDTO;
 public interface ManagerService {
 
 	/* 회원조회 */
-	public List<MemberDTO> memberSelect(MemberDTO member);
+	public List<MemberDTO> selectMember(Pagination pagination);
+	
+	/* 회원 총 리스트 갯수 */
+	public int selectNormalMemberTotalCount(Map<String, Object> searchMap);
 
 	/* 일반회원삭제 */
 	public boolean deleteMembers(List<Integer> deleteMemberList);
@@ -45,5 +48,6 @@ public interface ManagerService {
 
 	/* 일반회원 검색 */
 	public List<MemberDTO> selectSearchMemberList(String searchMember);
+	
 
 }
