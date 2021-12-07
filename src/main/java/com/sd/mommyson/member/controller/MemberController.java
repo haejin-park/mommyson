@@ -73,24 +73,18 @@ public class MemberController {
 
 	/* 회원가입 선택 페이지 이동 */
 	@GetMapping("join")
-	public void join() {
-
-	}
+	public void join() {}
 
 
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("customerJoin")
-	public void customerJoin() {
-
-	}
+	public void customerJoin() {}
 
 
 
 	/* 사업자 회원가입 페이지 이동 */
 	@GetMapping("businessJoin")
-	public void businessJoin() {
-
-	}
+	public void businessJoin() {}
 
 
 	/*  아이디 중복 검사 */
@@ -192,9 +186,15 @@ public class MemberController {
 		
 	}
 	
-	/* 아이디 찾기 */
+	/* 아이디 찾기 화면 띄우기 */
 	@GetMapping("findId")
 	public void findId() {}
 	
-
+	/* 아이디 찾기 */
+	@PostMapping("findId2")
+	public String findId2() {
+		return null;
+		
+	}
+	
 }

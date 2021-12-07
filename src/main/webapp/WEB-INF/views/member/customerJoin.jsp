@@ -432,7 +432,7 @@
 	
 	</script>
 	
-	<!-- 로그인화면으로 돌아가기 -->
+	<!-- 회원가입 선택 페이지로 돌아가기 -->
 	<script>
 		const $goJoin = document.getElementById("goJoin");
             $goJoin.onclick = function() {

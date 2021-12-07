@@ -16,23 +16,44 @@
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
 </head>
 <body>
-    <div class=center>
+    <div class="center">
         <br><br>
         <h1>아이디 찾기</h1>
-        <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
+        <img class="logo" src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         <br>
         <form onsubmit="return validate();">
-        <input type="text" class="name" id="name" placeholder="이름을 입력해주세요">
+        <input type="text" class="name" id="name" placeholder=" 이름을 입력해주세요"  style="border-radius: 9px;">
         <br><br>
-        <input type="email" class="email" id="email" placeholder="이메일을 입력해주세요">
+        <input type="email" class="email" id="email" placeholder=" 이메일을 입력해주세요">
         <br><br>
 
-        <!-- null값일 경우 ~를 입력해주세요 -->
-        <!-- 이메일주소가 올바르지 않을경우 @를 포함하여 이메일주소를 올바르게 입력해주세요 -->
         <!-- 아이디 찾기 누르면 알럿이나 모달창으로 아이디 띄워주고 로그인 페이지로 이동 -->
-        <button type="submit" id="button">아이디 찾기</button>
+         <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="findIdButton" style="width:100px; height:40px; border-radius: 9px; background-color:rgb(247, 170, 145);  color : black; border: 2px solid black;">아이디찾기</button>
         &nbsp; &nbsp; &nbsp; &nbsp;
-        <button type="reset" id="button"><a href="login.html">취소</a></button>
+        <button type="reset" class="goLogin" id="goLogin" style="border-radius: 9px; background-color:rgb(247, 170, 145);">취소</button>
+  
+  		<!-- 아이디 찾기 모달 -->
+  	      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	        <div class="modal-dialog">
+	          <div class="modal-content">
+	            <div class="modal-header">
+	              <h5 class="modal-title" id="exampleModalLabel">아이디</h5>
+	              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                <span aria-hidden="true">&times;</span>
+	              </button>
+	            </div>
+	            <div class="modal-body" style="text-align: center;">결제 수단
+					<p>아이디는</p>
+					<p id="id"></p>
+					<p>입니다.</p>
+	            </div>
+	            <div class="modal-footer">
+	              <button type="button" class="btn btn-primary" id="ok">확인</button>
+	            </div>
+	          </div>
+	        </div>
+	    </div> 																
+        
         </form>
         <br>
     </div>
@@ -73,5 +94,41 @@
                 return true;
         }
     </script>     
+    <script>
+    var id = "";
+    var findIdButton = function(){
+    	console.log($('#name').val());
+    	
+    	$.ajax({
+    		type:"POST",
+    		url:"${pageContext.request.contextPath }/member/findId?name="
+    				+$("#name").val()+"&email="+$("#email").val(),
+    		success:function(data){
+    			console.log(data);
+    		}
+    	
+    	})
+    }
+    </script>
+
+    <script>
+
+  /* 아이디 찾기 모달창 */
+	$('#findIdButton').click(function(e){
+		$('#exampleModal').modal('show');
+		e.preventDefault();
+	});
+	
+  	$('#ok').click(function(e){
+		$('#exampleModal').modal('hide');
+	});
+	
+	</script> 																		
+    <script>
+    	const $goLogin = document.getElementById("goLogin");
+    		$goLogin.onclick = function() {
+    			location.href = "${ pageContext.servletContext.contextPath }/member/login";
+    		}
+    </script>
 </body>
 </html>

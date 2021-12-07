@@ -17,14 +17,14 @@
 </head>
 <body>
 	
-    <div class=center>
+    <div class="center">
         <br><br>
         <h1>로그인</h1>
-        <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
+        <img class="logo" src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         <br><br>
-        <input type="text" name="memId" class="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
+        <input type="text" name="memId" class="id" id="id" placeholder=" 아이디는 [영문,숫자] 4~12글자" style="border-radius: 10px;">
         <br><br>
-        <input type="password" name="memPwd" class="pwd" id="pwd" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자"  onKeypress="javascript:if(event.keyCode==13) {validate();}">
+        <input type="password" name="memPwd" class="pwd" id="pwd" placeholder=" 비밀번호는 [영문,숫자,특수기호] 4~12글자"  onKeypress="javascript:if(event.keyCode==13) {validate();}" style="border-radius: 10px;">
         <br><br>
 
          <!-- 아이디와 비밀번호가 일치하면  메인페이지 이동하기 -->
