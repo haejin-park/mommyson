@@ -319,7 +319,7 @@
 		  #{ product.volume },
 		  #{ fileName },
 		  #{ product.category },
-		  default,
+		  #{ product.orderableStatus },
 		  #{ memCode },
 		  #{ product.orderableStatus },
 		  #{ product.eDate },
