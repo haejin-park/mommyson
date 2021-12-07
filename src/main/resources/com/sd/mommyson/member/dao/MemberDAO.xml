@@ -173,7 +173,7 @@
 		 WHERE A.LOCATION_NAME = #{ locationName }
 		  
 	</select>
- 	<insert id="customerJoin" parameterMap="memberResultMap">
+ 	<insert id="customerJoin">
 		INSERT ALL
 		  INTO MEMBER_TBL
 		VALUES
