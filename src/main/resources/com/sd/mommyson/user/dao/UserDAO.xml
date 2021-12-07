@@ -226,7 +226,6 @@
 					  ) A
 				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	  
 		 	   WHERE A.RNUM >= #{ startRow }	
-    
     </select>
 	 
     
