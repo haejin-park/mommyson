@@ -18,15 +18,16 @@
 		<result property="memId" column="MEM_ID"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
-		<collection property="user" resultMap="userResultMap"/>
-		<collection property="ceo" resultMap="ceoResultMap"/>
-		<collection property="manager" resultMap="managerResultMap"/>
+		<association property="user" resultMap="userResultMap"/>
+		<association property="ceo" resultMap="ceoResultMap"/>
+		<association property="manager" resultMap="managerResultMap"/>
+		
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="lastLogin" column="LAST_LOGIN"/>
-		<collection property="authDTO" resultMap="authResultMap"/>
+		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
@@ -34,7 +35,7 @@
 		<result property="account" column="ACCOUNT"/>
 		<result property="no" column="STORE_NO"/>
 		<result property="name" column="CEO_NAME"/>
-		<collection property="store" resultMap="storeResultMap"></collection>
+		<association property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -58,39 +59,115 @@
 		<result property="repCount" column="REP_COUNT"/>
 	</resultMap>
 	
-	<select id="memberSelect" resultMap="memberResultMap">
-	    SELECT 
-			   A.MEM_CODE
-			 , A.EMAIL
-			 , A.ADDRESS
-			 , A.POST_CODE
-			 , A.D_ADDRESS
-			 , A.PHONE
-			 , A.MEM_TYPE
-			 , A.LOCATION_CODE
-			 , A.NICKNAME
-			 , A.MEM_ID
-			 , A.ENROLL_DATE
-			 , A.IS_DELETED
-			 , B.NAME
-			 , B.REP_COUNT
-			 , C.MEM_CODE
-		     , C.ACCOUNT
-			 , C.STORE_NO
-			 , C.CEO_NAME
-			 , D.STORE_NAME
-			 , D.STORE_IMG
-			 , D.STORE_INFO
-			 , D.GRADE
-			 , D.DEL_COST
-			 , D.WORK_TIME
-			 , D.MEM_CODE
-		  FROM MEMBER_TBL A
-		  LEFT JOIN USER_TBL B ON (A.MEM_CODE = B.MEM_CODE)
-		  LEFT JOIN CEO_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-		  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
-		 WHERE A.IS_DELETED = 'N'
+	<select id="selectNormalMemberTotalCount" resultType="_int">
+	    SELECT
+   	  	  COUNT(*)
+   	  	 FROM MEMBER_TBL A
+   	  	 <where>
+	   	  	<if test="memberTypeUser">
+		      	A.MEM_TYPE = 'user'
+		    </if>
+		    <if test="memberTypeCeo">
+		    	A.MEM_TYPE = 'ceo'
+		    </if>
+   	  	 	<if test="searchValue != null">
+   	  	 		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%'
+   	  	 	</if>
+   	  	 </where>
 	</select>
+	
+	<select id="selectMember" resultMap="memberResultMap">
+		SELECT
+		        C.MEM_CODE
+			  , C.EMAIL
+			  , C.ADDRESS
+			  , C.POST_CODE
+			  , C.D_ADDRESS
+			  , C.PHONE
+			  , C.MEM_TYPE
+			  , C.LOCATION_CODE
+			  , C.NICKNAME
+			  , C.MEM_ID
+			  , C.ENROLL_DATE
+			  , C.IS_DELETED
+			  , C.NAME
+			  , C.REP_COUNT
+			  , C.ACCOUNT
+			  , C.STORE_NO
+			  , C.CEO_NAME
+			  , C.STORE_NAME
+			  , C.STORE_IMG
+			  , C.STORE_INFO
+			  , C.GRADE
+			  , C.DEL_COST
+			  , C.WORK_TIME
+		   FROM (SELECT 
+		                ROWNUM RNUM
+					  , B.MEM_CODE
+					  , B.EMAIL
+					  , B.ADDRESS
+					  , B.POST_CODE
+					  , B.D_ADDRESS
+					  , B.PHONE
+					  , B.MEM_TYPE
+					  , B.LOCATION_CODE
+					  , B.NICKNAME
+					  , B.MEM_ID
+					  , B.ENROLL_DATE
+					  , B.IS_DELETED
+					  , B.NAME
+					  , B.REP_COUNT
+					  , B.ACCOUNT
+					  , B.STORE_NO
+					  , B.CEO_NAME
+					  , B.STORE_NAME
+					  , B.STORE_IMG
+					  , B.STORE_INFO
+					  , B.GRADE
+					  , B.DEL_COST
+					  , B.WORK_TIME
+				   FROM (SELECT 
+							   A.MEM_CODE
+							 , A.EMAIL
+							 , A.ADDRESS
+							 , A.POST_CODE
+							 , A.D_ADDRESS
+							 , A.PHONE
+							 , A.MEM_TYPE
+							 , A.LOCATION_CODE
+							 , A.NICKNAME
+							 , A.MEM_ID
+							 , A.ENROLL_DATE
+							 , A.IS_DELETED
+							 , U.NAME
+							 , U.REP_COUNT
+						     , F.ACCOUNT
+							 , F.STORE_NO
+							 , F.CEO_NAME
+							 , D.STORE_NAME
+							 , D.STORE_IMG
+							 , D.STORE_INFO
+							 , D.GRADE
+							 , D.DEL_COST
+							 , D.WORK_TIME
+						  FROM MEMBER_TBL A
+						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
+						  LEFT JOIN CEO_TBL F ON (A.MEM_CODE = F.MEM_CODE)
+						  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
+						 WHERE A.IS_DELETED = 'N'
+						 ORDER BY A.ENROLL_DATE DESC)B
+				 <![CDATA[        
+		          WHERE ROWNUM <= #{ endRow }
+		          ]]>)C
+	      <![CDATA[
+		  WHERE C.RNUM >= #{ startRow } 
+	       ]]>
+	</select>
+
+	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
+		<id property="locationCode" column="LOCATION_CODE"/>
+		<result property="locationName" column="LOCATION_NAME"/>
+	</resultMap>
 	
 	<select id="blackMemberSelect" resultMap="memberResultMap">
 	    SELECT 

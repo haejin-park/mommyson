@@ -2,7 +2,6 @@ package com.sd.mommyson.member.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 
@@ -25,7 +24,7 @@ public interface MemberService  {
 	
 	
 	/* 사용자 회원가입 */
-//	public void customerJoin(Map<String, Object>map, MemberDTO dto);
+	public void customerJoin(MemberDTO member) throws Exception;
 
 
 }

@@ -19,6 +19,10 @@
     height:40px;
 }
 
+.center #name{
+	  border-radius: 9px;
+}
+
 #email{
     border-radius: 9px;
 }
@@ -27,5 +31,16 @@
     width:100px; 
     height:40px;
     border-radius: 9px;
+    background-color:rgb(247, 170, 145);
+}
+
+.goLogin{
+	width:100px; 
+    height:40px;
+
+}
+
+#goLogin{
+	border-radius: 9px;
     background-color:rgb(247, 170, 145);
 }

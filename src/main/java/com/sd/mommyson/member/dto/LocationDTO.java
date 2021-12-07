@@ -1,6 +1,6 @@
 package com.sd.mommyson.member.dto;
 
-public class LocationDTO {
+public class LocationDTO{
 
 	private String locationCode;
 	private String locationName;

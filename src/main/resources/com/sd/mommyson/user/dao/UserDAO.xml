@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <mapper namespace="com.sd.mommyson.user.dao.UserDAO">
     
-    <resultMap type="com.sd.mommyson.user.dto.PostDTO" id="postResultMap">
+    <resultMap type="com.sd.mommyson.manager.dto.PostDTO" id="postResultMap">
     	<id property="postNo" column="POST_NO"/>
     	<result property="boardCode" column="BOARD_CODE"/>
     	<result property="postTitle" column="POST_TITLE"/>
@@ -14,12 +14,25 @@
     	<result property="ansStatus" column="ANS_STATUS"/>
     	<result property="QuestionNo" column="QUE_NO"/>
     	<result property="Status" column="STATUS"/>
+    	<result property="viewCnt" column="VIEW_CNT"/>
     </resultMap>
     
-    <!-- 연습 -->
+    <resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
+    	<id property="memCode" column="MEM_CODE"/>
+    	<result property="storeName" column="STORE_NAME"/>
+    	<result property="storeImg" column="STORE_IMG"/>
+    	<result property="storeInfo" column="STORE_INFO"/>
+    	<result property="grade" column="GRADE"/>
+    	<result property="delCost" column="DEL_COST"/>
+    	<result property="workTime" column="WORK_TIME"/>
+    	<result property="rvCount" column="COUNT"/>
+    </resultMap>
+    
+    <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
-    	       A.POST_NO
+    	       A.RNUM	
+    	     , A.POST_NO
 			 , A.BOARD_CODE
 			 , A.POST_TITLE
 			 , A.MEM_CODE
@@ -28,10 +41,80 @@
 			 , A.ANS_STATUS
 			 , A.QUE_NO
 			 , A.STATUS				
-		FROM POST_TBL A		
+		FROM (SELECT ROWNUM RNUM	
+				 , B.POST_NO
+				 , B.BOARD_CODE
+				 , B.POST_TITLE
+				 , B.MEM_CODE
+				 , B.POST_CONTENT
+				 , B.POST_DATE
+				 , B.ANS_STATUS
+				 , B.QUE_NO
+				 , B.STATUS	
+			  FROM (SELECT C.POST_NO
+						 , C.BOARD_CODE
+						 , C.POST_TITLE
+						 , C.MEM_CODE
+						 , C.POST_CONTENT
+						 , C.POST_DATE
+						 , C.ANS_STATUS
+						 , C.QUE_NO
+						 , C.STATUS	
+					  FROM POST_TBL C 
+					  JOIN BOARD_TBL D ON (C.BOARD_CODE = D.BOARD_CODE)
+						  <where>
+						  	D.TYPE = 'notice'
+							AND C.STATUS = 'N' 
+							  <if test="searchCondition =='notice'">
+							  	AND D.D_TYPE = 'notice'
+							  </if>
+							  <if test="searchCondition =='guide'">
+							  	AND D.D_TYPE = 'guide'
+							  </if>
+							  <if test="searchCondition =='check'">
+							  	AND D.D_TYPE = 'check'
+							  </if>
+							  <if test="searchCondition =='event'">
+							  	AND D.D_TYPE = 'event'
+							  </if>
+							  <if test="searchCondition =='store'">
+							  	AND D.D_TYPE = 'store'
+							  </if>
+							  <if test="searchValue != null and searchValue !=''">
+							   AND C.POST_TITLE LIKE '%' || #{ searchValue } || '%'
+							  </if>
+						  </where>
+						  ORDER BY C.POST_NO DESC
+						  ) B
+					  <![CDATA[
+					  WHERE ROWNUM <= #{ endRow }
+					  ]]>
+					  ) A
+<!-- 				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	 -->  
+		 	   WHERE A.RNUM >= #{ startRow }	
     
     </select>
     
+    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+    	<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="IS_DELETED"/>
+    	<result property="storageMethod" column="CATEGORY_CODE"/>
+    	<result property="detail" column="STORAGE_METHOD"/>
+    	<result property="isDeleted" column="SD_DETAIL"/>
+    	<result property="storeName" column="STORE_NAME"/>
+    </resultMap>
+
     <!-- 공지사항 페이지네이션 페이지수  -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
@@ -39,33 +122,232 @@
           FROM POST_TBL A
 	      JOIN BOARD_TBL B ON(A.BOARD_CODE = B.BOARD_CODE)
     	<where>
-    		<if test="searchCondition != null">
-				B.D_TYPE = #{ searchCondition }
+			A.STATUS = 'N'
+    		<if test="searchCondition != null and searchCondition != ''">
+				AND B.D_TYPE = #{ searchCondition }
     		</if>
 			<if test="searchValue != null">
-	        	A.POST_TITLE LIKE '%' || #{ searchValue } || '%' 	
+	        	AND A.POST_TITLE LIKE '%' || #{ searchValue } || '%' 	
 			</if>
-			A.STATUS = 'N'
     	</where>
 	</select>
 	
-	<select id="selectStoreTotalCount" resultType="_int">
+	<select id="selectStoreTotalCount" parameterType="hashmap" resultType="_int">
 		SELECT
 			   COUNT(*)
-		  FROM STORE_TBL A
+		  FROM CEO_TBL A
 		  LEFT JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
-		  LEFT JOIN REVIEW_TBL C ON(A.MEM_CODE = C.MEM_CODE)
-		<where>
-   	  	  <if test='searchValue != null'>
-   	  	   A.STORE_NAME LIKE '%' ||  #{ searchValue } || '%'
-   	  	  </if>
-   	  	  <if test="searchCondition == 'new'">
-   	  	   B.ENROLL_DATE BETWEEN SYSDATE AND (SYSDATE - 100)
-  	      </if>
-   	  	  <if test="searchCondition == 'famous'">
-   	  	   
-  	      </if>
-   	  	</where>
+		  LEFT JOIN STORE_TBL C ON(A.MEM_CODE = C.MEM_CODE)
+		 WHERE B.IS_DELETED = 'N'
+		 <if test="type == 'new'">
+		   AND B.ENROLL_DATE > (SYSDATE - 100)
+		 </if>
+		 <if test="searchValue != null">
+		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+		 </if>
 	</select>
+	<!-- 공지사항 출력 및 검색 -->
+
+	
+<!-- 	<update id="incrementBoardCount">
+        UPDATE /* com.greedy.jsp.board.model.dao.BoardDAO#incrementBoardCount() */
+               TBL_BOARD A
+           SET A.BOARD_COUNT = (SELECT B.BOARD_COUNT
+                                  FROM TBL_BOARD B
+                                 WHERE B.BOARD_NO = #{ no }
+                               ) + 1
+         WHERE A.BOARD_NO = #{ no }
+	</update> -->
+	
+	<!-- 자주하는 질문 (작업중)-->
+	<select id="selectFqa" resultMap="postResultMap">
+    	SELECT
+    	       A.RNUM	
+    	     , A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS				
+		FROM (SELECT ROWNUM RNUM	
+				 , B.POST_NO
+				 , B.BOARD_CODE
+				 , B.POST_TITLE
+				 , B.MEM_CODE
+				 , B.POST_CONTENT
+				 , B.POST_DATE
+				 , B.ANS_STATUS
+				 , B.QUE_NO
+				 , B.STATUS	
+			  FROM (SELECT C.POST_NO
+						 , C.BOARD_CODE
+						 , C.POST_TITLE
+						 , C.MEM_CODE
+						 , C.POST_CONTENT
+						 , C.POST_DATE
+						 , C.ANS_STATUS
+						 , C.QUE_NO
+						 , C.STATUS	
+					  FROM POST_TBL C 
+					  JOIN BOARD_TBL D ON (C.BOARD_CODE = D.BOARD_CODE)
+						  <where>
+						  	D.TYPE = 'fqa'
+							AND C.STATUS = 'N' 
+							  <if test="searchCondition =='memberJoinQuestion'">
+							  	AND D.D_TYPE = 'memberJoinQuestion'
+							  </if>
+							  <if test="searchCondition =='billAndOrderQuestion'">
+							  	AND D.D_TYPE = 'billAndOrderQuestion'
+							  </if>
+							  <if test="searchCondition =='reviewManagementQuestion'">
+							  	AND D.D_TYPE = 'reviewManagementQuestion'
+							  </if>
+							  <if test="searchCondition =='userQuestion'">
+							  	AND D.D_TYPE = 'userQuestion'
+							  </if>
+							  <if test="searchCondition =='inconvenienceQuestion'">
+							  	AND D.D_TYPE = 'inconvenienceQuestion'
+							  </if>
+							  <if test="searchCondition =='etcQuestion'">
+							  	AND D.D_TYPE = 'etcQuestion'
+							  </if>
+							  <if test="searchValue != null and searchValue !=''">
+							   AND C.POST_TITLE LIKE '%' || #{ searchValue } || '%'
+							  </if>
+						  </where>
+						  ORDER BY C.POST_NO DESC
+						  ) B
+					  <![CDATA[
+					  WHERE ROWNUM <= #{ endRow }
+					  ]]>
+					  ) A
+				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	  
+		 	   WHERE A.RNUM >= #{ startRow }	
+    </select>
+	 
     
+    <select id="selectStoreList" resultMap="storeResultMap">
+    	SELECT
+		       C.RNUM
+		     , C.MEM_CODE
+		     , C.STORE_NAME
+		     , C.STORE_IMG
+		     , C.COUNT
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , B.MEM_CODE
+	                , B.STORE_NAME
+	                , B.STORE_IMG 
+	                , B.COUNT 
+	            FROM (SELECT
+	                         A.MEM_CODE
+	                       , A.STORE_NAME
+	                       , A.STORE_IMG 
+	                       , (SELECT COUNT(*) FROM STORE_TBL S LEFT JOIN REVIEW_TBL R ON(S.MEM_CODE = R.MEM_CODE)) AS COUNT
+	                    FROM STORE_TBL A
+	                    LEFT JOIN MEMBER_TBL M ON(A.MEM_CODE = M.MEM_CODE)
+	                    <where>
+	                    	M.IS_DELETED = 'N'
+				         	<if test='searchValue != null'>
+				         	A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+				         	</if>
+			   	        </where>
+	                    <if test="searchCondition == 'new'">
+	                    	ORDER BY M.ENROLL_DATE DESC
+	                    </if>
+	                    <if test="searchCondition == 'famous'">
+	                    	ORDER BY (SELECT COUNT(*) FROM STORE_TBL S LEFT JOIN REVIEW_TBL R ON(S.MEM_CODE = R.MEM_CODE)) DESC
+	                    </if>
+	                    )B
+	          <![CDATA[        
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)C
+	   <![CDATA[
+	  WHERE C.RNUM >= #{ startRow } 
+       ]]>
+    </select>
+    
+    <select id="selectProductTotalCount" parameterType="hashmap" resultType="_int">
+    	SELECT
+			   COUNT(*)
+		  FROM PRODUCT_TBL A
+		 WHERE A.IS_DELETED = 'N'
+		   AND A.ORDERABLE_STATUS = 'Y'
+		 <if test="category != 'recommend' and category != null">
+		   AND A.CATEGORY_CODE = #{ category } 
+		 </if>
+		 <if test="category == 'recommend' and category != null">
+		   AND A.RECOMMEND_YN = 'Y'
+		 </if>
+		 <if test="searchValue != null">
+		   AND A.SD_NAME LIKE '%' || #{ searchValue } || '%'
+		 </if>
+		 <if test="searchCondition != null">
+		   AND A.DISCOUNT_RATE > 0
+		 </if>
+    </select>
+    
+    <select id="selectProductList" resultMap="productResultMap">
+    	SELECT
+		       C.RNUM
+		     , C.SD_CODE
+             , C.SD_NAME
+             , C.PRICE
+             , C.VOLUME 
+             , C.SD_IMG 
+             , C.CATEGORY 
+             , C.DISCOUNT_RATE 
+             , C.MEM_CODE
+             , C.STORE_NAME
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , B.SD_CODE
+	                , B.SD_NAME
+	                , B.PRICE
+	                , B.VOLUME 
+                    , B.SD_IMG 
+                    , B.CATEGORY 
+                    , B.DISCOUNT_RATE 
+                    , B.MEM_CODE 
+                    , B.STORE_NAME 
+	            FROM (SELECT
+	                         A.SD_CODE
+	                       , A.SD_NAME
+	                       , A.PRICE 
+	                       , A.VOLUME 
+	                       , A.SD_IMG 
+	                       , A.CATEGORY 
+	                       , A.DISCOUNT_RATE 
+	                       , A.MEM_CODE 
+	                       , S.STORE_NAME
+	                    FROM PRODUCT_TBL A
+	                    LEFT JOIN MEMBER_TBL M ON(A.MEM_CODE = M.MEM_CODE)
+	                    LEFT JOIN STORE_TBL S ON(A.MEM_CODE = S.MEM_CODE)
+	                    <where>
+	                    	M.IS_DELETED = 'N'
+	                    	AND A.ORDERABLE_STATUS = 'Y'
+				         	<if test='searchValue != null'>
+				         	AND A.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+				         	</if>
+		                    <if test="searchCondition == 'recommend'">
+		                    AND A.RECOMMEND_YN = 'Y'
+		                    </if>
+		                    <if test="searchCondition != 'recommend' and searchCondition != 'sale'">
+		                    AND A.CATEGORY_CODE = #{ searchCondition }
+		                    </if>
+		                    <if test="searchCondition == 'sale'">
+							AND A.DISCOUNT_RATE > 0
+							</if>
+			   	        </where>
+	                    )B
+	          <![CDATA[        
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)C
+	   <![CDATA[
+	  WHERE C.RNUM >= #{ startRow } 
+       ]]>
+    </select>
     </mapper>

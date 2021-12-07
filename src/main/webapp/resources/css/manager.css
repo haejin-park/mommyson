@@ -394,3 +394,7 @@
       background: url('../images/select_arrow.png') no-repeat 97%;
       background-size: 20px;
     }
+.searchtext::-webkit-input-placeholder {
+text-align: center;  
+}  
+    

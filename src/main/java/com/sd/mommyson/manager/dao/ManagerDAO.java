@@ -13,7 +13,7 @@ public interface ManagerDAO {
 
 	List<ManagerDTO> selectManagers();
 
-	List<MemberDTO> memberSelect(MemberDTO member);
+	List<MemberDTO> selectMember(Pagination pagination);
 
 	int deleteMembers(List<Integer> deleteMemberList);
 
@@ -36,5 +36,9 @@ public interface ManagerDAO {
 	List<MemberDTO> blackMemberSelect(MemberDTO member);
 
 	int memberAddBlack(List<Integer> memberAddBlackList);
+
+	List<MemberDTO> selectSearchMemberList(String searchMember);
+
+	int selectNormalMemberTotalCount(Map<String, Object> searchMap);
 
 }

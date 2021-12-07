@@ -80,7 +80,7 @@
 	        	$('#categoryList').append(
 	        				'<div class="col-2">' +
 	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" end="3">
-        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/?category=${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
 	        		</c:forEach>
 	        				'</div>' +
 	        				'<div class="col-1"></div>'
@@ -89,7 +89,7 @@
 	        	$('#categoryList').append(
 	        				'<div class="col-2">' +
 	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" begin="4" end="7">
-        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/?category=${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
 	        		</c:forEach>
 	        				'</div>' +
 	        				'<div class="col-1"></div>'
@@ -98,7 +98,7 @@
 	        	$('#categoryList').append(
 	        				'<div class="col-2">' +
 	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" begin="8" end="11">
-        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/?category=${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
 	        		</c:forEach>
 	        				'</div>' +
 	        				'<div class="col-1"></div>'
@@ -107,7 +107,7 @@
 	        	$('#categoryList').append(
 	        				'<div class="col-2">' +
 	        		<c:forEach items="${ sessionScope.categoryList }" var="categoryList" begin="12" end="15">
-        					'<a href="${ pageContext.servletContext.contextPath }/user/category/${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
+        					'<a href="${ pageContext.servletContext.contextPath }/user/category/?category=${ categoryList.CATEGORY_CODE }">' + '<c:out value = "${ categoryList.CATEGORY_NAME }"/>' + '</a>' +
 	        		</c:forEach>
 	        				'</div>' +
 	        				'<div class="col-1"></div>'
@@ -123,7 +123,7 @@
                 </div>
             </div> 
             </li>
-            <li><a href="${ pageContext.servletContext.contextPath }/user/category/recommend">오늘의 추천</a></li>
+            <li><a href="${ pageContext.servletContext.contextPath }/user/category?category=recommend">오늘의 추천</a></li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore?type=famous">우리동네 인기 맛집</a></li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a></li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore?type=new">신규 반찬 가게</a></li>
