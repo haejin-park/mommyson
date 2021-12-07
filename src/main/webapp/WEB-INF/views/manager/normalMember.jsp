@@ -89,14 +89,11 @@
             		
             	
             		$.ajax({
-            			url : '${ pageContext.servletContext.contextPath }/manager/registBlack',
-            			type : 'POST',
-            			data : {
-            				"chkMember" : chkMember
-            			},
+            			url : '${ pageContext.servletContext.contextPath }/manager/registBlack/' + chkMember,
+            			type : 'GET',
             			success: function(data){
             				console.log(data);
-            				$(location).attr('href',"${ pageContext.servletContext.contextPath }");
+            				location.href="${ pageContext.servletContext.contextPath }/manager/normalMember";
             			},
             			error: function(error){
             				console.log(error);
@@ -106,7 +103,7 @@
             </script>
             
             <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
+            <%-- <nav class="page_box" aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
                     <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
@@ -127,12 +124,13 @@
                 	<div class="search_box">
 	                    <ul class="df_ul">
 	                        <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
-	                        <li><input type="search" class="searchtext" placeholder="회원 닉네임으로 검색하기"></li>
+	                        <li><input type="search" class="searchtext" name="searchTxt" placeholder="찾고싶은 내용 검색하기"></li>
 	                        <li><button type="submit" class="searchbutton">검색하기</button></li>
 	                    </ul>
                     </div>
                 </form>
-            </nav>
+            </nav> --%>
+            <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
 

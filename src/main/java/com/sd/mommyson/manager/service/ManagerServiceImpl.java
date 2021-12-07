@@ -30,9 +30,9 @@ public class ManagerServiceImpl implements ManagerService {
 	 * 회원조회
 	 */
 	@Override
-	public List<MemberDTO> memberSelect(MemberDTO member) {
+	public List<MemberDTO> selectMember(Pagination pagination) {
 		
-		 List<MemberDTO> normalMemberList = managerDAO.memberSelect(member);
+		 List<MemberDTO> normalMemberList = managerDAO.selectMember(pagination);
 		
 		return normalMemberList;
 	}
@@ -108,11 +108,24 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public boolean memberAddBlack(List<Integer> memberAddBlackList) {
+	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList) {
 		
 		int result = managerDAO.memberAddBlack(memberAddBlackList);
 		
 		return result > 0? true : false;
+	}
+
+	@Override
+	public List<MemberDTO> selectSearchMemberList(String searchMember) {
+		
+		List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
+		
+		return searchMemberList;
+	}
+
+	@Override
+	public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
+		return managerDAO.selectNormalMemberTotalCount(searchMap);
 	}
 	
 }

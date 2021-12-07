@@ -41,11 +41,66 @@ public class ManagerController {
 	
 	/* 일반 회원 조회 */
 	@GetMapping("normalMember")
-	public void normalMember(MemberDTO member, Model model) {
+	public void normalMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
-		List<MemberDTO> normalMemberList = managerService.memberSelect(member);
-		System.out.println("normalMemberList : " + normalMemberList);
-		model.addAttribute("normalMemberList", normalMemberList);
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchCondition = (String) model.getAttribute("searchCondition");
+		String searchValue = (String) model.getAttribute("searchValue");
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		
+		String memberTypeUser = "user";
+		
+		searchMap.put("memberTypeUser", memberTypeUser);
+		
+		System.out.println("searchMap : " + searchMap);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.selectNormalMemberTotalCount(searchMap);
+		
+		System.out.println("totalInquiryBoardCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("pagination : " + pagination);
+		
+		
+		List<MemberDTO> normalMemberList = managerService.selectMember(pagination);
+		System.out.println("리스트 확인 : " + normalMemberList);
+		
+		if(normalMemberList != null) {
+			model.addAttribute("pagination",pagination);
+			model.addAttribute("normalMemberList", normalMemberList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
 	}
 	
 	/* 회원삭제 */
@@ -64,9 +119,9 @@ public class ManagerController {
 	}
 	
 	/* 회원블랙등록 */
-	@PostMapping("memberAddBlack")
+	@GetMapping(value = "registBlack/{chkMember}", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
-	public boolean memberAddBlack(@RequestParam("chkMember") int[] chkMemberBlack) {
+	public String memberAddBlack(@PathVariable("chkMember") int[] chkMemberBlack) {
 		
 		List<Integer> memberAddBlackList = new ArrayList<>();
 		
@@ -74,18 +129,78 @@ public class ManagerController {
 			memberAddBlackList.add(chkMemberBlack[i]);
 		}
 		
-		boolean result = managerService.memberAddBlack(memberAddBlackList);
+		boolean result = managerService.modifyMemberAddBlack(memberAddBlackList);
 		
-		return result;
+		return result? "1" : "2";
+	}
+	
+	/* 회원검색 */
+	@GetMapping("searchMember")
+	public void searchMemberList(@RequestParam("searchTxt") String searchMember, Model model) {
+		
+		List<MemberDTO> searchMemberList = managerService.selectSearchMemberList(searchMember);
+		model.addAttribute("searchMemberList", searchMemberList);
 	}
 	
 	/* 사업자 회원 조회 */
 	@GetMapping("buisnessMember")
-	public void buisnessMember(MemberDTO member, Model model) {
+	public void buisnessMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
-		List<MemberDTO> buisnessMemberList = managerService.memberSelect(member);
-		System.out.println("buisnessMemberList : " + buisnessMemberList);
-		model.addAttribute("buisnessMemberList", buisnessMemberList);
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchCondition = (String) model.getAttribute("searchCondition");
+		String searchValue = (String) model.getAttribute("searchValue");
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		
+		String memberTypeCeo = "ceo";
+		
+		searchMap.put("memberTypeCeo", memberTypeCeo);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.selectNormalMemberTotalCount(searchMap);
+		
+		System.out.println("totalInquiryBoardCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("pagination : " + pagination);
+		
+		List<MemberDTO> buisnessMemberList = managerService.selectMember(pagination);
+		System.out.println("리스트 확인 : " + buisnessMemberList);
+		
+		if(buisnessMemberList != null) {
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("buisnessMemberList", buisnessMemberList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
 	}
 	
 	/* 사업자 회원 삭제 */

@@ -30,7 +30,7 @@ public interface MemberDAO {
 	public String locationCode(String locationName);
 
 	/* 사용자 회원가입 */
-//	public void customerJoin(Map<String, Object> map, MemberDTO dto);
+	public void customerJoin(MemberDTO member) ;
 
 	public void updateLastLogin(MemberDTO member);
 }

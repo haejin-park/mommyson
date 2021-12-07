@@ -1,6 +1,5 @@
 package com.sd.mommyson.member.dto;
 
-import java.sql.Date;
 
 public class CeoDTO {
 
