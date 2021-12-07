@@ -103,7 +103,7 @@
             </script>
             
             <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
+            <%-- <nav class="page_box" aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
                     <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
@@ -129,7 +129,8 @@
 	                    </ul>
                     </div>
                 </form>
-            </nav>
+            </nav> --%>
+            <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
 

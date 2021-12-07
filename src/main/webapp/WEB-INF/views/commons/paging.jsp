@@ -37,11 +37,13 @@
 				 <li class="page-item"><a class="page-link-num" id="maxPage" href="#">&raquo;</a></li> 
         </ul>
         <form action="${ pageContext.servletContext.contextPath }/manager/noticeSelect" method="GET">
-            <ul>
-                <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                <input type="text" name="searchValue" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                <button type="submit" class="searchbutton">검색하기</button></li>
-            </ul>
+            <div class="search_box">
+	            <ul class="df_ul">
+		            <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
+		            <li><input type="search" class="searchtext" name="searchTxt" placeholder="찾고싶은 내용 검색하기"></li>
+		            <li><button type="submit" class="searchbutton">검색하기</button></li>
+	            </ul>
+            </div>
         </form>
     </nav>
     
@@ -50,11 +52,11 @@
         const link = "${ location.href }";
 		let searchText = "";
 		
-		if(${ !empty requestScope.pagination.searchCondition? true: false }) {
+		if(${ !empty requestScope.pagination.searchCondition? true : false }) {
 			searchText += "&searchCondition=${ requestScope.pagination.searchCondition }";
 		}
 		
-		if(${ !empty requestScope.pagination.searchValue? true: false }) {
+		if(${ !empty requestScope.pagination.searchValue? true : false }) {
 			searchText += "&searchValue=${ requestScope.pagination.searchValue }";
 		}
 		
