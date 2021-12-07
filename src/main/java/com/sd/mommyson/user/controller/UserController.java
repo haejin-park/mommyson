@@ -88,7 +88,7 @@ public class UserController {
 	 * @category 공지사항 출력
 	 */
 	@GetMapping("ucc/uccNoticeSelect")
-	public String userCustomerServiceCenterNoticeSelect(HttpSession session, @RequestParam(required = false) Map<String, String> parameters) {
+	public String userCustomerServiceCenterNoticeSelect(HttpSession session, Model mv, @RequestParam(required = false) Map<String, String> parameters) {
 		System.out.println("공지사항 콘트롤러 진입");
 		
 		/* 목록보기를 눌렀을 시 가장 처음에 보여지는 페이지는 1페이지이다.
@@ -128,7 +128,7 @@ public class UserController {
 		 * 검색조건이 있는 경우 검색 조건에 맞는 전체 게시물 수를 조회한다.
 		 * */
 		
-		int totalCount = userService.selectTotalCount(session, searchMap);
+		int totalCount = userService.selectTotalCount(searchMap);
 		
 		System.out.println("totalPostCount : " + totalCount);
 		
@@ -146,10 +146,12 @@ public class UserController {
 			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
 		}
 		
-		System.out.println(selectCriteria);
+		System.out.println("selectCriteria : " + selectCriteria);
 		List<PostDTO> noticeList = userService.selectNotice(selectCriteria);
-//		System.out.println("테스트 공지리스트 : " + noticeList);
+		System.out.println(" 공지리스트 : " + noticeList);
 		
+		mv.addAttribute("noticeList", noticeList);
+		mv.addAttribute("selectCriteria", selectCriteria);
 		
 		return "user/userCustomerServiceCenterNoticeSelect";
 	}
