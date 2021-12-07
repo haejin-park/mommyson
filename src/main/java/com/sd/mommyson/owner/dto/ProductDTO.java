@@ -20,6 +20,7 @@ public class ProductDTO {
 	private String storageMethod;
 	private String detail;
 	private String isDeleted;
+	private String storeName;
 	
 	
 	public ProductDTO() {
@@ -29,7 +30,7 @@ public class ProductDTO {
 
 	public ProductDTO(int sdCode, String sdName, Date mDate, int price, String ingredient, String volume, String sdImg,
 			String category, float discountRate, int memCode, String orderableStatus, int eDate, String categoryCode,
-			String storageMethod, String detail, String isDeleted) {
+			String storageMethod, String detail, String isDeleted, String storeName) {
 		super();
 		this.sdCode = sdCode;
 		this.sdName = sdName;
@@ -47,6 +48,7 @@ public class ProductDTO {
 		this.storageMethod = storageMethod;
 		this.detail = detail;
 		this.isDeleted = isDeleted;
+		this.storeName = storeName;
 	}
 
 
@@ -199,6 +201,7 @@ public class ProductDTO {
 		this.detail = detail;
 	}
 
+
 	public String getIsDeleted() {
 		return isDeleted;
 	}
@@ -209,13 +212,24 @@ public class ProductDTO {
 	}
 
 
+	public String getStoreName() {
+		return storeName;
+	}
+
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
+
 	@Override
 	public String toString() {
 		return "ProductDTO [sdCode=" + sdCode + ", sdName=" + sdName + ", mDate=" + mDate + ", price=" + price
 				+ ", ingredient=" + ingredient + ", volume=" + volume + ", sdImg=" + sdImg + ", category=" + category
 				+ ", discountRate=" + discountRate + ", memCode=" + memCode + ", orderableStatus=" + orderableStatus
 				+ ", eDate=" + eDate + ", categoryCode=" + categoryCode + ", storageMethod=" + storageMethod
-				+ ", detail=" + detail + ", isDeleted=" + isDeleted + "]";
+				+ ", detail=" + detail + ", isDeleted=" + isDeleted + ", storeName=" + storeName + "]";
 	}
-
+	
+	
 }

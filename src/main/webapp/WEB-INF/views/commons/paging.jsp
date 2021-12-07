@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
 	<nav class="page_box" aria-label="Page navigation example">
@@ -47,7 +48,16 @@
     
     <script>
 	
-        const link = "${ location.href }";
+        let link = "";
+        if(!(document.location.href).includes("?type")) {
+        	link = document.location.pathname;
+        } else {
+        	if(${ requestScope.type == '우리동네 인기 맛집' } || (document.location.search).includes('famous')) {
+        		link = document.location.href;
+			} else if(${ requestScope.type == '신규 반찬 가게' } || (document.location.search).includes('new')) {
+				link = document.location.href;
+			}
+        }
 		let searchText = "";
 		
 		if(${ !empty requestScope.pagination.searchCondition? true: false }) {
@@ -69,6 +79,7 @@
 			const $prevPage = document.getElementById("prevPage");
 			$prevPage.onclick = function() {
 				location.href = link + "?currentPage=${ requestScope.pagination.pageNo - 1 }" + searchText;
+				
 			}
 		}
 		
@@ -88,6 +99,7 @@
 		
 		$(".pageNo").click(function(){
 			let pageNo = $(this).text();
+			console.log(link);
 			location.href = link + "?currentPage=" + pageNo + searchText;
 		});
 		
