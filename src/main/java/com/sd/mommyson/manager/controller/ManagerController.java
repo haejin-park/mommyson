@@ -81,12 +81,17 @@ public class ManagerController {
 		
 		Pagination pagination = null;
 		
+		
+		
 		/* ==== 검색과 selectOption 고르기 ==== */
 		if(searchValue != null && !"".equals(searchValue)) {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+			
 		} else {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
 		}
+		
+		pagination.setSearchCondition("user");
 		
 		System.out.println("pagination : " + pagination);
 		
@@ -95,7 +100,7 @@ public class ManagerController {
 		System.out.println("리스트 확인 : " + normalMemberList);
 		
 		if(normalMemberList != null) {
-			model.addAttribute("pagination",pagination);
+			model.addAttribute("pagination", pagination);
 			model.addAttribute("normalMemberList", normalMemberList);
 		} else {
 			System.out.println("조회실패");
@@ -185,9 +190,12 @@ public class ManagerController {
 		/* ==== 검색과 selectOption 고르기 ==== */
 		if(searchValue != null && !"".equals(searchValue)) {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+			
 		} else {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
 		}
+		
+		pagination.setSearchCondition("ceo");
 		
 		System.out.println("pagination : " + pagination);
 		
