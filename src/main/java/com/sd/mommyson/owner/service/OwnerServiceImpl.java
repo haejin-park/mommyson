@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
@@ -112,9 +113,17 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public List<ProductDTO> selectProduct(int memCode) {
+	public List<ProductDTO> selectProduct(Map<String, Object> searchMap) {
 		
-		return ownerDAO.selectProduct(memCode);
+		return ownerDAO.selectProduct(searchMap);
+	}
+
+	@Override
+	public int selectTotalCount(Map<String, Object> searchMap) {
+
+		int result = ownerDAO.selectTotalCount(searchMap);
+			
+		return result;
 	}
 	
 

@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -25,13 +26,11 @@
             <li class="page-item"><a class="page-link-num pageNo" id="nextPage" href="#">&gt;</a></li>
             <li class="page-item"><a class="page-link-num pageNo" id="maxPage" href="#">&raquo;</a></li>
         </ul>
-        <form action="${ pageContext.servletContext.contextPath }/manager/noticeSelect" method="GET">
             <ul>
                 <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                <input type="text" name="searchValue" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                <button type="submit" class="searchbutton">검색하기</button></li>
+                <input type="text" name="searchValue" class="searchtext" placeholder="검색어를 입력해주세요.">
+                <button type="submit" class="searchbutton">검색하기</button>
             </ul>
-        </form>
     </nav>
     
     <script>
@@ -78,7 +77,14 @@
 		$(".pageNo").click(function(){
 			let pageNo = $(this).text();
 			location.href = link + "?currentPage=" + pageNo + searchText;
-		})
+		});
+		
+		 $(".searchbutton").on('click',function(){
+    	let searchValue = $('input[name=searchValue]').val();
+						// 현재 페이지 주소
+    	location.href = "${ location.href }?searchValue=" + searchValue;
+    	
+		 }); 
 		
 	</script>
 </body>
