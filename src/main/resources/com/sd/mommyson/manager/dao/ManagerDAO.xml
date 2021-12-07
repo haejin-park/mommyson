@@ -13,7 +13,6 @@
 		<result property="dAddress" column="D_ADDRESS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="memType" column="MEM_TYPE"/>
-		<result property="locationCode" column="LOCATION_CODE"/>
 		<result property="nickname" column="NICKNAME"/>
 		<result property="memId" column="MEM_ID"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
@@ -21,6 +20,8 @@
 		<collection property="user" resultMap="userResultMap"/>
 		<collection property="ceo" resultMap="ceoResultMap"/>
 		<collection property="manager" resultMap="managerResultMap"/>
+		<collection property="location" resultMap="locationResultMap"/>
+		
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
@@ -34,7 +35,7 @@
 		<result property="account" column="ACCOUNT"/>
 		<result property="no" column="STORE_NO"/>
 		<result property="name" column="CEO_NAME"/>
-		<collection property="store" resultMap="storeResultMap"></collection>
+		<collection property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -56,6 +57,11 @@
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="name" column="NAME"/>
 		<result property="repCount" column="REP_COUNT"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap">
+		<id property="locationCode" column="LOCATION_CODE"/>
+		<result property="locationName" column="LOCATION_NAME"/>
 	</resultMap>
 	
 	<select id="memberSelect" resultMap="memberResultMap">
@@ -187,6 +193,7 @@
    	  <result property="ansStatus" column="ANS_STATUS"/>
    	  <result property="queNo" column="QUE_NO"/>
    	  <result property="status" column="STATUS"/>
+   	  <result property="viewCnt" column="VIEW_CNT"/>
    </resultMap>
 
   
@@ -199,22 +206,22 @@
    	  	  <if test='searchValue != null'>
    	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
    	  	  </if>
-   	  	  <if test="searchCondition == '전체'">
+   	  	  <if test="searchCondition == 'all'">
    	  	    A.BOARD_CODE IN('1','2','3','4','5')
    	  	  </if>
-   	  	  <if test="searchCondition == '공지'">
+   	  	  <if test="searchCondition == 'notice'">
    	  	   A.BOARD_CODE = '1'
    	  	  </if>
-   	  	  <if test="searchCondition == '안내'">
+   	  	  <if test="searchCondition == 'guide'">
    	  	   A.BOARD_CODE = '2'
    	  	  </if>
-   	  	  <if test="searchCondition == '점검'">
+   	  	  <if test="searchCondition == 'check'">
    	  	   A.BOARD_CODE = '3'
    	  	  </if>
-   	  	  <if test="searchCondition == '이벤트'">
+   	  	  <if test="searchCondition == 'event'">
    	  	   A.BOARD_CODE = '4'
    	  	  </if>
-   	  	  <if test="searchCondition == '사업자'">
+   	  	  <if test="searchCondition == 'owner'">
    	  	   A.BOARD_CODE = '5'
    	  	  </if>
    	  	</where>
@@ -233,6 +240,7 @@
 	   ,C.ANS_STATUS
 	   ,C.QUE_NO
 	   ,C.STATUS
+	   ,C.VIEW_CNT
 	   FROM (SELECT
 	            ROWNUM RNUM
 	           ,B.POST_NO
@@ -244,6 +252,7 @@
 	           ,B.ANS_STATUS
 	           ,B.QUE_NO
 	           ,B.STATUS
+	           ,B.VIEW_CNT
 	         FROM (SELECT
 	                    A.POST_NO
 	                   ,A.BOARD_CODE
@@ -254,27 +263,28 @@
 	                   ,A.ANS_STATUS
 	                   ,A.QUE_NO
 	                   ,A.STATUS
+	                   ,A.VIEW_CNT
 	                   FROM POST_TBL A
 	                  <where>
 			   	  	  <if test='searchValue != null'>
 			   	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == '전체'">
+			   	  	  <if test="searchCondition == 'all'">
 			   	  	    A.BOARD_CODE IN('1','2','3','4','5')
 			   	  	  </if>
-			   	  	  <if test="searchCondition == '공지'">
+			   	  	  <if test="searchCondition == 'notice'">
 			   	  	   A.BOARD_CODE = '1'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == '안내'">
+			   	  	  <if test="searchCondition == 'guide'">
 			   	  	   A.BOARD_CODE = '2'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == '점검'">
+			   	  	  <if test="searchCondition == 'check'">
 			   	  	   A.BOARD_CODE = '3'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == '이벤트'">
+			   	  	  <if test="searchCondition == 'event'">
 			   	  	   A.BOARD_CODE = '4'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == '사업자'">
+			   	  	  <if test="searchCondition == 'owner'">
 			   	  	   A.BOARD_CODE = '5'
 			   	  	  </if>
 			   	  	  </where>

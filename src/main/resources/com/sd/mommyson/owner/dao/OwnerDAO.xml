@@ -39,13 +39,20 @@
 		<result property="dAddress" column="D_ADDRESS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="memType" column="MEM_TYPE"/>
-		<result property="locationCode" column="LOCATION_CODE"/>
 		<result property="nickname" column="NICKNAME"/>
 		<result property="memId" column="MEM_ID"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
 		<collection property="user" resultMap="userResultMap"/>
 		<collection property="ceo" resultMap="ceoResultMap"/>
+		<collection property="manager" resultMap="managerResultMap"/>
+		<collection property="location" resultMap="locationResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="lastLogin" column="LAST_LOGIN"/>
+		<collection property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
@@ -91,7 +98,11 @@
 		<result property="detail" column="SD_DETAIL"/>
 	</resultMap>
 	
-	
+	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap">
+		<id property="locationCode" column="LOCATION_CODE"/>
+		<result property="locationName" column="LOCATION_NAME"/>
+	</resultMap>
+		
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT

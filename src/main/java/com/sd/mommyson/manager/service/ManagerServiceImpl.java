@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
+import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
@@ -88,7 +89,8 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectNoticeTotalCount(searchMap);
 	}
 
-	public List<Pagination> selectNoticeList(Pagination pagination) {
+	@Override
+	public List<PostDTO> selectNoticeList(Pagination pagination) {
 		return managerDAO.selectNoticeList(pagination);
 	}
 
@@ -106,11 +108,19 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public boolean memberAddBlack(List<Integer> memberAddBlackList) {
+	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList) {
 		
 		int result = managerDAO.memberAddBlack(memberAddBlackList);
 		
 		return result > 0? true : false;
+	}
+
+	@Override
+	public List<MemberDTO> selectSearchMemberList(String searchMember) {
+		
+		List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
+		
+		return searchMemberList;
 	}
 	
 }

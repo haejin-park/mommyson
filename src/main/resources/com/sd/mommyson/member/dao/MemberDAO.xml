@@ -38,7 +38,7 @@
 		<result property="workTime" column="WORK_TIME"/>
 	</resultMap>
 	
-	<resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
+	<resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="email" column="EMAIL"/>
 		<result property="memPwd" column="MEM_PWD"/>
@@ -46,7 +46,6 @@
 		<result property="postCode" column="POST_CODE"/>
 		<result property="dAddress" column="D_ADDRESS"/>
 		<result property="phone" column="PHONE"/>
-		<result property="locationCode" column="LOCATION_CODE"/>
 		<result property="memType" column="MEM_TYPE"/>
 		<result property="nickname" column="NICKNAME"/>
 		<result property="memId" column="MEM_ID"/>
@@ -55,7 +54,7 @@
 		<collection property="user" resultMap="userResultMap"/>
 		<collection property="ceo" resultMap="ceoResultMap"/>
 		<collection property="manager" resultMap="managerResultMap"/>
-		<collection property="locationCode" resultMap="locationResultMap"/>
+		<collection property="location" resultMap="locationResultMap"/>
 
 	</resultMap>
 	
@@ -187,7 +186,7 @@
 		, #{ dAddress }
 		, #{ phone }
 		, 'user'
-		, #{ locationCode }
+		, #{ location }
 		, #{ nickname }
 		, #{ memId }
 		, SYSDATE	

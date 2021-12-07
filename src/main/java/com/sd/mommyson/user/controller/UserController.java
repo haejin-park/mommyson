@@ -12,12 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
-import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.user.common.Pagenation;
+import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.service.UserService;
 
 @Controller
@@ -87,10 +88,68 @@ public class UserController {
 	 * @category 공지사항 출력
 	 */
 	@GetMapping("ucc/uccNoticeSelect")
-	public String userCustomerServiceCenterNoticeSelect(HttpSession session) {
+	public String userCustomerServiceCenterNoticeSelect(HttpSession session, @RequestParam(required = false) Map<String, String> parameters) {
 		System.out.println("공지사항 콘트롤러 진입");
-		List<PostDTO> noticeList = userService.selectNotice();
-		System.out.println("테스트 공지리스트 : " + noticeList);
+		
+		/* 목록보기를 눌렀을 시 가장 처음에 보여지는 페이지는 1페이지이다.
+		 * 파라미터로 전달되는 페이지가 있는 경우 currentPage는 파라미터로 전달받은 페이지 수 이다.
+		 * */
+		String currentPage = parameters.get("currentPage");
+		
+		int pageNo = 1;
+		System.out.println("currnetPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		String searchCondition = parameters.get("searchCondition");
+		String searchValue = parameters.get("searchValue");
+		
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchValue : " + searchValue);
+		System.out.println("pageNo : " + pageNo);
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		System.out.println("searchMap : " + searchMap);
+		
+				
+
+		/* 전체 게시물 수가 필요하다.
+		 * 데이터베이스에서 먼저 전체 게시물 수를 조회해올 것이다.
+		 * 검색조건이 있는 경우 검색 조건에 맞는 전체 게시물 수를 조회한다.
+		 * */
+		
+		int totalCount = userService.selectTotalCount(session, searchMap);
+		
+		System.out.println("totalPostCount : " + totalCount);
+		
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 10;		//얘도 파라미터로 전달받아도 된다.
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+		
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println(selectCriteria);
+		List<PostDTO> noticeList = userService.selectNotice(selectCriteria);
+//		System.out.println("테스트 공지리스트 : " + noticeList);
+		
 		
 		return "user/userCustomerServiceCenterNoticeSelect";
 	}
@@ -166,64 +225,10 @@ public class UserController {
 			case "new" : cg = "신규 반찬 가게"; break;
 			case "famous" : cg = "우리동네 인기 맛집"; break;
 		}
-		StoreDTO store = null;
 		if(cg.equals("new")) {
 			
 		}
-		
-		/* ==== 현재 페이지 처리 ==== */
-		String currentPage = (String) model.getAttribute("currentPage");
-		int pageNo = 1;
-		
-		if(currentPage != null && !"".equals(currentPage)) {
-			pageNo = Integer.parseInt(currentPage);
-		}
-		
-		if(pageNo <= 0) {
-			pageNo = 1;
-		}
-		
-		System.out.println(currentPage);
-		System.out.println(pageNo);
-		
-		/* ==== 검색 처리 ==== */
-		String searchCondition = (String) model.getAttribute("searchCondition");
-		String searchValue = (String) model.getAttribute("searchValue");
-		
-		Map<String, String> searchMap = new HashMap<>();
-		
-		/* ==== 조건에 맞는 게시물 수 처리 ==== */
-		int totalCount = managerService.selectNoticeTotalCount(searchMap);
-		
-		System.out.println("totalInquiryBoardCount : " + totalCount);
-		
-		int limit = 10;
-		int buttonAmount = 10;
-		
-		Pagination pagination = null;
-		
-		/* ==== 검색과 selectOption 고르기 ==== */
-		if(searchValue != null && !"".equals(searchValue)) {
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
-		} else if(searchCondition != null && searchCondition != "전체") {
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
-		} else {
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, "전체", null);
-		}
-		
-		System.out.println("pagination : " + pagination);
-		
-		List<Pagination> noticeList = managerService.selectNoticeList(pagination);
-		
-		System.out.println("리스트 확인 : " + noticeList);
-		
-		if(noticeList != null) {
-			model.addAttribute("pagination",pagination);
-			model.addAttribute("noticeList", noticeList);
-		} else {
-			System.out.println("조회실패");
-		}
-		
+				
 		mv.addObject("type", cg);
 		mv.setViewName("user/famousStore");
 		
