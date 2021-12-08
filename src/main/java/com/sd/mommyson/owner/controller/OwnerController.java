@@ -11,7 +11,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
-
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -73,8 +71,12 @@ public class OwnerController {
 		List<CouponDTO> coupon = ownerService.selectCoupon(member);
 		System.out.println(coupon);
 		
+		MemberDTO owner = ownerService.selectOwner(member);
+		System.out.println(owner);
+		
 		//					items 이름 , 리스트이름
 		model.addAttribute( "coupon" ,coupon);
+		model.addAttribute("owner", owner);
 	
 		return "owner/coupon";
 	}
@@ -301,15 +303,39 @@ public class OwnerController {
 	}
 	
 	/* 리뷰 관리 */
-//	@GetMapping("review")
-//	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
-//		
-//		List<ReviewDTO> reviews = ownerService.selectReview(review);
-//		System.out.println(reviews);	
-//		
-//		return "owner/review";	
-//		
-//	}
+	@GetMapping("review")
+	public String selectReview(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+		
+		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
+		MemberDTO owner = ownerService.selectOwner(member);
+		String storeName = owner.getCeo().getStore().getStoreName();
+		System.out.println(storeName);
+		
+		List<ReviewDTO> reviews = ownerService.selectReview(storeName);
+		System.out.println(reviews);	
+		
+		model.addAttribute("owner", owner);
+		model.addAttribute("reviews",reviews);
+		
+		
+		// 쿠폰 모달 리스트 가져오기
+		List<CouponDTO> coupon = ownerService.selectCoupon(member);
+		System.out.println(coupon);
+		
+		model.addAttribute("coupon",coupon);
+		
+		return "owner/review";	
+		
+	}
+	/* 리뷰관리 - 리뷰쓴 고객들에게 쿠폰주기 인서트 (CP_HISTORY_TBL) */
+	@PostMapping("review")
+	public String registGiveCoupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+		
+		return "owner/review";	
+		
+	}
+	
+	
 	
 	
 	/* 판매상품 관리 */

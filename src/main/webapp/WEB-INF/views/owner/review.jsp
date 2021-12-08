@@ -34,7 +34,7 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="" id=""></th>
+                <th scope="col"><input type="checkbox" name="" id="allCheck"></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -44,9 +44,9 @@
               <tr>
                 <th scope="row"><input type="checkbox" name="" id=""></th>
                 <c:forEach var="review" items="${ reviews }">
-                <th>${ loginMember.nickname }</th>
-                <td></td>
-                <td>로제찜닭 너무 맛있네요~</td>
+                <th>${ review.rvCode }</th>
+                <td>${ review.memberDTO.nickname }</td>
+                <td>${ review.content }</td>
                 </c:forEach>
               </tr>
              
@@ -92,7 +92,7 @@
               <table class="table table" style="width: 1050px;">
                   <thead style="background-color: #EDEDED;">
                   <tr>
-                      <th scope="col"><input type="checkbox" name="" id=""></th>
+                      <th scope="col"><input type="checkbox" name="" id="allCheck2"></th>
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
@@ -101,27 +101,21 @@
                   </thead>
               <form>
                   <tbody>
+                <c:forEach items="${ coupon }" var="cp">
                   <tr>
                       <td><input type="checkbox" name="" id=""></td>
-                      
-                      <td>01</td>
-                      <td>자주 이용해주세요~</td>
-                      <td>21-11-22</td>
-                      <td>
-                      <select>
-                          <option>1000원</option>
-                          <option>1500원</option>
-                          <option>2000원</option>
-                          <option>25%</option>
-                      </select>
-                      </td>
+                      <td>${ cp.cpCode }</td>
+                      <td>${ cp.cpName }</td>
+                      <td>${ cp.startDate }</td>
+                      <td>${ cp.disWon }</td>
                   </tr>
+				</c:forEach>
                   </tbody>
               </form>
               </table>
           </div>
           <div class="modal-footer" >
-            <button type="button" class="btn btn-primary" id="button1">쿠폰 주기</button>
+            <button type="button" class="btn btn-primary" id="btn1">쿠폰 주기</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
           </div>
          </div>
@@ -131,6 +125,22 @@
     </div>
    </div>  
   </div>
+  <script>
+	  $("#allCheck").click(function(){
+	      if($("#allCheck").prop("checked")){
+	        $("input[type=checkbox]").prop("checked",true);
+	      } else{
+	        $("input[type=checkbox]").prop("checked",false);
+	      }
+	    });
+	  $("#allCheck2").click(function(){
+	      if($("#allCheck2").prop("checked")){
+	        $("input[type=checkbox]").prop("checked",true);
+	      } else{
+	        $("input[type=checkbox]").prop("checked",false);
+	      }
+	    });
+	  </script>
   
   <!-- footer -->
   <jsp:include page="../commons/footer.jsp"/>

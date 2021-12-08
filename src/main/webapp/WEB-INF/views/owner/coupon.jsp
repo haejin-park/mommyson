@@ -40,7 +40,7 @@
         
         <div style="text-align: center;">
         <br><br>
-        <img src="../resources/images/owner-logo.png" width="300px"><br><br>
+        <img src="${ owner.ceo.store.storeImg }" width="300px"><br><br>
         <br><br>
         <div style="margin-left: 450px;" id="before">
         <h3 style="font-weight: 900; text-align: left; margin-left: 70px;">발행한 쿠폰</h3>
@@ -98,8 +98,8 @@
 	          <br><br>
 	        </div>
 	        <div class="modal-footer">
-	          <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
 	          <button type="submit" class="btn btn-primary"  id="couponBtn" style="width: 100px;">추가하기</button>
+	          <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
 	        </div>
 	        </form>
 	      </div>

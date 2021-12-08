@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dao.MemberDAO;
+import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
@@ -41,9 +42,9 @@ public class OwnerServiceImpl implements OwnerService{
 
 
 	@Override
-	public List<ReviewDTO> selectReview(ReviewDTO review) {
+	public List<ReviewDTO> selectReview(String storeName) {
 		
-		return ownerDAO.selectReview(review);
+		return ownerDAO.selectReview(storeName);
 	}
 
 	@Override
@@ -116,6 +117,8 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return ownerDAO.selectProduct(memCode);
 	}
+
+	
 	
 
 }

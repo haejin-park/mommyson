@@ -26,7 +26,6 @@
 .side-1{
     background-color: rgba(252, 235, 233, 1);
     /* border-style: solid; */
-    height: 430px;
     margin: auto 0px;
     width: 300px;
     border-radius: 20px;
@@ -55,7 +54,6 @@
     border: none;
     border-radius: 5px; 
     color: white;
-    font-weight: 700;
 }
 #rebtn2{
     width: 150px; 
@@ -65,7 +63,7 @@
     border-radius: 5px; 
     color: white;
     margin : 50px 0 0 100px; 
-    font-weight: 700;
+
 }
 #couponBtn{
     background-color: rgba(248, 158, 145, 1);
@@ -88,4 +86,11 @@
     width: 200px;
     margin-right: 50px;
     border: none;
+}
+#btn1{
+    width: 100px;  
+    background: #F89E91; 
+    border: none;
+    border-radius: 5px; 
+    color: white;
 }

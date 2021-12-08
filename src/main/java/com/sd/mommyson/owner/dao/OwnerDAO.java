@@ -16,7 +16,7 @@ public interface OwnerDAO {
 
 	public List<CouponDTO> selectCoupon(MemberDTO member);
 
-	public List<ReviewDTO> selectReview(ReviewDTO review);
+	public List<ReviewDTO> selectReview(String storeName);
 	
 	public int modifyInfo(Map<String, Object> modifyInfo);
 
