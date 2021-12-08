@@ -30,20 +30,23 @@
             </div>
             <br>
             <div style="text-align: center;">
-              <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-              <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-              <button type="submit" class="searchbutton">검색하기</button></li>
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/ucc/memberJoinFqa" method="get">
+            	 	<input type="hidden" name="currentPage" value="1">
+	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+	              	<button type="submit" class="searchbutton">검색하기</button></li>
+            	</form>
             </div>
             <div style="border: solid gainsboro 2px; text-align: center; margin-top: 30px;">
               <table>
                 <tbody class="qnaList">
                   <tr>
-                    <td style="border-right: solid gainsboro;"><a href="#">회원가입</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">결제/주문</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">리뷰관리</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">이용문의</a></td>
-                    <td style="border-right: solid gainsboro;"><a href="#">불편관리</a></td>
-                    <td>기타</td>
+                    <td style="border-right: solid gainsboro;"><a href="${ pageContext.servletContext.contextPath }/user/ucc/memberJoinFqa">회원가입</a></td>
+                    <td style="border-right: solid gainsboro;"><a href="${ pageContext.servletContext.contextPath }/user/ucc/paycheckFqa">결제/주문</a></td>
+                    <td style="border-right: solid gainsboro;"><a href="${ pageContext.servletContext.contextPath }/user/ucc/reviewFqa">리뷰관리</a></td>
+                    <td style="border-right: solid gainsboro;"><a href="${ pageContext.servletContext.contextPath }/user/ucc/usingFqa">이용문의</a></td>
+                    <td style="border-right: solid gainsboro;"><a href="${ pageContext.servletContext.contextPath }/user/ucc/inconFqa">불편관리</a></td>
+                    <td><a href="${ pageContext.servletContext.contextPath }/user/ucc/etcFqa">기타</a></td>
                   </tr>
                 </tbody>
               
@@ -56,11 +59,9 @@
                   <col width=""/>
                   <col width=""/>
                   <col width=""/>
-                  <col width=""/>
               </colgroup>
               <thead style="background-color: #EDEDED;">
                   <tr>
-                      <th><input type="checkbox" name="ch1"></th>
                       <th>번호</th>
                       <th>카테고리</th>
                       <th>제목</th>
@@ -68,7 +69,6 @@
               </thead>
               <tbody>
                   <tr class="click_qa">
-                      <th scope="row"><input type="checkbox" name="ch1"></th>
                       <td>1</td>
                       <td>회원가입</td>
                       <td class="tal">회원가입은 어떻게 하나요?</td>
@@ -77,13 +77,12 @@
                       <td colspan="4">회원가입은 홈페이지 상단 오른쪽에 회원가입 버튼을 누르고 하시면 됩니다.</td>
                   </tr>
                   <tr class="click_qa">
-                      <th scope="row"><input type="checkbox" name="ch1"></th>
                       <td>2</td>
                       <td>결제/주문</td>
                       <td class="tal">음식을 주문하려면 어떻게 결제해야 하나요?</td>
                   </tr>
                   <tr class="answer tal">
-                      <td colspan="4">카카오페이로 결제하면 됩니다.</td>
+                      <td colspan="3">카카오페이로 결제하면 됩니다.</td>
                   </tr>
               </tbody>
           </table>
@@ -97,20 +96,7 @@
         </script>
    <nav class="page_box" aria-label="Page navigation example">
     <ul class="pagination">
-      <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-      <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+      <jsp:include page="../commons/userPagination.jsp"></jsp:include>
     </ul>
     
   </nav>

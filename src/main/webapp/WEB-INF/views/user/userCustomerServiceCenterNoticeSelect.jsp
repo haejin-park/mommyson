@@ -81,7 +81,7 @@
 							<option value="guide" ${ requestScope.selectCriteria.searchCondition eq "guide"? "selected": "" }>안내</option>
 							<option value="check" ${ requestScope.selectCriteria.searchCondition eq "check"? "selected": "" }>점검</option>
 							<option value="event" ${ requestScope.selectCriteria.searchCondition eq "event"? "selected": "" }>이벤트</option>
-							<option value="store" ${ requestScope.selectCriteria.searchCondition eq "store"? "selected": "" }>사업자</option>
+							<option value="owner" ${ requestScope.selectCriteria.searchCondition eq "owner"? "selected": "" }>사업자</option>
 						</select>
                         <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                         <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요">
