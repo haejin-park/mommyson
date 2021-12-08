@@ -56,20 +56,18 @@
 	                </thead>
 	                <tbody>
 	                	<c:forEach items="${ requestScope.normalMemberList }" var="nm">
-		                	<c:if test="${ nm.memType == 'user' }">
-			                    <tr>
-			                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
-			                        <td>${ nm.memCode }</td>
-			                        <td>${ nm.memId }</td>
-			                        <td>${ nm.nickname }</td>
-			                        <td>${ nm.email }</td>
-			                        <td>${ nm.enrollDate }</td>
-			                        <td></td>
-			                        <td></td>
-			                        <td>${ nm.user.repCount }</td>
-			                        <td class="memberState">${ nm.isDeleted }</td>
-			                    </tr>
-		                    </c:if>
+		                    <tr>
+		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
+		                        <td>${ nm.memCode }</td>
+		                        <td>${ nm.memId }</td>
+		                        <td>${ nm.nickname }</td>
+		                        <td>${ nm.email }</td>
+		                        <td>${ nm.enrollDate }</td>
+		                        <td></td>
+		                        <td></td>
+		                        <td>${ nm.user.repCount }</td>
+		                        <td class="memberState">${ nm.isDeleted }</td>
+		                    </tr>
 	                    </c:forEach>
 	                </tbody>
 	            </table>

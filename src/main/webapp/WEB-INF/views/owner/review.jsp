@@ -47,6 +47,7 @@
                 <th>${ rivew.orderDTO.nickname }</th>
                 <td>${ review.rvCode }</td>
                 <td>${ review.content }</td>
+
                 </c:forEach>
               </tr>
              

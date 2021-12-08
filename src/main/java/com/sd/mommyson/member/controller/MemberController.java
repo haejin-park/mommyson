@@ -3,6 +3,7 @@ package com.sd.mommyson.member.controller;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -191,9 +192,14 @@ public class MemberController {
 	public void findId() {}
 	
 	/* 아이디 찾기 */
-	@PostMapping("findId2")
-	public String findId2() {
-		return null;
+	@RequestMapping(value="findId2", method = RequestMethod.POST)
+	@ResponseBody
+	public String findId2(@ModelAttribute String name, String email) throws Exception{
+		System.out.println(name);
+		System.out.println(email);
+	
+		String result = memberService.findId2(name, email);
+		return result;
 		
 	}
 	

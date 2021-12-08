@@ -269,7 +269,6 @@ public class OwnerController {
 			mkdir.mkdirs();
 		}
 		
-		if(!productImg.isEmpty()) {
 		
 			String orginFileName = productImg.getOriginalFilename();
 			String ext = orginFileName.substring(orginFileName.indexOf("."));
@@ -284,21 +283,18 @@ public class OwnerController {
 				
 				
 			} catch (IllegalStateException | IOException e) {
-				new File(filePath + "/" + savedName).delete();
-					
+				new File(filePath + "/" + savedName).delete();	
 				e.printStackTrace();
 			}
-		
-		}
-		
-		int result = ownerService.registProduct(productInfo);
-		
-		if(result > 0) {
-			rd.addFlashAttribute("message","상품이 등록되었습니다.");
-		} else {
-			rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
-		}
-		
+			
+			int result = ownerService.registProduct(productInfo);
+			
+			if(result > 0) {
+				rd.addFlashAttribute("message","상품이 등록되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
+				new File(filePath + "/" + savedName).delete();
+			}
 		
 		return "redirect:productManagement";
 	}
@@ -315,6 +311,7 @@ public class OwnerController {
 		return "owner/review";	
 		
 	}
+
 	
 	
 	/* 판매상품 관리 */
