@@ -4,479 +4,432 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sd.mommyson.owner.dao.OwnerDAO">
 
-	<resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="name" column="NAME"/>
-		<result property="repCount" column="REP_COUNT"/>
-	</resultMap>
+   <resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="name" column="NAME"/>
+      <result property="repCount" column="REP_COUNT"/>
+   </resultMap>
 
-	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="account" column="ACCOUNT"/>
-		<result property="startDate" column="START_DATE"/>
-		<result property="no" column="STORE_NO"/>
-		<result property="name" column="CEO_NAME"/>
-		<association property="store" resultMap="storeResultMap"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="storeName" column="STORE_NAME"/>
-		<result property="storeImg" column="STORE_IMG"/>
-		<result property="storeInfo" column="STORE_INFO"/>
-		<result property="grade" column="GRADE"/>
-		<result property="delCost" column="DEL_COST"/>
-		<result property="workTime" column="WORK_TIME"/>
-	</resultMap>
-	
+   <resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="account" column="ACCOUNT"/>
+      <result property="startDate" column="START_DATE"/>
+      <result property="no" column="STORE_NO"/>
+      <result property="name" column="CEO_NAME"/>
+      <association property="store" resultMap="storeResultMap"/>
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="storeName" column="STORE_NAME"/>
+      <result property="storeImg" column="STORE_IMG"/>
+      <result property="storeInfo" column="STORE_INFO"/>
+      <result property="grade" column="GRADE"/>
+      <result property="delCost" column="DEL_COST"/>
+      <result property="workTime" column="WORK_TIME"/>
+   </resultMap>
+   
 
-	<resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="email" column="EMAIL"/>
-		<result property="memPwd" column="MEM_PWD"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="postCode" column="POST_CODE"/>
-		<result property="dAddress" column="D_ADDRESS"/>
-		<result property="phone" column="PHONE"/>
-		<result property="memType" column="MEM_TYPE"/>
-		<result property="locationCode" column="LOCATION_CODE"/>
-		<result property="nickname" column="NICKNAME"/>
-		<result property="memId" column="MEM_ID"/>
-		<result property="enrollDate" column="ENROLL_DATE"/>
-		<result property="isDeleted" column="IS_DELETED"/>
-		<association property="user" resultMap="userResultMap"/>
-		<association property="ceo" resultMap="ceoResultMap"/>
-		<association property="manager" resultMap="managerResultMap"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="lastLogin" column="LAST_LOGIN"/>
-		<association property="authDTO" resultMap="authResultMap"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
-		<id property="cpCode" column="CP_CODE"/>
-		<result property="cpName" column="CP_NAME"/>
-		<result property="startDate" column="START_DATE"/>
-		<result property="disWon" column="DISCOUNT_WON"/>
-		<result property="endDate" column="END_DATE"/>
-		<result property="dCcon" column="DC_CONDITION"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="tatalPrice" column="TOTAL_PRICE"/>
-		<result property="orderCode" column="ORDER_CODE"/>
-		<result property="orderType" column="ORDER_TYPE"/>
-		<result property="tatalPrice" column="TOTAL_PRICE"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
-		<result property="storeName" column="STORE_NAME"/>
-		<result property="code" column="CODE"/>
-		
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="orderCode" column="ORDER_CODE"/>
-		<result property="img" column="RV_IMG"/>
-		<result property="content" column="RV_CONTENT"/>
-		<result property="grade" column="RV_GRADE"/>
-		<result property="rvCode" column="RV_CODE"/>
-<<<<<<< HEAD
-		<collection property=""></collection>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="totalPrice" column="TOTAL_PRICE"/>
-		<result property="orderCode" column="ORDER_CODE"/>
-		<result property="orderType" column="ORDER_TYPE"/>
-		<result property="takeTime" column="TAKE_TIME"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
-		<result property="storeName" column="STORE_NAME"/>
-		<result property="code" column="CODE"/>
-		
-=======
-		<collection property="orderDTO" resultMap="orderResultMap"/>
->>>>>>> cdbc7834018b7c453a3247583c925f353914c403
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
-		<id property="tagNo" column="TAG_NO"/>
-		<result property="tagName" column="TAG"/>
-		<result property="status" column="STATUS"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
-		<id property="sdCode" column="SD_CODE"/>
-		<result property="sdName" column="SD_NAME"/>
-		<result property="mDate" column="M_DATE"/>
-		<result property="price" column="PRICE"/>
-		<result property="ingredient" column="INGREDIENT"/>
-		<result property="volume" column="VOLUME"/>
-		<result property="sdImg" column="SD_IMG"/>
-		<result property="category" column="CATEGORY"/>
-		<result property="discountRate" column="DISCOUNT_RATE"/>
-		<result property="memCode" column="MEM_CODE"/>
-		<result property="orderableStatus" column="ORDERABLE_STATUS"/>
-		<result property="eDate" column="EXPIRY_DATE"/>
-		<result property="isDeleted" column="IS_DELETED"/>
-		<result property="categoryCode" column="CATEGORY_CODE"/>
-		<result property="storageMethod" column="STORAGE_METHOD"/>
-		<result property="detail" column="SD_DETAIL"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
-		<id property="locationCode" column="LOCATION_CODE"/>
-		<result property="locationName" column="LOCATION_NAME"/>
-	</resultMap>
-		
-	<!-- 사업자 정보를 불러오는 쿼리 -->
-	<select id="selectOwner" resultMap="memberResultMap">
-		SELECT
-		      A.ADDRESS
-		    , A.POST_CODE
-		    , A.D_ADDRESS
-		    , A.PHONE
-		    , A.LOCATION_CODE
-		    , A.NICKNAME
-		    , B.ACCOUNT
-		    , B.START_DATE
-		    , B.STORE_NO
-		    , B.CEO_NAME
-		    , C.STORE_NAME
-		    , C.STORE_IMG
-		    , C.STORE_INFO
-		    , C.WORK_TIME
-		 FROM MEMBER_TBL A
-		 LEFT JOIN CEO_TBL B ON(A.MEM_CODE = B.MEM_CODE)
-		 LEFT JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
-		 WHERE A.IS_DELETED = 'N'
-		   AND A.MEM_ID = #{ memId }
-	</select>
-	
-	<!-- 사업자의 쿠폰을 불러오는 쿼리문 -->
-	<select id="selectCoupon" resultMap="couponResultMap">
-		SELECT
-			    A.CP_CODE,
-			    A.CP_NAME, 
-			    A.START_DATE, 
-			    A.DISCOUNT_WON, 
-			    A.END_DATE, 
-			    A.DC_CONDITION
-		  FROM  COUPON_TBL A
-		  JOIN  COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
-		 WHERE  B.MEM_CODE = #{ memCode }
-	</select>
-	
-	<!-- 쿠폰등록 -->
-	<insert id="registCoupon" >
-		INSERT
-		  INTO COUPON_TBL
-		(
-			CP_CODE, 
-			CP_NAME, 
-			START_DATE, 
-			DISCOUNT_WON, 
-			END_DATE, 
-			DC_CONDITION
-		)
-		VALUES
-		(
-			SEQ_CP_CODE.NEXTVAL, 
-			#{ cpName }, 
-			SYSDATE, 
-			#{ disWon }, 
-			#{ endDate }, 
-			#{ dCcon }
-		)
-	</insert>
-	
-	<!-- 쿠폰등록2 -->
-	<insert id="registCouponStore">
-		INSERT
-		  INTO COUPON_STORE_TBL
-		(
-			MEM_CODE,
-			CP_CODE
-		)
-		VALUES
-		(
-			#{ memCode },
-			SEQ_CP_CODE.CURRVAL
-		)
-		
-	</insert>
-	
-	<!-- 리뷰 목록 가져오기 -->
-	<select id="selectReview" resultMap="reviewResultMap">
-<<<<<<< HEAD
-		SELECT
-			   A.RV_CODE
-			 , A.MEM_CODE
-			 , A.RV_CONTENT
-			 , B.NICKNAME  
-		  FROM REVIEW_TBL A  
-		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE) 
-		  JOIN ORDER_TBL C ON (A.MEM_CODE = C.MEM_CODE) 
-		 WHERE C.STORE_NAME = #{ nickname }
-=======
-		<!-- SELECT
-				A.RV_CODE
-			  , A.MEM_CODE
-			  , A.RV_COMTENT
-			  , B.NICKNAME
-			  , C.ORDER_CODE
-     		  , C.STORE_NAME  
-		  FROM REVIEW_TBL A
-		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
-		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
-		 WHERE C.STORE_NAME =  -->
->>>>>>> cdbc7834018b7c453a3247583c925f353914c403
-	</select>
-	
-	<!-- 사업자 가게정보 변경 쿼리문 -->
-	<update id="modifyInfo" >
-		UPDATE MEMBER_TBL
-   		   SET ADDRESS =
-   		   <choose>
-   		   	<when test="address != null and address != ''">
-   		   		#{ address }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.address }
-   		   	</otherwise>
-   		   </choose>
-     		 , POST_CODE = 
-     		<choose>
-   		   	<when test="postCode != null and postCode != ''">
-   		   		#{ postCode }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.postCode }
-   		   	</otherwise>
-   		   </choose>
-     		 , D_ADDRESS = 
-     		<choose>
-   		   	<when test="dAddress != null and dAddress != ''">
-   		   		#{ dAddress }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.dAddress }
-   		   </otherwise>
-   		   </choose>
-		   , PHONE =
-		   <choose>
-   		   	<when test="phone != null and phone != ''">
-   		   		#{ phone }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.phone }
-   		   	</otherwise>
-   		   </choose>
- 		 WHERE MEM_CODE = #{ member.memCode }
-	</update>
-	
-	<!-- 사업자 가게정보 변경 쿼리문 -->
-	<update id="modifyCeo">
-		UPDATE CEO_TBL
-		   SET CEO_NAME = 
-		   <choose>
-   		   	<when test="name != null and name != ''">
-   		   		#{ name }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.ceo.name }
-   		   	</otherwise>
-   		   </choose>
-   		    , STORE_NO = 
-   		    <choose>
-   		   	<when test="no != null and no != ''">
-   		   		#{ no }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.ceo.no }
-   		   	</otherwise>
-   		   </choose>
-		 WHERE MEM_CODE = #{ member.memCode }  
-	</update>
-	
-	<!-- 사업자 가게정보 변경 쿼리문 -->
-	<update id="modifyStore">
-		UPDATE STORE_TBL
-		   SET STORE_NAME = 
-		   	<choose>
-   		   	<when test="storeName != null and storeName != ''">
-   		   		#{ storeName }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.ceo.store.storeName }
-   		    </otherwise>
-   		   </choose>
-		     , STORE_IMG  = 
-		    <choose>
-   		   	<when test="fileName != null and fileName != ''">
-   		   		#{ fileName }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.ceo.store.storeImg }
-   		   </otherwise>
-   		   </choose>
-			 , STORE_INFO = 
-			<choose>
-   		   	<when test="storeInfo != null and storeInfo != ''">
-   		   		 #{ storeInfo }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.ceo.store.storeInfo }
-   		   	</otherwise>
-   		   </choose>
-   		   , WORK_TIME =
-   		   <choose>
-   		   	<when test="workTime != null and workTime != ''">
-   		   		 #{ workTime }
-   		   	</when>
-   		   	<otherwise>
-   		   		#{ member.ceo.store.workTime }
-   		   </otherwise>
-   		   </choose>
-	 	 WHERE MEM_CODE = #{ member.memCode }  				 
-	</update>
-	
-	<!-- 사업자 비밀번호 변경 쿼리문 -->
-	<update id="modifyPwd">
-		UPDATE MEMBER_TBL
-		   SET MEM_PWD = #{ memPwd }
-		 WHERE MEM_CODE = #{ memCode }   
-	</update>
-	
-	<!-- 태그에 대한 내용을 가져오는 쿼리문 -->
-	<select id="selectTag" resultMap="tagResultMap">
-		SELECT
-		       TAG_NO
-		     , TAG
-  		  FROM TAGS_TBL
-  		 WHERE STATUS = 'Y'  
-	</select>
-	
-	<!-- 상품등록을 위한 쿼리문 -->
-	<insert id="registProduct" parameterType="hashmap">
-		INSERT ALL
-		  INTO PRODUCT_TBL 
-		VALUES
-	    (
-		  SEQ_PRODUCT.NEXTVAL,
-		  #{ product.sdName },
-		  #{ product.mDate },
-		  #{ product.price },
-		  #{ product.ingredient },
-		  #{ product.volume },
-		  #{ fileName },
-		  #{ product.category },
-		  0,
-		  #{ memCode },
-		  #{ product.orderableStatus },
-		  #{ product.eDate },
-		  default,
-		  #{ product.categoryCode },
-		  #{ product.storageMethod },
-		  #{ product.detail },
-		  default
-	    )
-	    <foreach collection="tagList" item="item">
-	    INTO PRODUCT_TAG_TBL 
-	    VALUES
-	      (SEQ_PRODUCT.CURRVAL, #{ item }) 
-	      </foreach>
-	    SELECT * FROM DUAL
-	</insert>
-	
-	<!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
-	<select id="selectTotalCount" resultType="_int">
-		SELECT
-		      COUNT(*)
-		 FROM PRODUCT_TBL
-		<where>
-		  IS_DELETED = 'N' 
-		  <if test="searchValue != null and searchValue != '' ">
-		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
-		  </if>
-		  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
-		  	AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
-		  </if>
-		  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
-		  	AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
-		  </if>
-		  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-		  	AND M_DATE IN (#{ mDate } , #{ mDate2 })
-		  </if>
-		  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
-		  	AND M_DATE <![CDATA[ <= ]]> #{ mDate }
-		  </if>
-		  <if test="status == 'Y'.toString() ">
-		  	AND ORDERABLE_STATUS = 'Y' 
-		  </if>
-		  <if test="status == 'N'.toString() ">
-		  	AND ORDERABLE_STATUS = 'N'
-		  </if>
-		    AND MEM_CODE = #{ memCode }
-		</where>
-	</select>
-	
-	<!-- 반찬 조회 쿼리문 -->
-	<select id="selectProduct" resultMap="productResultMap">
-		SELECT
-			 	A.RNUM
-			  ,	A.SD_CODE
-		      , A.SD_NAME
-		      , A.M_DATE
-		      , A.ORDERABLE_STATUS
-		      , A.EXPIRY_DATE 
-	       FROM (SELECT
-					 	ROWNUM RNUM
-					  ,	B.SD_CODE
-				      , B.SD_NAME
-				      , B.M_DATE
-				      , B.ORDERABLE_STATUS
-				      , B.EXPIRY_DATE 
-			   	   FROM (SELECT
-						        C.SD_CODE
-						      , C.SD_NAME
-						      , C.M_DATE
-						      , C.ORDERABLE_STATUS
-						      , C.EXPIRY_DATE
-						   FROM PRODUCT_TBL C
-						<where>
-						  C.IS_DELETED = 'N' 
-						  <if test="searchValue != null and searchValue != '' ">
-						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
-						  </if>
-						  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
-						  	AND C.EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
-						  </if>
-						  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
-						  	AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
-						  </if>
-						  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-						  	AND C.M_DATE IN (#{ mDate } , #{ mDate2 })
-						  </if>
-						  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
-						  	AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
-						  </if>
-						  <if test="status == 'Y'.toString() ">
-						  	AND C.ORDERABLE_STATUS = 'Y' 
-						  </if>
-						  <if test="status == 'N'.toString() ">
-						  	AND C.ORDERABLE_STATUS = 'N'
-						  </if>
-						    AND C.MEM_CODE = #{ memCode }
-						</where>
-						ORDER BY C.SD_CODE DESC ) B 
-						) A
-			WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow } 			
-	</select>
-	
+   <resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="email" column="EMAIL"/>
+      <result property="memPwd" column="MEM_PWD"/>
+      <result property="address" column="ADDRESS"/>
+      <result property="postCode" column="POST_CODE"/>
+      <result property="dAddress" column="D_ADDRESS"/>
+      <result property="phone" column="PHONE"/>
+      <result property="memType" column="MEM_TYPE"/>
+      <result property="locationCode" column="LOCATION_CODE"/>
+      <result property="nickname" column="NICKNAME"/>
+      <result property="memId" column="MEM_ID"/>
+      <result property="enrollDate" column="ENROLL_DATE"/>
+      <result property="isDeleted" column="IS_DELETED"/>
+      <association property="user" resultMap="userResultMap"/>
+      <association property="ceo" resultMap="ceoResultMap"/>
+      <association property="manager" resultMap="managerResultMap"/>
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="lastLogin" column="LAST_LOGIN"/>
+      <association property="authDTO" resultMap="authResultMap"/>
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
+      <id property="cpCode" column="CP_CODE"/>
+      <result property="cpName" column="CP_NAME"/>
+      <result property="startDate" column="START_DATE"/>
+      <result property="disWon" column="DISCOUNT_WON"/>
+      <result property="endDate" column="END_DATE"/>
+      <result property="dCcon" column="DC_CONDITION"/>
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="orderCode" column="ORDER_CODE"/>
+      <result property="img" column="RV_IMG"/>
+      <result property="content" column="RV_CONTENT"/>
+      <result property="grade" column="RV_GRADE"/>
+      <result property="rvCode" column="RV_CODE"/>
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
+      <id property="tagNo" column="TAG_NO"/>
+      <result property="tagName" column="TAG"/>
+      <result property="status" column="STATUS"/>
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+      <id property="sdCode" column="SD_CODE"/>
+      <result property="sdName" column="SD_NAME"/>
+      <result property="mDate" column="M_DATE"/>
+      <result property="price" column="PRICE"/>
+      <result property="ingredient" column="INGREDIENT"/>
+      <result property="volume" column="VOLUME"/>
+      <result property="sdImg" column="SD_IMG"/>
+      <result property="category" column="CATEGORY"/>
+      <result property="discountRate" column="DISCOUNT_RATE"/>
+      <result property="memCode" column="MEM_CODE"/>
+      <result property="orderableStatus" column="ORDERABLE_STATUS"/>
+      <result property="eDate" column="EXPIRY_DATE"/>
+      <result property="isDeleted" column="IS_DELETED"/>
+      <result property="categoryCode" column="CATEGORY_CODE"/>
+      <result property="storageMethod" column="STORAGE_METHOD"/>
+      <result property="detail" column="SD_DETAIL"/>
+   </resultMap>
+   
+   <resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
+      <id property="locationCode" column="LOCATION_CODE"/>
+      <result property="locationName" column="LOCATION_NAME"/>
+   </resultMap>
+      
+   <!-- 사업자 정보를 불러오는 쿼리 -->
+   <select id="selectOwner" resultMap="memberResultMap">
+      SELECT
+            A.ADDRESS
+          , A.POST_CODE
+          , A.D_ADDRESS
+          , A.PHONE
+          , A.LOCATION_CODE
+          , A.NICKNAME
+          , B.ACCOUNT
+          , B.START_DATE
+          , B.STORE_NO
+          , B.CEO_NAME
+          , C.STORE_NAME
+          , C.STORE_IMG
+          , C.STORE_INFO
+          , C.WORK_TIME
+       FROM MEMBER_TBL A
+       LEFT JOIN CEO_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+       LEFT JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+       WHERE A.IS_DELETED = 'N'
+         AND A.MEM_ID = #{ memId }
+   </select>
+   
+   <!-- 사업자의 쿠폰을 불러오는 쿼리문 -->
+   <select id="selectCoupon" resultMap="couponResultMap">
+      SELECT
+             A.CP_CODE,
+             A.CP_NAME, 
+             A.START_DATE, 
+             A.DISCOUNT_WON, 
+             A.END_DATE, 
+             A.DC_CONDITION
+        FROM  COUPON_TBL A
+        JOIN  COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
+       WHERE  B.MEM_CODE = #{ memCode }
+   </select>
+   
+   <insert id="registCoupon" >
+      INSERT
+        INTO COUPON_TBL
+      (
+         CP_CODE, 
+         CP_NAME, 
+         START_DATE, 
+         DISCOUNT_WON, 
+         END_DATE, 
+         DC_CONDITION
+      )
+      VALUES
+      (
+         SEQ_CP_CODE.NEXTVAL, 
+         #{ cpName }, 
+         SYSDATE, 
+         #{ disWon }, 
+         #{ endDate }, 
+         #{ dCcon }
+      )
+   </insert>
+   
+   <insert id="registCouponStore">
+      INSERT
+        INTO COUPON_STORE_TBL
+      (
+         MEM_CODE,
+         CP_CODE
+      )
+      VALUES
+      (
+         #{ memCode },
+         SEQ_CP_CODE.CURRVAL
+      )
+      
+   </insert>
+   
+   <select id="selectReview" resultMap="reviewResultMap">
+      <!-- SELECT
+            A.RV_CODE
+           , A.MEM_CODE
+           , A.RV_COMTENT
+           , B.NICKNAME
+        FROM REVIEW_TBL A
+        JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
+        JOIN ORDER_TBL C ON (B.STORE_NAME = #{  })
+       WHERE B.IS_DELETED = 'N'
+         AND B.MEM_TYPE = 'user'
+         AND C.STORE_NAME = #{ } -->
+        
+   </select>
+   <!-- 사업자 가게정보 변경 쿼리문 -->
+   <update id="modifyInfo" >
+      UPDATE MEMBER_TBL
+            SET ADDRESS =
+            <choose>
+               <when test="address != null and address != ''">
+                  #{ address }
+               </when>
+               <otherwise>
+                  #{ member.address }
+               </otherwise>
+            </choose>
+            , POST_CODE = 
+           <choose>
+               <when test="postCode != null and postCode != ''">
+                  #{ postCode }
+               </when>
+               <otherwise>
+                  #{ member.postCode }
+               </otherwise>
+            </choose>
+            , D_ADDRESS = 
+           <choose>
+               <when test="dAddress != null and dAddress != ''">
+                  #{ dAddress }
+               </when>
+               <otherwise>
+                  #{ member.dAddress }
+            </otherwise>
+            </choose>
+         , PHONE =
+         <choose>
+               <when test="phone != null and phone != ''">
+                  #{ phone }
+               </when>
+               <otherwise>
+                  #{ member.phone }
+               </otherwise>
+            </choose>
+        WHERE MEM_CODE = #{ member.memCode }
+   </update>
+   
+   <!-- 사업자 가게정보 변경 쿼리문 -->
+   <update id="modifyCeo">
+      UPDATE CEO_TBL
+         SET CEO_NAME = 
+         <choose>
+               <when test="name != null and name != ''">
+                  #{ name }
+               </when>
+               <otherwise>
+                  #{ member.ceo.name }
+               </otherwise>
+            </choose>
+             , STORE_NO = 
+             <choose>
+               <when test="no != null and no != ''">
+                  #{ no }
+               </when>
+               <otherwise>
+                  #{ member.ceo.no }
+               </otherwise>
+            </choose>
+       WHERE MEM_CODE = #{ member.memCode }  
+   </update>
+   
+   <!-- 사업자 가게정보 변경 쿼리문 -->
+   <update id="modifyStore">
+      UPDATE STORE_TBL
+         SET STORE_NAME = 
+            <choose>
+               <when test="storeName != null and storeName != ''">
+                  #{ storeName }
+               </when>
+               <otherwise>
+                  #{ member.ceo.store.storeName }
+             </otherwise>
+            </choose>
+           , STORE_IMG  = 
+          <choose>
+               <when test="fileName != null and fileName != ''">
+                  #{ fileName }
+               </when>
+               <otherwise>
+                  #{ member.ceo.store.storeImg }
+            </otherwise>
+            </choose>
+          , STORE_INFO = 
+         <choose>
+               <when test="storeInfo != null and storeInfo != ''">
+                   #{ storeInfo }
+               </when>
+               <otherwise>
+                  #{ member.ceo.store.storeInfo }
+               </otherwise>
+            </choose>
+            , WORK_TIME =
+            <choose>
+               <when test="workTime != null and workTime != ''">
+                   #{ workTime }
+               </when>
+               <otherwise>
+                  #{ member.ceo.store.workTime }
+            </otherwise>
+            </choose>
+        WHERE MEM_CODE = #{ member.memCode }               
+   </update>
+   
+   <!-- 사업자 비밀번호 변경 쿼리문 -->
+   <update id="modifyPwd">
+      UPDATE MEMBER_TBL
+         SET MEM_PWD = #{ memPwd }
+       WHERE MEM_CODE = #{ memCode }   
+   </update>
+   
+   <!-- 태그에 대한 내용을 가져오는 쿼리문 -->
+   <select id="selectTag" resultMap="tagResultMap">
+      SELECT
+             TAG_NO
+           , TAG
+          FROM TAGS_TBL
+         WHERE STATUS = 'Y'  
+   </select>
+   
+   <!-- 상품등록을 위한 쿼리문 -->
+   <insert id="registProduct" parameterType="hashmap">
+      INSERT ALL
+        INTO PRODUCT_TBL 
+      VALUES
+       (
+        SEQ_PRODUCT.NEXTVAL,
+        #{ product.sdName },
+        #{ product.mDate },
+        #{ product.price },
+        #{ product.ingredient },
+        #{ product.volume },
+        #{ fileName },
+        #{ product.category },
+        default,
+        #{ memCode },
+        #{ product.orderableStatus },
+        #{ product.eDate },
+        default,
+        #{ product.categoryCode },
+        #{ product.storageMethod },
+        #{ product.detail }
+       )
+       <foreach collection="tagList" item="item">
+       INTO PRODUCT_TAG_TBL 
+       VALUES
+         (SEQ_PRODUCT.CURRVAL, #{ item }) 
+         </foreach>
+       SELECT * FROM DUAL
+   </insert>
+   
+   <!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
+   <select id="selectTotalCount" resultType="_int">
+      SELECT
+            COUNT(*)
+       FROM PRODUCT_TBL
+      <where>
+        IS_DELETED = 'N' 
+        <if test="searchValue != null and searchValue != '' ">
+           AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+        </if>
+        <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+           AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+        </if>
+        <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+           AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+        </if>
+        <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+           AND M_DATE IN (#{ mDate } , #{ mDate2 })
+        </if>
+        <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+           AND M_DATE <![CDATA[ <= ]]> #{ mDate }
+        </if>
+        <if test="status == 'Y'.toString() ">
+           AND ORDERABLE_STATUS = 'Y' 
+        </if>
+        <if test="status == 'N'.toString() ">
+           AND ORDERABLE_STATUS = 'N'
+        </if>
+          AND MEM_CODE = #{ memCode }
+      </where>
+   </select>
+   
+   <!-- 반찬 조회 쿼리문 -->
+   <select id="selectProduct" resultMap="productResultMap">
+      SELECT
+             A.RNUM
+           ,   A.SD_CODE
+            , A.SD_NAME
+            , A.M_DATE
+            , A.ORDERABLE_STATUS
+            , A.EXPIRY_DATE 
+          FROM (SELECT
+                   ROWNUM RNUM
+                 ,   B.SD_CODE
+                  , B.SD_NAME
+                  , B.M_DATE
+                  , B.ORDERABLE_STATUS
+                  , B.EXPIRY_DATE 
+                  FROM (SELECT
+                          C.SD_CODE
+                        , C.SD_NAME
+                        , C.M_DATE
+                        , C.ORDERABLE_STATUS
+                        , C.EXPIRY_DATE
+                     FROM PRODUCT_TBL C
+                  <where>
+                    C.IS_DELETED = 'N' 
+                    <if test="searchValue != null and searchValue != '' ">
+                       AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+                    </if>
+                    <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+                       AND C.EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+                    </if>
+                    <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+                       AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+                    </if>
+                    <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+                       AND C.M_DATE IN (#{ mDate } , #{ mDate2 })
+                    </if>
+                    <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+                       AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
+                    </if>
+                    <if test="status == 'Y'.toString() ">
+                       AND C.ORDERABLE_STATUS = 'Y' 
+                    </if>
+                    <if test="status == 'N'.toString() ">
+                       AND C.ORDERABLE_STATUS = 'N'
+                    </if>
+                      AND C.MEM_CODE = #{ memCode }
+                  </where>
+                  ORDER BY C.SD_CODE DESC ) B 
+                  ) A
+         WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow }          
+   </select>
+   
 </mapper>

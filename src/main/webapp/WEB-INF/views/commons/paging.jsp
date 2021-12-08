@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
 	<nav class="page_box" aria-label="Page navigation example">
@@ -50,17 +49,17 @@
     
     <script>
 	
-        let link = "";
-        if(!(document.location.href).includes("?type")) {
-        	link = document.location.pathname;
-        } else {
-        	if(${ requestScope.type == '우리동네 인기 맛집' } || (document.location.search).includes('famous')) {
-        		link = document.location.href;
-			} else if(${ requestScope.type == '신규 반찬 가게' } || (document.location.search).includes('new')) {
-				link = document.location.href;
-			}
-        }
-		let searchText = "";
+	    let link = "";
+	    if(!(document.location.href).includes("?type")) {
+	       link = document.location.pathname;
+	    } else {
+	       if(${ requestScope.type == '우리동네 인기 맛집' } || (document.location.search).includes('famous')) {
+	          link = document.location.href;
+	     } else if(${ requestScope.type == '신규 반찬 가게' } || (document.location.search).includes('new')) {
+	        link = document.location.href;
+	     }
+	    }
+	   let searchText = "";
 		
 		if(${ !empty requestScope.pagination.searchCondition? true : false }) {
 			searchText += "&searchCondition=${ requestScope.pagination.searchCondition }";
@@ -105,11 +104,16 @@
 			location.href = link + "?currentPage=" + pageNo + searchText;
 		});
 		
-		 $(".searchbutton").on('click',function(){
+	 	$(".searchbutton").on('click',function(){
 	    	let searchValue = $('input[name=searchValue]').val();
 							// 현재 페이지 주소
-	    	location.href = "${ location.href }?searchValue=" + searchValue;
-		 }); 
+			if((document.location.href).includes("?searchCondition")){
+				location.href = document.location.href + "&searchValue=" + searchValue;
+	 		} else {
+	 			location.href = document.location.href + "?searchValue=" + searchValue;
+	 		}
+		 });  
+ 
 		
 	</script>
 </body>

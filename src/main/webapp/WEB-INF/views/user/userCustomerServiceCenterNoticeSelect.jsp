@@ -83,6 +83,7 @@
 							<option value="event" ${ requestScope.selectCriteria.searchCondition eq "event"? "selected": "" }>이벤트</option>
 							<option value="store" ${ requestScope.selectCriteria.searchCondition eq "store"? "selected": "" }>사업자</option>
 						</select>
+						
                         <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                         <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요">
                         <button type="submit" class="searchbutton">검색하기</button>
