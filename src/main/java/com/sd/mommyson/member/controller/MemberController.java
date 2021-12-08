@@ -198,7 +198,6 @@ public class MemberController {
 		System.out.println(name);
 		System.out.println(email);
 	
-		
 		String result = memberService.findId2(name, email);
 		return result;
 		

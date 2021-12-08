@@ -67,7 +67,7 @@
 						</div>
 						<div class="modal-body" style="text-align: center;">
 							<p>고객님의 아이디는</p>
-							<p id="id"></p>
+							<p id="id">id : ${id}</p>
 							<p>입니다.</p>
 						</div>
 						<div class="modal-footer">
@@ -122,12 +122,12 @@
         /* 아이디 찾기 */
         
 	    	function findIdButton1(){
-	    		 var name = ${'#name'}.val();        	
-        		 var email = ${'#email'}.val();	
+	    		 var name = $('#name').val();        	
+        		 var email = $('#email').val();	
 		    	 console.log($('#name').val());
 		    	 console.log($('#email').val());
 	    	$.ajax({
-	    		url:"${ pageContext.request.contextPath }/member/findId2",
+	    		url:"${ pageContext.servletContext.contextPath }/member/findId2",
 	    		type:"POST",
 	    		data : {
 	    			name : name, 
@@ -143,7 +143,7 @@
 	    			}
 	    		});
 	    	
-	    	});
+	    	}
     </script>
 
 	<script>
