@@ -34,7 +34,7 @@ public interface MemberDAO {
 	public void customerJoin(MemberDTO member) ;
 
 	/* 아이디 찾기 */
-	public String findId2(@Param("name") String name, @Param("email") String email);
+	public String findId2(String name, String email);
 	
 	public void updateLastLogin(MemberDTO member);
 
