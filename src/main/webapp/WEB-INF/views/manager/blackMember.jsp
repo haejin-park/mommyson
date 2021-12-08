@@ -52,49 +52,23 @@
                 </thead>
                 <tbody>
                 	<c:forEach items="${ requestScope.blackMemberList }" var="nm">
-		             	<c:if test="${ nm.isDeleted == 'B' }">
-			                <tr>
-		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }"></th>
-		                        <td>${ nm.memCode }</td>
-		                        <td>${ nm.memId }</td>
-		                        <td>${ nm.nickname }</td>
-		                        <td>${ nm.email }</td>
-		                        <td>${ nm.enrollDate }</td>
-		                        <td>${ nm.ceo.store.storeName }</td>
-		                        <td></td>
-		                        <td><a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
-			                </tr>
-		                </c:if>
+		                <tr>
+	                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }"></th>
+	                        <td>${ nm.memCode }</td>
+	                        <td>${ nm.memId }</td>
+	                        <td>${ nm.nickname }</td>
+	                        <td>${ nm.email }</td>
+	                        <td>${ nm.enrollDate }</td>
+	                        <td>${ nm.ceo.store.storeName }</td>
+	                        <td></td>
+	                        <td><a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
+		                </tr>
                 	</c:forEach>
                 </tbody>
             </table>
 
             <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-                </ul>
-                <form action="">
-                    <ul>
-                        <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                        <button type="submit" class="searchbutton">검색하기</button></li>
-                    </ul>
-                </form>
-            </nav>
+            <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
 

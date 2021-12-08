@@ -40,6 +40,11 @@ public class ManagerController {
 	}
 	
 	/* 일반 회원 조회 */
+	/**
+	 * @param model
+	 * @param currentPage
+	 * @author leeseungwoo
+	 */
 	@GetMapping("normalMember")
 	public void normalMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
@@ -107,6 +112,11 @@ public class ManagerController {
 	}
 	
 	/* 회원삭제 */
+	/**
+	 * @param deleteMember
+	 * @return
+	 * @author leeseungwoo
+	 */
 	@PostMapping("deleteMember")
 	public String deleteMember(@RequestParam("chkMember") int[] deleteMember) {
 
@@ -122,6 +132,11 @@ public class ManagerController {
 	}
 	
 	/* 회원블랙등록 */
+	/**
+	 * @param chkMemberBlack
+	 * @return
+	 * @author leeseungwoo
+	 */
 	@GetMapping(value = "registBlack/{chkMember}", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String memberAddBlack(@PathVariable("chkMember") int[] chkMemberBlack) {
@@ -137,15 +152,13 @@ public class ManagerController {
 		return result? "1" : "2";
 	}
 	
-	/* 회원검색 */
-	@GetMapping("searchMember")
-	public void searchMemberList(@RequestParam("searchTxt") String searchMember, Model model) {
-		
-		List<MemberDTO> searchMemberList = managerService.selectSearchMemberList(searchMember);
-		model.addAttribute("searchMemberList", searchMemberList);
-	}
 	
 	/* 사업자 회원 조회 */
+	/**
+	 * @param model
+	 * @param currentPage
+	 * @author leeseungwoo
+	 */
 	@GetMapping("buisnessMember")
 	public void buisnessMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
@@ -210,19 +223,114 @@ public class ManagerController {
 	}
 	
 	/* 사업자 회원 삭제 */
+	/**
+	 * @param deleteMember
+	 * @return
+	 * @author leeseungwoo
+	 */
 	@PostMapping("deleteCeoMember")
-	public String deleteCeoMember() {
+	public String deleteCeoMember(@RequestParam("chkMember") int[] deleteMember) {
 		
-		return "";
+		List<Integer> deleteCeoMemberList = new ArrayList<>();
+		
+		for(int i = 0; i < deleteMember.length; i++) {
+			deleteCeoMemberList.add(deleteMember[i]);
+		}
+		
+		managerService.deleteMembers(deleteCeoMemberList);
+		
+		return "redirect:buisnessMember";
+	}
+	
+	/* 사업자 상세 정보 조회 */
+	/**
+	 * @param ceoNum
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "ceoDetailInfo", produces = "Application/json; charset=UTF-8;")
+	@ResponseBody
+	public List<MemberDTO> ceoDetailInfo(@RequestParam("modalInfo") int ceoNum) {
+		
+		System.out.println("들어옴");
+		
+		Map<String, Object> ceoDetailInfo = new HashMap<>();
+		ceoDetailInfo.put("ceoNum", ceoNum);
+		
+		List<MemberDTO> ceoDetailInfos = managerService.selectCeoDetailInfo(ceoDetailInfo);
+		
+		System.out.println("ceoDetailInfos : " + ceoDetailInfos);
+		
+		return ceoDetailInfos;
 	}
 	
 	/* 블랙 회원 조회 */
+	/**
+	 * @param model
+	 * @param currentPage
+	 * @author leeseungwoo
+	 */
 	@GetMapping("blackMember")
-	public void blackMember(MemberDTO member, Model model) {
+	public void blackMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
-		List<MemberDTO> blackMemberList = managerService.blackMemberSelect(member);
-		System.out.println("blackMemberList : " + blackMemberList);
-		model.addAttribute("blackMemberList", blackMemberList);
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchCondition = (String) model.getAttribute("searchCondition");
+		String searchValue = (String) model.getAttribute("searchValue");
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		
+		String blackMember = "black";
+		
+		searchMap.put("blackMember", blackMember);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.selectNormalMemberTotalCount(searchMap);
+		
+		System.out.println("totalInquiryBoardCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+			
+		} else {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		pagination.setSearchCondition("black");
+		
+		System.out.println("pagination : " + pagination);
+		
+		List<MemberDTO> blackMemberList = managerService.selectMember(pagination);
+		System.out.println("리스트 확인 : " + blackMemberList);
+		
+		if(blackMemberList != null) {
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("blackMemberList", blackMemberList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
 	}
 	
 	/* 공지사항 */

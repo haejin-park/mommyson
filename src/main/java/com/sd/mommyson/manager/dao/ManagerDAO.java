@@ -37,8 +37,8 @@ public interface ManagerDAO {
 
 	int memberAddBlack(List<Integer> memberAddBlackList);
 
-	List<MemberDTO> selectSearchMemberList(String searchMember);
-
 	int selectNormalMemberTotalCount(Map<String, Object> searchMap);
+
+	List<MemberDTO> selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
 }

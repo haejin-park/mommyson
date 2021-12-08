@@ -24,7 +24,7 @@
             <form action="${ pageContext.servletContext.contextPath }/manager/deleteCeoMember" method="POST">
 	            <div class="top_box">
 	                <p>사업자 회원 조회</p>
-	                <input type="button" value="회원삭제">
+	                <input type="submit" value="회원삭제">
 	            </div>
 	
 	            <table class="table board_table">
@@ -41,7 +41,7 @@
 	                </colgroup>
 	                <thead style="background-color: #EDEDED;">
 		                <tr>
-		                    <th><input type="checkbox" name="ch1"></th>
+		                    <th><input type="checkbox" name="chkAll" id="chk_all"></th>
 		                    <th>번호</th>
 		                    <th>아이디</th>
 		                    <th>대표자</th>
@@ -54,19 +54,17 @@
 	                </thead>
 	                <tbody>
 		                <c:forEach items="${ requestScope.buisnessMemberList }" var="nm">
-		                	<c:if test="${ nm.memType == 'ceo' }">
-			                    <tr>
-			                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
-			                        <td>${ nm.memCode }</td>
-			                        <td>${ nm.memId }</td>
-			                        <td>${ nm.ceo.name }</td>
-			                        <td>${ nm.email }</td>
-			                        <td>${ nm.enrollDate }</td>
-			                        <td>${ nm.ceo.store.storeName }</td>
-			                        <td></td>
-			                        <td><a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
-			                    </tr>
-		                    </c:if>
+		                    <tr>
+		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
+		                        <td>${ nm.memCode }</td>
+		                        <td>${ nm.memId }</td>
+		                        <td>${ nm.ceo.name }</td>
+		                        <td>${ nm.email }</td>
+		                        <td>${ nm.enrollDate }</td>
+		                        <td>${ nm.ceo.store.storeName }</td>
+		                        <td></td>
+		                        <td><a href="javascript:void(0);" onclick="clickDetailInfo(this);" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
+		                    </tr>
 	                    </c:forEach>
 	                </tbody>
 	            </table>
@@ -75,6 +73,50 @@
             <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
+    
+    <script>
+    	function clickDetailInfo(e){
+    		const modalInfo = e.parentNode.parentNode.firstElementChild.firstChild.value;
+    		const ceoNum = $('.txt_info_box .infoNum');
+    		const ceoName = $('.txt_info_box .infoName');
+    		const ceoEnrollDate = $('.txt_info_box .infoEnrollDate');
+    		const ceoId = $('.txt_info_box .infoId');
+    		const ceoEmail = $('.txt_info_box .infoEmail');
+    		const ceoStore = $('.txt_info_box .infoStore');
+    		const ceoAddress = $('.txt_info_box .infoAddress');
+    		const ceoPaymentDay = $('.modal_footer .infoPaymentDay');
+    		const ceoBuyItem = $('.modal_footer .infoBuyItem');
+    		const ceoExpiryDate = $('.modal_footer .infoExpiryDate');
+    		const ceoPaymentPrice = $('.modal_footer .infoPaymentPrice');
+    		const ceoPaymentAllPrice = $('.modal_footer .infoPaymentAllPrice');
+    		
+    		$.ajax({
+    			url : '${ pageContext.servletContext.contextPath }/manager/ceoDetailInfo',
+    			type : 'POST',
+    			data : {
+    				modalInfo : modalInfo
+    			},
+    			success : function(data){
+    				console.log(data[0]);
+    				ceoNum.text(data.ceo.no);
+    				ceoName.text();
+    				ceoEnrollDate.text();
+    				ceoId.text();
+    				ceoEmail.text();
+    				ceoStore.text();
+    				ceoAddress.text();
+    				ceoPaymentDay.text();
+    				ceoBuyItem.text();
+    				ceoExpiryDate.text();
+    				ceoPaymentPrice.text();
+    				ceoPaymentAllPrice.text();
+    			},
+    			error : function(error){
+    				console.log(error);
+    			}
+    		});
+    	}
+    </script>
   
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -86,7 +128,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="img_box"></div>
+                	<h3 class="modal_title">사업자 정보</h3>
                     <div class="txt_info_box">
                         <table border="1">
                             <colgroup>
@@ -96,38 +138,38 @@
                             <tbody>
                                 <tr>
                                     <th>사업자 번호</th>
-                                    <td>111-111-11111</td>
+                                    <td class="infoNum"></td>
                                 </tr>
                                 <tr>
                                     <th>대표자명</th>
-                                    <td>관리자</td>
+                                    <td class="infoName">관리자</td>
                                 </tr>
                                 <tr>
                                     <th>가입일</th>
-                                    <td>2021-11-25</td>
+                                    <td class="infoEnrollDate">2021-11-25</td>
                                 </tr>
                                 <tr>
                                     <th>아이디</th>
-                                    <td>user01</td>
+                                    <td class="infoId">user01</td>
                                 </tr>
                                 <tr>
                                     <th>이메일</th>
-                                    <td>vwnua@naver.com</td>
+                                    <td class="infoEmail">vwnua@naver.com</td>
                                 </tr>
                                 <tr>
                                     <th>가게정보</th>
-                                    <td>더조은가게</td>
+                                    <td class="infoStore">더조은가게</td>
                                 </tr>
                                 <tr>
                                     <th>주소</th>
-                                    <td>서울특별시 서초구 서초대로78길 48 송림빌딩 13층</td>
+                                    <td class="infoAddress">서울특별시 서초구 서초대로78길 48 송림빌딩 13층</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="modal_footer">
-                    <h3>결제내역</h3>
+                    <h3 class="modal_title">결제내역</h3>
                     <table border="1">
                         <colgroup>
                             <col width=""/>
@@ -138,20 +180,20 @@
                         <tbody>
                             <tr>
                                 <th>결제일</th>
-                                <td>2021-11-23</td>
+                                <td class="infoPaymentDay">2021-11-23</td>
                                 <th>구매품목</th>
-                                <td>3개월 이용권</td>
+                                <td class="infoBuyItem">3개월 이용권</td>
                             </tr>
                             <tr>
                                 <th>만료일</th>
-                                <td>2022-02-23</td>
+                                <td class="infoExpiryDate">2022-02-23</td>
                                 <th>결제금액</th>
-                                <td>70,000</td>
+                                <td class="infoPaymentPrice">70,000</td>
                             </tr>
                             <tr>
                                 <th></th>
                                 <td></td>
-                                <th>총 결제금액</th>
+                                <th class="infoPaymentAllPrice">총 결제금액</th>
                                 <td>700,000</td>
                             </tr>
                         </tbody>
@@ -165,6 +207,16 @@
     <script>
          $("#homeSubmenu1").addClass("show");
          $("#homeSubmenu1 > li:nth-child(2) > a").attr("style","color: #F89E91 !important");
+         
+         $("#chk_all").click(function(){
+    	   	 let chk = $(this).is(":checked");
+    	   	 if(chk){
+    	   		 $(".board_table > tbody > tr th input").prop('checked', true);
+    	   	 } else{
+    	   		 $(".board_table > tbody > tr th input").prop('checked', false);
+    	   	 }
+    	   	 
+   	    });
      </script>
 </body>
 </html>

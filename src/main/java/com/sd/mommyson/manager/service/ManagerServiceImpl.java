@@ -116,16 +116,16 @@ public class ManagerServiceImpl implements ManagerService {
    }
 
    @Override
-   public List<MemberDTO> selectSearchMemberList(String searchMember) {
-      
-      List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
-      
-      return searchMemberList;
-   }
-
-   @Override
    public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
       return managerDAO.selectNormalMemberTotalCount(searchMap);
    }
+
+	@Override
+	public List<MemberDTO> selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
+		
+		List<MemberDTO> ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
+		
+		return ceoDetailInfos;
+	}
    
 }
