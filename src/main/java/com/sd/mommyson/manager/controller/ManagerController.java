@@ -81,8 +81,6 @@ public class ManagerController {
 		
 		Pagination pagination = null;
 		
-		
-		
 		/* ==== 검색과 selectOption 고르기 ==== */
 		if(searchValue != null && !"".equals(searchValue)) {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
