@@ -381,11 +381,17 @@
 		  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
 		  	AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
 		  </if>
+		  <if test="eDate == null and eDate == '' and eDate2 != null and eDate2 != '' ">
+		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+		  </if>
 		  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
 		  	AND M_DATE IN (#{ mDate } , #{ mDate2 })
 		  </if>
 		  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
 		  	AND M_DATE <![CDATA[ <= ]]> #{ mDate }
+		  </if>
+		  <if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
+		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
 		  </if>
 		  <if test="status == 'Y'.toString() ">
 		  	AND ORDERABLE_STATUS = 'Y' 
@@ -431,11 +437,17 @@
 						  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
 						  	AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
 						  </if>
+						  <if test="eDate == null and eDate == '' and eDate2 != null and eDate2 != '' ">
+						  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+						  </if>
 						  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
 						  	AND C.M_DATE IN (#{ mDate } , #{ mDate2 })
 						  </if>
 						  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
 						  	AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
+						  </if>
+						  <if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
+						  	AND C.M_DATE <![CDATA[ >= ]]> #{ mDate }
 						  </if>
 						  <if test="status == 'Y'.toString() ">
 						  	AND C.ORDERABLE_STATUS = 'Y' 
@@ -449,5 +461,35 @@
 						) A
 			WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow } 			
 	</select>
+	
+	<!-- 판매 상태 변경 쿼리문' -->
+	<update id="modifyStatus">
+	<selectKey keyProperty="orderableStatus" resultType="string" order="BEFORE">
+		SELECT
+			   ORDERABLE_STATUS
+		  FROM PRODUCT_TBL
+		 WHERE SD_CODE = #{ sdCode } 		   
+	</selectKey>
+		UPDATE PRODUCT_TBL
+		   SET ORDERABLE_STATUS = 
+		 <if test="orderableStatus == 'Y'.toString()">
+		 	'N'
+		 </if>
+		 <if test="orderableStatus == 'N'.toString()">
+		 	'Y'
+		 </if>
+		 WHERE SD_CODE = #{ sdCode }
+	</update>
+	
+	<update id="removeProduct">
+		UPDATE PRODUCT_TBL
+		   SET IS_DELETED = 'Y'
+		 <where>
+		 	SD_CODE IN 
+			<foreach collection="list" item="list" separator="," open="(" close=")">
+				#{ list }
+			</foreach>
+		 </where>
+	</update>
 	
 </mapper>

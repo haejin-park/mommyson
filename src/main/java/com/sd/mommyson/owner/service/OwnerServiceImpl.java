@@ -125,6 +125,22 @@ public class OwnerServiceImpl implements OwnerService{
 			
 		return result;
 	}
+
+	@Override
+	public int modifyStatus(ProductDTO product) {
+
+		int result = ownerDAO.modifyStatus(product);
+		
+		return result;
+	}
+
+	@Override
+	public int removeProduct(List<Integer> deleteCode) {
+
+		int result = ownerDAO.removeProduct(deleteCode);
+		
+		return result;
+	}
 	
 
 }

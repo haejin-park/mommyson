@@ -164,7 +164,7 @@ public class OwnerController {
 			try {
 				img.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				modifyInfo.put("fileName", fileName);
 				
@@ -277,7 +277,7 @@ public class OwnerController {
 			try {
 				productImg.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				productInfo.put("fileName", fileName);
 				
@@ -313,7 +313,8 @@ public class OwnerController {
 	
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
-	public void productManagement(Model model, @RequestParam( required = false) Map<String, String> param, HttpSession session) {
+	public void productManagement(Model model, @RequestParam(required = false) Map<String, String> param, HttpSession session,
+			@RequestParam(value="deleteCode",required = false) List<Integer> deleteCode) {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
 		
@@ -330,6 +331,33 @@ public class OwnerController {
 		String eDate = param.get("eDate");
 		String eDate2 = param.get("eDate2");
 		String status = param.get("status");
+		
+		if(param.get("sdCode") != null) {
+			
+			ProductDTO product = new ProductDTO();
+			product.setSdCode(Integer.parseInt(param.get("sdCode")));
+			System.out.println("sdCode : " + product);
+			int updateStatus = ownerService.modifyStatus(product);
+			
+			if(updateStatus > 0) {
+				model.addAttribute("success","success");
+			} 
+			
+		}
+		
+		if(deleteCode != null && deleteCode.size() > 0) {
+			
+			System.out.println("deleteCode : " + deleteCode);
+			
+			int removeProduct = ownerService.removeProduct(deleteCode);
+			
+			if(removeProduct > 0) {
+				model.addAttribute("message","삭제가 완료되었습니다");
+			} else {
+				model.addAttribute("message","삭제에 실패하였습니다");
+			}
+			
+		}
 		
 		System.out.println("mDate : " + mDate);
 		System.out.println("mDate2 : " + mDate2);
@@ -384,7 +412,7 @@ public class OwnerController {
 		System.out.println("productList : " + productList);
 		
 		if(productList != null) {
-			model.addAttribute("pagenation",pagenation);
+			model.addAttribute("pagination",pagenation);
 			model.addAttribute("productList", productList);
 			model.addAttribute("searchMap",searchMap);
 		} else {

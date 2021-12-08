@@ -37,4 +37,8 @@ public interface OwnerService {
 	public List<ProductDTO> selectProduct(Map<String, Object> searchMap);
 
 	public int selectTotalCount(Map<String, Object> searchMap);
+
+	public int modifyStatus(ProductDTO product);
+
+	public int removeProduct(List<Integer> deleteCode);
 }
