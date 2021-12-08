@@ -91,6 +91,8 @@
         $('#searchCondition').on('change',function() {
         	 var changedCondition = $('#searchCondition').val();
         });
+        
+        
      </script>
      
    
