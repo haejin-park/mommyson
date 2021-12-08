@@ -300,15 +300,15 @@ public class OwnerController {
 	}
 	
 	/* 리뷰 관리 */
-	@GetMapping("review")
-	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
-		
-		List<ReviewDTO> reviews = ownerService.selectReview(review);
-		System.out.println(reviews);	
-		
-		return "owner/review";	
-		
-	}
+//	@GetMapping("review")
+//	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
+//		
+//		List<ReviewDTO> reviews = ownerService.selectReview(review);
+//		System.out.println(reviews);	
+//		
+//		return "owner/review";	
+//		
+//	}
 	
 	
 	/* 판매상품 관리 */

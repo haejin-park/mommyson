@@ -45,7 +45,7 @@
                 <th scope="row"><input type="checkbox" name="" id=""></th>
                 <c:forEach var="review" items="${ reviews }">
                 <th>${ loginMember.nickname }</th>
-                <td>로찜마</td>
+                <td></td>
                 <td>로제찜닭 너무 맛있네요~</td>
                 </c:forEach>
               </tr>
