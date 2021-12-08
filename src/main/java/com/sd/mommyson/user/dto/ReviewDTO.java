@@ -8,6 +8,7 @@ public class ReviewDTO {
 	private String content;
 	private int grade;
 	private int rvCode;
+	private OrderDTO orederDTO;
 	
 	public ReviewDTO() {
 		super();

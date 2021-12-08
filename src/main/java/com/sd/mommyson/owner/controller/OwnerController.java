@@ -69,7 +69,7 @@ public class OwnerController {
 		return "owner/ownerMain";
 	}
 	
-	/* 쿠폰 발행 */
+	/* 쿠폰  리스트 */
 	@GetMapping("coupon")
 	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
@@ -83,7 +83,7 @@ public class OwnerController {
 	}
 	
 
-	
+	/* 쿠폰등록*/
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
 	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session,  HttpServletRequest request) {
 															  // 리다이렉트를 해줄때 값을 넘겨주는...........
@@ -308,7 +308,9 @@ public class OwnerController {
 	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
 		
 		List<ReviewDTO> reviews = ownerService.selectReview(review);
-		System.out.println(reviews);	
+		System.out.println(reviews);
+		
+		model.addAttribute("reviews", reviews);
 		
 		return "owner/review";	
 		
