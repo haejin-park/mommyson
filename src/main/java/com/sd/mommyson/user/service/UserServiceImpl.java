@@ -42,12 +42,6 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public int selectStoreTotalCount(Map<String, String> searchMap) {
-		return userDAO.selectStoreTotalCount(searchMap);
-	}
-
-
-	@Override
 	public List<StoreDTO> selectStoreList(Pagination pagination) {
 		List<StoreDTO> storeList = userDAO.selectStoreList(pagination);
 		return storeList;
@@ -64,6 +58,11 @@ public class UserServiceImpl implements UserService{
 	public List<StoreDTO> selectProductList(Pagination pagination) {
 		List<StoreDTO> productList = userDAO.selectProductList(pagination);
 		return productList;
+	}
+
+	@Override
+	public int selectStoreTotalCount(Map<String, String> searchMap) {
+		return userDAO.selectStoreTotalCount(searchMap);
 	}
 
 }

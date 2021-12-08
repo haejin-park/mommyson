@@ -17,115 +17,115 @@ import com.sd.mommyson.member.dto.MemberDTO;
 @Service
 public class ManagerServiceImpl implements ManagerService {
 
-	private ManagerDAO managerDAO;
-	private MemberDAO memberDAO;
-	
-	@Autowired
-	public ManagerServiceImpl(ManagerDAO managerDAO, MemberDAO memberDAO) {
-		this.managerDAO = managerDAO;
-		this.memberDAO = memberDAO;
-	}
-	
-	/**
-	 * 회원조회
-	 */
-	@Override
-	public List<MemberDTO> selectMember(Pagination pagination) {
-		
-		 List<MemberDTO> normalMemberList = managerDAO.selectMember(pagination);
-		
-		return normalMemberList;
-	}
+   private ManagerDAO managerDAO;
+   private MemberDAO memberDAO;
+   
+   @Autowired
+   public ManagerServiceImpl(ManagerDAO managerDAO, MemberDAO memberDAO) {
+      this.managerDAO = managerDAO;
+      this.memberDAO = memberDAO;
+   }
+   
+   /**
+    * 회원조회
+    */
+   @Override
+   public List<MemberDTO> selectMember(Pagination pagination) {
+      
+       List<MemberDTO> normalMemberList = managerDAO.selectMember(pagination);
+      
+      return normalMemberList;
+   }
 
-	@Override
-	public List<ManagerDTO> selectManagers(String memId) {
-		
-		List<ManagerDTO> managerList = memberDAO.selectManagers(memId);
-		
-		return managerList;
-	}
+   @Override
+   public List<ManagerDTO> selectManagers(String memId) {
+      
+      List<ManagerDTO> managerList = memberDAO.selectManagers(memId);
+      
+      return managerList;
+   }
 
-	/**
-	 * 일반회원삭제
-	 */
-	@Override
-	public boolean deleteMembers(List<Integer> deleteMemberList) {
-		
-		int result = managerDAO.deleteMembers(deleteMemberList);
-		
-		return result > 0? true : false;
-	}
+   /**
+    * 일반회원삭제
+    */
+   @Override
+   public boolean deleteMembers(List<Integer> deleteMemberList) {
+      
+      int result = managerDAO.deleteMembers(deleteMemberList);
+      
+      return result > 0? true : false;
+   }
 
-	public List<AuthDTO> selectAuth() {
-		List<AuthDTO> authList = managerDAO.selectAuth();
-		return authList;
-	}
+   public List<AuthDTO> selectAuth() {
+      List<AuthDTO> authList = managerDAO.selectAuth();
+      return authList;
+   }
 
-	@Override
-	public int updateAuth(Map<String, Object> map) {
-		int result = managerDAO.updateAuth(map);
-		return result;
-	}
+   @Override
+   public int updateAuth(Map<String, Object> map) {
+      int result = managerDAO.updateAuth(map);
+      return result;
+   }
 
-	@Override
-	public int insertNewManager(Map<String, Object> map) {
-		int result = managerDAO.insertNewManager(map);
-		return result;
-	}
+   @Override
+   public int insertNewManager(Map<String, Object> map) {
+      int result = managerDAO.insertNewManager(map);
+      return result;
+   }
 
-	@Override
-	public Map<String, String> selectManagerByMemCode(int memCode) {
-		Map<String, String> map = managerDAO.selectManagerByMemCode(memCode);
-		return map;
-	}
+   @Override
+   public Map<String, String> selectManagerByMemCode(int memCode) {
+      Map<String, String> map = managerDAO.selectManagerByMemCode(memCode);
+      return map;
+   }
 
-	@Override
-	public int deleteManager(List<String> list) {
-		int result = managerDAO.deleteManager(list);
-		return result;
-	}
-	
-	public int selectNoticeTotalCount(Map<String, String> searchMap) {
-		return managerDAO.selectNoticeTotalCount(searchMap);
-	}
+   @Override
+   public int deleteManager(List<String> list) {
+      int result = managerDAO.deleteManager(list);
+      return result;
+   }
+   
+   public int selectNoticeTotalCount(Map<String, String> searchMap) {
+      return managerDAO.selectNoticeTotalCount(searchMap);
+   }
 
-	@Override
-	public List<PostDTO> selectNoticeList(Pagination pagination) {
-		return managerDAO.selectNoticeList(pagination);
-	}
+   @Override
+   public List<PostDTO> selectNoticeList(Pagination pagination) {
+      return managerDAO.selectNoticeList(pagination);
+   }
 
-	@Override
-	public int idDupCheck(String memId) {
-		int count = managerDAO.idDupCheck(memId);
-		return count;
-	}
+   @Override
+   public int idDupCheck(String memId) {
+      int count = managerDAO.idDupCheck(memId);
+      return count;
+   }
 
-	public List<MemberDTO> blackMemberSelect(MemberDTO member) {
-		
-		List<MemberDTO> blackMemberList = managerDAO.blackMemberSelect(member);
-		
-		return blackMemberList;
-	}
+   public List<MemberDTO> blackMemberSelect(MemberDTO member) {
+      
+      List<MemberDTO> blackMemberList = managerDAO.blackMemberSelect(member);
+      
+      return blackMemberList;
+   }
 
-	@Override
-	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList) {
-		
-		int result = managerDAO.memberAddBlack(memberAddBlackList);
-		
-		return result > 0? true : false;
-	}
+   @Override
+   public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList) {
+      
+      int result = managerDAO.memberAddBlack(memberAddBlackList);
+      
+      return result > 0? true : false;
+   }
 
-	@Override
-	public List<MemberDTO> selectSearchMemberList(String searchMember) {
-		
-		List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
-		
-		return searchMemberList;
-	}
+   @Override
+   public List<MemberDTO> selectSearchMemberList(String searchMember) {
+      
+      List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
+      
+      return searchMemberList;
+   }
 
-	@Override
-	public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
-		return managerDAO.selectNormalMemberTotalCount(searchMap);
-	}
-	
+   @Override
+   public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
+      return managerDAO.selectNormalMemberTotalCount(searchMap);
+   }
+   
 }
