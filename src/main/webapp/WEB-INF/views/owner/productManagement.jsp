@@ -36,9 +36,6 @@
       <br><br><br>
       <div style="text-align: center; float: right; margin-bottom: 150px;">
         <div>
-         <div style="margin: 20px 0 20px 0; float: right;">
-       		 <button id="clear" class="couponBtn" style="width: 80px; margin-top: 2px;">초기화</button>
-         </div>
         <form action="${ pageContext.servletContext.contextPath }/owner/productManagement" method="get" id="frm">
 	      <div style="margin-bottom: 20px; float: right; clear: right;"> 
 		     <p style="float: left; margin-right: 15px; font-weight: 700;">제조일 &nbsp;&nbsp;&nbsp;<input type="date" name="mDate" id="mDate" value="${ searchMap.mDate }"></p>
@@ -51,13 +48,14 @@
 		     <button type="submit" class="couponBtn" style="width: 80px; margin-top: 2px;">조회하기</button>
 		  </div>
 		  <div style="margin-bottom: 20px; float: right; clear: right;"> 
-		      <p style="float: left; font-weight: 700;">판매여부 &nbsp;&nbsp;
+		      <p style="float: left; font-weight: 700; margin-right: 15px;">판매여부 &nbsp;&nbsp;
 		      	<select id="status" name="status" >
 		      		<option value="all">전체</option>
 		      		<option value="Y">판매</option>
 		      		<option value="N">판매중단</option>
 		     	</select>
 		      </p>
+		      <button id="clear" class="couponBtn" style="width: 80px; margin-top: 2px; ">초기화</button>
 	      </div>
 	    </form>
         <table class="table table" style="width: 1050px; clear: right;">
@@ -73,7 +71,7 @@
             </thead>
             <tbody>
               <c:forEach var="list" items="${ productList }">
-              <c:set var="i" value="${ i + 1}"/>
+              <c:set var="i" value="${ i + 1 }"/>
               <tr>
                 <th scope="col"><input type="checkbox" name="menu" id=""></th>
                 <th scope="row">${ i }</th>
@@ -137,8 +135,13 @@
 	    	$("#eDate2").val("");
 	    	$("#mDate").val("");
 	    	$("#mDate2").val("");
+	    	$('#status').val("");
 	    	$("#frm").submit();
 	    });
+	    
+	    if(${ searchMap.status != null && searchMap.status != '' } ){
+	    	$('#status').val('${ searchMap.status}');
+	    }
 	    
 	  });
 	</script>  
