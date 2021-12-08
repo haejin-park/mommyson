@@ -166,6 +166,13 @@
 	     WHERE MEM_ID = #{memId} 
 	</select>
 	
+	<!-- 이메일 중복검사 -->
+	<select id="emailChk" resultType="int">
+		SELECT COUNT(*)
+		  FROM MEMBER_TBL
+		 WHERE EMAIL = #{ email } 
+	</select>
+	
 	<!-- 지역코드 조회 -->
 	<select id="locationCode" resultType="String">
 		SELECT A.LOCATION_CODE

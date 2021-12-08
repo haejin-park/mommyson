@@ -28,7 +28,10 @@ public interface MemberDAO {
 
 	/*  아이디 중복검사 */
 	public int idChk(String memId);
-
+	
+	/* 이메일 중복 검사 */
+	public  int emailChk(String email);
+	
 	/* 회원가입시 지역코드 조회 */
 	public String locationCode(String locationName);
 
@@ -38,6 +41,7 @@ public interface MemberDAO {
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO dto);
 
+	
 
 	
 }

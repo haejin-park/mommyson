@@ -108,7 +108,22 @@ public class MemberController {
 
 
 	}
-
+	
+	/* 이메일 중복 검사 */
+	@PostMapping(value ="emailChk", produces="text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String emailChk(@RequestParam String email) throws Exception {
+		System.out.println("email : " + email);
+		int result = memberService.emailChk(email);
+		System.out.println("result : " + result);
+		String re = "";
+		if(result > 0) {
+			re = "1";
+		} else {
+			re = "0";
+		}
+		return re;
+	}
 	
 	/* 주소에서 구 가져오기 */
 	@PostMapping(value="locationCode", produces="text/plain; charset=UTF-8;")
@@ -191,19 +206,6 @@ public class MemberController {
 	@GetMapping("findId")
 	public void findId() {}
 	
-//	/* 아이디 찾기 */
-//	@RequestMapping(value="findId2", method = RequestMethod.POST)
-//	@ResponseBody
-//	public String findId2(@ModelAttribute String name, String email) throws Exception{
-//		System.out.println(name);
-//		System.out.println(email);
-//		
-//		String result = memberService.findId2(name, email);
-//		return result;
-//		
-//	}
-	
-	
 	
 	/* 아이디 찾기 */
 	@PostMapping(value = "findIdCheck", produces = "text/plain; charset=UTF-8;")
@@ -222,5 +224,8 @@ public class MemberController {
 		System.out.println(member);
 		 return member;
 	}
+	
+	@GetMapping("findPwd")
+	public void findPwd() {}
 	
 }
