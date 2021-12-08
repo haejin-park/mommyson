@@ -24,6 +24,8 @@ public interface MemberDAO {
 
 	public List<ManagerDTO> selectManagers(String memId);
 
+	public void updateLastLogin(MemberDTO member);
+
 	/*  아이디 중복검사 */
 	public int idChk(String memId);
 
@@ -34,9 +36,7 @@ public interface MemberDAO {
 	public void customerJoin(MemberDTO member) ;
 
 	/* 아이디 찾기 */
-	public String findId2(String name, String email);
-	
-	public void updateLastLogin(MemberDTO member);
+	public String findIdCheck(MemberDTO dto);
 
 
 	

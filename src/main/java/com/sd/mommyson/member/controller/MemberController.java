@@ -3,7 +3,6 @@ package com.sd.mommyson.member.controller;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.member.service.MemberService;
 
 
@@ -191,16 +191,36 @@ public class MemberController {
 	@GetMapping("findId")
 	public void findId() {}
 	
+//	/* 아이디 찾기 */
+//	@RequestMapping(value="findId2", method = RequestMethod.POST)
+//	@ResponseBody
+//	public String findId2(@ModelAttribute String name, String email) throws Exception{
+//		System.out.println(name);
+//		System.out.println(email);
+//		
+//		String result = memberService.findId2(name, email);
+//		return result;
+//		
+//	}
+	
+	
+	
 	/* 아이디 찾기 */
-	@RequestMapping(value="findId2", method = RequestMethod.POST)
+	@PostMapping(value = "findIdCheck", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
-	public String findId2(@ModelAttribute String name, String email) throws Exception{
+	public String findIdCheck(@RequestParam String name, @RequestParam String email) {
 		System.out.println(name);
 		System.out.println(email);
-	
-		String result = memberService.findId2(name, email);
-		return result;
 		
+		MemberDTO m = new MemberDTO();
+		UserDTO u = new UserDTO();
+		u.setName(name);
+		m.setUser(u);
+		m.setEmail(email);
+		System.out.println(m);
+		String member = memberService.findIdCheck(m);
+		System.out.println(member);
+		 return member;
 	}
 	
 }

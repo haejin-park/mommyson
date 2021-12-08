@@ -28,7 +28,8 @@ public interface MemberService  {
 
 
 	/* 아이디 찾기 */
-	public String findId2(String name, String email) throws Exception; 
+	public String findIdCheck(MemberDTO dto); 
+	
 	
 
 }

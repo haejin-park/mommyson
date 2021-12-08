@@ -92,10 +92,16 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String findId2(String name, String email) throws Exception{
-		
-		String result = memberDAO.findId2(name, email);
-		return result;
+	public String findIdCheck(MemberDTO dto) {
+		String member = memberDAO.findIdCheck(dto);
+	
+		return member;
 	}
+	
+	
+	
+	
+
+	
 
 }
