@@ -12,7 +12,7 @@
 	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="lastLogin" column="LAST_LOGIN"/>
-		<collection property="authDTO" resultMap="authResultMap"/>
+		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 
 	<resultMap type="com.sd.mommyson.member.dto.AuthDTO" id="authResultMap">
@@ -25,7 +25,7 @@
 		<result property="account" column="ACCOUNT"/>
 		<result property="no" column="STORE_NO"/>
 		<result property="name" column="CEO_NAME"/>
-		<collection property="store" resultMap="storeResultMap"></collection>
+		<association property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -38,7 +38,7 @@
 		<result property="workTime" column="WORK_TIME"/>
 	</resultMap>
 	
-	<resultMap id="memberResultMap" type="com.sd.mommyson.member.dto.MemberDTO">
+	<resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="email" column="EMAIL"/>
 		<result property="memPwd" column="MEM_PWD"/>
@@ -46,18 +46,19 @@
 		<result property="postCode" column="POST_CODE"/>
 		<result property="dAddress" column="D_ADDRESS"/>
 		<result property="phone" column="PHONE"/>
-		<result property="locationCode" column="LOCATION_CODE"/>
 		<result property="memType" column="MEM_TYPE"/>
+		<result property="locationCode" column="LOCATION_CODE"/>
 		<result property="nickname" column="NICKNAME"/>
 		<result property="memId" column="MEM_ID"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
-		<collection property="user" resultMap="userResultMap"/>
-		<collection property="ceo" resultMap="ceoResultMap"/>
-		<collection property="manager" resultMap="managerResultMap"/>
+		<association property="user" resultMap="userResultMap"/>
+		<association property="ceo" resultMap="ceoResultMap"/>
+		<association property="manager" resultMap="managerResultMap"/>
+
 	</resultMap>
 	
-	<resultMap id="locationResultMap" type="com.sd.mommyson.member.dto.LocationDTO">
+	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
 		<id property="locationCode" column="LOCATION_CODE"/>
 		<result property="locationName" column="LOCATION_NAME"/>
 	</resultMap>
@@ -172,22 +173,9 @@
 		 WHERE A.LOCATION_NAME = #{ locationName }
 		  
 	</select>
-<!-- 	<insert id="customerJoin" parameterType="hashMap">
-		INSERT 
-		  INTO MEMBER_TBL M
-		( 
-		  M.MEM_CODE
-		, M.EMAIL
-		, M.MEM_PWD
-		, M.ADDRESS
-		, M.POST_CODE
-		, M.D_ADDRESS
-		, M.PHONE
-		, M.MEM_TYPE
-		, M.NICKNAME
-		, M.MEM_ID
-		, M.ENROLL_DATE
-		)
+ 	<insert id="customerJoin">
+		INSERT ALL
+		  INTO MEMBER_TBL
 		VALUES
 		( 
    		  SEQ_MEM_CODE.NEXTVAL
@@ -197,15 +185,34 @@
 		, #{ postCode }
 		, #{ dAddress }
 		, #{ phone }
-		, #{ memType }
+		, 'user'
+		, #{ locationCode }
 		, #{ nickname }
 		, #{ memId }
-		, SYSDATE		
+		, SYSDATE	
+		, 'N'	
 		)
-	</insert> -->
+		INTO USER_TBL 
+		VALUES
+		( 
+		  SEQ_MEM_CODE.CURRVAL
+		, #{ user.name }
+		, 0
+		)
+		SELECT * FROM DUAL
+	</insert>
 	<update id="updateLastLogin">
 		UPDATE MANAGER_TBL
 		   SET LAST_LOGIN = SYSTIMESTAMP
 		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
 	</update>
+	
+	<select id="findId2" resultType="String">
+		SELECT MEM_ID
+		  FROM MEMBER_TBL A
+		  JOIN USER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+		 WHERE A.EMAIL = #{ email }
+		   AND B.NAME = #{ name }
+			
+	</select>
 </mapper>

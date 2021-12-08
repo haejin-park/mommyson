@@ -2,7 +2,8 @@ package com.sd.mommyson.member.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -30,7 +31,13 @@ public interface MemberDAO {
 	public String locationCode(String locationName);
 
 	/* 사용자 회원가입 */
-//	public void customerJoin(Map<String, Object> map, MemberDTO dto);
+	public void customerJoin(MemberDTO member) ;
 
+	/* 아이디 찾기 */
+	public String findId2(String name, String email);
+	
 	public void updateLastLogin(MemberDTO member);
+
+
+	
 }

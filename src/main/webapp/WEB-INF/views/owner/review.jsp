@@ -13,6 +13,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+<script>
+	if(${ requestScope.message != null && requestScope.message != ''}){
+		alert('${ requestScope.message }');
+	}
+</script>
 
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
@@ -31,10 +36,11 @@
       
       <div style="text-align: center;">
         <div style="margin-left: 450px;">
+       		<form action="${ pageContext.servletContext.contextPath}/owner/registGiveAndDeleteCp" method="POST">
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="" id="allCheck"></th>
+                <th scope="col"><input type="checkbox" id="allCheck"></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -42,19 +48,19 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row"><input type="checkbox" name="" id=""></th>
                 <c:forEach var="review" items="${ reviews }">
+                <th scope="row"><input type="checkbox" name="chkreview" value="${ review.rvCode }" ></th>
                 <th>${ review.rvCode }</th>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
                 </c:forEach>
               </tr>
-             
             </tbody>
           </table>
           <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" >
-          쿠폰 주기</button>
-        <button id="rebtn2">삭제</button>
+         	 쿠폰 주기</button>
+          <button id="rebtn2">삭제</button>
+        	</form>
         </div>
         <div style="margin: 500px 0 300px 900px;">
             <nav aria-label="Page navigation example">
@@ -99,11 +105,11 @@
                       <th scope="col">할인금액</th>
                   </tr>
                   </thead>
-              <form>
                   <tbody>
+                
                 <c:forEach items="${ coupon }" var="cp">
                   <tr>
-                      <td><input type="checkbox" name="" id=""></td>
+                      <td><input type="checkbox" ></td>
                       <td>${ cp.cpCode }</td>
                       <td>${ cp.cpName }</td>
                       <td>${ cp.startDate }</td>
@@ -111,12 +117,12 @@
                   </tr>
 				</c:forEach>
                   </tbody>
-              </form>
               </table>
           </div>
           <div class="modal-footer" >
-            <button type="button" class="btn btn-primary" id="btn1">쿠폰 주기</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="submit" class="btn btn-primary" id="btn1">쿠폰 주기</button>
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+          </form>
           </div>
          </div>
        </div>

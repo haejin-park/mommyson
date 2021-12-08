@@ -373,5 +373,14 @@
 		WHERE MEM_CODE = #{ memCode } 
 	</select>
 	
+	<delete id="deleteReview" parameterType="list">
+	 DELETE FROM REVIEW_TBL 
+	  <where>
+	     	RV_CODE IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	  </where>
+	</delete>
 	
 </mapper>

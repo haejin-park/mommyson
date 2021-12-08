@@ -34,6 +34,10 @@ public interface OwnerDAO {
 
 	public int registProduct(Map<String, Object> productInfo);
 
-	public List<ProductDTO> selectProduct(int memCode);
+	public List<ProductDTO> selectProduct(Map<String, Object> searchMap);
+
+	public int selectTotalCount(Map<String, Object> searchMap);
+
+	public int deleteReview(List<Integer> deleteReviewList);
 	
 }
