@@ -206,4 +206,13 @@
 		   SET LAST_LOGIN = SYSTIMESTAMP
 		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
 	</update>
+	
+	<select id="findId2" resultType="String">
+		SELECT MEM_ID
+		  FROM MEMBER_TBL A
+		  JOIN USER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+		 WHERE A.EMAIL = #{ email }
+		   AND B.NAME = #{ name }
+			
+	</select>
 </mapper>

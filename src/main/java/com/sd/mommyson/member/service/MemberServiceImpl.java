@@ -91,4 +91,11 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.customerJoin(member);
 	}
 
+	@Override
+	public String findId2(String name, String email) throws Exception{
+		
+		String result = memberDAO.findId2(name, email);
+		return result;
+	}
+
 }
