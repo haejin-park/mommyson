@@ -330,14 +330,15 @@
 		  #{ product.volume },
 		  #{ fileName },
 		  #{ product.category },
-		  #{ product.orderableStatus },
+		  0,
 		  #{ memCode },
 		  #{ product.orderableStatus },
 		  #{ product.eDate },
 		  default,
 		  #{ product.categoryCode },
 		  #{ product.storageMethod },
-		  #{ product.detail }
+		  #{ product.detail },
+		  default
 	    )
 	    <foreach collection="tagList" item="item">
 	    INTO PRODUCT_TAG_TBL 
