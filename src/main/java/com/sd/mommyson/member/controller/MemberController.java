@@ -191,9 +191,12 @@ public class MemberController {
 	public void findId() {}
 	
 	/* 아이디 찾기 */
-	@PostMapping("findId2")
-	public String findId2() {
-		return null;
+	@RequestMapping(value="findId2", method = RequestMethod.POST)
+	@ResponseBody
+	public String findId2(@RequestParam String name, @RequestParam String email) throws Exception {
+		
+		String result = memberService.findId2(name, email);
+		return result;
 		
 	}
 	

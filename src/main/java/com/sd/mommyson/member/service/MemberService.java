@@ -27,4 +27,8 @@ public interface MemberService  {
 	public void customerJoin(MemberDTO member) throws Exception;
 
 
+	/* 아이디 찾기 */
+	public String findId2(String name, String email) throws Exception; 
+	
+
 }
