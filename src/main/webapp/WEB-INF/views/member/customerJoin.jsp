@@ -63,7 +63,7 @@
             <br><br>
         
             <!-- 모달 띄우기 -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"id="terms">약관 보기</button> 
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" id="terms" value ="N" onclick="terms1()">약관 보기</button> 
             <br>
 
             <!--약관 Modal -->
@@ -121,7 +121,7 @@
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <button type="submit" id="joinButton"  style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
+            <button type="submit" id="joinButton" onclick="joinButton1()" style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
 
@@ -216,11 +216,16 @@
             }
 
             
-            if(nickName.value == ""){
-                alert("닉네임을 입력해주세요.")
-                nickName.focus()
+            if(email.value == ""){
+                alert("이메일을 입력해주세요.")
+                email.focus()
                 return false;
             }
+            
+            if(emailChk.value =='N'){
+	            alert("이메일 중복확인을 클릭해주세요.");
+	            return false;
+	        }
 
 
             if(zipCode.value == ""){
@@ -228,11 +233,13 @@
                 zipCode.focus()
                 return false;
             }
+            
             if(address1.value == ""){
                 alert("주소를 입력해주세요.")
                 address1.focus()
                 return false;
             }
+            
             if(address2.value == ""){
                 alert("상세주소를 입력해주세요.")
                 address2.focus()
@@ -244,12 +251,7 @@
 	            alert("지역코드를 클릭해주세요.");
 	            return false;
 	        }
-            
-            if(email.value == ""){
-                alert("이메일을 입력해주세요.")
-                email.focus()
-                return false;
-            }
+
 
             if(!chk(/^[\w]{4,}@[\w]+(\.[\w]+){1,3}$/,email,"이메일 형식에 어긋납니다.")){
                 return false;
@@ -260,6 +262,8 @@
                 code.focus()
                 return false;
             }
+            
+
             
 
             if(all.checked == false){
@@ -280,7 +284,8 @@
         }
 
         
-        
+
+         
         /* ==================== 아이디 중복확인 ===================*/
         function idChk1(){
         	let id = $('#id').val();
