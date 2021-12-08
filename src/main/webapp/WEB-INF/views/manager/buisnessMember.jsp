@@ -56,7 +56,7 @@
 		                <c:forEach items="${ requestScope.buisnessMemberList }" var="nm">
 		                	<c:if test="${ nm.memType == 'ceo' }">
 			                    <tr>
-			                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }"></th>
+			                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
 			                        <td>${ nm.memCode }</td>
 			                        <td>${ nm.memId }</td>
 			                        <td>${ nm.ceo.name }</td>
@@ -71,33 +71,8 @@
 	                </tbody>
 	            </table>
             </form>
-            
             <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-                </ul>
-                <form action="">
-                    <ul>
-                        <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                        <button type="submit" class="searchbutton">검색하기</button></li>
-                    </ul>
-                </form>
-            </nav>
+            <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
   
@@ -188,10 +163,6 @@
 	<jsp:include page="../commons/footer.jsp"></jsp:include>
 
     <script>
-        $("#chk_all").click(function(){
-         $(this).parent
-        });
- 
          $("#homeSubmenu1").addClass("show");
          $("#homeSubmenu1 > li:nth-child(2) > a").attr("style","color: #F89E91 !important");
      </script>

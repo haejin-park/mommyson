@@ -16,6 +16,7 @@ import com.sd.mommyson.member.dto.MemberDTO;
 public class MemberServiceImpl implements MemberService {
 
 	@Inject
+	@Autowired
 	private final MemberDAO memberDAO;
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -85,9 +86,16 @@ public class MemberServiceImpl implements MemberService {
 	
 
 	/* 사용자 회원가입 */
-//	@Override
-//	public void customerJoin(Map<String, Object>map, MemberDTO dto) {
-//		memberDAO.customerJoin(map,dto);
-//	}
+	@Override
+	public void customerJoin(MemberDTO member) throws Exception{
+		memberDAO.customerJoin(member);
+	}
+
+	@Override
+	public String findId2(String name, String email) throws Exception{
+		
+		String result = memberDAO.findId2(name, email);
+		return result;
+	}
 
 }

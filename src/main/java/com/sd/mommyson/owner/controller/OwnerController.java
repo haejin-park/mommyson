@@ -28,12 +28,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
+import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
+import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
@@ -66,7 +69,7 @@ public class OwnerController {
 		return "owner/ownerMain";
 	}
 	
-	/* 쿠폰 발행 */
+	/* 쿠폰  리스트 */
 	@GetMapping("coupon")
 	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
@@ -80,7 +83,7 @@ public class OwnerController {
 	}
 	
 
-	
+	/* 쿠폰등록*/
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
 	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session,  HttpServletRequest request) {
 															  // 리다이렉트를 해줄때 값을 넘겨주는...........
@@ -266,7 +269,6 @@ public class OwnerController {
 			mkdir.mkdirs();
 		}
 		
-		if(!productImg.isEmpty()) {
 		
 			String orginFileName = productImg.getOriginalFilename();
 			String ext = orginFileName.substring(orginFileName.indexOf("."));
@@ -281,21 +283,18 @@ public class OwnerController {
 				
 				
 			} catch (IllegalStateException | IOException e) {
-				new File(filePath + "/" + savedName).delete();
-					
+				new File(filePath + "/" + savedName).delete();	
 				e.printStackTrace();
 			}
-		
-		}
-		
-		int result = ownerService.registProduct(productInfo);
-		
-		if(result > 0) {
-			rd.addFlashAttribute("message","상품이 등록되었습니다.");
-		} else {
-			rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
-		}
-		
+			
+			int result = ownerService.registProduct(productInfo);
+			
+			if(result > 0) {
+				rd.addFlashAttribute("message","상품이 등록되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
+				new File(filePath + "/" + savedName).delete();
+			}
 		
 		return "redirect:productManagement";
 	}
@@ -305,33 +304,102 @@ public class OwnerController {
 	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
 		
 		List<ReviewDTO> reviews = ownerService.selectReview(review);
-		System.out.println(reviews);	
+		System.out.println(reviews);
+		
+		model.addAttribute("reviews", reviews);
 		
 		return "owner/review";	
 		
 	}
+
 	
 	
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
-	public void productManagement(Model model, HttpSession session) {
+	public void productManagement(Model model, @RequestParam( required = false) Map<String, String> param, HttpSession session) {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
 		
 		int memCode = member.getMemCode();
 		
-		List<ProductDTO> productList = ownerService.selectProduct(memCode);
 		
-		model.addAttribute("productList",productList);
+		// 현재 페이지 
+		int pageNo = 1;
+		
+		String currentPage = param.get("currentPage");
+		String searchValue = param.get("searchValue");
+		String mDate = param.get("mDate");
+		String mDate2 = param.get("mDate2");
+		String eDate = param.get("eDate");
+		String eDate2 = param.get("eDate2");
+		String status = param.get("status");
+		
+		System.out.println("mDate : " + mDate);
+		System.out.println("mDate2 : " + mDate2);
+		System.out.println("eDate : " + eDate);
+		System.out.println("eDate2 : " + eDate2);
+		
+		// 현재 페이지가 != null && !"" 않으면 pagNo는 현재 페이지로
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		// pageNo가 0보다 작으면 pageNo는 1로
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		System.out.println("searchValue : " + searchValue);
+		
+		/* searchValue 넘김 */
+		Map<String, Object> searchMap = new HashMap<>();
+		
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("memCode",memCode);
+		searchMap.put("mDate",mDate);
+		searchMap.put("mDate2",mDate2);
+		searchMap.put("eDate",eDate);
+		searchMap.put("eDate2",eDate2);
+		searchMap.put("status",status);
+		
+		int totalCount = ownerService.selectTotalCount(searchMap);
+		
+		System.out.println("totalCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagenation = null;
+		
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
+			searchMap.put("pagenation", pagenation);
+		} else {
+			pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+			searchMap.put("pagenation", pagenation);
+		}
+		
+		List<ProductDTO> productList = ownerService.selectProduct(searchMap);
+		
+		System.out.println("productList : " + productList);
+		
+		if(productList != null) {
+			model.addAttribute("pagenation",pagenation);
+			model.addAttribute("productList", productList);
+			model.addAttribute("searchMap",searchMap);
+		} else {
+			System.out.println("조회실패");
+		}
 		
 	}
 	
-	
-
-	
-	
-	
-	
+	@GetMapping("salesDay")
+	public void salseDay(Model model) {
+		
+	}
 	
 	
 }

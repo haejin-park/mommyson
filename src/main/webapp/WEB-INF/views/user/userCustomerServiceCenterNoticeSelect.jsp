@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,44 +54,38 @@
                           <td>2021-11-01</td>
                           <td>123</td>
                       </tr>
+                      <c:forEach var="noticeBoard" items="${ requestScope.noticeList }">
                       <tr>
-                          <td>1</td>
-                          <td class="tal">[안내] 방역수칙을 준수하는 안전한 외식생활 캠페인</td>
-                          <td>2021-11-01</td>
-                          <td>500</td>
+                          <td><c:out value="${ noticeBoard.postNo }"/></td>
+                          <td class="tal"><c:out value="${ noticeBoard.postTitle }"/></td>
+                          <td><c:out value="${ noticeBoard.postDate }"/></td>
+                          <td><c:out value="11"/></td>
                       </tr>
-                      <tr>   
-                          <td>2</td>
-                          <td class="tal">[공지] 고객센터 일부 서비스 중단 안내(10일,12일)</td>
-                          <td>2021-11-01</td>
-                          <td>200</td>
-                      </tr>
+                      </c:forEach>
+                     
                   </tbody>
               </table>
 
               <!-- 페이징 -->
               <nav class="page_box" aria-label="Page navigation example">
                   <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                  <!--   <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li> -->
+                  	<jsp:include page="../commons/userPagination.jsp"></jsp:include>
                   </ul>
                   <ul>
-                  	<form action="{ pageContext.servletContext.contextPath }/ucc/uccNoticeSelect" method="post">
-                      <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                      <input type="text" class="searchtext" name="currentPage" value="1" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                      <button type="submit" class="searchbutton">검색하기</button></li>
+                  	<form action="${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeSelect" method="get">
+                  	    <input type="hidden" name="currentPage" value="1">
+                  	     <select id="searchCondition" name="searchCondition">
+							<option value="total" ${ requestScope.selectCriteria.searchCondition eq "total"? "selected": "" }>전체</option>
+							<option value="notice" ${ requestScope.selectCriteria.searchCondition eq "notice"? "selected": "" }>공지</option>
+							<option value="guide" ${ requestScope.selectCriteria.searchCondition eq "guide"? "selected": "" }>안내</option>
+							<option value="check" ${ requestScope.selectCriteria.searchCondition eq "check"? "selected": "" }>점검</option>
+							<option value="event" ${ requestScope.selectCriteria.searchCondition eq "event"? "selected": "" }>이벤트</option>
+							<option value="store" ${ requestScope.selectCriteria.searchCondition eq "store"? "selected": "" }>사업자</option>
+						</select>
+                        <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+                        <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요">
+                        <button type="submit" class="searchbutton">검색하기</button>
                   	</form>
                    </ul>
                 </nav>

@@ -16,7 +16,7 @@
 		<result property="startDate" column="START_DATE"/>
 		<result property="no" column="STORE_NO"/>
 		<result property="name" column="CEO_NAME"/>
-		<collection property="store" resultMap="storeResultMap"></collection>
+		<association property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -44,8 +44,15 @@
 		<result property="memId" column="MEM_ID"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
-		<collection property="user" resultMap="userResultMap"/>
-		<collection property="ceo" resultMap="ceoResultMap"/>
+		<association property="user" resultMap="userResultMap"/>
+		<association property="ceo" resultMap="ceoResultMap"/>
+		<association property="manager" resultMap="managerResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="lastLogin" column="LAST_LOGIN"/>
+		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
@@ -57,6 +64,19 @@
 		<result property="dCcon" column="DC_CONDITION"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="tatalPrice" column="TOTAL_PRICE"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="orderType" column="ORDER_TYPE"/>
+		<result property="tatalPrice" column="TOTAL_PRICE"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="storeName" column="STORE_NAME"/>
+		<result property="code" column="CODE"/>
+		
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
@@ -64,6 +84,24 @@
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
+<<<<<<< HEAD
+		<collection property=""></collection>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="totalPrice" column="TOTAL_PRICE"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="orderType" column="ORDER_TYPE"/>
+		<result property="takeTime" column="TAKE_TIME"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="storeName" column="STORE_NAME"/>
+		<result property="code" column="CODE"/>
+		
+=======
+		<collection property="orderDTO" resultMap="orderResultMap"/>
+>>>>>>> cdbc7834018b7c453a3247583c925f353914c403
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -91,7 +129,11 @@
 		<result property="detail" column="SD_DETAIL"/>
 	</resultMap>
 	
-	
+	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
+		<id property="locationCode" column="LOCATION_CODE"/>
+		<result property="locationName" column="LOCATION_NAME"/>
+	</resultMap>
+		
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
@@ -130,6 +172,7 @@
 		 WHERE  B.MEM_CODE = #{ memCode }
 	</select>
 	
+	<!-- 쿠폰등록 -->
 	<insert id="registCoupon" >
 		INSERT
 		  INTO COUPON_TBL
@@ -152,6 +195,7 @@
 		)
 	</insert>
 	
+	<!-- 쿠폰등록2 -->
 	<insert id="registCouponStore">
 		INSERT
 		  INTO COUPON_STORE_TBL
@@ -167,20 +211,33 @@
 		
 	</insert>
 	
+	<!-- 리뷰 목록 가져오기 -->
 	<select id="selectReview" resultMap="reviewResultMap">
+<<<<<<< HEAD
+		SELECT
+			   A.RV_CODE
+			 , A.MEM_CODE
+			 , A.RV_CONTENT
+			 , B.NICKNAME  
+		  FROM REVIEW_TBL A  
+		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE) 
+		  JOIN ORDER_TBL C ON (A.MEM_CODE = C.MEM_CODE) 
+		 WHERE C.STORE_NAME = #{ nickname }
+=======
 		<!-- SELECT
 				A.RV_CODE
 			  , A.MEM_CODE
 			  , A.RV_COMTENT
 			  , B.NICKNAME
+			  , C.ORDER_CODE
+     		  , C.STORE_NAME  
 		  FROM REVIEW_TBL A
 		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
-		  JOIN ORDER_TBL C ON (B.STORE_NAME = #{  })
-		 WHERE B.IS_DELETED = 'N'
-		   AND B.MEM_TYPE = 'user'
-		   AND C.STORE_NAME = #{ } -->
-		  
+		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
+		 WHERE C.STORE_NAME =  -->
+>>>>>>> cdbc7834018b7c453a3247583c925f353914c403
 	</select>
+	
 	<!-- 사업자 가게정보 변경 쿼리문 -->
 	<update id="modifyInfo" >
 		UPDATE MEMBER_TBL
@@ -319,14 +376,15 @@
 		  #{ product.volume },
 		  #{ fileName },
 		  #{ product.category },
-		  default,
+		  0,
 		  #{ memCode },
 		  #{ product.orderableStatus },
 		  #{ product.eDate },
 		  default,
 		  #{ product.categoryCode },
 		  #{ product.storageMethod },
-		  #{ product.detail }
+		  #{ product.detail },
+		  default
 	    )
 	    <foreach collection="tagList" item="item">
 	    INTO PRODUCT_TAG_TBL 
@@ -336,27 +394,89 @@
 	    SELECT * FROM DUAL
 	</insert>
 	
-	<select id="selectProduct" resultMap="productResultMap">
+	<!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
+	<select id="selectTotalCount" resultType="_int">
 		SELECT
-		      SD_CODE
-		    , SD_NAME
-		    , M_DATE
-		    , PRICE
-		    , INGREDIENT
-		    , VOLUME
-		    , SD_IMG
-		    , CATEGORY
-		    , DISCOUNT_RATE
-		    , MEM_CODE
-		    , ORDERABLE_STATUS
-		    , EXPIRY_DATE
-		    , IS_DELETED
-		    , CATEGORY_CODE
-		    , STORAGE_METHOD
-		    , SD_DETAIL
+		      COUNT(*)
 		 FROM PRODUCT_TBL
-		WHERE MEM_CODE = #{ memCode } 
+		<where>
+		  IS_DELETED = 'N' 
+		  <if test="searchValue != null and searchValue != '' ">
+		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+		  </if>
+		  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+		  	AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+		  </if>
+		  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+		  	AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+		  </if>
+		  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+		  	AND M_DATE IN (#{ mDate } , #{ mDate2 })
+		  </if>
+		  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+		  	AND M_DATE <![CDATA[ <= ]]> #{ mDate }
+		  </if>
+		  <if test="status == 'Y'.toString() ">
+		  	AND ORDERABLE_STATUS = 'Y' 
+		  </if>
+		  <if test="status == 'N'.toString() ">
+		  	AND ORDERABLE_STATUS = 'N'
+		  </if>
+		    AND MEM_CODE = #{ memCode }
+		</where>
 	</select>
 	
+	<!-- 반찬 조회 쿼리문 -->
+	<select id="selectProduct" resultMap="productResultMap">
+		SELECT
+			 	A.RNUM
+			  ,	A.SD_CODE
+		      , A.SD_NAME
+		      , A.M_DATE
+		      , A.ORDERABLE_STATUS
+		      , A.EXPIRY_DATE 
+	       FROM (SELECT
+					 	ROWNUM RNUM
+					  ,	B.SD_CODE
+				      , B.SD_NAME
+				      , B.M_DATE
+				      , B.ORDERABLE_STATUS
+				      , B.EXPIRY_DATE 
+			   	   FROM (SELECT
+						        C.SD_CODE
+						      , C.SD_NAME
+						      , C.M_DATE
+						      , C.ORDERABLE_STATUS
+						      , C.EXPIRY_DATE
+						   FROM PRODUCT_TBL C
+						<where>
+						  C.IS_DELETED = 'N' 
+						  <if test="searchValue != null and searchValue != '' ">
+						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+						  </if>
+						  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+						  	AND C.EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+						  </if>
+						  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+						  	AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+						  </if>
+						  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+						  	AND C.M_DATE IN (#{ mDate } , #{ mDate2 })
+						  </if>
+						  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+						  	AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
+						  </if>
+						  <if test="status == 'Y'.toString() ">
+						  	AND C.ORDERABLE_STATUS = 'Y' 
+						  </if>
+						  <if test="status == 'N'.toString() ">
+						  	AND C.ORDERABLE_STATUS = 'N'
+						  </if>
+						    AND C.MEM_CODE = #{ memCode }
+						</where>
+						ORDER BY C.SD_CODE DESC ) B 
+						) A
+			WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow } 			
+	</select>
 	
 </mapper>

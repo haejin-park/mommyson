@@ -9,13 +9,14 @@ public class StoreDTO {
 	private int delCost;
 	private String workTime;
 	private int memCode;
+	private int rvCount;
 	
 	public StoreDTO() {
 
 	}
 
 	public StoreDTO(String storeName, String storeImg, String storeInfo, float grade, int delCost, String workTime,
-			int memCode) {
+			int memCode, int rvCount) {
 		super();
 		this.storeName = storeName;
 		this.storeImg = storeImg;
@@ -24,6 +25,7 @@ public class StoreDTO {
 		this.delCost = delCost;
 		this.workTime = workTime;
 		this.memCode = memCode;
+		this.rvCount = rvCount;
 	}
 
 	public String getStoreName() {
@@ -82,9 +84,20 @@ public class StoreDTO {
 		this.memCode = memCode;
 	}
 
+	public int getRvCount() {
+		return rvCount;
+	}
+
+	public void setRvCount(int rvCount) {
+		this.rvCount = rvCount;
+	}
+
 	@Override
 	public String toString() {
 		return "StoreDTO [storeName=" + storeName + ", storeImg=" + storeImg + ", storeInfo=" + storeInfo + ", grade="
-				+ grade + ", delCost=" + delCost + ", workTime=" + workTime + ", memCode=" + memCode + "]";
+				+ grade + ", delCost=" + delCost + ", workTime=" + workTime + ", memCode=" + memCode + ", rvCount="
+				+ rvCount + "]";
 	}
+
+	
 }

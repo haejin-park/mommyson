@@ -150,7 +150,7 @@
 	        <tr>
 	            <td class="tg-p">유효기간</td>
 	            <td class="tg-pp">
-	                <h6>제조일로부터 <input type="text" name="eDate" style="width: 25px;"> 일</h6>
+	                <input type="date" name="eDate"">
 	            </td>
 	        </tr>
 	        <tr>

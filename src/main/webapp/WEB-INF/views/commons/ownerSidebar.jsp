@@ -86,7 +86,7 @@
                             <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">매출내역</a><hr>
                             <ul class="collapse list-unstyled 1" id="pageSubmenu1">
                                 <li>
-                                    <a href="#">일별 매출</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/salesDay">일별 매출</a>
                                 </li>
                                 <li>
                                     <a href="#">월별 매출</a>
