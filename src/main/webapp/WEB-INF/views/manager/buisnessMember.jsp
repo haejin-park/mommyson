@@ -97,14 +97,14 @@
     				modalInfo : modalInfo
     			},
     			success : function(data){
-    				console.log(data[0]);
+    				console.log(data);
     				ceoNum.text(data.ceo.no);
-    				ceoName.text();
-    				ceoEnrollDate.text();
-    				ceoId.text();
-    				ceoEmail.text();
-    				ceoStore.text();
-    				ceoAddress.text();
+    				ceoName.text(data.ceo.name);
+    				ceoEnrollDate.text(data.enrollDate);
+    				ceoId.text(data.memId);
+    				ceoEmail.text(data.email);
+    				ceoStore.text(data.ceo.store.storeName);
+    				ceoAddress.text(data.address);
     				ceoPaymentDay.text();
     				ceoBuyItem.text();
     				ceoExpiryDate.text();
@@ -142,27 +142,27 @@
                                 </tr>
                                 <tr>
                                     <th>대표자명</th>
-                                    <td class="infoName">관리자</td>
+                                    <td class="infoName"></td>
                                 </tr>
                                 <tr>
                                     <th>가입일</th>
-                                    <td class="infoEnrollDate">2021-11-25</td>
+                                    <td class="infoEnrollDate"></td>
                                 </tr>
                                 <tr>
                                     <th>아이디</th>
-                                    <td class="infoId">user01</td>
+                                    <td class="infoId"></td>
                                 </tr>
                                 <tr>
                                     <th>이메일</th>
-                                    <td class="infoEmail">vwnua@naver.com</td>
+                                    <td class="infoEmail"></td>
                                 </tr>
                                 <tr>
                                     <th>가게정보</th>
-                                    <td class="infoStore">더조은가게</td>
+                                    <td class="infoStore"></td>
                                 </tr>
                                 <tr>
                                     <th>주소</th>
-                                    <td class="infoAddress">서울특별시 서초구 서초대로78길 48 송림빌딩 13층</td>
+                                    <td class="infoAddress"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -180,21 +180,21 @@
                         <tbody>
                             <tr>
                                 <th>결제일</th>
-                                <td class="infoPaymentDay">2021-11-23</td>
+                                <td class="infoPaymentDay"></td>
                                 <th>구매품목</th>
-                                <td class="infoBuyItem">3개월 이용권</td>
+                                <td class="infoBuyItem"></td>
                             </tr>
                             <tr>
                                 <th>만료일</th>
-                                <td class="infoExpiryDate">2022-02-23</td>
+                                <td class="infoExpiryDate"></td>
                                 <th>결제금액</th>
-                                <td class="infoPaymentPrice">70,000</td>
+                                <td class="infoPaymentPrice"></td>
                             </tr>
                             <tr>
                                 <th></th>
                                 <td></td>
                                 <th class="infoPaymentAllPrice">총 결제금액</th>
-                                <td>700,000</td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>

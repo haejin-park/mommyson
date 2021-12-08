@@ -65,7 +65,8 @@
    	  	 FROM MEMBER_TBL A
    	  	 <where>
 	   	  	<if test="memberTypeUser">
-		      	A.MEM_TYPE = 'user'
+		      	A.MEM_TYPE = 'user' AND
+		      	A.IS_DELETED = 'N'
 		    </if>
 		    <if test="memberTypeCeo">
 		    	A.MEM_TYPE = 'ceo'
@@ -246,6 +247,7 @@
 			 , B.ACCOUNT
 			 , B.STORE_NO
 			 , B.CEO_NAME
+			 , C.STORE_NAME
 			 , E.MS_CODE
 			 , E.MS_TYPE
 			 , E.MS_DATE

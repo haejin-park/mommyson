@@ -47,7 +47,7 @@ public interface ManagerService {
 	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList);
 
 	/* 사업자 상세정보 조회 */
-	public List<MemberDTO> selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
+	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
 
 }

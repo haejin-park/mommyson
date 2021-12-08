@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
@@ -248,16 +249,16 @@ public class ManagerController {
 	 * @return
 	 * @author leeseungwoo
 	 */
-	@PostMapping(value = "ceoDetailInfo", produces = "Application/json; charset=UTF-8;")
+	@PostMapping(value = "ceoDetailInfo", produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public List<MemberDTO> ceoDetailInfo(@RequestParam("modalInfo") int ceoNum) {
+	public MemberDTO ceoDetailInfo(@RequestParam("modalInfo") int ceoNum) throws JsonProcessingException {
 		
 		System.out.println("들어옴");
 		
 		Map<String, Object> ceoDetailInfo = new HashMap<>();
 		ceoDetailInfo.put("ceoNum", ceoNum);
 		
-		List<MemberDTO> ceoDetailInfos = managerService.selectCeoDetailInfo(ceoDetailInfo);
+		MemberDTO ceoDetailInfos = managerService.selectCeoDetailInfo(ceoDetailInfo);
 		
 		System.out.println("ceoDetailInfos : " + ceoDetailInfos);
 		

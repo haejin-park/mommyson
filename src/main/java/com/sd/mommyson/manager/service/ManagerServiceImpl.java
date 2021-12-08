@@ -121,9 +121,9 @@ public class ManagerServiceImpl implements ManagerService {
    }
 
 	@Override
-	public List<MemberDTO> selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
+	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
 		
-		List<MemberDTO> ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
+		MemberDTO ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
 		
 		return ceoDetailInfos;
 	}

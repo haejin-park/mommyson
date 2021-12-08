@@ -39,6 +39,6 @@ public interface ManagerDAO {
 
 	int selectNormalMemberTotalCount(Map<String, Object> searchMap);
 
-	List<MemberDTO> selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
+	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
 }
