@@ -3,6 +3,7 @@ package com.sd.mommyson.owner.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
@@ -33,5 +34,7 @@ public interface OwnerService {
 
 	public int registProduct(Map<String, Object> productInfo);
 
-	public List<ProductDTO> selectProduct(int memCode);
+	public List<ProductDTO> selectProduct(Map<String, Object> searchMap);
+
+	public int selectTotalCount(Map<String, Object> searchMap);
 }
