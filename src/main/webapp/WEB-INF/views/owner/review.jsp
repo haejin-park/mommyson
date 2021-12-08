@@ -34,7 +34,7 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="" id=""></th>
+                <th scope="col"><input type="checkbox" name="" id="allCheck"></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -44,9 +44,10 @@
               <tr>
                 <th scope="row"><input type="checkbox" name="" id=""></th>
                 <c:forEach var="review" items="${ reviews }">
-                <th>${ loginMember.nickname }</th>
-                <td>로찜마</td>
-                <td>로제찜닭 너무 맛있네요~</td>
+                <th>${ rivew.orderDTO.nickname }</th>
+                <td>${ review.rvCode }</td>
+                <td>${ review.content }</td>
+
                 </c:forEach>
               </tr>
              
@@ -76,7 +77,17 @@
               </nav>
         </div>
       </div>
-    
+    	
+    <script>
+	  $("#allCheck").click(function(){
+	      if($("#allCheck").prop("checked")){
+	        $("input[type=checkbox]").prop("checked",true);
+	      } else{
+	        $("input[type=checkbox]").prop("checked",false);
+	      }
+	    });
+	</script>
+    <!-- 모오오오다라라라라랄 -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="left: -180px; top: -50px;">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
       <div class="modal-dialog modal-dialog-scrollable" >

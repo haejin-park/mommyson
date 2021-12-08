@@ -12,8 +12,8 @@
     	<result property="postContent" column="POST_CONTENT"/>
     	<result property="postDate" column="POST_DATE"/>
     	<result property="ansStatus" column="ANS_STATUS"/>
-    	<result property="QuestionNo" column="QUE_NO"/>
-    	<result property="Status" column="STATUS"/>
+    	<result property="questionNo" column="QUE_NO"/>
+    	<result property="status" column="STATUS"/>
     	<result property="viewCnt" column="VIEW_CNT"/>
     </resultMap>
     
@@ -226,7 +226,6 @@
 					  ) A
 				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	  
 		 	   WHERE A.RNUM >= #{ startRow }	
-    
     </select>
 	 
     

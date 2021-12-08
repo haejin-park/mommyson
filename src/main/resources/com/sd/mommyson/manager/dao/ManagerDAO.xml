@@ -154,7 +154,15 @@
 						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
 						  LEFT JOIN CEO_TBL F ON (A.MEM_CODE = F.MEM_CODE)
 						  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
-						 WHERE A.IS_DELETED = 'N'
+						  <where>
+						  	A.IS_DELETED = 'N' AND
+						  	<if test='searchCondition == "user"'>
+						  		A.MEM_TYPE = 'user'
+						  	</if>
+						  	<if test='searchCondition == "ceo"'>
+						  		A.MEM_TYPE = 'ceo'
+						  	</if>
+						  </where>
 						 ORDER BY A.ENROLL_DATE DESC)B
 				 <![CDATA[        
 		          WHERE ROWNUM <= #{ endRow }

@@ -69,7 +69,7 @@ public class OwnerController {
 		return "owner/ownerMain";
 	}
 	
-	/* 쿠폰 발행 */
+	/* 쿠폰  리스트 */
 	@GetMapping("coupon")
 	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
@@ -83,7 +83,7 @@ public class OwnerController {
 	}
 	
 
-	
+	/* 쿠폰등록*/
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
 	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session,  HttpServletRequest request) {
 															  // 리다이렉트를 해줄때 값을 넘겨주는...........
@@ -269,7 +269,6 @@ public class OwnerController {
 			mkdir.mkdirs();
 		}
 		
-		if(!productImg.isEmpty()) {
 		
 			String orginFileName = productImg.getOriginalFilename();
 			String ext = orginFileName.substring(orginFileName.indexOf("."));
@@ -284,21 +283,18 @@ public class OwnerController {
 				
 				
 			} catch (IllegalStateException | IOException e) {
-				new File(filePath + "/" + savedName).delete();
-					
+				new File(filePath + "/" + savedName).delete();	
 				e.printStackTrace();
 			}
-		
-		}
-		
-		int result = ownerService.registProduct(productInfo);
-		
-		if(result > 0) {
-			rd.addFlashAttribute("message","상품이 등록되었습니다.");
-		} else {
-			rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
-		}
-		
+			
+			int result = ownerService.registProduct(productInfo);
+			
+			if(result > 0) {
+				rd.addFlashAttribute("message","상품이 등록되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
+				new File(filePath + "/" + savedName).delete();
+			}
 		
 		return "redirect:productManagement";
 	}
@@ -308,11 +304,14 @@ public class OwnerController {
 	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
 		
 		List<ReviewDTO> reviews = ownerService.selectReview(review);
-		System.out.println(reviews);	
+		System.out.println(reviews);
+		
+		model.addAttribute("reviews", reviews);
 		
 		return "owner/review";	
 		
 	}
+
 	
 	
 	/* 판매상품 관리 */
