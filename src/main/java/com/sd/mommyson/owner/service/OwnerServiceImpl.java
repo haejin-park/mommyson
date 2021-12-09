@@ -143,7 +143,7 @@ public class OwnerServiceImpl implements OwnerService{
 		return result;
 	}
 	
-	@Override
+	@Override	
 	public int modifyStatus(ProductDTO product) {
 
 		int result = ownerDAO.modifyStatus(product);
@@ -166,7 +166,7 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return result;
 	}
-
+	
 	@Override
 	public List<ProductDTO> selectDC(Map<String, Object> searchMap) {
 

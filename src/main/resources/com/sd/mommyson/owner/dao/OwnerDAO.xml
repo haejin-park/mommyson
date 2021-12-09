@@ -44,8 +44,15 @@
 		<result property="memId" column="MEM_ID"/>
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
-		<collection property="user" resultMap="userResultMap"/>
-		<collection property="ceo" resultMap="ceoResultMap"/>
+		<association property="user" resultMap="userResultMap"/>
+		<association property="ceo" resultMap="ceoResultMap"/>
+		<association property="manager" resultMap="managerResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="lastLogin" column="LAST_LOGIN"/>
+		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
@@ -89,6 +96,29 @@
 		<result property="status" column="STATUS"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+		<id property="sdCode" column="SD_CODE"/>
+		<result property="sdName" column="SD_NAME"/>
+		<result property="mDate" column="M_DATE"/>
+		<result property="price" column="PRICE"/>
+		<result property="ingredient" column="INGREDIENT"/>
+		<result property="volume" column="VOLUME"/>
+		<result property="sdImg" column="SD_IMG"/>
+		<result property="category" column="CATEGORY"/>
+		<result property="discountRate" column="DISCOUNT_RATE"/>
+		<result property="memCode" column="MEM_CODE"/>
+		<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+		<result property="eDate" column="EXPIRY_DATE"/>
+		<result property="isDeleted" column="IS_DELETED"/>
+		<result property="categoryCode" column="CATEGORY_CODE"/>
+		<result property="storageMethod" column="STORAGE_METHOD"/>
+		<result property="detail" column="SD_DETAIL"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
+		<id property="locationCode" column="LOCATION_CODE"/>
+		<result property="locationName" column="LOCATION_NAME"/>
+	</resultMap>
 	
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
@@ -304,6 +334,37 @@
   		 WHERE STATUS = 'Y'  
 	</select>
 	
+	<!-- 상품등록을 위한 쿼리문 -->
+	<insert id="registProduct" parameterType="hashmap">
+		INSERT ALL
+		  INTO PRODUCT_TBL 
+		VALUES
+	    (
+		  SEQ_PRODUCT.NEXTVAL,
+		  #{ product.sdName },
+		  #{ product.mDate },
+		  #{ product.price },
+		  #{ product.ingredient },
+		  #{ product.volume },
+		  #{ fileName },
+		  #{ product.category },
+		  default,
+		  #{ memCode },
+		  #{ product.orderableStatus },
+		  #{ product.eDate },
+		  default,
+		  #{ product.categoryCode },
+		  #{ product.storageMethod },
+		  #{ product.detail }
+	    )
+	    <foreach collection="tagList" item="item">
+	    INTO PRODUCT_TAG_TBL 
+	    VALUES
+	      (SEQ_PRODUCT.CURRVAL, #{ item }) 
+	      </foreach>
+	    SELECT * FROM DUAL
+	</insert>
+	
 	<!-- 리뷰삭제 -->
 	<delete id="deleteReview" parameterType="list">
 	 DELETE FROM REVIEW_TBL 
@@ -326,6 +387,44 @@
 	     	</foreach>
 	  </where> 
 	</delete>
+	
+	<!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
+	<select id="selectTotalCount" resultType="_int">
+		SELECT
+		      COUNT(*)
+		 FROM PRODUCT_TBL
+		<where>
+		  IS_DELETED = 'N' 
+		  <if test="searchValue != null and searchValue != '' ">
+		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+		  </if>
+		  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+		  	AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+		  </if>
+		  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+		  	AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+		  </if>
+		  <if test="eDate == null and eDate == '' and eDate2 != null and eDate2 != '' ">
+		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+		  </if>
+		  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+		  	AND M_DATE IN (#{ mDate } , #{ mDate2 })
+		  </if>
+		  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+		  	AND M_DATE <![CDATA[ <= ]]> #{ mDate }
+		  </if>
+		  <if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
+		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+		  </if>
+		  <if test="status == 'Y'.toString() ">
+		  	AND ORDERABLE_STATUS = 'Y' 
+		  </if>
+		  <if test="status == 'N'.toString() ">
+		  	AND ORDERABLE_STATUS = 'N'
+		  </if>
+		    AND MEM_CODE = #{ memCode }
+		</where>
+	</select>
 	
    <!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
    <select id="selectTotalCount" resultType="_int">
