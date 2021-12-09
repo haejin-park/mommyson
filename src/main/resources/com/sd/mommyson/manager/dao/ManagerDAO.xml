@@ -59,20 +59,44 @@
 		<result property="repCount" column="REP_COUNT"/>
 	</resultMap>
 	
+	
 	<select id="selectNormalMemberTotalCount" resultType="_int">
 	    SELECT
-   	  	  COUNT(*)
-   	  	 FROM MEMBER_TBL A
+   	  	       COUNT(*)
+   	  	  FROM MEMBER_TBL A
+   	  	  LEFT JOIN CEO_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+   	  	  LEFT JOIN STORE_TBL C ON (B.MEM_CODE = C.MEM_CODE)
    	  	 <where>
+   	  	 	<if test='searchValue != null and memberTypeUser'>
+   	  	 		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+	   	  	</if>
+	   	  	<if test='searchValue != null and memberTypeCeo'>
+	   	  		A.MEM_TYPE = 'ceo' AND
+	   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		B.CEO_NAME LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		C.STORE_NAME LIKE '%' ||  #{ searchValue } || '%') AND
+	   	  	</if>
+	   	  	<if test='searchValue != null and blackMember'>
+	   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+	   	  	</if>
 	   	  	<if test="memberTypeUser">
-		      	A.MEM_TYPE = 'user'
+		      	A.MEM_TYPE = 'user' AND
+		      	A.IS_DELETED = 'N'
 		    </if>
 		    <if test="memberTypeCeo">
 		    	A.MEM_TYPE = 'ceo'
 		    </if>
-   	  	 	<if test="searchValue != null">
-   	  	 		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%'
-   	  	 	</if>
+		    <if test="blackMember">
+		    	A.IS_DELETED = 'B'
+		    </if>
    	  	 </where>
 	</select>
 	
@@ -155,15 +179,40 @@
 						  LEFT JOIN CEO_TBL F ON (A.MEM_CODE = F.MEM_CODE)
 						  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
 						  <where>
-						  	A.IS_DELETED = 'N' AND
+						  	<if test='searchValue != null and searchCondition == "user"'>
+					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+					   	  	</if>
+					   	  	<if test='searchValue != null and searchCondition == "ceo"'>
+					   	  		A.MEM_TYPE = 'ceo' AND
+					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		F.CEO_NAME LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		D.STORE_NAME LIKE '%' ||  #{ searchValue } || '%') AND
+					   	  	</if>
+					   	  	<if test='searchValue != null and searchCondition == "black"'>
+					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+					   	  	</if>
 						  	<if test='searchCondition == "user"'>
-						  		A.MEM_TYPE = 'user'
+						  		A.IS_DELETED = 'N' AND
+						  		A.MEM_TYPE = 'user' 
 						  	</if>
 						  	<if test='searchCondition == "ceo"'>
-						  		A.MEM_TYPE = 'ceo'
+						  		A.IS_DELETED = 'N' AND
+						  		A.MEM_TYPE = 'ceo' 
+						  	</if>
+						  	<if test='searchCondition == "black"'>
+						  		A.IS_DELETED = 'B' AND
+						  		A.MEM_TYPE = 'user'
 						  	</if>
 						  </where>
-						 ORDER BY A.ENROLL_DATE DESC)B
+						 ORDER BY A.MEM_CODE DESC)B
 				 <![CDATA[        
 		          WHERE ROWNUM <= #{ endRow }
 		          ]]>)C
@@ -221,6 +270,57 @@
 	     	</foreach>
 	   	 </where>
 	</update>
+	
+	<update id="terminateBlack" parameterType="list">
+		UPDATE
+		       MEMBER_TBL A
+		   SET A.IS_DELETED = 'N'
+		 <where>
+	     	A.MEM_CODE IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	   	 </where>
+	</update>
+	
+	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
+	    SELECT
+	           A.MEM_CODE
+			 , A.EMAIL
+			 , A.ADDRESS
+			 , A.POST_CODE
+			 , A.D_ADDRESS
+			 , A.PHONE
+			 , A.LOCATION_CODE
+			 , A.NICKNAME
+			 , A.MEM_ID
+			 , A.ENROLL_DATE
+			 , A.IS_DELETED
+			 , B.ACCOUNT
+			 , B.STORE_NO
+			 , B.CEO_NAME
+			 , C.STORE_NAME
+			 , E.MS_CODE
+			 , E.MS_TYPE
+			 , E.MS_DATE
+			 , E.MS_PRICE
+		  FROM MEMBER_TBL A
+		  LEFT JOIN CEO_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+		  LEFT JOIN STORE_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		  LEFT JOIN MS_STORE_TBL D ON (C.MEM_CODE = D.MEM_CODE)
+		  LEFT JOIN MEMBERSHIP_TBL E ON (D.MS_CODE = E.MS_CODE)
+		 WHERE A.MEM_CODE = #{ ceoNum }
+	</select>
+	
+	<select id="selectReportTotalCount" resultType="_int">
+	    SELECT
+	           COUNT(*)
+	      FROM REPORT_TBL
+	</select>
+	
+	<!-- <select id="selectReportList" resultMap="">
+	
+	</select> -->
 	
 	<select id="selectAuth" resultMap="authResultMap">
 		SELECT

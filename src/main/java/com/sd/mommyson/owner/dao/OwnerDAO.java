@@ -39,11 +39,9 @@ public interface OwnerDAO {
 
 	public int selectTotalCount(Map<String, Object> searchMap);
 
-<<<<<<< HEAD
 	public int deleteReview(List<Integer> deleteReviewList);
 
 	public int deleteCoupon(List<Integer> deleteCouponList);
-=======
 	public int modifyStatus(ProductDTO product);
 
 	public int removeProduct(List<Integer> deleteCode);
@@ -51,6 +49,5 @@ public interface OwnerDAO {
 	public int selectTotalDC(Map<String, Object> searchMap);
 
 	public List<ProductDTO> selectDC(Map<String, Object> searchMap);
->>>>>>> 9b6cf8336b98b27801778f2024ea092d1e16525d
 	
 }

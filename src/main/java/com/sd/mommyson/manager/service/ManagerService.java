@@ -8,6 +8,7 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerService {
 
@@ -17,7 +18,7 @@ public interface ManagerService {
 	/* 회원 총 리스트 갯수 */
 	public int selectNormalMemberTotalCount(Map<String, Object> searchMap);
 
-	/* 일반회원삭제 */
+	/* 회원삭제 */
 	public boolean deleteMembers(List<Integer> deleteMemberList);
 	
 	public List<ManagerDTO> selectManagers(String string);
@@ -46,8 +47,17 @@ public interface ManagerService {
 	/* 회원 블랙등록 */
 	public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList);
 
-	/* 일반회원 검색 */
-	public List<MemberDTO> selectSearchMemberList(String searchMember);
-	
+	/* 사업자 상세정보 조회 */
+	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
+
+	/* 블랙해지 */
+	public boolean terminateBlack(List<Integer> blackMember);
+
+	/* 신고된 리뷰 총 갯수 */
+	public int selectReportTotalCount(Map<String, Object> searchMap);
+
+	/* 신고된 리뷰 조회 */
+//	public List<ReviewDTO> selectReportList(Pagination pagination);
+
 
 }
