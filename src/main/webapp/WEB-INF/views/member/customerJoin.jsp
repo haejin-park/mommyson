@@ -12,38 +12,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/customerJoin.css">
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
+   	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-   
-    <script>
-    // 아이디 중복확인
-    function idChk1(){
-    	let id = $('#id').val();
-    	$.ajax({
-    		url : "${ pageContext.servletContext.contextPath }/member/idChk",
-    		type : "post",
-    		data : {
-    			id : id
-    		},
-    		async: false,
-    		success:function(data){
-    			if(data == '1'){
-    				alert("중복된 아이디 입니다.");
-    			} else if(data == '0') {
-    				$('#idChk').attr("value","Y");
-    				alert("사용가능한 아이디 입니다.");
-    			}
-    			
-    		},
-    		error:function(error){
-    			alert(error);
-    		}
-    	});
-        
-    }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -57,7 +30,8 @@
         <div class="text">
             <form name="join_form" id="join_form" method="POST" onsubmit="return validate();"> 
             <input type="text" class="input1" name="memId" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
-            <button type="button" name="idChk" id="idChk" onclick="idChk1()" value="N">중복확인</button>
+            <button type="button" name="idChk" id="idChk" onclick="idChk1()">중복확인</button>
+            <input type="hidden" value="N" id="idChkHd">
             <br><br>
             <input type="password" class="input1" name="memPwd" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
             <br><br>
@@ -70,6 +44,9 @@
             <input type="text" class="input1" name="phone" id="phone" placeholder="전화번호를 입력해주세요">
             <br><br>
             <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
+            <button type="button" name="emailChk" id="emailChk" onclick="emailChk1()" 
+            style=" height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">중복확인</button>
+            <input type="hidden" value="N" id="emailChkHd">
             <button  type="submit" class ="submit"  name="submit" id="submit">전송</button>
             <br><br>
             <input type="number" class="code" name="code" id="code" placeholder="인증번호를 입력해주세요">
@@ -88,7 +65,7 @@
             <br><br>
         
             <!-- 모달 띄우기 -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop"id="terms">약관 보기</button> 
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" id="terms" value ="N" onclick="terms1()">약관 보기</button> 
             <br>
 
             <!--약관 Modal -->
@@ -133,20 +110,21 @@
             </div> 
             <!-- <input hidden="hidden"/> -->
             <input type=checkbox id="all" name="all">
+            <input type="hidden" id="allHd" value="N">
             <span>약관 전체 동의</span> 
             <br>
-            <input type=checkbox name="checkbox">
+            <input type=checkbox name="checkbox" id="checkbox">
             <span>만 14세 이상<strong>(필수)</strong></span>
             <br>
-            <input type=checkbox name="checkbox">
+            <input type=checkbox name="checkbox" id="checkbox">
             <span>개인정보 처리방침<strong>(필수)</strong></span>
             <br>
-            <input type=checkbox name="checkbox">
+            <input type=checkbox name="checkbox" id="checkbox">
             <span>서비스 이용 약관<strong>(필수)</strong></span>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <button type="submit" id="joinButton"  style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
+            <button type="submit" id="joinButton" style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
 
@@ -154,12 +132,9 @@
         </div>
     </div>
     <jsp:include page="../commons/footer.jsp"/>
-   
-   <!-- 인증번호 이메일 전송 -->
-
-   
-   
-     <script> 
+    <script> 
+     
+     /* =========================== 회원가입 정규식 ========================== */
         function validate(){
             var id = document.getElementById("id");
             var idChk = document.getElementById("idChk");
@@ -171,30 +146,24 @@
             var email = document.getElementById("email");
             var code = document.getElementById("code");
             var zipCode = document.getElementById("zipCode");
-            var address1 = document.getElementById("address1");
-            var address2 = document.getElementById("address2");
-            var locationCodeButton = document.getElementById("locationCode");
+            var addr1 = document.getElementById("address1");
+            var addr2 = document.getElementById("address2");
+            var lCode = document.getElementById("locationCode");
             var all = document.getElementById("all");
             
-        
             if(id.value == ""){
                 alert("아이디를 입력해주세요.")
                 id.focus();
                 return false;
             }
-            if(!chk(/^[a-z][a-z\d]{3,11}$/,id,"아이디는 [영문,숫자] 4~12")){
+            if(!chk(/^[a-z][a-z\d]{3,11}$/,id,"아이디는 [영문,숫자] 4~12를 입력해주세요. ")){
                 return false;
             }
 
-            if(!chk(/[0-9]/,id,"아이디에 숫자 하나 이상 포함")){
+            if(!chk(/[0-9]/,id,"아이디에 숫자 하나 이상을 포함해주세요.")){
                 return false;
             }
 
-            if(idChk.value =='N'){
-	            alert("중복확인을 클릭해주세요.");
-	            return false;
-	        }
-            
 
             if(pwd1.value == ""){
                 alert("비밀번호를 입력해주세요.")
@@ -202,7 +171,7 @@
                 return false;
             }
 
-            if(!chk(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/,pwd1, "숫자+영문자+특수문자 조합으로 4~12글자를 입력해주세요.")){            
+            if(!chk(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/,pwd1, "비밀번호는 숫자+영문자+특수문자 조합으로 4~12글자를 입력해주세요.")){            
 	        return false;
             }
 
@@ -243,11 +212,17 @@
             }
 
             
-            if(nickName.value == ""){
-                alert("닉네임을 입력해주세요.")
-                nickName.focus()
+            if(email.value == ""){
+                alert("이메일을 입력해주세요.")
+                email.focus()
                 return false;
             }
+            
+
+            if(!chk(/^[\w]{4,}@[\w]+(\.[\w]+){1,3}$/,email,"이메일 형식에 어긋납니다.")){
+                return false;
+            }
+
 
 
             if(zipCode.value == ""){
@@ -255,50 +230,28 @@
                 zipCode.focus()
                 return false;
             }
-            if(address1.value == ""){
+            
+            if(addr1.value == ""){
                 alert("주소를 입력해주세요.")
-                address1.focus()
+                addr1.focus()
                 return false;
             }
-            if(address2.value == ""){
+            
+            if(addr2.value == ""){
                 alert("상세주소를 입력해주세요.")
-                address2.focus()
+                addr2.focus()
                 return false;
             }
 
-            
-            if(locationCode.value == 'N'){
-	            alert("지역코드를 클릭해주세요.");
-	            return false;
-	        }
-            
-            if(email.value == ""){
-                alert("이메일을 입력해주세요.")
-                email.focus()
-                return false;
-            }
 
-            if(!chk(/^[\w]{4,}@[\w]+(\.[\w]+){1,3}$/,email,"이메일 형식에 어긋납니다.")){
-                return false;
-            }
 
             if(code.value == ""){
-                alert("인증 번호를 입력해주세요.")
+                alert("전송 버튼을 눌러 이메일에 발송된 인증 번호를 입력해주세요.")
                 code.focus()
                 return false;
             }
             
-
-            if(all.checked == false){
-                alert("약관 전체 동의를 체크해주세요.");
-                return false;
-            }
-
         }
-        
-	 
-	    
-        
         
         function chk(re, ele, msg){
                 if(!re.test(ele.value)){
@@ -309,10 +262,111 @@
                 return true;
         }
 
+      /* ====================아이디 중복여부체크했는지확인하기 =========================*/
+	    $(function(){  
+	       $('#joinButton').click(function(){ 
+	    	  if($("#idChkHd").val() == 'N'){
+	    		  alert('아이디 중복확인을 해주세요.');
+	    		  return false;
+	    		  }
+	    		  
+	    	  }); 
+	      });
+       
+
+
+        /* ==================== 아이디 중복확인 =================== */
+ 
+		        
+	        function idChk1(){
+	        	
+	        	let id = $('#id').val();
+	        	let id2 = $('#id');
+	        	
+	            if(id == ""){
+	                alert("아이디를 입력해주세요.")
+	                id2.focus();
+	                return false;
+	                
+	            } else {     
+	            	
+		        	$.ajax({
+		        		url : "${ pageContext.servletContext.contextPath }/member/idChk",
+		        		type : "post",
+		        		data : {
+		        			id : id
+		        		},
+		        		async: false,
+		        		success:function(data){
+	        			
+		        			if(data == '1') {
+		        				alert("중복된 아이디 입니다.");
+		        				
+		        			} else if(data == '0') {
+		        				$('#idChkHd').attr("value","Y");
+		        				alert("사용가능한 아이디 입니다.");
+		        			}
+	        	  	 	},
+		         		error:function(error){
+		        			alert(error);
+		        			
+		        		}
+	        	  	 
+	        		});
+	        	            
+	           	 }
+	        	
+	    	 }
+	     
         
-    </script> 
-    
-    <script>
+        /* =======================이메일 중복여부 체크했는지 확인하기 ===================== */
+      	$(function(){
+      		$('#joinButton').click(function(){
+      			if($("#emailChkHd").val() == 'N'){
+      				alert('이메일 중복확인을 해주세요.');
+      				return false;
+      			}
+      		});
+      	});
+        
+        /* ============================= 이메일 중복확인  =========================== */
+        function emailChk1() {
+        	
+        	let email = $('#email').val();
+        	let email2 = $('#email');
+        	
+            if(email == ""){
+                alert("이메일을 입력해주세요.")
+                email2.focus();
+                return false;
+                
+            } else {     
+	        
+	    		$.ajax({
+	    			url : "${ pageContext.servletContext.contextPath }/member/emailChk",
+	    			type : "post",
+	    			data : {
+	    				email : email
+	    			}, 
+	    			async : false,
+	    			success : function(data){
+	    				console.log("data : " + data);  
+	    				if(data == '1'){
+	    					alert("중복된 이메일 입니다.");
+	    				} else if(data == '0'){
+	    					$('#emailChkHd').attr("value", "Y");
+	    					alert("사용가능한 이메일 입니다.");
+	    				}
+	    			},
+	    			error : function(error){
+	    				alert(error);
+    				}
+    			});
+            }
+        }
+        
+        
+		/* ===================== 이메일 전송 ====================== */
 		
         var code =""; /* 이메일전송 인증번호 저장을 위한 코드 */
         
@@ -329,9 +383,13 @@
     		});
     	});
         
-         /* 인증번호 비교(해당 메서드는 인증번호 입력란에 데이터를 입력한 뒤 마우스로 다른 곳을 클릭 시에 실행이 됩니다.) 
-	        일치할 경우 span태그에 "인증번호가 입치합니다."라는 문구와 class속성이 correct(초록색)로 변경됩니다. 
-			불일치할 경우 span태그에 "인증번호를 다시 확인해주세요."라는 문구와 class속성이 incorrect(빨간색)로 변경됩니다. 
+        
+      
+        
+         /* =====================인증번호 비교==================== */
+         /* (해당 메서드는 인증번호 입력란에 데이터를 입력한 뒤 마우스로 다른 곳을 클릭 시에 실행이 됩니다.) 
+	        일치할 경우 span태그에 "인증번호가 입치합니다."라는 문구와 class속성이 correct(초록색)로 변경됨.  
+			불일치할 경우 span태그에 "인증번호를 다시 확인해주세요."라는 문구와 class속성이 incorrect(빨간색)로 변경됨. 
         */
         
         $(".code").blur(function(){
@@ -348,51 +406,56 @@
 			}	
 			
         });
-    </script>
-        
-	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script>
+
+        /* =========================== 우편번호  검색 ============================= */
 		const $searchZipCode = document.getElementById("searchZipCode");
 		
-            $searchZipCode.onclick = function() {
-            
-                //다음 우편번호 검색 창을 오픈하면서 동작할 콜백 메소드를 포함한 객체를 매개변수로 전달한다.
-                new daum.Postcode({
-                    oncomplete: function(data){
-                        //팝업에서 검색결과 항목을 클릭했을 시 실행할 코드를 작성하는 부분
-                        document.getElementById("zipCode").value = data.zonecode;
-                        document.getElementById("address1").value = data.address;
-                        document.getElementById("address2").focus();
-                    }
-                }).open();
-            }
+         $searchZipCode.onclick = function() {
+         
+             //다음 우편번호 검색 창을 오픈하면서 동작할 콜백 메소드를 포함한 객체를 매개변수로 전달한다.
+             new daum.Postcode({
+                 oncomplete: function(data){
+                     //팝업에서 검색결과 항목을 클릭했을 시 실행할 코드를 작성하는 부분
+                     document.getElementById("zipCode").value = data.zonecode;
+                     document.getElementById("address1").value = data.address;
+                     document.getElementById("address2").focus();
+                 }
+             }).open();
+         }
+         
 
-	</script>
+         /* ============= 지역코드 체크여부 확인 알럿 ============= */
+   		$(function(){
+   			$('#joinButton').click(function(){
+   				if($('#locationCode').val() == 'N'){
+   					alert('지역코드를 클릭해주세요 ');
+   					return false;
+   				}
+   			});
+   		});
 
-	<script>
-    function locationCode1(){
-    	let address1 = $('#address1').val();
-    	$.ajax({
-    		url : "${ pageContext.servletContext.contextPath }/member/locationCode",
-    		type : "post",
-    		data : {
-    			address1 : address1
-    		},
-    		async: false,
-    		success:function(data){
-    			$("#locationCode").val(data);/* 서블릿에서 가져온 로케이션코드 밸류에 넣기  */
-    		},
-    		error:function(error){
-    			alert(error);
-    		}
-    	
-    	});
-    }
-    </script>
-  
-  
-    <script>
-        // 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선텍 된다
+		/* ======================== 지역 코드 ============================= */ 
+	    function locationCode1(){
+	    	let address1 = $('#address1').val();
+	    	$.ajax({
+	    		url : "${ pageContext.servletContext.contextPath }/member/locationCode",
+	    		type : "post",
+	    		data : {
+	    			address1 : address1
+	    		},
+	    		async: false,
+	    		success:function(data){
+	    			$("#locationCode").val(data);/* 서블릿에서 가져온 로케이션코드 밸류에 넣기  */
+	    		},
+	    		error:function(error){
+	    			alert(error);
+	    		}
+	    	
+	    	});
+	    }
+
+		
+        /* ============ 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선택됨 =========== */ 
         $("#all").on("change",function(){
             if($("#all").is(":checked")){
                 $("input[name=checkbox]").prop("checked",true);
@@ -401,7 +464,7 @@
             }
         });
 
-        // 이용약관 동의 모달창
+        /* ======================== 이용약관 동의 모달창 =====================*/
         $('#terms').click(function(e){
             $('#staticBackdrop').modal('show');
             e.preventDefault();
@@ -410,37 +473,39 @@
             $('#staticBackdrop').modal('hide');
         });
         
+      	/* ====================약관 체크 박스 클릭 확인 여부 ======================= */
         
-
-    </script>
-    
-	<script>
-	
-	$(document).ready(function(){
-		$("#joinButton").click(function(){
- 			/* if($("#all").checked== false){
-				alert("약관을 다 체크해야함");
- 				event.preventDefault();
-			} else */{ 
-			$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin2");
-			
-			$("#join_form").submit();
-		 	} 
-			
+      	$(function(){
+      		$('#joinButton').click(function(){
+      			if($('#all').is(":checked") && $('#checkbox').is(":checked")){
+      				$("#allHd").val() == 'Y'
+      			} else {	
+      				alert('약관 전체 동의를 클릭해 주세요. ');
+      				return false;
+      			}
+      			
+      		});
+      	});
+      
+		/* ==================== 회원가입버튼 클릭시 폼태그, 회원가입 서블렛 요청 ==================== */
+		$(document).ready(function(){
+			$("#joinButton").click(function(){
+				$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin2");
+				
+				$("#join_form").submit();
+				
+			});
 		});
-	});
+		
 	
-	</script>
-	
-	<!-- 회원가입 선택 페이지로 돌아가기 -->
-	<script>
-		const $goJoin = document.getElementById("goJoin");
-            $goJoin.onclick = function() {
-                location.href = "${ pageContext.servletContext.contextPath }/member/join";
-            }
+		/* ================= 회원가입 페이지로 돌아가기 =================*/
+			const $goJoin = document.getElementById("goJoin");
+	            $goJoin.onclick = function() {
+	                location.href = "${ pageContext.servletContext.contextPath }/member/join";
+	            }
 
+  
     </script>
-
-
+ 
 </body>
 </html>

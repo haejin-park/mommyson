@@ -75,11 +75,22 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
-
+	
+	/* 이메일 중복검사 */
+	@Override
+	public int emailChk(String email) {
+		
+		int result = memberDAO.emailChk(email);
+		
+		return result;
+	}
+	
 	/* 회원가입시 지역코드 조회 */
 	@Override
 	public String locationCode(String locationName) {
+		
 		String result = memberDAO.locationCode(locationName);
+		
 		return result;
 	}
 	
@@ -88,14 +99,25 @@ public class MemberServiceImpl implements MemberService {
 	/* 사용자 회원가입 */
 	@Override
 	public void customerJoin(MemberDTO member) throws Exception{
+		
 		memberDAO.customerJoin(member);
+		
 	}
 
+	/* 아이디 찾기 */
 	@Override
-	public String findId2(String name, String email) throws Exception{
+	public String findIdCheck(MemberDTO dto) {
 		
-		String result = memberDAO.findId2(name, email);
-		return result;
+		String member = memberDAO.findIdCheck(dto);
+	
+		return member;
 	}
+
+
+
+	
+	
+
+	
 
 }

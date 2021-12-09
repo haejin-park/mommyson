@@ -3,13 +3,13 @@ package com.sd.mommyson.member.controller;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.member.service.MemberService;
 
 
@@ -36,7 +37,10 @@ public class MemberController {
 	@Autowired	
 	private MemberService memberService; 
 
-
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	
 	@Autowired				 
 	JavaMailSender mailSender;   
 
@@ -108,7 +112,22 @@ public class MemberController {
 
 
 	}
-
+	
+	/* 이메일 중복 검사 */
+	@PostMapping(value ="emailChk", produces="text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String emailChk(@RequestParam String email) throws Exception {
+		System.out.println("email : " + email);
+		int result = memberService.emailChk(email);
+		System.out.println("result : " + result);
+		String re = "";
+		if(result > 0) {
+			re = "1";
+		} else {
+			re = "0";
+		}
+		return re;
+	}
 	
 	/* 주소에서 구 가져오기 */
 	@PostMapping(value="locationCode", produces="text/plain; charset=UTF-8;")
@@ -170,11 +189,22 @@ public class MemberController {
 		return num;
 	}
 	
+
 	
 	/* 회원가입 */
 	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
 	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
-
+//
+//		String rawPw = "";
+//		String encodePw = "";
+//		
+//		rawPw = member.getMemPwd(); //비밀번호 데이터 얻음 
+//		encodePw = pwEncoder.encode(rawPw); //비밀번호 인코딩 
+//		member.setMemPwd(encodePw); //인코딩 비밀번호 member 객체에 다시 저장 
+		
+		member.setMemPwd(passwordEncoder.encode(member.getMemPwd()));
+		
+		
 		System.out.println(member);
 		logger.info("join진입");
 		
@@ -191,16 +221,26 @@ public class MemberController {
 	@GetMapping("findId")
 	public void findId() {}
 	
+	
 	/* 아이디 찾기 */
-	@RequestMapping(value="findId2", method = RequestMethod.POST)
+	@PostMapping(value = "findIdCheck", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
-	public String findId2(@ModelAttribute String name, String email) throws Exception{
+	public String findIdCheck(@RequestParam String name, @RequestParam String email) {
 		System.out.println(name);
 		System.out.println(email);
-	
-		String result = memberService.findId2(name, email);
-		return result;
 		
+		MemberDTO m = new MemberDTO();
+		UserDTO u = new UserDTO();
+		u.setName(name);
+		m.setUser(u);
+		m.setEmail(email);
+		System.out.println(m);
+		String member = memberService.findIdCheck(m);
+		System.out.println(member);
+		 return member;
 	}
+	
+	@GetMapping("findPwd")
+	public void findPwd() {}
 	
 }

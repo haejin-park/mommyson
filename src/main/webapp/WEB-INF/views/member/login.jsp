@@ -34,7 +34,7 @@
         <br>
         <a href="${ pageContext.servletContext.contextPath }/member/findId">아이디 찾기</a> &nbsp; 
         <a href="${ pageContext.servletContext.contextPath }/member/findPwd">비밀번호 찾기</a> &nbsp; 
-        <a href="${ pageContext.servletContext.contextPath }/member/goJoin">회원가입</a> 
+        <a href="${ pageContext.servletContext.contextPath }/member/join">회원가입</a> 
     </div>
     <br><br>
     <jsp:include page="../commons/footer.jsp"/>
@@ -74,6 +74,11 @@
             $goMain.onclick = function() {
                 location.href = "${ pageContext.servletContext.contextPath }/";
             }
+            
+   		const $goJoin = document.getElementById("goJoin");
+           $goJoin.onclick = function() {
+               location.href = "${ pageContext.servletContext.contextPath }/join";
+           }
 
     </script>
           
