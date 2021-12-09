@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,11 +20,10 @@
         <jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
         
         <div class="board_container">
-            <h2>가게 신고 현황</h2>
+            <h2>리뷰 신고 현황</h2>
             <div class="top_box2">
                 <input type="button" value="전체" style="color:  #F89E91;" >
                 <span><input type="button" value="신고접수" ></span>
-                <span><input type="button" value="처리중" ></span>
                 <span><input type="button" value="처리완료" ></span>
             </div>
             <hr>
@@ -38,69 +38,36 @@
                         <col width=""/>
                         <col width=""/>
                         <col width=""/>
-                        <col width=""/>
-                        <col width=""/>
                     </colgroup>
                     <thead style="background-color: #EDEDED;">
-                      <tr>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>아이디</th>
-                        <th>문의날짜</th>
-                        <th>처리 상황</th>
-                      </tr>
+                    	<tr>
+	                        <th>번호</th>
+	                        <th>신고유형</th>
+	                        <th>리뷰내용</th>
+	                        <th>신고대상</th>
+	                        <th>신고날짜</th>
+	                        <th>처리 상황</th>
+	                        <th>처리 분류</th>
+                    	</tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>001</td>
-                        <td>이상한 음식을 팔아요</td>
-                        <td>혜찌마요</td>
-                        <td>2021-11-10</td>
-                        <td>신고접수</td>
-                      </tr>
-                      <tr>
-                        <td>002</td>
-                        <td>폐업한 가게에요</td>
-                        <td>지지마요</td>
-                        <td>2021-11-12</td>
-                        <td>처리중</td>
-                      </tr>
-                      <tr>
-                        <td>003</td>
-                        <td>배달 반찬이 다 쏟아져서 왔어요</td>
-                        <td>따띠마요</td>
-                        <td>2021-11-13</td>
-                        <td>처리완료</td>
-                      </tr>
+                    	<%-- <c:forEach items="${ requestScope.reportList }" var="rp"> --%>
+		                    <tr>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                    </tr>
+	                    <%-- </c:forEach> --%>
                     </tbody>
                   </table>
-                  <br><br>
                 </div>
             </div>
             <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
-                <ul class="pagination">
-                  <li class="page-item"><a class="page-link-move" href="#">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link-move" href="#">&lt;</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                  <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                  <li class="page-item"><a class="page-link-move" href="#">&gt;</a></li>
-                  <li class="page-item"><a class="page-link-move" href="#">&raquo;</a></li>
-                </ul>
-                <ul>
-                    <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                    <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                    <button type="submit" class="searchbutton">검색하기</button></li>
-                 </ul>
-              </nav>
+            <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
 

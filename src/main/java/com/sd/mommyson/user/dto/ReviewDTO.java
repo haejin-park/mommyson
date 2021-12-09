@@ -9,13 +9,14 @@ public class ReviewDTO {
 	private int grade;
 	private int rvCode;
 	private OrderDTO orderDTO;
+	private ReportDTO reportDTO;
 	
 	public ReviewDTO() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReviewDTO(int memCode, int orderCode, String img, String content, int grade, int rvCode, OrderDTO orderDTO) {
+	public ReviewDTO(int memCode, int orderCode, String img, String content, int grade, int rvCode, OrderDTO orderDTO,
+			ReportDTO reportDTO) {
 		super();
 		this.memCode = memCode;
 		this.orderCode = orderCode;
@@ -24,6 +25,7 @@ public class ReviewDTO {
 		this.grade = grade;
 		this.rvCode = rvCode;
 		this.orderDTO = orderDTO;
+		this.reportDTO = reportDTO;
 	}
 
 	public int getMemCode() {
@@ -82,12 +84,19 @@ public class ReviewDTO {
 		this.orderDTO = orderDTO;
 	}
 
+	public ReportDTO getReportDTO() {
+		return reportDTO;
+	}
+
+	public void setReportDTO(ReportDTO reportDTO) {
+		this.reportDTO = reportDTO;
+	}
+
 	@Override
 	public String toString() {
 		return "ReviewDTO [memCode=" + memCode + ", orderCode=" + orderCode + ", img=" + img + ", content=" + content
-				+ ", grade=" + grade + ", rvCode=" + rvCode + "]";
+				+ ", grade=" + grade + ", rvCode=" + rvCode + ", orderDTO=" + orderDTO + ", reportDTO=" + reportDTO
+				+ "]";
 	}
-
-	
 	
 }

@@ -8,6 +8,7 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerDAO {
 
@@ -42,5 +43,9 @@ public interface ManagerDAO {
 	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
 	int terminateBlack(List<Integer> blackMember);
+
+	int selectReportTotalCount(Map<String, Object> searchMap);
+
+//	List<ReviewDTO> selectReportList(Pagination pagination);
 
 }

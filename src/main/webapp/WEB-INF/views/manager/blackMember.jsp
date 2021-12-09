@@ -62,7 +62,7 @@
 		                        <td>${ nm.enrollDate }</td>
 		                        <td>${ nm.ceo.store.storeName }</td>
 		                        <td></td>
-		                        <td><a href="" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
+		                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
 			                </tr>
 	                	</c:forEach>
 	                </tbody>

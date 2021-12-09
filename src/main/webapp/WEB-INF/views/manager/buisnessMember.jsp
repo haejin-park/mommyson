@@ -64,7 +64,9 @@
 		                        <td>${ nm.enrollDate }</td>
 		                        <td>${ nm.ceo.store.storeName }</td>
 		                        <td></td>
-		                        <td><a href="javascript:void(0);" onclick="clickDetailInfo(this);" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
+		                        <td>
+		                        	<a href="javascript:void(0);" onclick="clickDetailInfo(this);" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
+	                        	</td>
 		                    </tr>
 	                    </c:forEach>
 	                </tbody>
@@ -75,50 +77,6 @@
         </div>
     </div>
     
-    <script>
-    	function clickDetailInfo(e){
-    		const modalInfo = e.parentNode.parentNode.firstElementChild.firstChild.value;
-    		const ceoNum = $('.txt_info_box .infoNum');
-    		const ceoName = $('.txt_info_box .infoName');
-    		const ceoEnrollDate = $('.txt_info_box .infoEnrollDate');
-    		const ceoId = $('.txt_info_box .infoId');
-    		const ceoEmail = $('.txt_info_box .infoEmail');
-    		const ceoStore = $('.txt_info_box .infoStore');
-    		const ceoAddress = $('.txt_info_box .infoAddress');
-    		const ceoPaymentDay = $('.modal_footer .infoPaymentDay');
-    		const ceoBuyItem = $('.modal_footer .infoBuyItem');
-    		const ceoExpiryDate = $('.modal_footer .infoExpiryDate');
-    		const ceoPaymentPrice = $('.modal_footer .infoPaymentPrice');
-    		const ceoPaymentAllPrice = $('.modal_footer .infoPaymentAllPrice');
-    		
-    		$.ajax({
-    			url : '${ pageContext.servletContext.contextPath }/manager/ceoDetailInfo',
-    			type : 'POST',
-    			data : {
-    				modalInfo : modalInfo
-    			},
-    			success : function(data){
-    				console.log(data);
-    				ceoNum.text(data.ceo.no);
-    				ceoName.text(data.ceo.name);
-    				ceoEnrollDate.text((new Date(data.enrollDate)).toLocaleDateString());
-    				ceoId.text(data.memId);
-    				ceoEmail.text(data.email);
-    				ceoStore.text(data.ceo.store.storeName);
-    				ceoAddress.text(data.address);
-    				ceoPaymentDay.text();
-    				ceoBuyItem.text();
-    				ceoExpiryDate.text();
-    				ceoPaymentPrice.text();
-    				ceoPaymentAllPrice.text();
-    			},
-    			error : function(error){
-    				console.log(error);
-    			}
-    		});
-    	}
-    </script>
-  
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -206,18 +164,61 @@
 	<jsp:include page="../commons/footer.jsp"></jsp:include>
 
     <script>
-         $("#homeSubmenu1").addClass("show");
-         $("#homeSubmenu1 > li:nth-child(2) > a").attr("style","color: #F89E91 !important");
+    		
+        $("#homeSubmenu1").addClass("show");
+        $("#homeSubmenu1 > li:nth-child(2) > a").attr("style","color: #F89E91 !important");
          
-         $("#chk_all").click(function(){
-    	   	 let chk = $(this).is(":checked");
-    	   	 if(chk){
-    	   		 $(".board_table > tbody > tr th input").prop('checked', true);
-    	   	 } else{
-    	   		 $(".board_table > tbody > tr th input").prop('checked', false);
-    	   	 }
-    	   	 
+        $("#chk_all").click(function(){
+    	   	let chk = $(this).is(":checked");
+    	   	if(chk){
+    	   		$(".board_table > tbody > tr th input").prop('checked', true);
+    	   	} else{
+    	   		$(".board_table > tbody > tr th input").prop('checked', false);
+    	   	}
    	    });
+         
+         /* 사업자 상세 정보 조회 */
+		function clickDetailInfo(e){
+			const modalInfo = e.parentNode.parentNode.firstElementChild.firstChild.value;
+			const ceoNum = $('.txt_info_box .infoNum');
+			const ceoName = $('.txt_info_box .infoName');
+			const ceoEnrollDate = $('.txt_info_box .infoEnrollDate');
+			const ceoId = $('.txt_info_box .infoId');
+			const ceoEmail = $('.txt_info_box .infoEmail');
+			const ceoStore = $('.txt_info_box .infoStore');
+			const ceoAddress = $('.txt_info_box .infoAddress');
+			const ceoPaymentDay = $('.modal_footer .infoPaymentDay');
+			const ceoBuyItem = $('.modal_footer .infoBuyItem');
+			const ceoExpiryDate = $('.modal_footer .infoExpiryDate');
+			const ceoPaymentPrice = $('.modal_footer .infoPaymentPrice');
+			const ceoPaymentAllPrice = $('.modal_footer .infoPaymentAllPrice');
+     		
+     		$.ajax({
+     			url : '${ pageContext.servletContext.contextPath }/manager/ceoDetailInfo',
+     			type : 'POST',
+     			data : {
+     				modalInfo : modalInfo
+     			},
+     			success : function(data){
+     				console.log(data);
+     				ceoNum.text(data.ceo.no);
+     				ceoName.text(data.ceo.name);
+     				ceoEnrollDate.text((new Date(data.enrollDate)).toLocaleDateString());
+     				ceoId.text(data.memId);
+     				ceoEmail.text(data.email);
+     				ceoStore.text(data.ceo.store.storeName);
+     				ceoAddress.text(data.address);
+     				ceoPaymentDay.text();
+     				ceoBuyItem.text();
+     				ceoExpiryDate.text();
+     				ceoPaymentPrice.text();
+     				ceoPaymentAllPrice.text();
+     			},
+     			error : function(error){
+     				console.log(error);
+     			}
+   			});
+     	}
      </script>
 </body>
 </html>

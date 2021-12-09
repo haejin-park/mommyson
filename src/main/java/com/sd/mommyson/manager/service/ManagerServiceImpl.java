@@ -13,6 +13,7 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -138,5 +139,25 @@ public class ManagerServiceImpl implements ManagerService {
 		
 		return result > 0? true : false;
 	}
+
+	/**
+	 * 신고된 리뷰 총 갯수
+	 */
+	@Override
+	public int selectReportTotalCount(Map<String, Object> searchMap) {
+		
+		return managerDAO.selectReportTotalCount(searchMap);
+	}
+
+	/**
+	 * 신고된 리뷰 조회
+	 */
+//	@Override
+//	public List<ReviewDTO> selectReportList(Pagination pagination) {
+//		
+//		List<ReviewDTO> selectReportList = managerDAO.selectReportList(pagination);
+//		
+//		return selectReportList;
+//	}
    
 }

@@ -26,6 +26,7 @@ import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/manager/*")
@@ -47,7 +48,8 @@ public class ManagerController {
 	 * @author leeseungwoo
 	 */
 	@GetMapping("normalMember")
-	public void normalMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
+	public void normalMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+							, @RequestParam(value="searchValue", required = false) String sv) {
 		
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
@@ -66,14 +68,15 @@ public class ManagerController {
 		System.out.println(pageNo);
 		
 		/* ==== 검색 처리 ==== */
-		String searchCondition = (String) model.getAttribute("searchCondition");
-		String searchValue = (String) model.getAttribute("searchValue");
+		String searchValue = sv;
+		String searchCondition = "";
 		
 		Map<String, Object> searchMap = new HashMap<>();
 		
 		String memberTypeUser = "user";
 		
 		searchMap.put("memberTypeUser", memberTypeUser);
+		searchMap.put("searchValue", searchValue);
 		
 		System.out.println("searchMap : " + searchMap);
 		
@@ -160,7 +163,8 @@ public class ManagerController {
 	 * @author leeseungwoo
 	 */
 	@GetMapping("buisnessMember")
-	public void buisnessMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
+	public void buisnessMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+							  , @RequestParam(value="searchValue", required = false) String sv) {
 		
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
@@ -179,14 +183,15 @@ public class ManagerController {
 		System.out.println(pageNo);
 		
 		/* ==== 검색 처리 ==== */
-		String searchCondition = (String) model.getAttribute("searchCondition");
-		String searchValue = (String) model.getAttribute("searchValue");
+		String searchValue = sv;
+		String searchCondition = "";
 		
 		Map<String, Object> searchMap = new HashMap<>();
 		
 		String memberTypeCeo = "ceo";
 		
 		searchMap.put("memberTypeCeo", memberTypeCeo);
+		searchMap.put("searchValue", searchValue);
 		
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = managerService.selectNormalMemberTotalCount(searchMap);
@@ -208,10 +213,7 @@ public class ManagerController {
 		
 		pagination.setSearchCondition("ceo");
 		
-//		System.out.println("pagination : " + pagination);
-		
 		List<MemberDTO> buisnessMemberList = managerService.selectMember(pagination);
-//		System.out.println("리스트 확인 : " + buisnessMemberList);
 		
 		if(buisnessMemberList != null) {
 			model.addAttribute("pagination", pagination);
@@ -271,7 +273,8 @@ public class ManagerController {
 	 * @author leeseungwoo
 	 */
 	@GetMapping("blackMember")
-	public void blackMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
+	public void blackMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+							, @RequestParam(value="searchValue", required = false) String sv) {
 		
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
@@ -290,14 +293,15 @@ public class ManagerController {
 		System.out.println(pageNo);
 		
 		/* ==== 검색 처리 ==== */
-		String searchCondition = (String) model.getAttribute("searchCondition");
-		String searchValue = (String) model.getAttribute("searchValue");
+		String searchValue = sv;
+		String searchCondition = "";
 		
 		Map<String, Object> searchMap = new HashMap<>();
 		
 		String blackMember = "black";
 		
 		searchMap.put("blackMember", blackMember);
+		searchMap.put("searchValue", searchValue);
 		
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = managerService.selectNormalMemberTotalCount(searchMap);
@@ -442,9 +446,68 @@ public class ManagerController {
 	@GetMapping("normalInquiry")
 	public void normalInquiry() {}
 	
-	/* 가게 신고 현황 */
+	/* 리뷰 신고 현황 */
 	@GetMapping("statusStoreWarning")
-	public void statusStoreWarning() {}
+	public void statusStoreWarning(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+			, @RequestParam(value="searchValue", required = false) String sv) {
+		
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchValue = sv;
+		String searchCondition = "";
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		
+		searchMap.put("searchValue", searchValue);
+		
+		System.out.println("searchMap : " + searchMap);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.selectReportTotalCount(searchMap);
+		
+		System.out.println("totalInquiryBoardCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+//		pagination.setSearchCondition("user");
+		
+		System.out.println("pagination : " + pagination);
+		
+//		List<ReviewDTO> reportList = managerService.selectReportList(pagination);
+//		System.out.println("리스트 확인 : " + reportList);
+//		
+//		if(reportList != null) {
+//			model.addAttribute("pagination", pagination);
+//			model.addAttribute("normalMemberList", reportList);
+//		} else {
+//			System.out.println("조회실패");
+//		}
+	}
 	
 	/* 배너설정 */
 	@GetMapping("bannerManage")
