@@ -83,8 +83,7 @@
               </nav>
         </div>
       </div>
-      
-    <!-- 모오오오오옹다라라라라랄 -->
+    <!-- 모오오오다라라라라랄 -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="left: -180px; top: -50px;">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
       <div class="modal-dialog modal-dialog-scrollable" >

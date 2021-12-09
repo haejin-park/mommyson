@@ -34,7 +34,6 @@ import com.sd.mommyson.owner.dto.ForReviewDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
-import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -66,7 +65,7 @@ public class OwnerController {
 		return "owner/ownerMain";
 	}
 	
-	/* 쿠폰 발행 */
+	/* 쿠폰  리스트 */
 	@GetMapping("coupon")
 	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
@@ -84,9 +83,9 @@ public class OwnerController {
 	}
 	
 
-	// 쿠폰 목록 SELECT / INSERT 
+	/* 쿠폰등록*/
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
-	public String couponInsert(@ModelAttribute CouponDTO coupon,RedirectAttributes ra, HttpSession session) {
+	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session) {
 															  		// 리다이렉트를 해줄때 값을 넘겨주는...........
 		// @ModelAttribute 을 사용하는 순간 DTO에 필드값이랑 name값이 같으면 자동으로 값을 DTO에 담아서 보낸다. 
 		
@@ -368,7 +367,6 @@ public class OwnerController {
 		return "redirect:review";	
 		
 	}
-	
 
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")

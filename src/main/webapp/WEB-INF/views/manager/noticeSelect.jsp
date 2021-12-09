@@ -23,12 +23,12 @@
             <h2>공지사항</h2>
             <form action="${ pageContext.servletContext.contextPath }/manager/noticeSelect" method="GET">
 	            <select class="sel_notice" name="searchCondition" id="searchCondition">
-	                    <option value="all">전체</option>
-	                    <option value="notice">공지</option>
-	                    <option value="guide">안내</option>
-	                    <option value="check">점검</option>
-	                    <option value="event">이벤트</option>
-	                    <option value="owner">사업자</option>
+	                    <option value="all" ${ requestScope.pagination.searchCondition eq "all"? "selected": "" }>전체</option>
+	                    <option value="notice" ${ requestScope.pagination.searchCondition eq "notice"? "selected": "" }>공지</option>
+							<option value="guide" ${ requestScope.pagination.searchCondition eq "guide"? "selected": "" }>안내</option>
+							<option value="check" ${ requestScope.pagination.searchCondition eq "check"? "selected": "" }>점검</option>
+							<option value="event" ${ requestScope.pagination.searchCondition eq "event"? "selected": "" }>이벤트</option>
+							<option value="owner" ${ requestScope.pagination.searchCondition eq "owner"? "selected": "" }>사업자</option>
 	             </select>
                 <table class="table board_table">
                     <colgroup>
@@ -88,9 +88,15 @@
         $("#homeSubmenu2").addClass("show");
         $("#homeSubmenu2 > li:first-child > a").attr("style","color: #F89E91 !important");
          
+        
         $('#searchCondition').on('change',function() {
-        	 var changedCondition = $('#searchCondition').val();
+        	 let changedCondition = $('#searchCondition').val();
+        	 console.log($(this).val());
+        	 location.href = "${ location.href }?searchCondition=" + changedCondition;
+     
         });
+       
+        
      </script>
      
    

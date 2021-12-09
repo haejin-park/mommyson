@@ -4,11 +4,11 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sd.mommyson.owner.dao.OwnerDAO">
 
-	<resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="name" column="NAME"/>
-		<result property="repCount" column="REP_COUNT"/>
-	</resultMap>
+   <resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="name" column="NAME"/>
+      <result property="repCount" column="REP_COUNT"/>
+   </resultMap>
 
 	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
 		<id property="memCode" column="MEM_CODE"/>
@@ -16,7 +16,7 @@
 		<result property="startDate" column="START_DATE"/>
 		<result property="no" column="STORE_NO"/>
 		<result property="name" column="CEO_NAME"/>
-		<collection property="store" resultMap="storeResultMap"></collection>
+		<collection property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -67,7 +67,6 @@
 		<result property="phone" column="PHONE"/>
 		<result property="storeName" column="STORE_NAME"/>
 		<result property="code" column="CODE"/>
-		
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
@@ -88,25 +87,6 @@
 		<id property="tagNo" column="TAG_NO"/>
 		<result property="tagName" column="TAG"/>
 		<result property="status" column="STATUS"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
-		<id property="sdCode" column="SD_CODE"/>
-		<result property="sdName" column="SD_NAME"/>
-		<result property="mDate" column="M_DATE"/>
-		<result property="price" column="PRICE"/>
-		<result property="ingredient" column="INGREDIENT"/>
-		<result property="volume" column="VOLUME"/>
-		<result property="sdImg" column="SD_IMG"/>
-		<result property="category" column="CATEGORY"/>
-		<result property="discountRate" column="DISCOUNT_RATE"/>
-		<result property="memCode" column="MEM_CODE"/>
-		<result property="orderableStatus" column="ORDERABLE_STATUS"/>
-		<result property="eDate" column="EXPIRY_DATE"/>
-		<result property="isDeleted" column="IS_DELETED"/>
-		<result property="categoryCode" column="CATEGORY_CODE"/>
-		<result property="storageMethod" column="STORAGE_METHOD"/>
-		<result property="detail" column="SD_DETAIL"/>
 	</resultMap>
 	
 	
@@ -324,36 +304,6 @@
   		 WHERE STATUS = 'Y'  
 	</select>
 	
-	<!-- 상품등록을 위한 쿼리문 -->
-	<insert id="registProduct" parameterType="hashmap">
-		INSERT ALL
-		  INTO PRODUCT_TBL 
-		VALUES
-	    (
-		  SEQ_PRODUCT.NEXTVAL,
-		  #{ product.sdName },
-		  #{ product.mDate },
-		  #{ product.price },
-		  #{ product.ingredient },
-		  #{ product.volume },
-		  #{ fileName },
-		  #{ product.category },
-		  default,
-		  #{ memCode },
-		  #{ product.orderableStatus },
-		  #{ product.eDate },
-		  default,
-		  #{ product.categoryCode },
-		  #{ product.storageMethod },
-		  #{ product.detail }
-	    )
-	    <foreach collection="tagList" item="item">
-	    INTO PRODUCT_TAG_TBL 
-	    VALUES
-	      (SEQ_PRODUCT.CURRVAL, #{ item }) 
-	      </foreach>
-	    SELECT * FROM DUAL
-	</insert>
 	
 	<select id="selectProduct" resultMap="productResultMap">
 		SELECT
@@ -400,4 +350,89 @@
 	  </where> 
 	</delete>
 	
+   <!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
+   <select id="selectTotalCount" resultType="_int">
+      SELECT
+            COUNT(*)
+       FROM PRODUCT_TBL
+      <where>
+        IS_DELETED = 'N' 
+        <if test="searchValue != null and searchValue != '' ">
+           AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+        </if>
+        <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+           AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+        </if>
+        <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+           AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+        </if>
+        <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+           AND M_DATE IN (#{ mDate } , #{ mDate2 })
+        </if>
+        <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+           AND M_DATE <![CDATA[ <= ]]> #{ mDate }
+        </if>
+        <if test="status == 'Y'.toString() ">
+           AND ORDERABLE_STATUS = 'Y' 
+        </if>
+        <if test="status == 'N'.toString() ">
+           AND ORDERABLE_STATUS = 'N'
+        </if>
+          AND MEM_CODE = #{ memCode }
+      </where>
+   </select>
+   
+   <!-- 반찬 조회 쿼리문 -->
+   <select id="selectProduct" resultMap="productResultMap">
+      SELECT
+             A.RNUM
+           ,   A.SD_CODE
+            , A.SD_NAME
+            , A.M_DATE
+            , A.ORDERABLE_STATUS
+            , A.EXPIRY_DATE 
+          FROM (SELECT
+                   ROWNUM RNUM
+                 ,   B.SD_CODE
+                  , B.SD_NAME
+                  , B.M_DATE
+                  , B.ORDERABLE_STATUS
+                  , B.EXPIRY_DATE 
+                  FROM (SELECT
+                          C.SD_CODE
+                        , C.SD_NAME
+                        , C.M_DATE
+                        , C.ORDERABLE_STATUS
+                        , C.EXPIRY_DATE
+                     FROM PRODUCT_TBL C
+                  <where>
+                    C.IS_DELETED = 'N' 
+                    <if test="searchValue != null and searchValue != '' ">
+                       AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+                    </if>
+                    <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
+                       AND C.EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+                    </if>
+                    <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
+                       AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
+                    </if>
+                    <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+                       AND C.M_DATE IN (#{ mDate } , #{ mDate2 })
+                    </if>
+                    <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+                       AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
+                    </if>
+                    <if test="status == 'Y'.toString() ">
+                       AND C.ORDERABLE_STATUS = 'Y' 
+                    </if>
+                    <if test="status == 'N'.toString() ">
+                       AND C.ORDERABLE_STATUS = 'N'
+                    </if>
+                      AND C.MEM_CODE = #{ memCode }
+                  </where>
+                  ORDER BY C.SD_CODE DESC ) B 
+                  ) A
+         WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow }          
+   </select>
+   
 </mapper>

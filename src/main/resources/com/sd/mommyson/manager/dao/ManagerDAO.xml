@@ -282,26 +282,27 @@
    	  	  COUNT(*)
    	  	 FROM POST_TBL A
    	  	<where>
+   	  	  A.STATUS = 'N'
    	  	  <if test='searchValue != null'>
-   	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	  	  AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
    	  	  </if>
-   	  	  <if test="searchCondition == 'all'">
-   	  	    A.BOARD_CODE IN('1','2','3','4','5')
+   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+   	  	  AND A.BOARD_CODE IN('1','2','3','4','5')
    	  	  </if>
    	  	  <if test="searchCondition == 'notice'">
-   	  	   A.BOARD_CODE = '1'
+   	  	  AND A.BOARD_CODE = '1'
    	  	  </if>
    	  	  <if test="searchCondition == 'guide'">
-   	  	   A.BOARD_CODE = '2'
+   	  	  AND A.BOARD_CODE = '2'
    	  	  </if>
    	  	  <if test="searchCondition == 'check'">
-   	  	   A.BOARD_CODE = '3'
+   	  	  AND A.BOARD_CODE = '3'
    	  	  </if>
    	  	  <if test="searchCondition == 'event'">
-   	  	   A.BOARD_CODE = '4'
+   	  	  AND A.BOARD_CODE = '4'
    	  	  </if>
    	  	  <if test="searchCondition == 'owner'">
-   	  	   A.BOARD_CODE = '5'
+   	  	  AND A.BOARD_CODE = '5'
    	  	  </if>
    	  	</where>
    </select>
@@ -345,26 +346,27 @@
 	                   ,A.VIEW_CNT
 	                   FROM POST_TBL A
 	                  <where>
+	                  A.STATUS = 'N'
 			   	  	  <if test='searchValue != null'>
-			   	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	  	   AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == 'all'">
-			   	  	    A.BOARD_CODE IN('1','2','3','4','5')
+			   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+			   	  	   AND A.BOARD_CODE IN('1','2','3','4','5')
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'notice'">
-			   	  	   A.BOARD_CODE = '1'
+			   	  	   AND A.BOARD_CODE = '1'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'guide'">
-			   	  	   A.BOARD_CODE = '2'
+			   	  	   AND A.BOARD_CODE = '2'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'check'">
-			   	  	   A.BOARD_CODE = '3'
+			   	  	   AND A.BOARD_CODE = '3'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'event'">
-			   	  	   A.BOARD_CODE = '4'
+			   	  	   AND A.BOARD_CODE = '4'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'owner'">
-			   	  	   A.BOARD_CODE = '5'
+			   	  	   AND A.BOARD_CODE = '5'
 			   	  	  </if>
 			   	  	  </where>
 	                  ORDER BY A.POST_DATE DESC)B
