@@ -457,7 +457,7 @@
 						  </if>
 						    AND C.MEM_CODE = #{ memCode }
 						</where>
-						ORDER BY C.SD_CODE DESC ) B 
+						ORDER BY C.M_DATE DESC ) B 
 						) A
 			WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow } 			
 	</select>
@@ -481,6 +481,7 @@
 		 WHERE SD_CODE = #{ sdCode }
 	</update>
 	
+	<!-- 반찬 삭제 쿼리문 -->
 	<update id="removeProduct">
 		UPDATE PRODUCT_TBL
 		   SET IS_DELETED = 'Y'
@@ -491,5 +492,54 @@
 			</foreach>
 		 </where>
 	</update>
+	
+	<!-- 오늘의 할인의 토탈 수 구하는 쿼리문 -->
+	<select id="selectTotalDC" resultType="_int">
+		SELECT
+		      COUNT(*)
+		 FROM PRODUCT_TBL
+		<where>
+		  IS_DELETED = 'N' 
+		  <if test="searchValue != null and searchValue != '' ">
+		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+		  </if>
+		  AND DISCOUNT_RATE <![CDATA[ > ]]> 0
+		  AND MEM_CODE = #{ memCode }
+		</where>
+	</select>
+	
+	<!-- 오늘의 할인 상품 조회 쿼리문 -->
+	<select id="selectDC" resultMap="productResultMap">
+	    SELECT 
+			   A.RNUM
+		     , A.SD_CODE
+		     , A.SD_NAME
+		     , A.DISCOUNT_RATE
+		     , A.PRICE  
+	    FROM (SELECT 
+					   ROWNUM RNUM
+				     , B.SD_CODE
+				     , B.SD_NAME
+				     , B.DISCOUNT_RATE
+				     , B.PRICE  
+				  FROM (SELECT 
+						       C.SD_CODE
+						     , C.SD_NAME
+						     , C.DISCOUNT_RATE
+						     , C.PRICE  
+						  FROM PRODUCT_TBL C
+						 <where>
+						  IS_DELETED = 'N' 
+						  <if test="searchValue != null and searchValue != '' ">
+						  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+						  </if>
+						  AND DISCOUNT_RATE <![CDATA[ > ]]> 0
+						  AND MEM_CODE = #{ memCode } 
+						</where>    
+						  ORDER BY DISCOUNT_RATE ASC)B
+						)A
+			WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow }
+	</select>
+	
 	
 </mapper>

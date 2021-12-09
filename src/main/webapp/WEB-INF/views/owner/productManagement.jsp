@@ -18,10 +18,6 @@
 	if(${ requestScope.message != null && requestScope.message != ''}){
 		alert('${ requestScope.message }');
 	}
-	
-	if(${ requestScope.success != null && requestScope.success != ''}){
-		location.reload();
-	}
 </script>
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
@@ -104,13 +100,17 @@
       </div>  
     </div>
 	<script>
-	  $(function(){
 	    $(".btn1").click(function(e){
 	    	
-	    	let value = e.target.value;
-	    	console.log(value);
+	    	let sdCode = e.target.value;
+	    	console.log(sdCode);
 	    	
-	    	location.href = '${pageContext.servletContext.contextPath}/owner/productManagement?sdCode=' + value;
+	    	let form = $('<form></form>');
+	        form.attr('action', '${pageContext.servletContext.contextPath}/owner/productManagement');
+	        form.attr('method', 'post');
+	        form.appendTo('body');
+	        form.append($('<input type="hidden" value="' + sdCode + '" name=sdCode>'));
+	        form.submit();
 	     
 	    });
 	
@@ -132,7 +132,12 @@
 	    	
 	    	console.log(arr);
 	    	
-	    	location.href = '${pageContext.servletContext.contextPath}/owner/productManagement?deleteCode=' + arr;
+	    	let form = $('<form></form>');
+	        form.attr('action', '${pageContext.servletContext.contextPath}/owner/productManagement');
+	        form.attr('method', 'post');
+	        form.appendTo('body');
+	        form.append($('<input type="hidden" value="' + arr + '" name=deleteCode>'));
+	        form.submit();
 	    	
 	    });
 	
@@ -143,6 +148,10 @@
 	    }); 
 	    
 	    $(".searchtext").attr("placeholder","검색할 상품명을 입력해주세요");
+	    
+	    if(${ requestScope.pagination.searchValue != null && requestScope.pagination.searchValue != ''}){
+	    	 $(".searchtext").attr("placeholder", "검색어 : " + "${ requestScope.pagination.searchValue }");
+	    }
 	    
 	    $("#status").change(function(){
 	    	$("#frm").submit();
@@ -161,7 +170,6 @@
 	    	$('#status').val('${ searchMap.status}');
 	    }
 	    
-	  });
 	</script>  
 	
 	<!-- footer -->
