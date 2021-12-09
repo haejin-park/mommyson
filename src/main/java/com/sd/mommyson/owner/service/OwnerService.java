@@ -40,4 +40,6 @@ public interface OwnerService {
 	public int selectTotalCount(Map<String, Object> searchMap);
 
 	public int deleteReview(List<Integer> deleteReviewList);
+
+	public int deleteCoupon(List<Integer> deleteCouponList);
 }

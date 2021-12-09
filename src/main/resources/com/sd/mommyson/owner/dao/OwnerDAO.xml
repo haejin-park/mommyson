@@ -373,6 +373,7 @@
 		WHERE MEM_CODE = #{ memCode } 
 	</select>
 	
+	<!-- 리뷰삭제 -->
 	<delete id="deleteReview" parameterType="list">
 	 DELETE FROM REVIEW_TBL 
 	  <where>
@@ -381,6 +382,18 @@
 	     		#{ item }
 	     	</foreach>
 	  </where>
+	</delete>
+	
+	<!-- 쿠폰삭제  -->
+	<delete id="deleteCoupon" parameterType="list">
+	DELETE 
+	  FROM COUPON_TBL 
+	  <where>
+	     	 CP_CODE IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	  </where> 
 	</delete>
 	
 </mapper>

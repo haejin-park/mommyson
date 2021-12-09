@@ -132,6 +132,7 @@
    </div>  
   </div>
   <script>
+  
 	  $("#allCheck").click(function(){
 	      if($("#allCheck").prop("checked")){
 	        $("input[type=checkbox]").prop("checked",true);
@@ -139,6 +140,7 @@
 	        $("input[type=checkbox]").prop("checked",false);
 	      }
 	    });
+	  
 	  $("#allCheck2").click(function(){
 	      if($("#allCheck2").prop("checked")){
 	        $("input[type=checkbox]").prop("checked",true);
@@ -146,7 +148,8 @@
 	        $("input[type=checkbox]").prop("checked",false);
 	      }
 	    });
-	  </script>
+	  
+  </script>
   
   <!-- footer -->
   <jsp:include page="../commons/footer.jsp"/>

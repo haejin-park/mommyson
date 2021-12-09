@@ -85,14 +85,13 @@ public class OwnerController {
 
 	
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
-	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session,  HttpServletRequest request) {
-															  // 리다이렉트를 해줄때 값을 넘겨주는...........
+	public String couponInsert(@ModelAttribute CouponDTO coupon,RedirectAttributes ra, HttpSession session) {
+															  		// 리다이렉트를 해줄때 값을 넘겨주는...........
 		// @ModelAttribute 을 사용하는 순간 DTO에 필드값이랑 name값이 같으면 자동으로 값을 DTO에 담아서 보낸다. 
-		
-		System.out.println("결과를 말하라" + coupon);
 		
 		// root-contect에서 insert는 regist로 시작으로 지정해놓았다
 		int result = ownerService.registCoupon(coupon);
+		System.out.println("결과를 말하라" + coupon);
 		
 		//세션에서 memCode를 담아서 넘겨준다.
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
@@ -107,7 +106,29 @@ public class OwnerController {
 		}
 		
 		
+		
 		return "redirect:coupon"; // getMapping으로 보내준다
+	}
+	
+	//쿠폰 삭제
+	@PostMapping("couponDelete") 
+	public String couponDelete ( @RequestParam("chkcoupon") int[] deleteCoupon, RedirectAttributes ra) {
+		
+		List<Integer> deleteCouponList = new ArrayList<>();
+		
+		for(int i = 0; i < deleteCoupon.length; i++) {
+			deleteCouponList.add(deleteCoupon[i]);
+		}
+		
+		int result3 = ownerService.deleteCoupon(deleteCouponList);
+		
+		if(result3 > 0 ) {
+			ra.addFlashAttribute("message","쿠폰 삭제에 성공하였습니다.");
+		} else {
+			ra.addFlashAttribute("message","쿠폰 삭제에 실패하였습니다.");
+		}
+		
+		return "redirect:coupon";		
 	}
 	
 	/* 가게정보 수정 */

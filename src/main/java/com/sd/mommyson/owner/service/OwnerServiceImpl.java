@@ -134,6 +134,14 @@ public class OwnerServiceImpl implements OwnerService{
 		
 	}
 
+	@Override
+	public int deleteCoupon(List<Integer> deleteCouponList) {
+		
+		int result = ownerDAO.deleteCoupon(deleteCouponList);
+		
+		return result;
+	}
+
 	
 	
 
