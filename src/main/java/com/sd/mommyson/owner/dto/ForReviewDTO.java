@@ -6,9 +6,10 @@ import java.util.List;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
+ // storeName 하나 당 리뷰 리스트 여러개
 public class ForReviewDTO {
 	
-	private int memCode;
+	private String storeName;
 	private List<ReviewDTO> reviewDTO;
 
 	public ForReviewDTO() {
@@ -16,18 +17,18 @@ public class ForReviewDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ForReviewDTO(int memCode, List<ReviewDTO> reviewDTO) {
+	public ForReviewDTO(String storeName, List<ReviewDTO> reviewDTO) {
 		super();
-		this.memCode = memCode;
+		this.storeName = storeName;
 		this.reviewDTO = reviewDTO;
 	}
 
-	public int getMemCode() {
-		return memCode;
+	public String getStoreName() {
+		return storeName;
 	}
 
-	public void setMemCode(int memCode) {
-		this.memCode = memCode;
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 
 	public List<ReviewDTO> getReviewDTO() {
@@ -40,8 +41,10 @@ public class ForReviewDTO {
 
 	@Override
 	public String toString() {
-		return "ForReviewDTO [memCode=" + memCode + ", reviewDTO=" + reviewDTO + "]";
+		return "ForReviewDTO [storeName=" + storeName + ", reviewDTO=" + reviewDTO + "]";
 	}
+
+
 
 	
 }
