@@ -22,4 +22,8 @@ public interface UserDAO {
 
 	List<StoreDTO> selectProductList(Pagination pagination);
 
+	List<PostDTO> selectFqaList(SelectCriteria selectCriteria);
+
+	int selectFqaTotalCount(Map<String, String> searchMap);
+
 }

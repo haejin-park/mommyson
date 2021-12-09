@@ -32,6 +32,11 @@ public class UserServiceImpl implements UserService{
 		return totalCount;
 	}
 
+	@Override
+	public int selectFqaTotalCount(Map<String, String> searchMap) {
+		int totalCount = userDAO.selectFqaTotalCount(searchMap);
+		return totalCount;
+	}
 
 	@Override
 	public List<PostDTO> selectNotice(SelectCriteria selectCriteria) {
@@ -45,6 +50,14 @@ public class UserServiceImpl implements UserService{
 	public List<StoreDTO> selectStoreList(Pagination pagination) {
 		List<StoreDTO> storeList = userDAO.selectStoreList(pagination);
 		return storeList;
+	}
+	
+	@Override
+	public List<PostDTO> selectFqaList(SelectCriteria selectCriteria) {
+
+		List<PostDTO> fqaList = userDAO.selectFqaList(selectCriteria);
+		
+		return fqaList;
 	}
 
 
@@ -64,5 +77,10 @@ public class UserServiceImpl implements UserService{
 	public int selectStoreTotalCount(Map<String, String> searchMap) {
 		return userDAO.selectStoreTotalCount(searchMap);
 	}
+
+
+
+
+	
 
 }
