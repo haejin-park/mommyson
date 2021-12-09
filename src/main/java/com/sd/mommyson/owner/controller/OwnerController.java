@@ -30,6 +30,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.ForReviewDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
@@ -83,7 +84,7 @@ public class OwnerController {
 	}
 	
 
-	
+	// 쿠폰 목록 SELECT / INSERT 
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
 	public String couponInsert(@ModelAttribute CouponDTO coupon,RedirectAttributes ra, HttpSession session) {
 															  		// 리다이렉트를 해줄때 값을 넘겨주는...........
@@ -329,8 +330,8 @@ public class OwnerController {
 		String storeName = owner.getCeo().getStore().getStoreName();
 		System.out.println(storeName);
 		
-		List<ReviewDTO> reviews = ownerService.selectReview(storeName);
-		System.out.println(reviews);	
+		List<ForReviewDTO> reviews = ownerService.selectReview(storeName);
+		System.out.println("리뷰들아 들어왔니 : " + reviews);	
 		
 		model.addAttribute("owner", owner);
 		model.addAttribute("reviews",reviews);
@@ -368,9 +369,7 @@ public class OwnerController {
 		
 	}
 	
-	
-	
-	
+
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
 	public void productManagement(Model model, @RequestParam( required = false) Map<String, String> param, HttpSession session) {

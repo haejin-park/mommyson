@@ -49,16 +49,17 @@
             <tbody>
               <tr>
                 <c:forEach var="review" items="${ reviews }">
-                <th scope="row"><input type="checkbox" name="chkreview" value="${ review.rvCode }" ></th>
+                <th scope="row"><input type="checkbox" name="chkreview" class="test" value="${ review.rvCode }" ></th>
                 <th>${ review.rvCode }</th>
+                <input type="hidden" value="${ review.memCode }"/>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
                 </c:forEach>
               </tr>
             </tbody>
           </table>
-          <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" >
-         	 쿠폰 주기</button>
+          <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" 
+          data-target="#staticBackdrop" data-memCode ="${ review.memCode }" >쿠폰 주기</button>
           <button id="rebtn2">삭제</button>
         	</form>
         </div>
@@ -82,7 +83,8 @@
               </nav>
         </div>
       </div>
-    
+      
+    <!-- 모오오오오옹다라라라라랄 -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="left: -180px; top: -50px;">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
       <div class="modal-dialog modal-dialog-scrollable" >
@@ -98,11 +100,11 @@
               <table class="table table" style="width: 1050px;">
                   <thead style="background-color: #EDEDED;">
                   <tr>
-                      <th scope="col"><input type="checkbox" name="" id="allCheck2"></th>
+                      <th scope="col"><input type="checkbox" name=""  id="allCheck2"></th>
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
-                      <th scope="col">할인금액</th>
+                      <th scope="col">{param.memCode}</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -122,7 +124,6 @@
           <div class="modal-footer" >
             <button type="submit" class="btn btn-primary" id="btn1">쿠폰 주기</button>
             <button type="reset" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-          </form>
           </div>
          </div>
        </div>
@@ -132,7 +133,7 @@
    </div>  
   </div>
   <script>
-  
+  	/* 체크박스 체크 */
 	  $("#allCheck").click(function(){
 	      if($("#allCheck").prop("checked")){
 	        $("input[type=checkbox]").prop("checked",true);
@@ -148,6 +149,21 @@
 	        $("input[type=checkbox]").prop("checked",false);
 	      }
 	    });
+	  
+	/* 모달로 memCode 넘겨주기 */
+	var memCode ="";
+	
+	$('#btn1').on('click',function(){
+		let checkBox = $('.test');
+		
+	});
+	
+	$(document).ready(function(){
+		$('#staticBackdrop1').on('show.bs.modal', function(event){
+			console.log(event);
+			/* memCode = $(event.relatedTarget).data('memCode'); */
+		});
+	});
 	  
   </script>
   

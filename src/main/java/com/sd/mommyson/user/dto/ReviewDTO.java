@@ -1,7 +1,5 @@
 package com.sd.mommyson.user.dto;
 
-import com.sd.mommyson.member.dto.MemberDTO;
-
 public class ReviewDTO {
 
 	private int memCode;
@@ -10,15 +8,13 @@ public class ReviewDTO {
 	private String content;
 	private int grade;
 	private int rvCode;
-	private MemberDTO memberDTO;
 	
 	public ReviewDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReviewDTO(int memCode, int orderCode, String img, String content, int grade, int rvCode,
-			MemberDTO memberDTO) {
+	public ReviewDTO(int memCode, int orderCode, String img, String content, int grade, int rvCode) {
 		super();
 		this.memCode = memCode;
 		this.orderCode = orderCode;
@@ -26,7 +22,6 @@ public class ReviewDTO {
 		this.content = content;
 		this.grade = grade;
 		this.rvCode = rvCode;
-		this.memberDTO = memberDTO;
 	}
 
 	public int getMemCode() {
@@ -77,20 +72,13 @@ public class ReviewDTO {
 		this.rvCode = rvCode;
 	}
 
-	public MemberDTO getMemberDTO() {
-		return memberDTO;
-	}
-
-	public void setMemberDTO(MemberDTO memberDTO) {
-		this.memberDTO = memberDTO;
-	}
-
 	@Override
 	public String toString() {
 		return "ReviewDTO [memCode=" + memCode + ", orderCode=" + orderCode + ", img=" + img + ", content=" + content
-				+ ", grade=" + grade + ", rvCode=" + rvCode + ", memberDTO=" + memberDTO + "]";
+				+ ", grade=" + grade + ", rvCode=" + rvCode + "]";
 	}
 
+	
 	
 	
 	

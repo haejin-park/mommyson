@@ -77,7 +77,11 @@
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
-		<collection property="memberDTO" resultMap="memberResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.ForReviewDTO" id="forReviewResultMap">
+		<result property="memCode" column="MEM_CODE"/>
+		<collection property="reviewDTO" resultMap="reviewResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -184,14 +188,14 @@
 	</insert>
 	
 	<!-- 리뷰 목록 가져오기 -->
-	<select id="selectReview" resultMap="reviewResultMap">
+	<select id="selectReview" resultMap="forReviewResultMap">
 		SELECT
 				A.RV_CODE
 			  , A.MEM_CODE
 			  , A.RV_CONTENT
 			  , B.NICKNAME 
 		  FROM REVIEW_TBL A
-		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
+		  LEFT JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
 		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
 		 WHERE C.STORE_NAME = #{storeName}
 	</select>
