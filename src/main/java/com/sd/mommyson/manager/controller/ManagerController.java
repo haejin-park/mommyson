@@ -90,7 +90,6 @@ public class ManagerController {
 		/* ==== 검색과 selectOption 고르기 ==== */
 		if(searchValue != null && !"".equals(searchValue)) {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
-			
 		} else {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
 		}
@@ -209,10 +208,10 @@ public class ManagerController {
 		
 		pagination.setSearchCondition("ceo");
 		
-		System.out.println("pagination : " + pagination);
+//		System.out.println("pagination : " + pagination);
 		
 		List<MemberDTO> buisnessMemberList = managerService.selectMember(pagination);
-		System.out.println("리스트 확인 : " + buisnessMemberList);
+//		System.out.println("리스트 확인 : " + buisnessMemberList);
 		
 		if(buisnessMemberList != null) {
 			model.addAttribute("pagination", pagination);
@@ -354,12 +353,15 @@ public class ManagerController {
 		return "redirect:blackMember";
 	}
 	
-	/* 공지사항 */
-//	@GetMapping("noticeSelect")
-//	public void noticeSelect() {}
-	
+	/**
+	 * @author kimjunhee
+	 * @category 공지사항
+	 * @return "manager/noticeSelect"
+	 */
 	@GetMapping("noticeSelect")
-	public String noticeSelect(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
+	public String noticeSelect(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+			, @RequestParam(value="searchCondition", required=false) String sc
+			, @RequestParam(value="searchValue", required=false) String sv) {
 		
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
@@ -378,10 +380,14 @@ public class ManagerController {
 		System.out.println(pageNo);
 		
 		/* ==== 검색 처리 ==== */
-		String searchCondition = (String) model.getAttribute("searchCondition");
-		String searchValue = (String) model.getAttribute("searchValue");
+		String searchCondition = sc;
+		String searchValue = sv;
 		
 		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		
+		System.out.println("searchValue : " + searchValue);
 		
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = managerService.selectNoticeTotalCount(searchMap);
@@ -393,20 +399,22 @@ public class ManagerController {
 		
 		Pagination pagination = null;
 		
+		System.out.println("조건 : " + searchCondition);
+		
 		/* ==== 검색과 selectOption 고르기 ==== */
-		if(searchValue != null && !"".equals(searchValue)) {
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
-		} else if(searchCondition != null && searchCondition != "전체") {
+		if(searchValue != null && !"".equals(searchValue)) { //검색할 때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else if(searchCondition != null && !"".equals(searchCondition)) {  // 조건변경할때
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
-		} else {
+		} else { //둘 다null값으로 들어올 때
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, "전체", null);
 		}
 		
-		System.out.println("pagination : " + pagination);
+//		System.out.println("pagination : " + pagination);
 		
 		List<PostDTO> noticeList = managerService.selectNoticeList(pagination);
 		
-		System.out.println("리스트 확인 : " + noticeList);
+//		System.out.println("리스트 확인 : " + noticeList);
 		
 		if(noticeList != null) {
 			model.addAttribute("pagination",pagination);
