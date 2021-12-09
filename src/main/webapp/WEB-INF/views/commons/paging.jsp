@@ -41,8 +41,8 @@
         <div class="search_box">
         	<ul class="df_ul">
 		        <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
-		        <li><input type="search" class="searchtext" name="searchValue" placeholder="찾고싶은 내용 검색하기"></li>
-		        <li><button type="submit" class="searchbutton">검색하기</button></li>
+		        <li><input type="search" class="searchtext" name="searchValue" placeholder="찾고싶은 내용 검색하기" onKeyup="javascript:if(event.keyCode==13) {search_onclick_submit()}"></li>
+		        <li><button type="submit" class="searchbutton" onclick="search_onclick_submit()">검색하기</button></li>
         	</ul>
         </div>
     </nav>
@@ -59,6 +59,7 @@
 	        link = document.location.href;
 	     }
 	    }
+	    
 	   let searchText = "";
 		
 		if(${ !empty requestScope.pagination.searchCondition? true : false }) {
@@ -103,16 +104,35 @@
 			console.log(link);
 			location.href = link + "?currentPage=" + pageNo + searchText;
 		});
-		
-	 	$(".searchbutton").on('click',function(){
-	    	let searchValue = $('input[name=searchValue]').val();
-							// 현재 페이지 주소
-			if((document.location.href).includes("?searchCondition")){
+
+		function search_onclick_submit(){
+			let searchValue = $('input[name=searchValue]').val();
+			// 현재 페이지 주소
+			if((document.location.href).includes("?searchCondition") && (document.location.href).includes("&searchValue")) {
+				location.href = document.location.pathname + "?searchCondition=${ requestScope.pagination.searchCondition }" + "&searchValue=" + searchValue;
+			} else if((document.location.href).includes("?searchCondition")){
 				location.href = document.location.href + "&searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("?searchValue") || (document.location.href).includes("&searchValue")){
+				location.href = document.location.pathname + "?searchValue=" + searchValue;
 	 		} else {
 	 			location.href = document.location.href + "?searchValue=" + searchValue;
 	 		}
-		 });  
+			
+		};  
+		
+	  	/* $(".searchbutton").on('click',function(){
+	    	let searchValue = $('input[name=searchValue]').val();
+							// 현재 페이지 주소
+	    	if((document.location.href).includes("?searchCondition") && (document.location.href).includes("&searchValue")) {
+				location.href = document.location.pathname + "?searchCondition=${ requestScope.pagination.searchCondition }" + "&searchValue=" + searchValue;
+			} else if((document.location.href).includes("?searchCondition")){
+				location.href = document.location.href + "&searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("?searchValue") || (document.location.href).includes("&searchValue")){
+				location.href = document.location.pathname + "?searchValue=" + searchValue;
+	 		} else {
+	 			location.href = document.location.href + "?searchValue=" + searchValue;
+	 		}
+		 }); */
  
 		
 	</script>
