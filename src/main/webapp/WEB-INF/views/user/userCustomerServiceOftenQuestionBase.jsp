@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </head>
 <body>
-    <jsp:include page="../commons/header.jsp"></jsp:include>
+    <jsp:include page="../commons/header.jsp"/>
 
     <section>
 
@@ -30,12 +32,54 @@
             </div>
             <br>
             <div style="text-align: center;">
-            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/ucc/memberJoinFqa" method="get">
+            	<c:if test='${ requestScope.fqaList[0].boardCode eq "6"}'><!-- ""와 ''차이 주의 -->
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/memberJoinFqa" method="get">
             	 	<input type="hidden" name="currentPage" value="1">
 	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
 	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-	              	<button type="submit" class="searchbutton">검색하기</button></li>
+	              	<button type="submit" class="searchbutton">검색하기</button>
             	</form>
+            	</c:if>
+            	<c:if test='${ requestScope.fqaList[0].boardCode eq "7"}'>
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/paycheckFqa" method="get">
+            	 	<input type="hidden" name="currentPage" value="1">
+	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+	              	<button type="submit" class="searchbutton">검색하기</button>
+            	</form>
+            	</c:if>
+            	<c:if test='${ requestScope.fqaList[0].boardCode eq "8"}'>
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/reviewFqa" method="get">
+            	 	<input type="hidden" name="currentPage" value="1">
+	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+	              	<button type="submit" class="searchbutton">검색하기</button>
+            	</form>
+            	</c:if>
+            	<c:if test='${ requestScope.fqaList[0].boardCode eq "9"}'>
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/usingFqa" method="get">
+            	 	<input type="hidden" name="currentPage" value="1">
+	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+	              	<button type="submit" class="searchbutton">검색하기</button>
+            	</form>
+            	</c:if>
+            	<c:if test='${ requestScope.fqaList[0].boardCode eq "10"}'>
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/inconFqa" method="get">
+            	 	<input type="hidden" name="currentPage" value="1">
+	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+	              	<button type="submit" class="searchbutton">검색하기</button>
+            	</form>
+            	</c:if>
+            	<c:if test='${ requestScope.fqaList[0].boardCode eq "11"}'>
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/etcFqa" method="get">
+            	 	<input type="hidden" name="currentPage" value="1">
+	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
+	              	<button type="submit" class="searchbutton">검색하기</button>
+            	</form>
+            	</c:if>
             </div>
             <div style="border: solid gainsboro 2px; text-align: center; margin-top: 30px;">
               <table>
@@ -68,22 +112,16 @@
                   </tr>
               </thead>
               <tbody>
+              	<c:forEach var="fqaOutput" items="${ requestScope.fqaList }">
                   <tr class="click_qa">
-                      <td>1</td>
-                      <td>회원가입</td>
-                      <td class="tal">회원가입은 어떻게 하나요?</td>
+                      <td>${ fqaOutput.postNo }</td>
+                      <td>${ requestScope.boardTitle }</td>
+                      <td class="tal">${ fqaOutput.postTitle }</td>
                   </tr>
                   <tr class="answer tal">
-                      <td colspan="4">회원가입은 홈페이지 상단 오른쪽에 회원가입 버튼을 누르고 하시면 됩니다.</td>
+                      <td colspan="3">${ fqaOutput.postContent }</td>
                   </tr>
-                  <tr class="click_qa">
-                      <td>2</td>
-                      <td>결제/주문</td>
-                      <td class="tal">음식을 주문하려면 어떻게 결제해야 하나요?</td>
-                  </tr>
-                  <tr class="answer tal">
-                      <td colspan="3">카카오페이로 결제하면 됩니다.</td>
-                  </tr>
+              	</c:forEach>                 
               </tbody>
           </table>
           <script>
@@ -93,10 +131,11 @@
                 // let show = e.next();
                 // show.toggle();
             });
+            
         </script>
    <nav class="page_box" aria-label="Page navigation example">
     <ul class="pagination">
-      <jsp:include page="../commons/userPagination.jsp"></jsp:include>
+      <jsp:include page="../commons/userFqaPagination.jsp"></jsp:include>
     </ul>
     
   </nav>
@@ -106,33 +145,6 @@
       </div>
     </section>
 
-      <footer class="at-container">
-        <ul class="df_ul ft_list">
-          <li>
-            <a href="">마미손맛 소개</a>   
-          </li>
-          <li>
-            <a href="">이용약관</a>
-          </li>
-          <li>
-            <a href="">개인정보처리방침</a>
-          </li>
-          <li>
-            <a href="">전자금융거래이용약관</a>
-          </li>
-        </ul>
-        <div class="ft_img_line">
-          <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
-        <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-        <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
-      </div>
-      <div class="ft_info">
-        <p>(주)마미손맛 자세히 보기</p>
-        <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
-        <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
-        <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
-        <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
-      </div>
-    </footer>
+	<jsp:include page="../commons/footer.jsp"/>
   </body>
   </html>

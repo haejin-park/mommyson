@@ -161,13 +161,19 @@ public class UserController {
 	 * @category 공지사항 내용 출력
 	 */
 	@GetMapping("ucc/uccNoticeDetail")
-	public String userCustomerServiceCenterNoticeDetail() {
+	public String userCustomerServiceCenterNoticeDetail(HttpSession session) {
+		
+		System.out.println("공지사항 내용 출력 콘트롤러 진입");
+		int postNo; 
+
+//		List<PostDTO> noticeList = userService.selectNotice();
+		
 		
 		return "user/userCustomerServiceCenterNoticeDetail";
 	}
 	
 	/**@author 양윤제
-	 * @category 자주하는 질문(회원가입관련)
+	 * @category 자주하는 질문(전체)
 	 */
 	@GetMapping("ucc/uccOftenQuestion")
 	public String userFqaMain(HttpSession session, Model mv, @RequestParam(required = false) Map<String, String> parameters) {
@@ -192,7 +198,7 @@ public class UserController {
 			pageNo = 1;
 		}
 		
-		String searchCondition = "main";
+		String searchCondition = "total";
 		String searchValue = parameters.get("searchValue");
 		
 		System.out.println("searchCondition : " + searchCondition);
@@ -235,9 +241,15 @@ public class UserController {
 		
 		System.out.println("fqa회원관리 : " + fqaList);
 		
-		mv.addAttribute("noticeList", fqaList);
-		mv.addAttribute("selectCriteria", selectCriteria);
 		
+		/* FQA title 전달 */
+		
+		String boardTitle = "전체";
+		
+		
+		mv.addAttribute("fqaList", fqaList);
+		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("boardTitle", boardTitle);
 		
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
@@ -311,10 +323,15 @@ public class UserController {
 		List<PostDTO> fqaList = userService.selectFqaList(selectCriteria); 
 		
 		System.out.println("fqa회원관리 : " + fqaList);
+		/* FQA title 전달 */
+		System.out.println("테스트: " + fqaList.get(0));
+
+		String boardTitle = "회원가입";
 		
-		mv.addAttribute("noticeList", fqaList);
+		
+		mv.addAttribute("fqaList", fqaList);
 		mv.addAttribute("selectCriteria", selectCriteria);
-		
+		mv.addAttribute("boardTitle", boardTitle);
 		
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
@@ -390,9 +407,14 @@ public class UserController {
 		
 		System.out.println("fqa결제주문 : " + fqaList);
 		
-		mv.addAttribute("noticeList", fqaList);
+		/* FQA title 전달 */
+		
+		String boardTitle = "결제/주문";
+		
+		mv.addAttribute("fqaList", fqaList);
 		mv.addAttribute("selectCriteria", selectCriteria);
-	
+		mv.addAttribute("boardTitle", boardTitle);
+		
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
 	
@@ -465,8 +487,14 @@ public class UserController {
 		
 		System.out.println("fqa리뷰관리 : " + fqaList);
 		
-		mv.addAttribute("noticeList", fqaList);
+		/* FQA title 전달 */
+		
+		String boardTitle = "리뷰관리";
+		
+		
+		mv.addAttribute("fqaList", fqaList);
 		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("boardTitle", boardTitle);
 		
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
@@ -541,8 +569,15 @@ public class UserController {
 		
 		System.out.println("fqa이용문의 : " + fqaList);
 		
-		mv.addAttribute("noticeList", fqaList);
+		/* FQA title 전달 */
+		
+		String boardTitle = "이용문의";
+		
+		
+		mv.addAttribute("fqaList", fqaList);
 		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("boardTitle", boardTitle);
+		
 		
 		
 		return "user/userCustomerServiceOftenQuestionBase";
@@ -618,8 +653,14 @@ public class UserController {
 		
 		System.out.println("fqa불편관리 : " + fqaList);
 		
-		mv.addAttribute("noticeList", fqaList);
+		/* FQA title 전달 */
+		
+		String boardTitle = "불편관리";
+		
+		
+		mv.addAttribute("fqaList", fqaList);
 		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("boardTitle", boardTitle);
 		
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
@@ -693,9 +734,14 @@ public class UserController {
 		
 		System.out.println("fqa기타 : " + fqaList);
 		
-		mv.addAttribute("noticeList", fqaList);
+		/* FQA title 전달 */
+		
+		String boardTitle = "기타";
+		
+		
+		mv.addAttribute("fqaList", fqaList);
 		mv.addAttribute("selectCriteria", selectCriteria);
-
+		mv.addAttribute("boardTitle", boardTitle);
 		
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
