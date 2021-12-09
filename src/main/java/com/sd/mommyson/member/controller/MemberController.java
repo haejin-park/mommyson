@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,10 @@ public class MemberController {
 	@Autowired	
 	private MemberService memberService; 
 
-
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	
 	@Autowired				 
 	JavaMailSender mailSender;   
 
@@ -185,11 +189,22 @@ public class MemberController {
 		return num;
 	}
 	
+
 	
 	/* 회원가입 */
 	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
 	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
-
+//
+//		String rawPw = "";
+//		String encodePw = "";
+//		
+//		rawPw = member.getMemPwd(); //비밀번호 데이터 얻음 
+//		encodePw = pwEncoder.encode(rawPw); //비밀번호 인코딩 
+//		member.setMemPwd(encodePw); //인코딩 비밀번호 member 객체에 다시 저장 
+		
+		member.setMemPwd(passwordEncoder.encode(member.getMemPwd()));
+		
+		
 		System.out.println(member);
 		logger.info("join진입");
 		
