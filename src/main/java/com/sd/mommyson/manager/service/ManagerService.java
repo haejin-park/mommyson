@@ -49,5 +49,8 @@ public interface ManagerService {
 	/* 사업자 상세정보 조회 */
 	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
+	/* 블랙해지 */
+	public boolean terminateBlack(List<Integer> blackMember);
+
 
 }

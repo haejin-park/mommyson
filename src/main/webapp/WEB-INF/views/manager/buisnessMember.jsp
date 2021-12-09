@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -100,7 +101,7 @@
     				console.log(data);
     				ceoNum.text(data.ceo.no);
     				ceoName.text(data.ceo.name);
-    				ceoEnrollDate.text(data.enrollDate);
+    				ceoEnrollDate.text((new Date(data.enrollDate)).toLocaleDateString());
     				ceoId.text(data.memId);
     				ceoEmail.text(data.email);
     				ceoStore.text(data.ceo.store.storeName);

@@ -127,5 +127,16 @@ public class ManagerServiceImpl implements ManagerService {
 		
 		return ceoDetailInfos;
 	}
+
+	/**
+	 * 블랙해지
+	 */
+	@Override
+	public boolean terminateBlack(List<Integer> blackMember) {
+		
+		int result = managerDAO.terminateBlack(blackMember);
+		
+		return result > 0? true : false;
+	}
    
 }

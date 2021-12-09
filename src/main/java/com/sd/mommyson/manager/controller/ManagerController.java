@@ -334,6 +334,26 @@ public class ManagerController {
 		
 	}
 	
+	/* 블랙 해지 */
+	/**
+	 * @param blackMember
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping("terminateBlack")
+	public String terminateBlack(@RequestParam("chkMember") int[] blackMember){
+		
+		List<Integer> terminateBlackList = new ArrayList<>();
+		
+		for(int i = 0; i < blackMember.length; i++) {
+			terminateBlackList.add(blackMember[i]);
+		}
+		
+		managerService.terminateBlack(terminateBlackList);
+		
+		return "redirect:blackMember";
+	}
+	
 	/* 공지사항 */
 //	@GetMapping("noticeSelect")
 //	public void noticeSelect() {}

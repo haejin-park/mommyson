@@ -231,6 +231,18 @@
 	   	 </where>
 	</update>
 	
+	<update id="terminateBlack" parameterType="list">
+		UPDATE
+		       MEMBER_TBL A
+		   SET A.IS_DELETED = 'N'
+		 <where>
+	     	A.MEM_CODE IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	   	 </where>
+	</update>
+	
 	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
 	    SELECT
 	           A.MEM_CODE

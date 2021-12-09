@@ -41,4 +41,6 @@ public interface ManagerDAO {
 
 	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
+	int terminateBlack(List<Integer> blackMember);
+
 }
