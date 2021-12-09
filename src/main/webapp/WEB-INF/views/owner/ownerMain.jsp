@@ -34,7 +34,7 @@
 	
 		<div class="body-center" style="text-align: center;">
         <br><br>
-        <img src="${ owner.ceo.store.storeImg }" width="300px" style="margin-left: 60px;">
+        <img src="${ pageContext.servletContext.contextPath }/${ owner.ceo.store.storeImg }" width="300px" style="margin-left: 60px;">
         <br><br><br><br>
             <table class="tg">
                 <tbody>

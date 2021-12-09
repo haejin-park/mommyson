@@ -142,8 +142,37 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return result;
 	}
+	
+	@Override
+	public int modifyStatus(ProductDTO product) {
 
-	
-	
+		int result = ownerDAO.modifyStatus(product);
+		
+		return result;
+	}
+
+	@Override
+	public int removeProduct(List<Integer> deleteCode) {
+
+		int result = ownerDAO.removeProduct(deleteCode);
+		
+		return result;
+	}
+
+	@Override
+	public int selectTotalDC(Map<String, Object>  searchMap) {
+		
+		int result = ownerDAO.selectTotalDC(searchMap);
+		
+		return result;
+	}
+
+	@Override
+	public List<ProductDTO> selectDC(Map<String, Object> searchMap) {
+
+		List<ProductDTO> result = ownerDAO.selectDC(searchMap);
+		
+		return result;
+	}
 
 }

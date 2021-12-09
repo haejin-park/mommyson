@@ -43,4 +43,11 @@ public interface OwnerService {
 	public int deleteReview(List<Integer> deleteReviewList);
 
 	public int deleteCoupon(List<Integer> deleteCouponList);
+	public int modifyStatus(ProductDTO product);
+
+	public int removeProduct(List<Integer> deleteCode);
+
+	public int selectTotalDC(Map<String, Object> searchMap);
+
+	public List<ProductDTO> selectDC(Map<String, Object> searchMap);
 }

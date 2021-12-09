@@ -29,11 +29,11 @@
         <jsp:include page="../commons/ownerSidebar.jsp"/>
         
 	    <div class="body-center" style="text-align: center;">
-	    <form action="${ pageContext.servletContext.contextPath }/owner/productRegist" method="post" enctype="multipart/form-data">
+	    <form action="${ pageContext.servletContext.contextPath }/owner/productRegist" method="post" id="frm" enctype="multipart/form-data">
 	        <input type="text" placeholder="상품명을 입력해주세요." name="sdName" style="height: 60px; font-size: large;">
 	        <br><br>
 	        <select name="categoryCode" id="category">
-            <option>선택</option>
+            <option>반찬 카테고리</option>
            <c:forEach var="map" items="${ categoryList }" varStatus="i">
            		<option value="<c:out value="${ map.CATEGORY_CODE }"/>"><c:out value="${ map.CATEGORY_NAME }"/></option>
            </c:forEach>
@@ -77,6 +77,7 @@
 	 			 val2 = $("#tag2 option:selected").val();
 	 			$("#tag3 option[value='"+ val2 + "']").remove();
 	 		});
+	 		
 	 	});
 	 </script>
 	       
@@ -139,7 +140,7 @@
         </div>
     </div>
 	       <br><br>
-	       <textarea placeholder="간단한 상품 설명을 작성해주세요." name="detail" style="width: 400px; height: 100px;"></textarea>
+	       <textarea placeholder="간단한 상품 설명을 작성해주세요." name="detail" id="detail" style="width: 400px; height: 100px;"></textarea>
 	       <br> <br>
 	       <table class="tg-product">
 	        <tbody>
@@ -148,40 +149,40 @@
 	            <th class="tg-pp"><input type="date" name="mDate"></th>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">유효기간</td>
+	            <th class="tg-p">유통기한</th>
 	            <td class="tg-pp">
-	                <input type="date" name="eDate"">
+	                <input type="date" name="eDate">
 	            </td>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">판매상태</td>
+	            <th class="tg-p">판매상태</th>
 	            <td class="tg-pp">
-	                <select name="orderableStatus">
+	                <select name="orderableStatus" id="status">
 	                   <option value="Y">판매</option>
 	                   <option value="N">판매불가</option>
 	               </select>
 	            </td>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">용량</td>
+	            <th class="tg-p">용량</th>
 	            <td class="tg-pp"><input type="text" name="volume" style="width: 80px;">  g</td>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">식품유형</td>
+	            <th class="tg-p">식품유형</th>
 	            <td class="tg-pp">
 	                <input type="text" name="category" placeholder=" ex)식육함유가공">
 	            </td>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">원재료명</td>
+	            <th class="tg-p">원재료명</th>
 	            <td class="tg-pp">
 	                <input type="text" name="ingredient" placeholder="원재료명을 작성해주세요" style="width: 500px;">
 	            </td>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">보관법</td>
+	            <th class="tg-p">보관법</th>
 	            <td class="tg-pp">
-	                <select name="storageMethod">
+	                <select name="storageMethod" id="method">
 	                    <option value="0~10º 냉장보관">0~10º 냉장보관</option>
 	                    <option value="상온보관">상온보관</option>
 	                    <option value="냉동보관">냉동보관</option>
@@ -189,16 +190,36 @@
 	            </td>
 	        </tr>
 	        <tr>
-	            <td class="tg-p">가격</td>
+	            <th class="tg-p">가격</th>
 	            <td class="tg-pp"><input type="text" name="price" style="width: 100px;">   원</td>
 	        </tr>
 	        </tbody>
 	    </table><br><br><br>
-	
-	    <input type="submit" value="등록하기" style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; height: 40px;">
 	    </form> 
+	    <button id="subBtn"style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; height: 40px;">등록하기</button>
 	   </div>  
 	 </div>
+	 
+	 <script>
+	 	 $("#subBtn").click(function(){
+	 		if($("#category").val() != '반찬 카테고리' && $('input[name=sdName]').val() != "" && 
+			   $('#tag1').val() != '선택' && $('#tag2').val() != '선택' && 
+			   $('#tag3').val() != '선택' && $('#input-image').val() != "" &&
+			   $('#detail').val() != "" && $('input[name=mDate]').val() != "" &&
+			   $('input[name=eDate]').val() != ""  && $('input[name=volume]').val() != "" && $('input[name=category]').val() != "" && 
+			   $('input[name=ingredient]').val() != "" && $('input[name=price]').val() != "") {
+	 			
+	 			$("#frm").submit();
+	 		} else{
+	 			alert("작성되지 않은 내용이 있습니다.")
+	 		}
+	 	}); 
+	 	/*  $("#category").change(function(){
+		 if($("#category").val() == '7'){
+				$("input[name=eDate]").remove();
+			}	 
+	 }) */
+	 </script>
 	 
 	<!-- footer -->
 	 <jsp:include page="../commons/footer.jsp"/>
