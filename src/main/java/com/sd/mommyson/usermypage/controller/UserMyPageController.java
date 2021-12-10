@@ -1,8 +1,14 @@
 package com.sd.mommyson.usermypage.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.sd.mommyson.member.dto.MemberDTO;
 
 @Controller
 @RequestMapping("/userMyPage")
@@ -11,7 +17,24 @@ public class UserMyPageController {
 	
 	/*주문내역*/
 	@GetMapping(value={"myOrderList","/"})
-	public String myOrderList( ) {
+	public String myOrderList(HttpSession session, Model model) {
+		
+//		String userInfo = session.getId();
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+//		System.out.println("userInfo" +memberInfo);
+//		System.out.println(session);
+//		System.out.println(model.getAttribute("loginMember"));
+//		String userInfo = (String) model.getAttribute("loginMember");
+		System.out.println("로그인 멤버: " + memberInfo);
+		System.out.println("로그인한 멤버의 멤버 코드: " + memberInfo.getMemCode());
+		int userCode = memberInfo.getMemCode();
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		return "user_mypage/userTotalOrderList";
