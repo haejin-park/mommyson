@@ -207,6 +207,7 @@
 		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
 		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
 		 WHERE C.STORE_NAME = #{storeName}
+		   AND A.IS_DELETED = 'N'
 	</select>
 	
 	<!-- 사업자 가게정보 변경 쿼리문 -->
@@ -366,7 +367,9 @@
 	
 	<!-- 리뷰삭제 -->
 	<delete id="deleteReview" parameterType="list">
-	 DELETE FROM REVIEW_TBL 
+	 UPDATE  
+	 		 REVIEW_TBL A
+	 	SET  A.IS_DELETED = 'Y'
 	  <where>
 	     	RV_CODE IN
 	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">

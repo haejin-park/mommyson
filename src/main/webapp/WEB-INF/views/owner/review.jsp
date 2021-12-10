@@ -150,7 +150,7 @@
 	    });
 	  
 	/* 모달로 memCode 넘겨주기 */
-	/* var memCode ="";
+	var memCode ="";
 	
 	$('#btn1').on('click',function(){
 		let checkBox = $('.test');
@@ -160,9 +160,9 @@
 	$(document).ready(function(){
 		$('#staticBackdrop1').on('show.bs.modal', function(event){
 			console.log(event);
-			/* memCode = $(event.relatedTarget).data('memCode'); */
-		}); */
-	});
+			/* memCode = $(event.relatedTarget).data('memCode'); 
+		}); 
+	});		
 	  
   </script>
   
