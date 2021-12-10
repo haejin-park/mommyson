@@ -16,7 +16,7 @@ public interface OwnerService {
 
 	public 	List<CouponDTO> selectCoupon(MemberDTO member);
 
-	public List<ForReviewDTO> selectReview(String storeName);
+	public List<ReviewDTO> selectReview(String storeName);
 	
 	public int modifyInfo(Map<String, Object> modifyInfo);
 

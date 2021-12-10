@@ -47,15 +47,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
                 <c:forEach var="review" items="${ reviews }">
+              <tr>
                 <th scope="row"><input type="checkbox" name="chkreview" class="test" value="${ review.rvCode }" ></th>
                 <th>${ review.rvCode }</th>
-                <input type="hidden" value="${ review.memCode }"/>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
-                </c:forEach>
               </tr>
+                <input type="hidden" value="${ review.memCode }"/>
+                </c:forEach>
             </tbody>
           </table>
           <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" 
@@ -103,7 +103,7 @@
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
-                      <th scope="col">{param.memCode}</th>
+                      <th scope="col">할인금액</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -150,7 +150,7 @@
 	    });
 	  
 	/* 모달로 memCode 넘겨주기 */
-	var memCode ="";
+	/* var memCode ="";
 	
 	$('#btn1').on('click',function(){
 		let checkBox = $('.test');
@@ -161,7 +161,7 @@
 		$('#staticBackdrop1').on('show.bs.modal', function(event){
 			console.log(event);
 			/* memCode = $(event.relatedTarget).data('memCode'); */
-		});
+		}); */
 	});
 	  
   </script>

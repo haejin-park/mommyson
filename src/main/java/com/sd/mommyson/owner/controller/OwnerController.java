@@ -30,10 +30,10 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
-import com.sd.mommyson.owner.dto.ForReviewDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -328,8 +328,8 @@ public class OwnerController {
 		MemberDTO owner = ownerService.selectOwner(member);
 		String storeName = owner.getCeo().getStore().getStoreName();
 		System.out.println(storeName);
-		
-		List<ForReviewDTO> reviews = ownerService.selectReview(storeName);
+		System.out.println("확인");
+		List<ReviewDTO> reviews = ownerService.selectReview(storeName);
 		System.out.println("리뷰들아 들어왔니 : " + reviews);	
 		
 		model.addAttribute("owner", owner);

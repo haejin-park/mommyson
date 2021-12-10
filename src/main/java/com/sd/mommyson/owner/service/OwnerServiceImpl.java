@@ -10,7 +10,6 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
-import com.sd.mommyson.owner.dto.ForReviewDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
@@ -42,9 +41,10 @@ public class OwnerServiceImpl implements OwnerService{
 
 
 	@Override
-	public List<ForReviewDTO> selectReview(String storeName) {
-		
-		return ownerDAO.selectReview(storeName);
+	public List<ReviewDTO> selectReview(String storeName) {
+		List<ReviewDTO> list = ownerDAO.selectReview(storeName);
+		System.out.println("list 확인 : " + list);
+		return list;
 	}
 
 	@Override

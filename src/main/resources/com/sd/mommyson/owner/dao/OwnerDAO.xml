@@ -55,6 +55,11 @@
 		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.member.dto.AuthDTO" id="authResultMap">
+		<id property="code" column="CODE"/>
+		<result property="auth" column="AUTH"/>
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
 		<id property="cpCode" column="CP_CODE"/>
 		<result property="cpName" column="CP_NAME"/>
@@ -77,17 +82,11 @@
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="orderCode" column="ORDER_CODE"/>
-		<result property="img" column="RV_IMG"/>
-		<result property="content" column="RV_CONTENT"/>
-		<result property="grade" column="RV_GRADE"/>
-		<result property="rvCode" column="RV_CODE"/>
-	</resultMap>
-	
-	<resultMap type="com.sd.mommyson.owner.dto.ForReviewDTO" id="forReviewResultMap">
+		<id property="rvCode" column="RV_CODE"/>
 		<result property="memCode" column="MEM_CODE"/>
-		<collection property="reviewDTO" resultMap="reviewResultMap"/>
+		<result property="content" column="RV_CONTENT"/>
+		<association property="orderDTO" resultMap="orderResultMap"></association>
+		<association property="memberDTO" resultMap="memberResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -198,14 +197,14 @@
 	</insert>
 	
 	<!-- 리뷰 목록 가져오기 -->
-	<select id="selectReview" resultMap="forReviewResultMap">
+	<select id="selectReview" resultMap="reviewResultMap">
 		SELECT
 				A.RV_CODE
 			  , A.MEM_CODE
 			  , A.RV_CONTENT
 			  , B.NICKNAME 
 		  FROM REVIEW_TBL A
-		  LEFT JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
+		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
 		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
 		 WHERE C.STORE_NAME = #{storeName}
 	</select>
