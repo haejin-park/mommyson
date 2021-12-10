@@ -24,9 +24,14 @@ public interface MemberDAO {
 
 	public List<ManagerDTO> selectManagers(String memId);
 
+	public void updateLastLogin(MemberDTO member);
+
 	/*  아이디 중복검사 */
 	public int idChk(String memId);
-
+	
+	/* 이메일 중복 검사 */
+	public  int emailChk(String email);
+	
 	/* 회원가입시 지역코드 조회 */
 	public String locationCode(String locationName);
 
@@ -34,10 +39,9 @@ public interface MemberDAO {
 	public void customerJoin(MemberDTO member) ;
 
 	/* 아이디 찾기 */
-	public String findId2(String name, String email);
-	
-	public void updateLastLogin(MemberDTO member);
+	public String findIdCheck(MemberDTO dto);
 
+	
 
 	
 }

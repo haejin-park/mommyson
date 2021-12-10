@@ -73,18 +73,18 @@
               <c:forEach var="list" items="${ productList }">
               <c:set var="i" value="${ i + 1 }"/>
               <tr>
-                <th scope="col"><input type="checkbox" name="menu" id=""></th>
+                <th scope="col"><input type="checkbox" name="deleteCode" value="${ list.sdCode }" id="deleteCode"></th>
                 <th scope="row">${ i }</th>
                 <td>${ list.sdName }</td>
                 <td>${ list.mDate }</td>
                 <td>${ list.eDate }</td>
                 <td>
-	               	<c:if test="${ list.orderableStatus eq 'Y' }">
-	                <button class="couponBtn" id="btn1">판매</button>
+	               	<c:if test="${ list.orderableStatus eq 'N' }">
+	                <button class="couponBtn btn1" id="btn1" name="sdCode" value="${ list.sdCode }">판매</button>
 	                </c:if>
 	                
-	                <c:if test="${ list.orderableStatus eq 'N' }">
-	                <button class="couponBtn" style="background-color : #777777;" id="btn1">판매중단</button>
+	                <c:if test="${ list.orderableStatus eq 'Y' }">
+	                <button class="couponBtn btn1" id="btn1" name="sdCode" value="${ list.sdCode }" style="background-color : #777777;">판매중단</button>
 	                </c:if>
                 </td>
               </tr>
@@ -93,21 +93,25 @@
           </table>
         </div>
         <div style="float: right; margin: 20px 69px 0 0;">
-          <button class="dateControll">제조일자 오늘로 변경</button>
-          <button class="couponBtn" style="background-color: #777777;">삭제</button>
+          <button class="couponBtn"id="delete" style="background-color: #777777;">삭제</button>
         </div>
         </div>
-        <jsp:include page="../commons/paging.jsp"/>
+        <jsp:include page="../commons/ownerPaging.jsp"/>
       </div>  
     </div>
 	<script>
-	  $(function(){
-	    $("#btn1").click(function(){
-	      if($("#btn1").html() == "판매"){
-	        $(this).css("background-color","#777777").html("판매중단");
-	      } else{
-	        $(this).css("background-color","#F89E91").html("판매");
-	      }
+	    $(".btn1").click(function(e){
+	    	
+	    	let sdCode = e.target.value;
+	    	console.log(sdCode);
+	    	
+	    	let form = $('<form></form>');
+	        form.attr('action', '${pageContext.servletContext.contextPath}/owner/productManagement');
+	        form.attr('method', 'post');
+	        form.appendTo('body');
+	        form.append($('<input type="hidden" value="' + sdCode + '" name=sdCode>'));
+	        form.submit();
+	     
 	    });
 	
 	    $("#allCheck").click(function(){
@@ -117,6 +121,25 @@
 	        $("input[type=checkbox]").prop("checked",false);
 	      }
 	    });
+	    
+	    $("#delete").click(function(){
+	    	
+	    	let arr = [];
+	    	$('input:checkbox[name=deleteCode]:checked').each(function(){
+	    		let value = $(this).val();
+	    		arr.push(value);
+	    	})
+	    	
+	    	console.log(arr);
+	    	
+	    	let form = $('<form></form>');
+	        form.attr('action', '${pageContext.servletContext.contextPath}/owner/productManagement');
+	        form.attr('method', 'post');
+	        form.appendTo('body');
+	        form.append($('<input type="hidden" value="' + arr + '" name=deleteCode>'));
+	        form.submit();
+	    	
+	    });
 	
 	    $(".searchbutton").on('click',function(){
 	    	let searchValue = $('input[name=searchValue]').val();
@@ -125,6 +148,10 @@
 	    }); 
 	    
 	    $(".searchtext").attr("placeholder","검색할 상품명을 입력해주세요");
+	    
+	    if(${ requestScope.pagination.searchValue != null && requestScope.pagination.searchValue != ''}){
+	    	 $(".searchtext").attr("placeholder", "검색어 : " + "${ requestScope.pagination.searchValue }");
+	    }
 	    
 	    $("#status").change(function(){
 	    	$("#frm").submit();
@@ -143,7 +170,6 @@
 	    	$('#status').val('${ searchMap.status}');
 	    }
 	    
-	  });
 	</script>  
 	
 	<!-- footer -->

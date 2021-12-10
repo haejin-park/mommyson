@@ -13,6 +13,7 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -112,18 +113,47 @@ public class ManagerServiceImpl implements ManagerService {
    }
 
    @Override
-   public List<MemberDTO> selectSearchMemberList(String searchMember) {
-      
-      List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
-      
-      return searchMemberList;
-   }
-
-   @Override
    public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
       return managerDAO.selectNormalMemberTotalCount(searchMap);
    }
 
+	/**
+	 * 블랙해지
+	 */
+	@Override
+	public boolean terminateBlack(List<Integer> blackMember) {
+		
+		int result = managerDAO.terminateBlack(blackMember);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 신고된 리뷰 총 갯수
+	 */
+	@Override
+	public int selectReportTotalCount(Map<String, Object> searchMap) {
+		
+		return managerDAO.selectReportTotalCount(searchMap);
+	}
+
+	@Override
+	public List<MemberDTO> selectSearchMemberList(String searchMember) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 신고된 리뷰 조회
+	 */
+//	@Override
+//	public List<ReviewDTO> selectReportList(Pagination pagination) {
+//		
+//		List<ReviewDTO> selectReportList = managerDAO.selectReportList(pagination);
+//		
+//		return selectReportList;
+//	}
+   
 
    /**
     * 공지사항 리스트 조회
@@ -171,5 +201,11 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 
-   
+	@Override
+	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
+		
+		MemberDTO ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
+		
+		return ceoDetailInfos;
+	}
 }

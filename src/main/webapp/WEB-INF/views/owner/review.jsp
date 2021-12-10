@@ -13,6 +13,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+<script>
+	if(${ requestScope.message != null && requestScope.message != ''}){
+		alert('${ requestScope.message }');
+	}
+</script>
 
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
@@ -31,10 +36,11 @@
       
       <div style="text-align: center;">
         <div style="margin-left: 450px;">
+       		<form action="${ pageContext.servletContext.contextPath}/owner/registGiveAndDeleteCp" method="POST">
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="" id="allCheck"></th>
+                <th scope="col"><input type="checkbox" id="allCheck"></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -42,20 +48,20 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row"><input type="checkbox" name="" id=""></th>
                 <c:forEach var="review" items="${ reviews }">
-                <th>${ rivew.orderDTO.nickname }</th>
-                <td>${ review.rvCode }</td>
+                <th scope="row"><input type="checkbox" name="chkreview" class="test" value="${ review.rvCode }" ></th>
+                <th>${ review.rvCode }</th>
+                <input type="hidden" value="${ review.memCode }"/>
+                <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
-
                 </c:forEach>
               </tr>
-             
             </tbody>
           </table>
-          <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" >
-          쿠폰 주기</button>
-        <button id="rebtn2">삭제</button>
+          <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" 
+          data-target="#staticBackdrop" data-memCode ="${ review.memCode }" >쿠폰 주기</button>
+          <button id="rebtn2">삭제</button>
+        	</form>
         </div>
         <div style="margin: 500px 0 300px 900px;">
             <nav aria-label="Page navigation example">
@@ -77,16 +83,6 @@
               </nav>
         </div>
       </div>
-    	
-    <script>
-	  $("#allCheck").click(function(){
-	      if($("#allCheck").prop("checked")){
-	        $("input[type=checkbox]").prop("checked",true);
-	      } else{
-	        $("input[type=checkbox]").prop("checked",false);
-	      }
-	    });
-	</script>
     <!-- 모오오오다라라라라랄 -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="left: -180px; top: -50px;">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
@@ -103,37 +99,30 @@
               <table class="table table" style="width: 1050px;">
                   <thead style="background-color: #EDEDED;">
                   <tr>
-                      <th scope="col"><input type="checkbox" name="" id=""></th>
+                      <th scope="col"><input type="checkbox" name=""  id="allCheck2"></th>
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
-                      <th scope="col">할인금액</th>
+                      <th scope="col">{param.memCode}</th>
                   </tr>
                   </thead>
-              <form>
                   <tbody>
+                
+                <c:forEach items="${ coupon }" var="cp">
                   <tr>
-                      <td><input type="checkbox" name="" id=""></td>
-                      
-                      <td>01</td>
-                      <td>자주 이용해주세요~</td>
-                      <td>21-11-22</td>
-                      <td>
-                      <select>
-                          <option>1000원</option>
-                          <option>1500원</option>
-                          <option>2000원</option>
-                          <option>25%</option>
-                      </select>
-                      </td>
+                      <td><input type="checkbox" ></td>
+                      <td>${ cp.cpCode }</td>
+                      <td>${ cp.cpName }</td>
+                      <td>${ cp.startDate }</td>
+                      <td>${ cp.disWon }</td>
                   </tr>
+				</c:forEach>
                   </tbody>
-              </form>
               </table>
           </div>
           <div class="modal-footer" >
-            <button type="button" class="btn btn-primary" id="button1">쿠폰 주기</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="submit" class="btn btn-primary" id="btn1">쿠폰 주기</button>
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">닫기</button>
           </div>
          </div>
        </div>
@@ -142,6 +131,40 @@
     </div>
    </div>  
   </div>
+  <script>
+  	/* 체크박스 체크 */
+	  $("#allCheck").click(function(){
+	      if($("#allCheck").prop("checked")){
+	        $("input[type=checkbox]").prop("checked",true);
+	      } else{
+	        $("input[type=checkbox]").prop("checked",false);
+	      }
+	    });
+	  
+	  $("#allCheck2").click(function(){
+	      if($("#allCheck2").prop("checked")){
+	        $("input[type=checkbox]").prop("checked",true);
+	      } else{
+	        $("input[type=checkbox]").prop("checked",false);
+	      }
+	    });
+	  
+	/* 모달로 memCode 넘겨주기 */
+	var memCode ="";
+	
+	$('#btn1').on('click',function(){
+		let checkBox = $('.test');
+		
+	});
+	
+	$(document).ready(function(){
+		$('#staticBackdrop1').on('show.bs.modal', function(event){
+			console.log(event);
+			/* memCode = $(event.relatedTarget).data('memCode'); */
+		});
+	});
+	  
+  </script>
   
   <!-- footer -->
   <jsp:include page="../commons/footer.jsp"/>
