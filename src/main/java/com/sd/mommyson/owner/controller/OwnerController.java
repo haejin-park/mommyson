@@ -33,6 +33,7 @@ import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
@@ -452,6 +453,14 @@ public class OwnerController {
 	
 	@GetMapping("salesDay")
 	public void salseDay(Model model) {
+		
+	}
+	
+	@GetMapping("order")
+	public void orderList(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+		
+		// 주문 접수 가져오기
+//		List<OrderDTO> orderList = ownerService.selectOrderList(member); 
 		
 	}
 	

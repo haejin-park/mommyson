@@ -12,7 +12,7 @@ public class OrderDTO {
 	private String address;
 	private String phone;
 	private String storeName;
-	private int code;			// 상태코드 (1 : 진행중 2: 처리중 )
+	private int code;			// 상태코드 (1 : 주문접수중  2: 주문수락  3: 주문취소  4: 주문완료  )
 
 	
 	public OrderDTO() {

@@ -43,8 +43,8 @@
         <img src="${ pageContext.servletContext.contextPath }/${ owner.ceo.store.storeImg }" width="300px"><br><br>
         <br><br>
         <div style="margin-left: 450px;" id="before">
-        <h3 style="font-weight: 900; text-align: left; margin-left: 70px;">발행한 쿠폰</h3>
-        <br><br>
+        <h3 style="font-weight: 900; text-align: left; margin-left: 30px;">발행한 쿠폰</h3>
+        <br>
         <form action="${ pageContext.servletContext.contextPath}/owner/couponDelete" method="POST">
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
