@@ -35,8 +35,6 @@ public interface ManagerService {
 	/* 공지사항 총 게시글 갯수 */
 	public int selectNoticeTotalCount(Map<String, String> searchMap);
 
-	/* 공지사항 리스트 */
-	public List<PostDTO> selectNoticeList(Pagination pagination);
 
 	public int idDupCheck(String memId);
 	
@@ -48,6 +46,19 @@ public interface ManagerService {
 
 	/* 일반회원 검색 */
 	public List<MemberDTO> selectSearchMemberList(String searchMember);
+
+	/* 공지사항 리스트 */
+	public List<PostDTO> selectNoticeList(Pagination pagination);
+	
+	/* 공지사항 작성 */
+	public int postWriting(Map<String, Object> map);
+
+	/* 공지사항 게시글 */
+	public PostDTO selectNotice(int postNo);
+
+	/* 공지사항 게시글 조회수 */
+	public boolean selectNoticeCnt(int postNo);
+
 	
 
 }

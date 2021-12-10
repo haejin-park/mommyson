@@ -89,10 +89,6 @@ public class ManagerServiceImpl implements ManagerService {
       return managerDAO.selectNoticeTotalCount(searchMap);
    }
 
-   @Override
-   public List<PostDTO> selectNoticeList(Pagination pagination) {
-      return managerDAO.selectNoticeList(pagination);
-   }
 
    @Override
    public int idDupCheck(String memId) {
@@ -127,5 +123,53 @@ public class ManagerServiceImpl implements ManagerService {
    public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
       return managerDAO.selectNormalMemberTotalCount(searchMap);
    }
+
+
+   /**
+    * 공지사항 리스트 조회
+    * @author junheekim
+    */
+   @Override
+   public List<PostDTO> selectNoticeList(Pagination pagination) {
+      return managerDAO.selectNoticeList(pagination);
+   }
+   
+	/**
+	 * 공지사항 작성
+	 * @author junheekim
+	 */
+	@Override
+	public int postWriting(Map<String, Object> map) {
+
+		int result = managerDAO.postWriting(map);
+		
+		return result;
+	}
+
+	/**
+	 * 공지사항 게시글 조회
+	 * @author junheekim
+	 */
+	@Override
+	public PostDTO selectNotice(int postNo) {
+		
+		System.out.println("포스트 2 : " + postNo);
+		PostDTO selectNotice = managerDAO.selectNotice(postNo);
+		
+		return selectNotice;
+	}
+
+	
+	/**
+	 * 공지사항 게시글 조회수
+	 * @author junheekim
+	 */
+	@Override
+	public boolean selectNoticeCnt(int postNo) {
+		
+		return managerDAO.selectNoticeCnt(postNo);
+	}
+
+
    
 }

@@ -17,7 +17,7 @@
     <div class="head_line"></div>
     <div class="at-container total_container">
     
-        <jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
+        <jsp:include page="../commons/managerSidebar.jsp"/>
         
         <div class="board_container">
             <h2>공지사항</h2>
@@ -25,10 +25,10 @@
 	            <select class="sel_notice" name="searchCondition" id="searchCondition">
 	                    <option value="all" ${ requestScope.pagination.searchCondition eq "all"? "selected": "" }>전체</option>
 	                    <option value="notice" ${ requestScope.pagination.searchCondition eq "notice"? "selected": "" }>공지</option>
-							<option value="guide" ${ requestScope.pagination.searchCondition eq "guide"? "selected": "" }>안내</option>
-							<option value="check" ${ requestScope.pagination.searchCondition eq "check"? "selected": "" }>점검</option>
-							<option value="event" ${ requestScope.pagination.searchCondition eq "event"? "selected": "" }>이벤트</option>
-							<option value="owner" ${ requestScope.pagination.searchCondition eq "owner"? "selected": "" }>사업자</option>
+						<option value="guide" ${ requestScope.pagination.searchCondition eq "guide"? "selected": "" }>안내</option>
+						<option value="check" ${ requestScope.pagination.searchCondition eq "check"? "selected": "" }>점검</option>
+						<option value="event" ${ requestScope.pagination.searchCondition eq "event"? "selected": "" }>이벤트</option>
+						<option value="owner" ${ requestScope.pagination.searchCondition eq "owner"? "selected": "" }>사업자</option>
 	             </select>
                 <table class="table board_table">
                     <colgroup>
@@ -49,7 +49,7 @@
                     </thead>
                     <tbody>
                         <tr class="important_notice">
-                            <th scope="row"><input type="checkbox" name="ch1"></th>
+                            <th scope="row"><input type="checkbox" name="ch1" disabled></th>
                             <td>공지</td>
                             <td class="tal">
                                 <a href="${ pageContext.servletContext.contextPath }/manager/noticeDetailView">[소비자] 신규 회원 가입 이벤트 당첨자 발표</a>
@@ -62,7 +62,7 @@
                             <th scope="row"><input type="checkbox" name="ch1"></th>
                             <td>${ nl.postNo }</td>
                             <td class="tal">
-                                <a href="noticeDetailView.html">${ nl.postTitle }</a>
+                                <a href="${ pageContext.servletContext.contextPath }/manager/noticeDetailView?postNo=${ nl.postNo }">${ nl.postTitle }</a>
                             </td>
                             <td>${ nl.postDate }</td>
                             <td>${ nl.viewCnt }</td>
@@ -71,7 +71,7 @@
                     </tbody>
                 </table>
                 <input type="submit" value="삭제하기" class="black_btn delete_btn">
-                <a href="noticeWrite.html" class="black_btn write_btn" style="background-color: #F89E91;">작성하기</a>
+                <a href="${ pageContext.servletContext.contextPath }/manager/noticeWrite" class="black_btn write_btn" style="background-color: #F89E91;">작성하기</a>
             </form>
             
             <jsp:include page="../commons/paging.jsp"/>
@@ -81,13 +81,15 @@
     <jsp:include page="../commons/footer.jsp"/>
 
     <script>
-        $("#chk_all").click(function(){
-       		 $(this).parent
-        });
- 		
-        $("#homeSubmenu2").addClass("show");
-        $("#homeSubmenu2 > li:first-child > a").attr("style","color: #F89E91 !important");
-         
+   	    $("#chk_all").click(function(){
+		   	 let chk = $(this).is(":checked");
+		   	 if(chk){
+		   		 $(".board_table > tbody > tr th input").prop('checked', true);
+		   	 } else{
+		   		 $(".board_table > tbody > tr th input").prop('checked', false);
+		   	 }
+	   	 
+	    });
         
         $('#searchCondition').on('change',function() {
         	 let changedCondition = $('#searchCondition').val();

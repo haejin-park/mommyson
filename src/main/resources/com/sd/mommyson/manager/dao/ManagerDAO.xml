@@ -378,6 +378,30 @@
        ]]>
    </select>
    
+   <!-- 공지사항 등록 -->
+   <insert id="postWriting" parameterType="hashmap" >
+ 	INSERT ALL
+ 		INTO POST_TBL
+ 	VALUES
+ 	(SEQ_POST.nextval, #{ boardCode }, #{ postTitle }, 2, #{ postContent }, SYSDATE, 'N', NULL, 'N', 0)
+ 	SELECT * FROM DUAL
+   </insert>
+
+   <!-- 공지사항 게시글 조회 -->
+   <select id="selectNotice" parameterType="_int" resultMap="PostResultMap">
+     SELECT
+	   	A.*
+	   FROM POST_TBL A
+	  WHERE A.POST_NO = #{ postNo }
+   </select>
+   
+   <!-- 공지사항 조회수 -->
+   <update id="selectNoticeCnt" parameterType="int">
+   	UPDATE POST_TBL
+   	   SET VIEW_CNT = VIEW_CNT + 1
+   	 WHERE POST_NO = #{ postNo }
+   </update>
+
    <select id="idDupCheck" parameterType="string" resultType="int">
        SELECT 
        		  COUNT(*) 

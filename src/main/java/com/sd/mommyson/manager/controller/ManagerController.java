@@ -225,9 +225,8 @@ public class ManagerController {
 	}
 	
 	/**
-	 * @author kimjunhee
-	 * @category 공지사항
-	 * @return "manager/noticeSelect"
+	 * @author junheekim
+	 * @category 공지사항 조회
 	 */
 	@GetMapping("noticeSelect")
 	public String noticeSelect(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
@@ -291,15 +290,76 @@ public class ManagerController {
 			model.addAttribute("pagination",pagination);
 			model.addAttribute("noticeList", noticeList);
 		} else {
-			System.out.println("조회실패");
+			System.out.println("공지사항 리스트 조회 실패");
 		}
 		
 		return "manager/noticeSelect";
 	}
 	
-	/* 공지사항 상세보기 */
+	/**
+	 * @author junheekim
+	 * @category 공지사항 작성
+	 */
+	@GetMapping("noticeWrite")
+	public void noticeWrite() {
+	}
+	
+	@PostMapping(value = "noticeWrite")
+	public String noticeWrite(@ModelAttribute PostDTO post, Model model) {
+		System.out.println(post);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardCode", post.getBoardCode());
+		map.put("postTitle", post.getPostTitle());
+		map.put("postContent", post.getPostContent());
+		
+		int result = managerService.postWriting(map);
+	
+		if(result > 0) {
+			model.addAttribute("result", "공지 등록에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "공지 등록에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/noticeSelect";
+	}
+	
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시물 조회
+	 */
 	@GetMapping("noticeDetailView")
-	public void noticeDetailView() {}
+	public String noticeDetailView(Model model, @RequestParam(value = "postNo", required = false) int postNo) {
+		
+		PostDTO selectNotice = managerService.selectNotice(postNo);
+		boolean isCnt = managerService.selectNoticeCnt(postNo);
+		
+		System.out.println("조회수 결과 : " + isCnt);
+		
+		if(selectNotice != null) {
+			model.addAttribute("selectNotice", selectNotice);
+		} else {
+			System.out.println("공지사항 게시글 조회 실패");
+		}
+		
+		return "manager/noticeDetailView";
+	}
+	
+//	@PostMapping(value = "/noticeDetailView")
+//	public String noticeDetailView(Model model, @RequestParam(value = "postNo", required = false) int postNo) {
+//		
+//		PostDTO selectNoticeCnt = managerService.selectNoticeCnt(postNo);
+//		
+//		if(selectNoticeCnt != null) {
+//			model.addAttribute("cnt", selectNoticeCnt);
+//		} else {
+//			System.out.println("공지사항 게시글 조회 실패");
+//		}
+//		
+//		return  "manager/noticeDetailView";
+//	}
+//	
 	
 	/* 자주하는 질문 */
 	@GetMapping("oftenQuestion")

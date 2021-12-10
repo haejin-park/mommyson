@@ -41,4 +41,10 @@ public interface ManagerDAO {
 
 	int selectNormalMemberTotalCount(Map<String, Object> searchMap);
 
+	int postWriting(Map<String, Object> map);
+
+	PostDTO selectNotice(int postNo);
+
+	boolean selectNoticeCnt(int postNo);
+
 }
