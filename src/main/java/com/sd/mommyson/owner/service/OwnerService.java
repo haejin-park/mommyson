@@ -3,9 +3,9 @@ package com.sd.mommyson.owner.service;
 import java.util.List;
 import java.util.Map;
 
-import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.ForReviewDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
@@ -16,7 +16,7 @@ public interface OwnerService {
 
 	public 	List<CouponDTO> selectCoupon(MemberDTO member);
 
-	public List<ReviewDTO> selectReview(ReviewDTO review);
+	public List<ForReviewDTO> selectReview(String storeName);
 	
 	public int modifyInfo(Map<String, Object> modifyInfo);
 
@@ -34,7 +34,20 @@ public interface OwnerService {
 
 	public int registProduct(Map<String, Object> productInfo);
 
+//	public List<ProductDTO> selectProduct(int memCode);
+
 	public List<ProductDTO> selectProduct(Map<String, Object> searchMap);
 
 	public int selectTotalCount(Map<String, Object> searchMap);
+
+	public int deleteReview(List<Integer> deleteReviewList);
+
+	public int deleteCoupon(List<Integer> deleteCouponList);
+	public int modifyStatus(ProductDTO product);
+
+	public int removeProduct(List<Integer> deleteCode);
+
+	public int selectTotalDC(Map<String, Object> searchMap);
+
+	public List<ProductDTO> selectDC(Map<String, Object> searchMap);
 }

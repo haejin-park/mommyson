@@ -8,16 +8,15 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
-	<nav class="page_box" aria-label="Page navigation example">
+	<nav class="page_box" aria-label="Page navigation example" style="margin-left: 460px">
         <ul class="pagination">
             <!-- 맨 앞으로 이동 버튼 -->
 	    	 <li class="page-item"><a class="page-link-num" id="startPage" href="#">&laquo;</a></li>
 			<!-- 이전 페이지 버튼 -->
-			<c:if test="${ requestScope.pagination.pageNo > 1 }">
 				<li class="page-item"><a class="page-link-num" id="prevPage" href="#">&lt;</a></li>
-			</c:if> 
 			
 			<!-- 숫자 버튼 -->
 			<c:forEach var="page" begin="${ requestScope.pagination.startPage }" end="${ requestScope.pagination.endPage }" step="1">
@@ -31,17 +30,22 @@
 			</c:forEach>
            
             <!-- 다음 페이지 버튼 -->
-			<c:if test="${ requestScope.pagination.pageNo < requestScope.pagination.maxPage }">
 				<li class="page-item"><a class="page-link-num" id="nextPage" href="#">&gt;</a></li>
-			</c:if>
 			<!-- 마지막 페이지로 이동 버튼 -->
 				 <li class="page-item"><a class="page-link-num" id="maxPage" href="#">&raquo;</a></li> 
         </ul>
-
+        <div class="search_box">
+        	<ul class="df_ul">
+		        <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
+		        <li><input type="search" class="searchtext" name="searchValue" placeholder="찾고싶은 내용 검색하기"></li>
+		        <li><button type="submit" class="searchbutton">검색하기</button></li>
+        	</ul>
+        </div>
     </nav>
     
     <script>
-
+	
+        let link = "";
 		let searchText = "";
 		
 		if(${ !empty requestScope.pagination.searchCondition? true : false }) {
@@ -70,8 +74,12 @@
 		if(document.getElementById("nextPage")) {
 			const $nextPage = document.getElementById("nextPage");
 			$nextPage.onclick = function() {
-				location.href = link + "?currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
-			}
+				if(${ requestScope.pagination.pageNo } != ${ requestScope.pagination.maxPage }){
+					location.href = link + "?currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
+				} else {
+					location.href = link + "?currentPage=${ requestScope.pagination.pageNo }" + searchText;
+				}
+			} 
 		}
 		
 		if(document.getElementById("maxPage")) {

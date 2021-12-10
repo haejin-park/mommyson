@@ -56,20 +56,18 @@
 	                </thead>
 	                <tbody>
 	                	<c:forEach items="${ requestScope.normalMemberList }" var="nm">
-		                	<c:if test="${ nm.memType == 'user' }">
-			                    <tr>
-			                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
-			                        <td>${ nm.memCode }</td>
-			                        <td>${ nm.memId }</td>
-			                        <td>${ nm.nickname }</td>
-			                        <td>${ nm.email }</td>
-			                        <td>${ nm.enrollDate }</td>
-			                        <td></td>
-			                        <td></td>
-			                        <td>${ nm.user.repCount }</td>
-			                        <td class="memberState">${ nm.isDeleted }</td>
-			                    </tr>
-		                    </c:if>
+		                    <tr>
+		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
+		                        <td>${ nm.memCode }</td>
+		                        <td>${ nm.memId }</td>
+		                        <td>${ nm.nickname }</td>
+		                        <td>${ nm.email }</td>
+		                        <td>${ nm.enrollDate }</td>
+		                        <td></td>
+		                        <td></td>
+		                        <td>${ nm.user.repCount }</td>
+		                        <td class="memberState">${ nm.isDeleted }</td>
+		                    </tr>
 	                    </c:forEach>
 	                </tbody>
 	            </table>
@@ -103,33 +101,6 @@
             </script>
             
             <!-- 페이징 -->
-            <%-- <nav class="page_box" aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-                </ul>
-                <form action="${ pageContext.servletContext.contextPath }/manager/searchMember" method="GET">
-                	<div class="search_box">
-	                    <ul class="df_ul">
-	                        <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
-	                        <li><input type="search" class="searchtext" name="searchTxt" placeholder="찾고싶은 내용 검색하기"></li>
-	                        <li><button type="submit" class="searchbutton">검색하기</button></li>
-	                    </ul>
-                    </div>
-                </form>
-            </nav> --%>
             <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>

@@ -11,7 +11,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,20 +23,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
-
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
-import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.ForReviewDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
-import com.sd.mommyson.user.common.Pagenation;
-import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -69,30 +65,33 @@ public class OwnerController {
 		return "owner/ownerMain";
 	}
 	
-	/* 쿠폰 발행 */
+	/* 쿠폰  리스트 */
 	@GetMapping("coupon")
 	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
 		List<CouponDTO> coupon = ownerService.selectCoupon(member);
 		System.out.println(coupon);
 		
+		MemberDTO owner = ownerService.selectOwner(member);
+		System.out.println(owner);
+		
 		//					items 이름 , 리스트이름
 		model.addAttribute( "coupon" ,coupon);
+		model.addAttribute("owner", owner);
 	
 		return "owner/coupon";
 	}
 	
 
-	
+	/* 쿠폰등록*/
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
-	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session,  HttpServletRequest request) {
-															  // 리다이렉트를 해줄때 값을 넘겨주는...........
+	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session) {
+															  		// 리다이렉트를 해줄때 값을 넘겨주는...........
 		// @ModelAttribute 을 사용하는 순간 DTO에 필드값이랑 name값이 같으면 자동으로 값을 DTO에 담아서 보낸다. 
-		
-		System.out.println("결과를 말하라" + coupon);
 		
 		// root-contect에서 insert는 regist로 시작으로 지정해놓았다
 		int result = ownerService.registCoupon(coupon);
+		System.out.println("결과를 말하라" + coupon);
 		
 		//세션에서 memCode를 담아서 넘겨준다.
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
@@ -107,7 +106,29 @@ public class OwnerController {
 		}
 		
 		
+		
 		return "redirect:coupon"; // getMapping으로 보내준다
+	}
+	
+	//쿠폰 삭제
+	@PostMapping("couponDelete") 
+	public String couponDelete ( @RequestParam("chkcoupon") int[] deleteCoupon, RedirectAttributes ra) {
+		
+		List<Integer> deleteCouponList = new ArrayList<>();
+		
+		for(int i = 0; i < deleteCoupon.length; i++) {
+			deleteCouponList.add(deleteCoupon[i]);
+		}
+		
+		int result3 = ownerService.deleteCoupon(deleteCouponList);
+		
+		if(result3 > 0 ) {
+			ra.addFlashAttribute("message","쿠폰 삭제에 성공하였습니다.");
+		} else {
+			ra.addFlashAttribute("message","쿠폰 삭제에 실패하였습니다.");
+		}
+		
+		return "redirect:coupon";		
 	}
 	
 	/* 가게정보 수정 */
@@ -301,16 +322,52 @@ public class OwnerController {
 	
 	/* 리뷰 관리 */
 	@GetMapping("review")
-	public String selectReview(@ModelAttribute("loginMember") ReviewDTO review, Model model) {
+	public String selectReview(@ModelAttribute("loginMember") MemberDTO member, Model model) {
 		
-		List<ReviewDTO> reviews = ownerService.selectReview(review);
-		System.out.println(reviews);	
+		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
+		MemberDTO owner = ownerService.selectOwner(member);
+		String storeName = owner.getCeo().getStore().getStoreName();
+		System.out.println(storeName);
+		
+		List<ForReviewDTO> reviews = ownerService.selectReview(storeName);
+		System.out.println("리뷰들아 들어왔니 : " + reviews);	
+		
+		model.addAttribute("owner", owner);
+		model.addAttribute("reviews",reviews);
+		
+		
+		// 쿠폰 모달 리스트 가져오기
+		List<CouponDTO> coupon = ownerService.selectCoupon(member);
+		System.out.println(coupon);
+		
+		model.addAttribute("coupon",coupon);
 		
 		return "owner/review";	
 		
 	}
-	
-	
+	/* 리뷰관리 - 리뷰쓴 고객들에게 쿠폰주기/삭제 인서트 (CP_HISTORY_TBL) */
+	//	          form 이름 작성
+	@PostMapping("registGiveAndDeleteCp")
+	public String registGiveAndDeleteCp(@RequestParam("chkreview") int[] deleteReview, RedirectAttributes ra) {
+		
+		List<Integer> deleteReviewList = new ArrayList<>();
+		
+		for(int i = 0; i < deleteReview.length; i++) {
+			deleteReviewList.add(deleteReview[i]);
+		}
+		
+		int result = ownerService.deleteReview(deleteReviewList);
+		
+		if(result > 0 ) {
+			ra.addFlashAttribute("message","리뷰 삭제에 성공하였습니다.");
+		} else {
+			ra.addFlashAttribute("message","리뷰 삭제에 실패하였습니다.");
+		}
+		
+		return "redirect:review";	
+		
+	}
+
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
 	public void productManagement(Model model, @RequestParam( required = false) Map<String, String> param, HttpSession session) {

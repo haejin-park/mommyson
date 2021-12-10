@@ -12,8 +12,8 @@
     	<result property="postContent" column="POST_CONTENT"/>
     	<result property="postDate" column="POST_DATE"/>
     	<result property="ansStatus" column="ANS_STATUS"/>
-    	<result property="QuestionNo" column="QUE_NO"/>
-    	<result property="Status" column="STATUS"/>
+    	<result property="questionNo" column="QUE_NO"/>
+    	<result property="status" column="STATUS"/>
     	<result property="viewCnt" column="VIEW_CNT"/>
     </resultMap>
     
@@ -63,22 +63,29 @@
 					  FROM POST_TBL C 
 					  JOIN BOARD_TBL D ON (C.BOARD_CODE = D.BOARD_CODE)
 						  <where>
-						  	D.TYPE = 'notice'
-							AND C.STATUS = 'N' 
+							    C.STATUS = 'N'
+							  <if test="searchCondition =='total' or searchCondition == null " >
+							    AND D.TYPE = 'notice'
+							  </if>	
 							  <if test="searchCondition =='notice'">
+							    AND D.TYPE = 'notice'
 							  	AND D.D_TYPE = 'notice'
 							  </if>
 							  <if test="searchCondition =='guide'">
+							    AND D.TYPE = 'notice'
 							  	AND D.D_TYPE = 'guide'
 							  </if>
 							  <if test="searchCondition =='check'">
+							    AND D.TYPE = 'notice'
 							  	AND D.D_TYPE = 'check'
 							  </if>
 							  <if test="searchCondition =='event'">
+							    AND D.TYPE = 'notice'
 							  	AND D.D_TYPE = 'event'
 							  </if>
-							  <if test="searchCondition =='store'">
-							  	AND D.D_TYPE = 'store'
+							  <if test="searchCondition =='owner'">
+							    AND D.TYPE = 'notice'
+							  	AND D.D_TYPE = 'owner'
 							  </if>
 							  <if test="searchValue != null and searchValue !=''">
 							   AND C.POST_TITLE LIKE '%' || #{ searchValue } || '%'
@@ -90,7 +97,7 @@
 					  WHERE ROWNUM <= #{ endRow }
 					  ]]>
 					  ) A
-<!-- 				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	 -->  
+					JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)  
 		 	   WHERE A.RNUM >= #{ startRow }	
     
     </select>
@@ -115,7 +122,7 @@
     	<result property="storeName" column="STORE_NAME"/>
     </resultMap>
 
-    <!-- 공지사항 페이지네이션 페이지수  -->
+    <!-- 공지사항  페이지수  -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
                COUNT(*)
@@ -123,7 +130,27 @@
 	      JOIN BOARD_TBL B ON(A.BOARD_CODE = B.BOARD_CODE)
     	<where>
 			A.STATUS = 'N'
-    		<if test="searchCondition != null and searchCondition != ''">
+			AND B.TYPE ='notice'
+    		<if test="searchCondition != null and searchCondition != '' and searchCondition != 'total' ">
+				AND B.D_TYPE = #{ searchCondition }
+    		</if>
+			<if test="searchValue != null">
+	        	AND A.POST_TITLE LIKE '%' || #{ searchValue } || '%' 	
+			</if>
+    	</where>
+	</select>
+	
+	<!-- FQA 페이지 네이션수 -->
+	 <!-- 공지사항  페이지수  -->
+    <select id="selectFqaTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+               COUNT(*)
+          FROM POST_TBL A
+	      JOIN BOARD_TBL B ON(A.BOARD_CODE = B.BOARD_CODE)
+    	<where>
+			A.STATUS = 'N'
+			AND B.TYPE ='fqa'
+    		<if test="searchCondition != null and searchCondition != '' and searchCondition != 'total' ">
 				AND B.D_TYPE = #{ searchCondition }
     		</if>
 			<if test="searchValue != null">
@@ -146,7 +173,7 @@
 		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 		 </if>
 	</select>
-	<!-- 공지사항 출력 및 검색 -->
+	<!-- 조회수  검색 -->
 
 	
 <!-- 	<update id="incrementBoardCount">
@@ -160,7 +187,7 @@
 	</update> -->
 	
 	<!-- 자주하는 질문 (작업중)-->
-	<select id="selectFqa" resultMap="postResultMap">
+	<select id="selectFqaList" resultMap="postResultMap">
     	SELECT
     	       A.RNUM	
     	     , A.POST_NO
