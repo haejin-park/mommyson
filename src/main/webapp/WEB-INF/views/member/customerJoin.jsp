@@ -32,7 +32,8 @@
             <input type="text" class="input1" name="memId" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
             <button type="button" name="idChk" id="idChk" onclick="idChk1()">중복확인</button>
             <input type="hidden" value="N" id="idChkHd">
-            <br><br>
+            <div class ="id regex"></div>
+            <br>
             <input type="password" class="input1" name="memPwd" id="pwd1" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자">
             <br><br>
             <input type="password" class="input1"  id="pwd2" placeholder="비밀번호 확인">
@@ -43,15 +44,17 @@
             <br><br>
             <input type="text" class="input1" name="phone" id="phone" placeholder="전화번호를 입력해주세요">
             <br><br>
-            <input type="email" class="input1" name="email" id="email" placeholder="이메일을 입력해주세요">
+            <input type="email" class="email" name="email" id="email" placeholder="이메일을 입력해주세요"
+            style=" width: 300px; height: 40px; border-radius: 9px;">
             <button type="button" name="emailChk" id="emailChk" onclick="emailChk1()" 
             style=" height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">중복확인</button>
             <input type="hidden" value="N" id="emailChkHd">
             <button  type="submit" class ="submit"  name="submit" id="submit">전송</button>
-            <br><br>
+           	<div class ="email regex"></div>
+            <br>
             <input type="number" class="code" name="code" id="code" placeholder="인증번호를 입력해주세요">
             <br>
-            <div class = "clearfix"></div>
+            <div class = "emailCodeClearfix"></div>
             <span id="mail_check_input_box_warn"></span>
             <br>
             <input type="text" class="input1" name="postCode" id="zipCode" placeholder="우편번호를 입력해주세요" readonly>
@@ -137,7 +140,6 @@
      /* =========================== 회원가입 정규식 ========================== */
         function validate(){
             var id = document.getElementById("id");
-            var idChk = document.getElementById("idChk");
             var pwd1 = document.getElementById("pwd1");
             var pwd2 = document.getElementById("pwd2");
             var name = document.getElementById("name");
@@ -148,26 +150,27 @@
             var zipCode = document.getElementById("zipCode");
             var addr1 = document.getElementById("address1");
             var addr2 = document.getElementById("address2");
-            var lCode = document.getElementById("locationCode");
             var all = document.getElementById("all");
             
             if(id.value == ""){
-                alert("아이디를 입력해주세요.")
+                alert("아이디를 입력해주세요.");
                 id.focus();
                 return false;
             }
-            if(!chk(/^[a-z][a-z\d]{3,11}$/,id,"아이디는 [영문,숫자] 4~12를 입력해주세요. ")){
+           /* if(!chk(/^[a-z][a-z\d]{3,11}$/,id,"아이디는 [영문,숫자] 4~12를 입력해주세요. ")){
                 return false;
-            }
-
+            } 
+            
             if(!chk(/[0-9]/,id,"아이디에 숫자 하나 이상을 포함해주세요.")){
                 return false;
             }
+            
+            */   
 
 
             if(pwd1.value == ""){
-                alert("비밀번호를 입력해주세요.")
-                pwd1.focus()
+                alert("비밀번호를 입력해주세요.");
+                pwd1.focus();
                 return false;
             }
 
@@ -176,14 +179,14 @@
             }
 
             if(pwd1.value != pwd2.value){
-                alert("비밀번호를 확인해주세요.")
-                pwd2.focus()
+                alert("비밀번호를 확인해주세요.");
+                pwd2.focus();
                 return false;
             }
 
             if(name.value == ""){
-                alert("이름을 입력해주세요.")
-                name.focus()
+                alert("이름을 입력해주세요.");
+                name.focus();
                 return false;
             }
 
@@ -193,61 +196,47 @@
             
 
             if(nickname.value == ""){
-                alert("닉네임을 입력해주세요.")
-                nickname.focus()
+                alert("닉네임을 입력해주세요.");
+                nickname.focus();
                 return false;
             }
             
             if(phone.value == ""){
-                alert("전화번호를 입력해주세요.")
-                phone.focus()
+                alert("전화번호를 입력해주세요.");
+                phone.focus();
                 return false;
             }
 
             var reg = /^[0-9]+/g;
             if(!reg.test(phone.value)) {
-                alert("전화번호는 숫자만 입력할 수 있습니다.")
+                alert("전화번호는 숫자만 입력할 수 있습니다.");
                 phone.focus();
                 return false;
             }
-
-            
-            if(email.value == ""){
-                alert("이메일을 입력해주세요.")
-                email.focus()
-                return false;
-            }
-            
-
-            if(!chk(/^[\w]{4,}@[\w]+(\.[\w]+){1,3}$/,email,"이메일 형식에 어긋납니다.")){
-                return false;
-            }
-
-
+           
 
             if(zipCode.value == ""){
-                alert("우편번호 검색해주세요.")
-                zipCode.focus()
+                alert("우편번호 검색해주세요.");
+                zipCode.focus();
                 return false;
             }
             
             if(addr1.value == ""){
-                alert("주소를 입력해주세요.")
-                addr1.focus()
+                alert("주소를 입력해주세요.");
+                addr1.focus();
                 return false;
             }
             
             if(addr2.value == ""){
-                alert("상세주소를 입력해주세요.")
-                addr2.focus()
+                alert("상세주소를 입력해주세요.");
+                addr2.focus();
                 return false;
             }
 
 
-
             if(code.value == ""){
-                alert("전송 버튼을 눌러 이메일에 발송된 인증 번호를 입력해주세요.")
-                code.focus()
+                alert("전송 버튼을 눌러 이메일에 발송된 인증 번호를 입력해주세요.");
+                code.focus();
                 return false;
             }
             
@@ -274,11 +263,10 @@
 	      });
        
 
-
         /* ==================== 아이디 중복확인 =================== */
  
 		        
-	        function idChk1(){
+	         function idChk1(){
 	        	
 	        	let id = $('#id').val();
 	        	let id2 = $('#id');
@@ -298,15 +286,25 @@
 		        		},
 		        		async: false,
 		        		success:function(data){
-	        			
+		        			console.log("data : " + data);
+	        				
+		        			var regex = /^[a-z][a-z0-9]{3,11}$/;
+		        			var result = regex.exec($('#id').val());
+		        			
 		        			if(data == '1') {
 		        				alert("중복된 아이디 입니다.");
 		        				
 		        			} else if(data == '0') {
 		        				$('#idChkHd').attr("value","Y");
-		        				alert("사용가능한 아이디 입니다.");
+		        				if(result != null){
+		        					alert("사용가능한 아이디 입니다.");
+		        				
+		        				} else { 
+		        					$(".id.regex").html("아이디 형식이 올바르지 않습니다. 올바른 아이디 형식을 입력해주세요 ")
+		        					$(".id.regex").attr("class", "incorrect")
+		        				} 
 		        			}
-	        	  	 	},
+		        		},
 		         		error:function(error){
 		        			alert(error);
 		        			
@@ -316,55 +314,55 @@
 	        	            
 	           	 }
 	        	
-	    	 }
-	     
+	    	 } 
+
         
-        /* =======================이메일 중복여부 체크했는지 확인하기 ===================== */
-      	$(function(){
-      		$('#joinButton').click(function(){
-      			if($("#emailChkHd").val() == 'N'){
-      				alert('이메일 중복확인을 해주세요.');
-      				return false;
-      			}
-      		});
-      	});
-        
-        /* ============================= 이메일 중복확인  =========================== */
-        function emailChk1() {
-        	
-        	let email = $('#email').val();
-        	let email2 = $('#email');
-        	
-            if(email == ""){
-                alert("이메일을 입력해주세요.")
-                email2.focus();
-                return false;
-                
-            } else {     
-	        
-	    		$.ajax({
-	    			url : "${ pageContext.servletContext.contextPath }/member/emailChk",
-	    			type : "post",
-	    			data : {
-	    				email : email
-	    			}, 
-	    			async : false,
-	    			success : function(data){
-	    				console.log("data : " + data);  
-	    				if(data == '1'){
-	    					alert("중복된 이메일 입니다.");
-	    				} else if(data == '0'){
-	    					$('#emailChkHd').attr("value", "Y");
-	    					alert("사용가능한 이메일 입니다.");
-	    				}
-	    			},
-	    			error : function(error){
-	    				alert(error);
-    				}
-    			});
-            }
-        }
-        
+		/* 중복확인 & 중복확인 눌렀을 때 이메일 입력했을 떄 형식이 맞지 않으면 이메일 형식이 맞지 않습니다 라는 알럿 창 띄우기 */
+		  
+       function emailChk1() {
+      	
+	      	let email = $('#email').val();
+	      	let email2 = $('#email');
+	      	
+	          if(email == ""){
+	              alert("이메일을 입력해주세요.")
+	              email2.focus();
+	              return false;
+	              
+	          } else {     
+	
+	        	  $.ajax({
+		    			url : "${ pageContext.servletContext.contextPath }/member/emailChk",
+		    			type : "post",
+		    			data : {
+		    				email : email
+		    			}, 
+		    			async : false,
+		    			success : function(data){
+		    				console.log("data : " + data);  
+		    				
+		    			  	var regex =/.+@[a-z]+(\.[a-z]+){1,2}$/;
+		    			  	var result = regex.exec($('#email').val());
+		    			  	
+		    				if(data == '1'){
+		    					alert("중복된 이메일 입니다.");
+		    				} else if(data == '0') {
+		    					$('#emailChkHd').attr("value", "Y");
+		    					if(result != null){
+		    						alert("사용가능한 이메일 입니다.");
+		    					} else {
+		    						$(".email.regex").html("이메일 형식이 올바르지 않습니다 올바른 이메일 형식을 입력해주세요.");
+		    						$(".email.regex").attr("class", "incorrect")
+		    					}
+		    			  	}	
+		    			},
+		    			error : function(error){
+		    				alert(error);
+	  				}
+	  			});
+	          }
+	      } 
+			
         
 		/* ===================== 이메일 전송 ====================== */
 		
@@ -391,21 +389,34 @@
 	        일치할 경우 span태그에 "인증번호가 입치합니다."라는 문구와 class속성이 correct(초록색)로 변경됨.  
 			불일치할 경우 span태그에 "인증번호를 다시 확인해주세요."라는 문구와 class속성이 incorrect(빨간색)로 변경됨. 
         */
+     
         
         $(".code").blur(function(){
-        	var inputCode = $(".code").val(); /* 입력코드 */
-			var checkResult = $("#mail_check_input_box_warn"); /* 비교결과 */
+        	var inputCode = $(".code").val(); // 입력코드 
+			var checkResult = $("#mail_check_input_box_warn"); // 비교결과 
 			
-			if(inputCode == code){
-				checkResult.html("인증번호가 일치합니다.");
-				checkResult.attr("class", "correct");
-			} else {
-				checkResult.html("인증번호를 다시 확인해주세요.");
-				checkResult.attr("class", "incorrect")
+			if(inputCode != code){
+				if(inputCode == ""){
+					checkResult.html("인증번호를 입력해주세요.");
+					checkResult.attr("class", "incorrect")
+				} else {
+					checkResult.html("인증번호가 일치하지 않습니다. 인증번호를 다시 입력해주세요.");
+					checkResult.attr("class", "inorrect");
+				}
 				
-			}	
-			
+			} else {
+				if(inputCode == ""){
+					checkResult.html("인증번호를 입력해주세요.");
+					checkResult.attr("class", "incorrect")
+				} else {
+					checkResult.html("인증번호가 일치합니다.");
+					checkResult.attr("class", "correct")
+				}
+			}
+				
         });
+        
+      
 
         /* =========================== 우편번호  검색 ============================= */
 		const $searchZipCode = document.getElementById("searchZipCode");
