@@ -44,6 +44,20 @@ public class UserServiceImpl implements UserService{
 		List<PostDTO>noticeList = userDAO.selectNotice(selectCriteria);
 		return noticeList;
 	}
+	
+	@Override
+	public List<PostDTO> selectNoticeContents(int postNo) {
+
+		List<PostDTO> noticeContentList = userDAO.selectNoticeContents(postNo);
+		
+		return noticeContentList;
+	}
+
+	@Override
+	public int updateincrementNoticeBoardCount(int postNo) {
+		int result = userDAO.updateincrementNoticeBoardCount(postNo);
+		return result;
+	}
 
 
 	@Override
@@ -77,6 +91,11 @@ public class UserServiceImpl implements UserService{
 	public int selectStoreTotalCount(Map<String, String> searchMap) {
 		return userDAO.selectStoreTotalCount(searchMap);
 	}
+
+
+	
+
+	
 
 
 

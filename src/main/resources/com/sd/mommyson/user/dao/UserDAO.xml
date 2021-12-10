@@ -40,7 +40,8 @@
 			 , A.POST_DATE
 			 , A.ANS_STATUS
 			 , A.QUE_NO
-			 , A.STATUS				
+			 , A.STATUS
+			 , A.VIEW_CNT				
 		FROM (SELECT ROWNUM RNUM	
 				 , B.POST_NO
 				 , B.BOARD_CODE
@@ -50,7 +51,8 @@
 				 , B.POST_DATE
 				 , B.ANS_STATUS
 				 , B.QUE_NO
-				 , B.STATUS	
+				 , B.STATUS
+				 , B.VIEW_CNT	
 			  FROM (SELECT C.POST_NO
 						 , C.BOARD_CODE
 						 , C.POST_TITLE
@@ -60,6 +62,7 @@
 						 , C.ANS_STATUS
 						 , C.QUE_NO
 						 , C.STATUS	
+						 , C.VIEW_CNT
 					  FROM POST_TBL C 
 					  JOIN BOARD_TBL D ON (C.BOARD_CODE = D.BOARD_CODE)
 						  <where>
@@ -173,18 +176,33 @@
 		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 		 </if>
 	</select>
-	<!-- 조회수  검색 -->
-
+	<!-- 공지사항 내용 출력  -->
+	<select id="selectNoticeContents" resultMap="postResultMap">
+		SELECT
+			   A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS
+			 , A.VIEW_CNT
+		 FROM POST_TBL A	 
+		WHERE A.POST_NO = #{ postNo }			 
+	</select>
 	
-<!-- 	<update id="incrementBoardCount">
-        UPDATE /* com.greedy.jsp.board.model.dao.BoardDAO#incrementBoardCount() */
-               TBL_BOARD A
-           SET A.BOARD_COUNT = (SELECT B.BOARD_COUNT
-                                  FROM TBL_BOARD B
-                                 WHERE B.BOARD_NO = #{ no }
+	<!--공지사항 조회수  증가 -->
+	<update id="updateincrementNoticeBoardCount">
+        UPDATE 
+               POST_TBL A
+           SET A.VIEW_CNT = (SELECT B.VIEW_CNT
+                                  FROM POST_TBL B
+                                 WHERE B.POST_NO = #{ postNo }
                                ) + 1
-         WHERE A.BOARD_NO = #{ no }
-	</update> -->
+         WHERE A.POST_NO = #{ postNo }
+	</update>
 	
 	<!-- 자주하는 질문 (작업중)-->
 	<select id="selectFqaList" resultMap="postResultMap">
