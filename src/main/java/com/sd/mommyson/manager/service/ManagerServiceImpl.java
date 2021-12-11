@@ -13,6 +13,8 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
@@ -152,12 +154,30 @@ public class ManagerServiceImpl implements ManagerService {
 	/**
 	 * 신고된 리뷰 조회
 	 */
-//	@Override
-//	public List<ReviewDTO> selectReportList(Pagination pagination) {
-//		
-//		List<ReviewDTO> selectReportList = managerDAO.selectReportList(pagination);
-//		
-//		return selectReportList;
-//	}
+	@Override
+	public List<Map<String, Object>> selectReportList(Pagination pagination) {
+		
+		List<Map<String, Object>> selectReportList = managerDAO.selectReportList(pagination);
+		
+		return selectReportList;
+	}
+
+	/**
+	 * 신고된 리뷰 상세 조회
+	 */
+	@Override
+	public Map<String, Object> selectRepDetailView(Map<String, Object> repMap) {
+		
+		Map<String, Object> reportInfo = managerDAO.selectRepDetailView(repMap);
+		
+		return reportInfo;
+	}
+
+	@Override
+	public boolean updateRepCompanion(Map<String, Integer> repComMap) {
+		
+		return managerDAO.updateRepCompanion(repComMap) > 0? true : false;
+	}
+
    
 }

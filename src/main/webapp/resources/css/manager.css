@@ -148,6 +148,14 @@
 .search_box ul li { float: left; }
 .search_box ul li .searchtext { margin: 0 5px 0 0; padding: 5px; }
 
+/* 리뷰신고 */
+.detailView { cursor: pointer; }
+.reportProcess { width: auto !important; float: right; margin-top: 15px !important; }
+.reportProcess li { float: left; margin: 0 15px 0 0; }
+.reportProcess li:last-child { margin-right : 0; }
+.reportProcess li a { font-size: 14px; line-height: 16px; color: #333; font-weight: 600; padding: 10px; background-color: #F89E91; display: block; }
+
+
 /*== 이미지 파일 ==*/
 .photo1 {
     display: inline-block;

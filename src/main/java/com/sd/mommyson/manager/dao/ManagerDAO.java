@@ -8,6 +8,8 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerDAO {
@@ -46,6 +48,11 @@ public interface ManagerDAO {
 
 	int selectReportTotalCount(Map<String, Object> searchMap);
 
-//	List<ReviewDTO> selectReportList(Pagination pagination);
+	List<Map<String, Object>> selectReportList(Pagination pagination);
+
+	Map<String, Object> selectRepDetailView(Map<String, Object> repMap);
+
+	int updateRepCompanion(Map<String, Integer> repComMap);
+
 
 }

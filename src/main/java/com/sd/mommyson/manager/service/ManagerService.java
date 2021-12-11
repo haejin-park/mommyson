@@ -8,6 +8,8 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerService {
@@ -57,7 +59,13 @@ public interface ManagerService {
 	public int selectReportTotalCount(Map<String, Object> searchMap);
 
 	/* 신고된 리뷰 조회 */
-//	public List<ReviewDTO> selectReportList(Pagination pagination);
+	public List<Map<String, Object>> selectReportList(Pagination pagination);
+
+	/* 신고된 리뷰 상세 조회 */
+	public Map<String, Object> selectRepDetailView(Map<String, Object> repMap);
+
+	/* 신고된 리뷰 반려처리 */
+	public boolean updateRepCompanion(Map<String, Integer> repComMap);
 
 
 }
