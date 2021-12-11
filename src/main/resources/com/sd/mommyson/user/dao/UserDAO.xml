@@ -204,7 +204,7 @@
          WHERE A.POST_NO = #{ postNo }
 	</update>
 	
-	<!-- 자주하는 질문 (작업중)-->
+	<!-- 자주하는 질문 -->
 	<select id="selectFqaList" resultMap="postResultMap">
     	SELECT
     	       A.RNUM	

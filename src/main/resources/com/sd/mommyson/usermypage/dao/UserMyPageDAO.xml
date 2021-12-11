@@ -3,17 +3,115 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <mapper namespace="com.sd.mommyson.usermypage.dao.UserMyPageDAO">
-	<resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="MyOrderResultMap">
-		<id property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-		<result property="" column=""/>
-	</resultMap>     
     
+<!-- 	<resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="MyOrderResultMap">
+		<id property="" column=""/>
+		<result property="memCode" column=""/>
+		<result property="sdCode" column=""/>
+		<result property="amount" column=""/>
+		<result property="orderCode" column=""/>
+		<result property="orderCompleteTime" column=""/>
+		<result property="orderAcceptTime" column=""/>
+		<result property="orderRequestTime" column=""/>
+		<result property="sdName" column=""/>
+		<result property="sdImg" column=""/>
+		<result property="ownerCode" column=""/>
+	</resultMap>  -->    
+	
+	<resultMap type="com.sd.mommyson.usermypage.dto.CouponDTO" id="couponResultMap">
+		<id property="cpCode" column="CP_CODE"/>
+		<result property="cpName" column="CP_NAME"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="disWon" column="DISCOUNT_WON"/>
+		<result property="endDate" column="END_DATE"/>
+		<result property="dCcon" column="DC_CONDITION"/>
+		<association property="store" resultMap="storeResultMap"/>
+		<association property="cpHistory" resultMap="cpHistoryResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="storeName" column="STORE_NAME"/>
+		<result property="storeImg" column="STORE_IMG"/>
+		<result property="storeInfo" column="STORE_INFO"/>
+		<result property="grade" column="GRADE"/>
+		<result property="delCost" column="DEL_COST"/>
+		<result property="workTime" column="WORK_TIME"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.usermypage.dto.CouponHistoryDTO" id="cpHistoryResultMap">
+		<id property="cpCode" column="CP_CODE"/>
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="useStatus" column="USE_STATUS"/>
+	</resultMap>
+
+	
+	<select id="selectMycouponNo" resultType="_int" parameterType="hashmap">
+	
+		SELECT
+			  COUNT(*)
+		 FROM COUPON_TBL A
+		 JOIN CP_HISTORY_TBL B ON(A.CP_CODE = B.CP_CODE)
+		WHERE B.USE_STATUS = 'N'
+		  AND B.MEM_CODE = #{ searchCondition }
+		  <if test="searchValue != null">
+		  AND A.CP_NAME LIKE '%' || #{ searchValue } || '%' 
+		  </if>
+		  <![CDATA[
+		  AND SYSDATE <= A.END_DATE
+		  ]]>
+	</select>
+    
+    <select id="selectMyCouponList" resultMap="couponResultMap">
+    	SELECT
+    		   A.RNUM	
+    		 , A.CP_CODE
+			 , A.CP_NAME
+			 , A.START_DATE
+			 , A.DISCOUNT_WON
+			 , A.END_DATE
+			 , A.DC_CONDITION
+			 , A.STORE_NAME
+			 , A.STORE_IMG
+		 FROM (SELECT  ROWNUM RNUM	
+		    		 , B.CP_CODE
+					 , B.CP_NAME
+					 , B.START_DATE
+					 , B.DISCOUNT_WON
+					 , B.END_DATE
+					 , B.DC_CONDITION
+					 , B.STORE_NAME
+					 , B.STORE_IMG
+				 FROM (SELECT  C.CP_CODE
+							 , C.CP_NAME
+							 , C.START_DATE
+							 , C.DISCOUNT_WON
+							 , C.END_DATE
+							 , C.DC_CONDITION
+							 , F.STORE_NAME
+							 , F.STORE_IMG
+				 		  FROM COUPON_TBL C
+				 		  JOIN CP_HISTORY_TBL D ON (C.CP_CODE = D.CP_CODE)
+				 		  JOIN COUPON_STORE_TBL E ON (C.CP_CODE = E.CP_CODE)
+				 		  JOIN STORE_TBL F ON (E.MEM_CODE= F.MEM_CODE)
+					 		   <where>
+							 	  D.USE_STATUS = 'N'				 		  
+					 		 	  <![CDATA[
+					 		 	  AND SYSDATE <= C.END_DATE
+					 		 	  ]]>
+					 			  <if test="searchValue != null">
+					 			  AND C.CP_NAME LIKE '%' || #{ searchValue } || '%'
+					 			  </if>
+					 		   </where>
+					 		   ORDER BY C.END_DATE ASC
+					 		   )B
+					 	 <![CDATA[
+					 	 WHERE ROWNUM <= #{ endRow }
+					 	 ]]>
+					 	 )A
+			 <![CDATA[
+			 WHERE A.RNUM >= #{ startRow }
+			 ]]>		 	 	 
+    </select>
     </mapper>
     
