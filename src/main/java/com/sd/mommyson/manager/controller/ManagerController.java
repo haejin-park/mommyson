@@ -154,7 +154,7 @@ public class ManagerController {
 		
 		return result? "1" : "2";
 	}
-	
+
 	
 	/* 사업자 회원 조회 */
 	/**
@@ -359,7 +359,7 @@ public class ManagerController {
 	
 	/**
 	 * @author junheekim
-	 * @category 공지사항 조회
+	 * @category 공지사항 조회 + 상단 고정 공지사항 조회
 	 */
 	@GetMapping("noticeSelect")
 	public String noticeSelect(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
@@ -415,13 +415,16 @@ public class ManagerController {
 		
 //		System.out.println("pagination : " + pagination);
 		
+		/* 공지사항 리스트 조회 */
 		List<PostDTO> noticeList = managerService.selectNoticeList(pagination);
 		
-//		System.out.println("리스트 확인 : " + noticeList);
+		/* 상단 고정 게시글 값 불러오는 메소드 */
+		List<PostDTO> noticeUpList = managerService.selectNoticeUpList();
 		
 		if(noticeList != null) {
 			model.addAttribute("pagination",pagination);
 			model.addAttribute("noticeList", noticeList);
+			model.addAttribute("noticeUpList",noticeUpList);
 		} else {
 			System.out.println("공지사항 리스트 조회 실패");
 		}
@@ -478,6 +481,137 @@ public class ManagerController {
 		
 		return "manager/noticeDetailView";
 	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시물 수정 페이지
+	 */
+	@GetMapping("noticeRevise")
+	public void noticeRevise(Model model, @RequestParam(value = "postNo", required = false) int postNo) {
+		
+		PostDTO selectNotice = managerService.selectNotice(postNo);
+		
+		if(selectNotice != null) {
+			model.addAttribute("selectNotice", selectNotice);
+		} else {
+			System.out.println("공지사항 게시글 수정 진입 실패");
+		}
+		
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시물 수정
+	 */
+	@PostMapping(value = "noticeRevise")
+	public String noticeRevise(@ModelAttribute PostDTO post, Model model) {
+		System.out.println(post);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("postNo", post.getPostNo());
+		map.put("boardCode", post.getBoardCode());
+		map.put("postTitle", post.getPostTitle());
+		map.put("postContent", post.getPostContent());
+		
+		int result = managerService.postRevise(map);
+	
+		if(result > 0) {
+			model.addAttribute("result", "공지 수정에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "공지 수정에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/noticeSelect";
+	}
+	
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 삭제(체크박스)
+	 */
+	@GetMapping(value = "noticeSelect/{chkNotice}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String noticeDelete(@PathVariable("chkNotice")  int[] chkDelNotice) {
+		
+		List<Integer> addNoticeDeleteList = new ArrayList<>();
+		
+		String message = "";
+		for(int i = 0; i < chkDelNotice.length; i++) {
+			addNoticeDeleteList.add(chkDelNotice[i]);
+			
+			boolean result = managerService.deleteNotice(addNoticeDeleteList);
+			
+			if(result) {
+				message = "선택한 게시글을 삭제하였습니다.";
+			} else {
+				message = "게시글 삭제에 실패하였습니다.";
+			}
+		}
+		
+		return message;
+		
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 삭제(상세보기)
+	 */
+	@GetMapping(value = "noticeSelectDelete/{postNo}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String noticeSelectDelete(@PathVariable("postNo") int postNo) {
+		
+		boolean result = managerService.deleteSelectNotice(postNo);
+		
+		String message = "";
+		if(result) {
+			message = "선택한 게시글을 삭제하였습니다.";
+		} else {
+			message = "게시글 삭제에 실패하였습니다.";
+		}
+		
+		return message;
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 상단 고정 등록
+	 */
+	@GetMapping(value = "noticeUp/{postNo}", produces = "text/plain; charset=UTF-8; ")
+	@ResponseBody
+	public String noticeUp(@PathVariable("postNo") int postNo) {
+		
+		boolean result = managerService.noticeUp(postNo);
+		
+		String message = "";
+		if(result) {
+			message = "게시글이 상단 고정되었습니다.";
+		} else {
+			message = "게시글 상단 고정 등록에 실패하였습니다.";
+		}
+		
+		return message;
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 상단 고정 해제
+	 */
+	@GetMapping(value = "noticeDown/{postNo}", produces = "text/plain; charset=UTF-8; ")
+	@ResponseBody
+	public String noticeDown(@PathVariable("postNo") int postNo) {
+		
+		boolean result = managerService.noticeDown(postNo);
+		
+		String message = "";
+		if(result) {
+			message = "게시글 상단 고정이 해제되었습니다.";
+		} else {
+			message = "게시글 상단 고정 해제에 실패하였습니다.";
+		}
+		
+		return message;
+	}
+	
 	
 	/* 자주하는 질문 */
 	@GetMapping("oftenQuestion")

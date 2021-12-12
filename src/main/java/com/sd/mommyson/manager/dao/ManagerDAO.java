@@ -52,6 +52,18 @@ public interface ManagerDAO {
 
 	int selectReportTotalCount(Map<String, Object> searchMap);
 
+	int noticeRevise(Map<String, Object> map);
+
+	int deleteNotice(List<Integer> addNoticeDeleteList);
+
+	int deleteSelectNotice(int postNo);
+
+	int noticeUp(int postNo);
+
+	List<PostDTO> selectNoticeUpList();
+
+	int noticeDown(int postNo);
+
 //	List<ReviewDTO> selectReportList(Pagination pagination);
 
 }

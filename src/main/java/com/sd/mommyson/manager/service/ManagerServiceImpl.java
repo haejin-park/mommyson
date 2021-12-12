@@ -1,5 +1,7 @@
 package com.sd.mommyson.manager.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,6 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -153,7 +154,15 @@ public class ManagerServiceImpl implements ManagerService {
 //		
 //		return selectReportList;
 //	}
-   
+
+	@Override
+	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
+		
+		MemberDTO ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
+		
+		return ceoDetailInfos;
+	}
+
 
    /**
     * 공지사항 리스트 조회
@@ -183,7 +192,6 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public PostDTO selectNotice(int postNo) {
 		
-		System.out.println("포스트 2 : " + postNo);
 		PostDTO selectNotice = managerDAO.selectNotice(postNo);
 		
 		return selectNotice;
@@ -200,12 +208,75 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectNoticeCnt(postNo);
 	}
 
-
+	/**
+	 * 공지사항 게시글 수정
+	 * @author junheekim
+	 */
 	@Override
-	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
+	public int postRevise(Map<String, Object> map) {
 		
-		MemberDTO ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
+		int result = managerDAO.noticeRevise(map);
 		
-		return ceoDetailInfos;
+		return result;
 	}
+
+	/**
+	 * 공지사항 게시글 삭제(선택박스)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean deleteNotice(List<Integer> addNoticeDeleteList) {
+		
+		int result = managerDAO.deleteNotice(addNoticeDeleteList);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 게시글 삭제
+	 * @author junheekim
+	 */
+	@Override
+	public boolean deleteSelectNotice(int postNo) {
+		
+		int result = managerDAO.deleteSelectNotice(postNo);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 게시글 상단 고정(up)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean noticeUp(int postNo) {
+		
+		int result = managerDAO.noticeUp(postNo);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 상단 고정 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectNoticeUpList() {
+		
+		return managerDAO.selectNoticeUpList();
+	}
+
+	/**
+	 * 공지사항 게시글 상단 고정 해제(down)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean noticeDown(int postNo) {
+		
+		int result = managerDAO.noticeDown(postNo);
+		
+		return result > 0? true : false;
+	}
+
+
 }

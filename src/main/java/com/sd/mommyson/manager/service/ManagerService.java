@@ -72,4 +72,22 @@ public interface ManagerService {
 	/* 공지사항 게시글 조회수 */
 	public boolean selectNoticeCnt(int postNo);
 
+	/* 공지사항 게시글 수정 */
+	public int postRevise(Map<String, Object> map);
+
+	/* 공지사항 게시글 삭제(선택박스) */
+	public boolean deleteNotice(List<Integer> addNoticeDeleteList);
+
+	/* 공지사항 게시글 삭제(상세조회) */
+	public boolean deleteSelectNotice(int postNo);
+
+	/* 공지사항 상단 up */
+	public boolean noticeUp(int postNo);
+
+	/* 공지사항 상단 게시글 리스트 */
+	public List<PostDTO> selectNoticeUpList();
+
+	/* 공지사항 상단 down */
+	public boolean noticeDown(int postNo);
+
 }
