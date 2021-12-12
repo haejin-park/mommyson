@@ -44,8 +44,8 @@
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="useStatus" column="USE_STATUS"/>
 	</resultMap>
-
 	
+	<!-- 나의 사용가능한 쿠폰 총 갯수 확인 -->
 	<select id="selectMycouponNo" resultType="_int" parameterType="hashmap">
 	
 		SELECT
@@ -61,7 +61,7 @@
 		  AND SYSDATE <= A.END_DATE
 		  ]]>
 	</select>
-    
+    <!-- 내 쿠폰함 출력 -->
     <select id="selectMyCouponList" resultMap="couponResultMap">
     	SELECT
     		   A.RNUM	
@@ -113,5 +113,123 @@
 			 WHERE A.RNUM >= #{ startRow }
 			 ]]>		 	 	 
     </select>
+    
+    <!-- 나의 주문내역  -->
+    <resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="myOrderResultMap">
+    	<id property="orderCode" column="ORDER_CODE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="totalPrice" column="TOTAL_PRICE"/>
+    	<result property="orderType" column="ORDER_TYPE"/>
+    	<result property="takeTime" column="TAKE_TIME"/>
+    	<result property="address" column="ADDRESS"/>
+    	<result property="phone" column="PHONE"/>
+    	<result property="storeName" column="STORE_NAME"/>
+    	<result property="code" column="CODE"/>
+    	<result property="orderCancleTime" column="ORDER_CANCLE_TIME"/>
+    	<result property="orderCompleteTime" column="ORDER_COMPLETE_TIME"/>
+    	<result property="orderAcceptTime" column="ORDER_ACCEPT_TIME"/>
+    	<result property="orderRequestTime" column="ORDER_RUQEUST_TIME"/>
+    	<collection property="orderInfo" resultMap="orderInfoResultMap"/> 
+    </resultMap>
+    <resultMap type="com.sd.mommyson.usermypage.dto.OrderInfoDTO" id="orderInfoResultMap">
+    	<id property="proNo" column="PRO_NO"/>
+    	<result property="sdCode" column="SD_CODE"/>
+    	<result property="amount" column="AMONT"/>
+    	<result property="orderCode" column="ORDER_CODE"/>   
+    </resultMap>
+    
+    <!-- 나의 주문내역 총 갯수 확인 -->
+    <select id="selectMyOrderNum" resultType="_int" parameterType="hashmap">
+	SELECT
+			  COUNT(*)
+		 FROM ORDER_TBL A
+		WHERE A.MEM_CODE = #{ searchCondition }
+		  <if test="searchValue != null">
+		  AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
+		  </if>
+	</select>
+	
+	<!-- 나의 주문목록 출력 및 페이지 네이션  -->
+	<select id="selectMyOrderList" resultMap="myOrderResultMap">
+		SELECT
+		        A.RNUM
+			  ,	A.MEM_CODE
+			  , A.TOTAL_PRICE
+			  ,	A.ORDER_CODE
+			  ,	A.ORDER_TYPE
+			  ,	A.TAKE_TIME
+			  ,	A.ADDRESS
+			  ,	A.PHONE
+		   	  ,	A.STORE_NAME
+		      ,	A.CODE
+			  ,	A.ORDER_CANCLE_TIME
+			  ,	A.ORDER_COMPLETE_TIME
+			  ,	A.ORDER_ACCEPT_TIME
+			  ,	A.ORDER_RUQEUST_TIME
+			  , A.SD_CODE
+		   FROM	(SELECT ROWNUM RNUM
+					  ,	B.MEM_CODE
+					  , B.TOTAL_PRICE
+					  ,	B.ORDER_CODE
+					  ,	B.ORDER_TYPE
+					  ,	B.TAKE_TIME
+					  ,	B.ADDRESS
+					  ,	B.PHONE
+				   	  ,	B.STORE_NAME
+				      ,	B.CODE
+					  ,	B.ORDER_CANCLE_TIME
+					  ,	B.ORDER_COMPLETE_TIME
+					  ,	B.ORDER_ACCEPT_TIME
+					  ,	B.ORDER_RUQEUST_TIME
+					  , B.SD_CODE
+				   FROM (SELECT C.MEM_CODE
+							  , C.TOTAL_PRICE
+							  ,	C.ORDER_CODE
+							  ,	C.ORDER_TYPE
+							  ,	C.TAKE_TIME
+							  ,	C.ADDRESS
+							  ,	C.PHONE
+						   	  ,	C.STORE_NAME
+						      ,	C.CODE
+							  ,	C.ORDER_CANCLE_TIME
+							  ,	C.ORDER_COMPLETE_TIME
+							  ,	C.ORDER_ACCEPT_TIME
+							  ,	C.ORDER_RUQEUST_TIME
+							  , D.SD_CODE
+						   FROM ORDER_TBL C
+						   JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE=C.ORDER_CODE)
+						   <where>
+						   		C.MEM_CODE = #{ searchCondition }
+						   		<if test="searchValue != null">
+						   		C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+						   		</if>
+						   </where>
+						   ORDER BY C.ORDER_RUQEUST_TIME DESC
+						   )B
+					 <![CDATA[
+					 	 WHERE ROWNUM <= #{ endRow }
+					 	 ]]>
+					 	 )A
+			 <![CDATA[
+			 WHERE A.RNUM >= #{ startRow }
+			 ]]>	   
+	</select>
+	
+	    <!-- 내가 자주 찾는 가게 총 갯수 확인 -->
+    <select id="selectMyRecommendStore" resultType="_int" parameterType="hashmap">
+	SELECT
+			  COUNT(*)
+		 FROM JJIM_TBL A
+		 JOIN CEO_TBL B ON(B.MEM_CODE = A.CEO_CODE)
+		 JOIN STORE_TBL C ON(C.MEM_CODE = B.MEM_CODE)
+		WHERE A.MEM_CODE = #{ searchCondition }
+		  <if test="searchValue != null">
+		  AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
+		  </if>
+	</select>
+	
+		   
+		   	
+    
     </mapper>
     

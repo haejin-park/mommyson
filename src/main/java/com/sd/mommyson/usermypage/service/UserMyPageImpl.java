@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.usermypage.dao.UserMyPageDAO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
+import com.sd.mommyson.usermypage.dto.MyOrderDTO;
 
 @Service
 public class UserMyPageImpl implements UserMyPageService {
@@ -33,6 +35,28 @@ public class UserMyPageImpl implements UserMyPageService {
 		List<CouponDTO> myCouponList = userMyPageDAO.selectMyCouponList(selectCriteria);
 		
 		return myCouponList;
+	}
+
+	@Override
+	public int selectMyOrderNum(Map<String, String> searchMap) {
+
+		int totalCount = userMyPageDAO.selectMyOrderNum(searchMap);
+		
+		return totalCount;
+	}
+
+	@Override
+	public List<MyOrderDTO> selectMyOrderList(SelectCriteria selectCriteria) {
+
+		List<MyOrderDTO> myOrderList = userMyPageDAO.selectMyOrderList(selectCriteria);
+		return myOrderList;
+	}
+
+	@Override
+	public int selectMyRecommendStore(Map<String, String> searchMap) {
+
+		int totalCount = userMyPageDAO.selectMyRecommendStore(searchMap);
+		return totalCount;
 	}
 
 }
