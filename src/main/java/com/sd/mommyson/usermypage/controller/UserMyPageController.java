@@ -267,6 +267,24 @@ public class UserMyPageController {
 		
 		int totalCount = userMyPageService.selectMyRecommendStore(searchMap);
 		
+		System.out.println("totalPostCount : " + totalCount);
+		
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 10;		//얘도 파라미터로 전달받아도 된다.
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+		
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("selectCriteria : " + selectCriteria);
+		
 		return "user_mypage/userRecommendStore";
 	}
 	
