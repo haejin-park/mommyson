@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>오늘의 할인</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <link rel="stylesheet" href="../resources/css/owners.css">
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -99,15 +99,27 @@
 	                </tr>
 	                </thead>
 	                <tbody>
-	            	<c:forEach var="product" items="${ productList }">
+	            	<c:forEach var="product" varStatus="index" items="${ productList }">
 	            	<c:set var="j" value="${ j + 1 }"/>
 	                <tr>
-	                    <th scope="row"><input type="checkbox" name="checkCode" value="${ product.sdCode }"></th>
+	                    <th scope="row"><input type="checkbox" name="checkCode[${ index.index }]" value="${ product.sdCode }"></th>
 	                    <td>${ j }</td>
 	                    <td>${ product.sdName }</td>
 	                    <td>${ product.mDate }</td>
 	                    <td>
-	                    	<input type="number" name="rate">
+	                    	<select name="rate">
+	                    		<option value="null">선택해주세요</option>
+	                    		<option value="5">5%</option>
+	                    		<option value="10">10%</option>
+	                    		<option value="15">15%</option>
+	                    		<option value="20">20%</option>
+	                    		<option value="25">25%</option>
+	                    		<option value="30">30%</option>
+	                    		<option value="35">35%</option>
+	                    		<option value="40">40%</option>
+	                    		<option value="45">45%</option>
+	                    		<option value="50">50%</option>
+	                    	</select>
 	                    </td>
 	                </tr>
 	                </c:forEach>
@@ -128,23 +140,24 @@
     <script>
     	$(function() {
 	    	$(".submit").click(function(){
+	    		
 	    		let arr = [];
 		    	$('input:checkbox[name=checkCode]:checked').each(function(){
 		    		let value = $(this).val();
 		    		arr.push(value);
 		    	});
 		    	
-				console.log(arr);
+				console.log(arr); 
 				
-				let dcRate = []; 
-				$("input[name=rate]").each(function(index, item){
-					dcRate.push(item);
-				});
 				
-				console.log(dcRate);
+				
+				$('input:checkbox[name=checkCode]').attr("checked",false).prop('disabled');
+				$('input:checkbox[name=checkCode]').attr("checked",false).parent().last().prop('disabled');
+				
+				
 		    	
 		    	let form = $('<form></form>');
-		        form.attr('action', '${pageContext.servletContext.contextPath}/owner/todayDiscount');
+		        form.attr('action', '${ pageContext.servletContext.contextPath }/owner/todayDiscount');
 		        form.attr('method', 'post');
 		        form.appendTo('body');
 		        form.append($('<input type="hidden" value="' + arr + '" name=sdCode>'));

@@ -441,7 +441,6 @@ public class OwnerController {
 		
 		Map<String, Object> searchMap = new HashMap<>();
 		
-		
 		int pageNo = 1;
 		
 		String currentPage = param.get("currentPage");
@@ -499,13 +498,19 @@ public class OwnerController {
 	}
 	
 	@PostMapping("todayDiscount")
-	public String dcProduct(@RequestParam List<Integer>sdCode, @RequestParam List<Integer>dcRate, RedirectAttributes rd) {
+	public String dcProduct(@RequestParam(value="sdCode") int[] sdCode, @RequestParam(value="dcRate") int[] dcRate, RedirectAttributes rd) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sdCode", sdCode);
 		map.put("dcRate", dcRate);
 		
+		System.out.println("sdCode : " + sdCode);
+		System.out.println("dcRate : " + dcRate);
+	
+		System.out.println(map);
+		
 		int insertDc = ownerService.registDc(map);
+		
 		
 		if(insertDc > 0) {
 			rd.addFlashAttribute("success","등록에 성공하였습니다.");
