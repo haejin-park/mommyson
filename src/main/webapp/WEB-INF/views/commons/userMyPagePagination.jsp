@@ -50,6 +50,9 @@
 			link = "${ pageContext.servletContext.contextPath }/userMyPage/userCoupon";
 		}
 		
+		if("${ requestScope.Paging }" === "recommendStore") {
+			link = "${ pageContext.servletContext.contextPath }/userMyPage/userRecommendStore";
+		}
 		
 		
 		let searchText = "";

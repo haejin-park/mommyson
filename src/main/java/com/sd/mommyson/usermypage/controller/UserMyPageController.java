@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
@@ -191,7 +192,7 @@ public class UserMyPageController {
 		System.out.println("totalPostCount : " + totalCount);
 		
 		/* 한 페이지에 보여 줄 게시물 수 */
-		int limit = 10;		//얘도 파라미터로 전달받아도 된다.
+		int limit = 5;		//얘도 파라미터로 전달받아도 된다.
 		/* 한 번에 보여질 페이징 버튼의 갯수 */
 		int buttonAmount = 5;
 		
@@ -270,7 +271,7 @@ public class UserMyPageController {
 		System.out.println("totalPostCount : " + totalCount);
 		
 		/* 한 페이지에 보여 줄 게시물 수 */
-		int limit = 10;		//얘도 파라미터로 전달받아도 된다.
+		int limit = 5;		//얘도 파라미터로 전달받아도 된다.
 		/* 한 번에 보여질 페이징 버튼의 갯수 */
 		int buttonAmount = 5;
 		
@@ -279,13 +280,21 @@ public class UserMyPageController {
 		
 		if(searchCondition != null && !"".equals(searchCondition)) {
 			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+			System.out.println("들어왔음");
 		} else {
 			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
 		}
 		
 		System.out.println("selectCriteria : " + selectCriteria);
-
 		
+		List<StoreDTO> storeReconmendList = userMyPageService.selectRecommendStore(selectCriteria);
+		
+		System.out.println("내가찜한 가게 " + storeReconmendList);
+		
+		mv.addAttribute("storeReconmendList", storeReconmendList);
+		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("totalCount", totalCount);
+		mv.addAttribute("Paging", "recommendStore");
 		
 		return "user_mypage/userRecommendStore";
 	}

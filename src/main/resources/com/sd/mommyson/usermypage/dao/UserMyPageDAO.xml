@@ -135,9 +135,10 @@
     	<id property="proNo" column="PRO_NO"/>
     	<result property="sdCode" column="SD_CODE"/>
     	<result property="amount" column="AMONT"/>
-    	<result property="orderCode" column="ORDER_CODE"/>   
+    	<result property="orderCode" column="ORDER_CODE"/>
     </resultMap>
     
+
     <!-- 나의 주문내역 총 갯수 확인 -->
     <select id="selectMyOrderNum" resultType="_int" parameterType="hashmap">
 	SELECT
@@ -228,8 +229,48 @@
 		  </if>
 	</select>
 	
-		   
-		   	
-    
+	<!-- 자주 찾는 가게 출력  -->
+ 	<select id="selectRecommendStore" resultMap="storeResultMap">
+	SELECT
+	       A.RNUM
+	     , A.STORE_NAME
+		 , A.STORE_IMG
+		 , A.STORE_INFO
+		 , A.GRADE
+		 , A.DEL_COST
+		 , A.WORK_TIME
+		 , A.MEM_CODE
+	  FROM (SELECT ROWNUM RNUM
+			     , B.STORE_NAME
+				 , B.STORE_IMG
+				 , B.STORE_INFO
+				 , B.GRADE
+				 , B.DEL_COST
+				 , B.WORK_TIME
+				 , B.MEM_CODE
+	   		  FROM (SELECT C.STORE_NAME
+						 , C.STORE_IMG
+						 , C.STORE_INFO
+						 , C.GRADE
+						 , C.DEL_COST
+						 , C.WORK_TIME
+						 , C.MEM_CODE
+				 	  FROM STORE_TBL C
+				 	  JOIN CEO_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+				 	  JOIN JJIM_TBL E ON(D.MEM_CODE = E.CEO_CODE)
+				 	 WHERE E.MEM_CODE = #{ searchCondition }
+				 	 <if test="searchValue != null">
+				 	   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+				 	 </if>
+				 	 ORDER BY STORE_NAME ASC
+			  		 )B
+			   <![CDATA[
+			 	 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+			 	 )A
+	 <![CDATA[
+	 WHERE A.RNUM >= #{ startRow }
+	 ]]>	   
+	</select>
     </mapper>
     

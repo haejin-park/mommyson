@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,19 +35,20 @@
             <table class="table table" style="width: 1050px;">
               <thead style="background-color: #EDEDED;">
                 <tr>
-                  <th id="tablecol1" scope="col">총 2개</th>
+                  <th id="tablecol1" scope="col"><b><c:out value="총   ${ requestScope.totalCount }개"/></b></th>
                   <th id="tablecol2" scope="col"></th>        
                   <th id="tablecol3" scope="col"></th>        
                 </tr>
               </thead>
               <tbody>
+                <c:forEach var="recommend" items="${ requestScope.storeReconmendList }">
                 <tr>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/1 2.png"></td>
+                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }+'/'+${ recommend.storeImg }"></td>
                   <td style="padding-top: 20px;">
-                  <p><strong>숙이네 반찬</strong><br></p>
+                  <p><strong><c:out value="${ recommend.storeName }"/></strong><br></p>
                   <p style="text-decoration: gray;">
-                  4.5 오늘의 할인 : 두부 무침<br>
-                  주소 : 강남구 서초동
+                  	<c:out value="평점 ${ recommend.grade }"/><br>
+                  	<c:out value="${ recommend.storeInfo }"/>
                   </p>
 
 
@@ -55,40 +57,20 @@
                     <button class="urBtn">삭제</button>
                   </td>
                 </tr>
-                <tr>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/1 2.png"></td>
-                  <td style="padding-top: 20px;">리뷰작성 감사쿠폰</td>
-                  <td style="padding-top: 40px;">
-                    <button class="urBtn">삭제</button>
-                  </td>
-                </tr>
-
+                </c:forEach>
               </tbody>
             </table>
 
              <!-- 페이징 -->
              <nav class="page_box" aria-label="Page navigation example">
               <ul class="pagination">
-                <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                 <jsp:include page="../commons/userMyPagePagination.jsp"/>
               </ul>
               <ul>
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                  <form action="" method="get">
-                  <input type="text" class="searchtext" placeholder="찾고싶은 가게 이름을 입력해주세요"></li>
-                  <button type="submit" class="searchbutton">검색하기</button></li>
+                  <form action="${ pageContext.servletContext.contextPath }/userMyPage/userRecommendStore" method="get">
+                  <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 가게 이름을 입력해주세요">
+                  <button type="submit" class="searchbutton">검색하기</button>
                   </form>
                </ul>
             </nav>
