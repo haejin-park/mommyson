@@ -175,4 +175,30 @@ public class OwnerServiceImpl implements OwnerService{
 		return result;
 	}
 
+
+	@Override
+	public int selectTotalModal(Map<String, Object> searchMap) {
+
+		int result = ownerDAO.selectTotalModal(searchMap);
+
+		return result;
+	}
+
+	@Override
+	public List<ProductDTO> selectProdouct(int memCode) {
+
+		List<ProductDTO> product = ownerDAO.selectProdouct(memCode);
+		
+		return product;
+	}
+
+	@Override
+	public int registDc(Map<String, Object> map) {
+
+		int result = ownerDAO.registDc(map);
+				
+		return result;
+	}
+	
+
 }

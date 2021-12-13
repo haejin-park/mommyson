@@ -49,5 +49,11 @@ public interface OwnerDAO {
 	public int selectTotalDC(Map<String, Object> searchMap);
 
 	public List<ProductDTO> selectDC(Map<String, Object> searchMap);
+
+	public int selectTotalModal(Map<String, Object> searchMap);
+
+	public List<ProductDTO> selectProdouct(int memCode);
+
+	public int registDc(Map<String, Object> map);
 	
 }
