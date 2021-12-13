@@ -338,26 +338,68 @@
 	<select id="selectReportTotalCount" resultType="_int">
 	    SELECT
 	           COUNT(*)
-	      FROM REPORT_TBL
+	      FROM REPORT_TBL A
+	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
+	     <where>
+	     	<if test="searchValue != null">
+	     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+	     	</if>
+	     </where>
 	</select>
 	
 	<select id="selectReportList" resultType="hashmap" parameterType="hashmap">
 	    SELECT
-	           A.RV_CODE
-	         , A.REP_TYPE_CODE
-	         , A.REP_NO
-	         , A.REP_DATE
-	         , A.STATUS
-	         , B.MEM_CODE
-	         , B.RV_CONTENT
-	         , B.MEM_ID
-	         , C.REP_TYPE
-	         , D.REP_COUNT
-	      FROM REPORT_TBL A
-	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
-	      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
-	      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
-	     ORDER BY A.REP_NO ASC
+	           F.RV_CODE
+	         , F.REP_TYPE_CODE
+	         , F.REP_NO
+	         , F.REP_DATE
+	         , F.STATUS
+	         , F.MEM_CODE
+	         , F.RV_CONTENT
+	         , F.MEM_ID
+	         , F.REP_TYPE
+	         , F.REP_COUNT
+	      FROM (SELECT
+	                   ROWNUM RNUM
+	                 , E.RV_CODE
+	                 , E.REP_TYPE_CODE
+	                 , E.REP_NO
+	                 , E.REP_DATE
+	                 , E.STATUS
+	                 , E.MEM_CODE
+	                 , E.RV_CONTENT
+	                 , E.MEM_ID
+				     , E.REP_TYPE	    
+	                 , E.REP_COUNT
+			      FROM (SELECT
+					           A.RV_CODE
+					         , A.REP_TYPE_CODE
+					         , A.REP_NO
+					         , A.REP_DATE
+					         , A.STATUS
+					         , B.MEM_CODE
+					         , B.RV_CONTENT
+					         , B.MEM_ID
+					         , C.REP_TYPE
+					         , D.REP_COUNT
+					      FROM REPORT_TBL A
+					      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
+					      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
+					      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
+					     <where>
+					     	<if test="searchValue != null">
+					     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+					     	</if>
+					     </where>
+					     ORDER BY A.REP_NO ASC)E
+			     <![CDATA[        
+		           WHERE ROWNUM <= #{ endRow }
+		          ]]>)F
+		  <![CDATA[
+		   WHERE F.RNUM >= #{ startRow } 
+	      ]]>
 	</select>
 	
 	<select id="selectRepDetailView" resultType="hashmap">
@@ -384,6 +426,48 @@
 	    UPDATE 
 	           REPORT_TBL A
 	       SET A.STATUS = 'N'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateWarning" parameterType="hashmap">
+	    UPDATE
+	           USER_TBL A
+	       SET A.REP_COUNT = A.REP_COUNT + 1
+	     WHERE A.MEM_CODE = #{ repMemCode }
+	</update>
+	
+	<update id="updateWarning2" parameterType="hashmap">
+	    UPDATE
+	           REVIEW_TBL A
+	       SET A.IS_DELETED = 'Y'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateWarning3" parameterType="hashmap">
+	    UPDATE
+	           REPORT_TBL A
+	       SET A.STATUS = 'Y'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateBlack" parameterType="hashmap">
+	    UPDATE
+	           MEMBER_TBL A
+	       SET A.IS_DELETED = 'B'
+	     WHERE A.MEM_CODE = #{ repMemCode }
+	</update>
+	
+	<update id="updateBlack2" parameterType="hashmap">
+	    UPDATE
+	           REVIEW_TBL A
+	       SET A.IS_DELETED = 'Y'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateBlack3" parameterType="hashmap">
+	    UPDATE
+	           REPORT_TBL A
+	       SET A.STATUS = 'Y'
 	     WHERE A.RV_CODE = #{ repRvCode }
 	</update>
 	

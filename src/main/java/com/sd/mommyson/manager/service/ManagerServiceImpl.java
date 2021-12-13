@@ -173,10 +173,39 @@ public class ManagerServiceImpl implements ManagerService {
 		return reportInfo;
 	}
 
+	/**
+	 * 신고된 리뷰 반려처리
+	 */
 	@Override
 	public boolean updateRepCompanion(Map<String, Integer> repComMap) {
 		
 		return managerDAO.updateRepCompanion(repComMap) > 0? true : false;
+	}
+
+	/**
+	 * 신고된 리뷰 경고 주기
+	 */
+	@Override
+	public boolean updateWarning(Map<String, Integer> warMap) {
+		
+		int result = managerDAO.updateWarning(warMap);
+		int result2 = managerDAO.updateWarning2(warMap);
+		int result3 = managerDAO.updateWarning3(warMap);
+		
+		return result + result2 + result3 > 2? true : false;
+	}
+
+	/**
+	 * 신고된 해당 리뷰 작성자 블랙등록
+	 */
+	@Override
+	public boolean updateBlack(Map<String, Object> blackMap) {
+		
+		int result = managerDAO.updateBlack(blackMap);
+		int result2 = managerDAO.updateBlack2(blackMap);
+		int result3 = managerDAO.updateBlack3(blackMap);
+		
+		return result + result2 + result3 > 2? true : false;
 	}
 
    

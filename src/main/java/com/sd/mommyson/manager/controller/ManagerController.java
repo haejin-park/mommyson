@@ -564,6 +564,57 @@ public class ManagerController {
 		return result? "1" : "2";
 	}
 	
+	/**
+	 * 신고된 해당리뷰 회원 경고주기
+	 * @param repMemCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repWarning/{repMemCode}/{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String warning(@PathVariable("repMemCode") int repMemCode, @PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("회원코드 : " + repMemCode);
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Integer> warMap = new HashMap<>();
+		warMap.put("repMemCode", repMemCode);
+		warMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateWarning(warMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
+	}
+	
+	/**
+	 * 신고된 리뷰 해당 회원 블랙처리
+	 * @param repMemCode
+	 * @param repRvCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repBlack/{repMemCode}/{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String black(@PathVariable("repMemCode") int repMemCode, @PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("회원코드 : " + repMemCode);
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Object> blackMap = new HashMap<>();
+		blackMap.put("repMemCode", repMemCode);
+		blackMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateBlack(blackMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
+	}
+	
 	/* 배너설정 */
 	@GetMapping("bannerManage")
 	public void bannerManage() {}

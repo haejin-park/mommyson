@@ -54,5 +54,18 @@ public interface ManagerDAO {
 
 	int updateRepCompanion(Map<String, Integer> repComMap);
 
+	int updateWarning(Map<String, Integer> warMap);
+	
+	int updateWarning2(Map<String, Integer> warMap);
+	
+	int updateWarning3(Map<String, Integer> warMap);
+
+	int updateBlack(Map<String, Object> blackMap);
+
+	int updateBlack2(Map<String, Object> blackMap);
+
+	int updateBlack3(Map<String, Object> blackMap);
+
+
 
 }

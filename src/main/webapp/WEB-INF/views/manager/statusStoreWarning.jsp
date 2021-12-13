@@ -146,6 +146,7 @@
 							            <td>${ rp.REP_COUNT }</td>
 							            <td class="reportStatus">${ rp.STATUS }</td>
 							            <td class="repNo" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.RV_CODE }"></td>
+							            <td class="repMemCode" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.MEM_CODE }"></td>
 						            </tr>
 					            </c:if>
 				            </c:forEach>
@@ -208,6 +209,9 @@
 		                                <tr style="display: none;">
 		                                	<td class="repRvCode"></td>
 		                                </tr>
+		                                <tr style="display: none;">
+		                                	<td class="repMemCode"></td>
+		                                </tr>
 		                            </tbody>
 		                        </table>
 		                        <ul class="df_ul reportProcess">
@@ -215,10 +219,10 @@
 		                        		<a href="javascript:void(0);" onclick="companion(this);">반려</a>
 		                        	</li>
 		                        	<li>
-		                        		<a href="javascript:void(0);">경고</a>
+		                        		<a href="javascript:void(0);" onclick="warning(this);">경고</a>
 		                        	</li>
 		                        	<li>
-		                        		<a href="javascript:void(0);">블랙</a>
+		                        		<a href="javascript:void(0);" onclick="black(this);">블랙</a>
 		                        	</li>
 		                        </ul>
 		                    </div>
@@ -254,6 +258,7 @@
 			const repCount = $('.txt_info_box .repCount');
 			const repStatus = $('.txt_info_box .repStatus');
 			const repRvCode = $('.txt_info_box .repRvCode');
+			const repMemCode = $('.txt_info_box .repMemCode');
 			
 			$.ajax({
 				url : '${ pageContext.servletContext.contextPath }/manager/repDetailView',
@@ -270,7 +275,8 @@
 					repDate.text((new Date(data.REP_DATE)).toLocaleDateString());
 					repCount.text(data.REP_COUNT);
 					repStatus.text(data.STATUS);
-					repRvCode.text(data.RV_CODE)
+					repRvCode.text(data.RV_CODE);
+					repMemCode.text(data.MEM_CODE);
 					
 					if(repStatus.text() == "W"){
 						repStatus.text("신고접수")
@@ -310,7 +316,7 @@
         
         function companion(e){
         	
-        	const repRvCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.firstElementChild.textContent;
+        	const repRvCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.previousElementSibling.firstElementChild.textContent;
         	
         	$.ajax({
         		url : '${ pageContext.servletContext.contextPath }/manager/repCompanion' + repRvCode,
@@ -324,6 +330,59 @@
         		}
         	});
         }
+        
+        function warning(e){
+        	
+        	const repMemCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.lastElementChild.textContent;
+        	const repRvCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.previousElementSibling.firstElementChild.textContent;
+        	
+        	$.ajax({
+        		url : '${ pageContext.servletContext.contextPath }/manager/repWarning/' + repMemCode + "/" + repRvCode,
+        		type : 'GET',
+        		success : function(data){
+        			console.log(data);
+        			location.href="${ pageContext.servletContext.contextPath }/manager/statusStoreWarning";
+        		},
+        		error : function(error){
+        			console.log(error);
+        		}
+        	});
+        }
+        
+        function black(e){
+        	
+        	const repMemCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.lastElementChild.textContent;
+        	const repRvCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.previousElementSibling.firstElementChild.textContent;
+        	
+        	console.log(repMemCode);
+        	console.log(repRvCode);
+        	$.ajax({
+        		url : '${ pageContext.servletContext.contextPath }/manager/repBlack/' + repMemCode + "/" + repRvCode,
+        		type : 'GET',
+        		success : function(data){
+        			console.log(data);
+        			location.href="${ pageContext.servletContext.contextPath }/manager/statusStoreWarning";
+        		},
+        		error : function(error){
+        			console.log(error);
+        		}
+        	});
+        }
+        
+        /* 리뷰신고현황 전체 */
+        $('#home-tab').on('click',function(){
+        	
+        });
+        
+        /* 리뷰신고현황 신고접수 */
+		$('#profile-tab').on('click',function(){
+        	
+        });
+		
+        /* 리뷰신고현황 처리완료 */
+		$('#contact-tab').on('click',function(){
+        	
+        });
          
     </script>
 </body>

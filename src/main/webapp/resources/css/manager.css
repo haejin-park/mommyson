@@ -151,8 +151,7 @@
 /* 리뷰신고 */
 .detailView { cursor: pointer; }
 .reportProcess { width: auto !important; float: right; margin-top: 15px !important; }
-.reportProcess li { float: left; margin: 0 15px 0 0; }
-.reportProcess li:last-child { margin-right : 0; }
+.reportProcess li { float: left; margin: 0 0 0 15px; }
 .reportProcess li a { font-size: 14px; line-height: 16px; color: #333; font-weight: 600; padding: 10px; background-color: #F89E91; display: block; }
 
 
