@@ -77,6 +77,8 @@
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
 		<collection property="orderDTO" resultMap="orderResultMap"></collection>
+		<collection property="memberDTO" resultMap="memberResultMap"></collection>
+		
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
@@ -84,11 +86,28 @@
 		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="orderType" column="ORDER_TYPE"/>
-		<result property="takeTime" column="TAKE_TIME"/>
+		<result property="takeTime" column="TAKE_TIME" jdbcType="VARCHAR"/>
 		<result property="address" column="ADDRESS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="storeName" column="STORE_NAME"/>
 		<result property="code" column="CODE"/>
+		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
+		<collection property="memberDTO" resultMap="memberResultMap"></collection>
+		<collection property="orderInfoDTO" resultMap="InfoResultMap"></collection>
+		<collection property="acceptDTO" resultMap="acceptResultMap"></collection>
+		<collection property="productDTO" resultMap="productResultMap"></collection>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.user.dto.AcceptDTO" id="acceptResultMap">
+		<id property="code" column="CODE"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
+	</resultMap>
+
+	<resultMap type="com.sd.mommyson.user.dto.OrderInfoDTO" id="InfoResultMap">
+		<id property="proNo" column="PRO_NO"/>
+		<result property="amount" column="AMONT"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="sdCode" column="SD_CODE"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -619,5 +638,21 @@
 		    </foreach>
 		)
 	</insert>
+	
+	<select id="selectOrderList" resultMap="orderResultMap">
+		SELECT
+		        TO_CHAR(A.ORDER_ACCEPT_TIME, 'YYYY-MM-DD HH24:MI:SS') AS ORDER_ACCEPT_TIME
+		      , A.ORDER_CODE
+		      , C.NICKNAME
+		      , A.ORDER_TYPE
+		      , E.SD_NAME        
+		      , D.ORDER_STATUS
+		  FROM ORDER_TBL A
+		  JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
+		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+		  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+		 WHERE A.STORE_NAME = #{ storeName }
+	</select>
 	
 </mapper>

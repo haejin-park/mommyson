@@ -333,7 +333,7 @@ public class OwnerController {
 		MemberDTO owner = ownerService.selectOwner(member);
 		String storeName = owner.getCeo().getStore().getStoreName();
 		System.out.println(storeName);
-		System.out.println("확인");
+		
 		List<ReviewDTO> reviews = ownerService.selectReview(storeName);
 		System.out.println("리뷰들아 들어왔니 : " + reviews);	
 		
@@ -456,10 +456,20 @@ public class OwnerController {
 	}
 	
 	@GetMapping("order")
-	public void orderList(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+	public String orderList(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+		
+		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
+		MemberDTO owner = ownerService.selectOwner(member);
+		String storeName = owner.getCeo().getStore().getStoreName();
+		System.out.println("스토어 이름 : " + storeName);
 		
 		// 주문 접수 가져오기
-//		List<OrderDTO> orderList = ownerService.selectOrderList(member); 
+		List<OrderDTO> orderList = ownerService.selectOrderList(storeName); 
+		System.out.println("주문 내역 : " + orderList);
+		
+		model.addAttribute("orderList",orderList);
+		
+		return "owner/order";
 	}
 	
 	/* 오늘의 할인 */

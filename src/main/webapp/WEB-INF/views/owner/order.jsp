@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,10 +12,12 @@
 <title>주문관리</title>
 </head>
 <body>
-	
+	<header>
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
+	</header>
 	
+	<section>
 	<br><br><br>
     <div class="page-text" style="width: 1550px; margin: 0 auto;">
         <h3 style="margin-left: 100px; font-weight: 900; margin-bottom: 10px">주문 관리</h3>
@@ -52,19 +55,26 @@
 	        <table class="table table" style="width: 1050px;">
 	            <thead style="background-color: #EDEDED;">
 	              <tr>
+	              	<th scope="col">주문 시간</th>
 	                <th scope="col">주문 번호</th>
-	                <th scope="col">주문일</th>
 	                <th scope="col">고객명</th>
+	                <th scope="col">주문 유형</th>
 	                <th scope="col">주문 상품</th>
+	                <th scope="col">접수 상태</th>
+	                
 	              </tr>
 	            </thead>
 	            <tbody>
+	            <c:forEach items="${ orderList }" var="ol">
 	              <tr>
-	                <th scope="row">1</th>
-	                <td>로찜마</td>
-	                <td>두부 무침, 오뎅 볶음...</td>
+	                <th scope="row">${ ol.acceptTime }</th>
+	                <td>${ ol.orderCode }</td>
+	                <td>${ ol.memberDTO.nickname }</td>
+	                <td>${ ol.orderType }</td>
+	                <td>${ ol.productDTO.sdName }</td>
 	                <td><button class="couponBtn" id="btn1">접수</button> &nbsp;&nbsp; <button class="couponBtn" id="can1" style="background-color: #777777;">취소</button></td>
 	              </tr>
+	              </c:forEach>
 	            </tbody>
 	          </table>
 	        </div>
@@ -77,18 +87,20 @@
 	            <thead style="background-color: #EDEDED;">
 	              <tr>
 	                <th scope="col">주문 번호</th>
+	                <th scope="col">주문일</th>
 	                <th scope="col">고객명</th>
-	                <th scope="col">상품명</th>
-	                <th scope="col">접수</th>
+	                <th scope="col">주문상품</th>
 	              </tr>
 	            </thead>
 	            <tbody>
+	            <c:forEach items="${ orderList }" var="ol">
 	              <tr>
-	                <th scope="row">1</th>
-	                <td>21-12-11</td>
-	                <td>로찜마</td>
-	                <td>두부 무침, 오뎅 볶음...</td>
+	                <th scope="row">${ ol.orderCode }</th>
+	                <td>${ ol.acceptTime }</td>
+	                <td>${ ol.memberDTO.nickname }</td>
+	                <td>${ ol.productDTO.sdName }</td>
 	              </tr>
+	              </c:forEach>
 	            </tbody>
 	          </table>
 	        </div>
@@ -97,9 +109,10 @@
     
     <br>
     
-        <div style="margin: 500px 0 300px 900px;">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
+        <div>
+        	<br><br><br>
+            <nav aria-label="Page navigation example" style="margin-left: 450px;">
+                <ul class="pagination" style="justify-content: center;">
                   <li class="page-item">
                     <a class="page-link" href="#" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
@@ -120,7 +133,7 @@
 	      
 	    </div>
 	  </div>  
-    
+
     <script>
      $(function() {
         $('#btn1').click( function() {
@@ -141,10 +154,10 @@
     	  $(this).tab('show')
     	})
     </script>  
-    
-    <!-- footer -->
-  <jsp:include page="../commons/footer.jsp"/>
+    </section>
 	
+	    <!-- footer -->
+	  <jsp:include page="../commons/footer.jsp"/>
     
 </body>
 </html>

@@ -7,6 +7,7 @@ import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface OwnerService {
@@ -40,6 +41,7 @@ public interface OwnerService {
 	public int deleteReview(List<Integer> deleteReviewList);
 
 	public int deleteCoupon(List<Integer> deleteCouponList);
+	
 	public int modifyStatus(ProductDTO product);
 
 	public int removeProduct(List<Integer> deleteCode);
@@ -53,4 +55,6 @@ public interface OwnerService {
 	public List<ProductDTO> selectProdouct(int memCode);
 
 	public int registDc(Map<String, Object> map);
+
+	public List<OrderDTO> selectOrderList(String storeName);
 }

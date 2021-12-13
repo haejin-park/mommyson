@@ -12,6 +12,7 @@ import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
@@ -198,6 +199,14 @@ public class OwnerServiceImpl implements OwnerService{
 		int result = ownerDAO.registDc(map);
 				
 		return result;
+	}
+
+	@Override
+	public List<OrderDTO> selectOrderList(String storeName) {
+		
+		List<OrderDTO> order = ownerDAO.selectOrderList(storeName);
+		
+		return order;
 	}
 	
 
