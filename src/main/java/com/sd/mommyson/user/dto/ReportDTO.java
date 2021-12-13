@@ -8,19 +8,21 @@ public class ReportDTO {
 	private int repTypeCode;
 	private int repNo;
 	private Date repDate;
-	private char status;
+	private String status;
+	private ReportTypeDTO reportType;
 	
 	public ReportDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReportDTO(int rvCode, int repTypeCode, int repNo, Date repDate, char status) {
+	public ReportDTO(int rvCode, int repTypeCode, int repNo, Date repDate, String status, ReportTypeDTO reportType) {
 		super();
 		this.rvCode = rvCode;
 		this.repTypeCode = repTypeCode;
 		this.repNo = repNo;
 		this.repDate = repDate;
 		this.status = status;
+		this.reportType = reportType;
 	}
 
 	public int getRvCode() {
@@ -55,18 +57,26 @@ public class ReportDTO {
 		this.repDate = repDate;
 	}
 
-	public char getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(char status) {
+	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public ReportTypeDTO getReportType() {
+		return reportType;
+	}
+
+	public void setReportType(ReportTypeDTO reportType) {
+		this.reportType = reportType;
 	}
 
 	@Override
 	public String toString() {
 		return "ReportDTO [rvCode=" + rvCode + ", repTypeCode=" + repTypeCode + ", repNo=" + repNo + ", repDate="
-				+ repDate + ", status=" + status + "]";
+				+ repDate + ", status=" + status + ", reportType=" + reportType + "]";
 	}
-	
+
 }

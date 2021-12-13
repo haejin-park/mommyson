@@ -8,6 +8,8 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerService {
@@ -53,9 +55,6 @@ public interface ManagerService {
 
 	/* 신고된 리뷰 총 갯수 */
 	public int selectReportTotalCount(Map<String, Object> searchMap);
-
-	/* 신고된 리뷰 조회 */
-//	public List<ReviewDTO> selectReportList(Pagination pagination);
 	
 	/* 일반회원 검색 */
 	public List<MemberDTO> selectSearchMemberList(String searchMember);
@@ -86,6 +85,21 @@ public interface ManagerService {
 
 	/* 공지사항 상단 게시글 리스트 */
 	public List<PostDTO> selectNoticeUpList();
+	
+	/* 신고된 리뷰 조회 */
+	public List<Map<String, Object>> selectReportList(Pagination pagination);
+
+	/* 신고된 리뷰 상세 조회 */
+	public Map<String, Object> selectRepDetailView(Map<String, Object> repMap);
+
+	/* 신고된 리뷰 반려처리 */
+	public boolean updateRepCompanion(Map<String, Integer> repComMap);
+
+	/* 신고된 리뷰 경고 주기*/
+	public boolean updateWarning(Map<String, Integer> warMap);
+
+	/* 신고된 해당 리뷰 작성자 블랙등록 */
+	public boolean updateBlack(Map<String, Object> blackMap);
 
 	/* 공지사항 상단 down */
 	public boolean noticeDown(int postNo);
