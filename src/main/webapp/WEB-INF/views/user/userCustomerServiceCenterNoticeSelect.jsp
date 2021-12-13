@@ -59,7 +59,7 @@
                           <td><c:out value="${ noticeBoard.postNo }"/></td>
                           <td class="tal"><c:out value="${ noticeBoard.postTitle }"/></td>
                           <td><c:out value="${ noticeBoard.postDate }"/></td>
-                          <td><c:out value="11"/></td>
+                          <td><c:out value="${ noticeBoard.viewCnt }"/></td>
                       </tr>
                       </c:forEach>
                      

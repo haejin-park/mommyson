@@ -10,16 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
+import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
 @Controller
@@ -86,7 +90,7 @@ public class UserController {
 	}
 	
 	/**@author 양윤제
-	 * @category 공지사항 출력
+	 * @category 공지사항 게시글 목룍 출력
 	 */
 	@GetMapping("ucc/uccNoticeSelect")
 	public String userCustomerServiceCenterNoticeSelect(HttpSession session, Model mv, @RequestParam(required = false) Map<String, String> parameters) {
@@ -158,16 +162,27 @@ public class UserController {
 	}
 	
 	/**@author 양윤제
-	 * @category 공지사항 내용 출력
+	 * @category 공지사항 게시글 내용 출력
 	 */
 	@GetMapping("ucc/uccNoticeDetail")
-	public String userCustomerServiceCenterNoticeDetail(HttpSession session) {
+	public String userCustomerServiceCenterNoticeDetail(HttpSession session,  Model mv, @RequestParam("postNo") String postInfo) {
 		
 		System.out.println("공지사항 내용 출력 콘트롤러 진입");
-		int postNo; 
-
-//		List<PostDTO> noticeList = userService.selectNotice();
+		int postNo = Integer.parseInt(postInfo);
 		
+		/*조회수 수정*/
+		int result = userService.updateincrementNoticeBoardCount(postNo);
+		if( result > 0) {
+			System.out.println("조회수 증가 성공");
+		} else {
+			System.out.println("조회수 증가 실패");
+		}
+
+		List<PostDTO> noticeContentList = userService.selectNoticeContents(postNo);
+		
+		System.out.println("공지사항 내용출력 " + noticeContentList);
+		
+		mv.addAttribute("noticeContentList",noticeContentList);
 		
 		return "user/userCustomerServiceCenterNoticeDetail";
 	}
@@ -753,6 +768,20 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
+	@PostMapping("cart")
+	public String addCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode, HttpSession session) {
+		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println(member);
+		Map<String, Integer> order = new HashMap<String, Integer>();
+		order.put("sdCode", sdCode);
+		order.put("amount", amount);
+		order.put("memCode", member.getMemCode());
+		
+		userService.insertShoppingBasket(order);
+		
+		return "user/shoppingBasket";
+	}
+	
 	/**
 	 * @author ShinHyungi
 	 * @param mv
@@ -979,9 +1008,89 @@ public class UserController {
 		return "user/famousStore";
 	}
 	
-	@GetMapping("storepage/{memCode}")
-	public String storePage(@PathVariable String memCode) {
+	@GetMapping("storepage")
+	public String storePage(@RequestParam String memCode, Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
+		Map<String, String> store = userService.selectStoreByMemCode(memCode);
+		List<ProductDTO> products = userService.selectProducts(memCode);
+		
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		/* ==== 검색 처리 ==== */
+		String searchCondition = (String) model.getAttribute("searchCondition");
+		String searchValue = (String) model.getAttribute("searchValue");
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("memCode", memCode);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = userService.selectReviewTotalCount(searchMap);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		if(searchCondition == null || "".equals(searchCondition)) {
+			searchCondition = memCode;
+		}
+		
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		System.out.println(pagination);
+		List<ReviewDTO> rvList = userService.selectReviewList(pagination);
+		System.out.println("리스트 확인 : " + rvList);
+		
+		if(rvList != null) {
+			model.addAttribute("pagination",pagination);
+			model.addAttribute("rvList", rvList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
+		model.addAttribute("store", store);
+		model.addAttribute("products", products);
 		return "user/store_page";
+	}
+	
+	@GetMapping("packagePay")
+	public void packagePay(@RequestParam(value = "orderList", required = false) int orderList[]) {
+		
+	}
+	
+	@GetMapping("deliveryPay")
+	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[]) {
+		
+	}
+	
+	@GetMapping("sidedish_detail")
+	public void orderProduct(@RequestParam("sdCode") int sdCode, @RequestParam("memCode") String memCode ,Model model) {
+		
+		ProductDTO product = userService.selectProductBySdCode(sdCode);
+		Map<String, String> store = userService.selectStoreByMemCode(memCode);
+		model.addAttribute("product", product);
+		model.addAttribute("store", store);
+	}
+	
+	@PostMapping(value = "report", produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String report(@RequestParam("rvCodee") int rvCode, @RequestParam("reportType") int reportType) {
+		
+		Map<String, Integer> reportInfo = new HashMap<String, Integer>();
+		reportInfo.put("rvCode", rvCode);
+		reportInfo.put("reportType", reportType);
+		
+		int result = userService.insertReport(reportInfo);
+		
+		return result > 0? "1" : "0";
 	}
 }

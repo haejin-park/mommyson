@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
 	<nav class="page_box" aria-label="Page navigation example" style="margin-left: 460px">
@@ -44,9 +43,8 @@
     </nav>
     
     <script>
-	
-        let link = "";
-		let searchText = "";
+        var link = "";
+		var searchText = "";
 		
 		if(${ !empty requestScope.pagination.searchCondition? true : false }) {
 			searchText += "&searchCondition=${ requestScope.pagination.searchCondition }";
@@ -74,7 +72,7 @@
 		if(document.getElementById("nextPage")) {
 			const $nextPage = document.getElementById("nextPage");
 			$nextPage.onclick = function() {
-				if(${ requestScope.pagination.pageNo } != ${ requestScope.pagination.maxPage }){
+				if((${ requestScope.pagination.pageNo ne requestScope.pagination.maxPage })){
 					location.href = link + "?currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
 				} else {
 					location.href = link + "?currentPage=${ requestScope.pagination.pageNo }" + searchText;

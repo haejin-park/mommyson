@@ -1,5 +1,7 @@
 package com.sd.mommyson.manager.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,9 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
@@ -90,10 +95,6 @@ public class ManagerServiceImpl implements ManagerService {
       return managerDAO.selectNoticeTotalCount(searchMap);
    }
 
-   @Override
-   public List<PostDTO> selectNoticeList(Pagination pagination) {
-      return managerDAO.selectNoticeList(pagination);
-   }
 
    @Override
    public int idDupCheck(String memId) {
@@ -121,14 +122,6 @@ public class ManagerServiceImpl implements ManagerService {
       return managerDAO.selectNormalMemberTotalCount(searchMap);
    }
 
-	@Override
-	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
-		
-		MemberDTO ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
-		
-		return ceoDetailInfos;
-	}
-
 	/**
 	 * 블랙해지
 	 */
@@ -149,15 +142,192 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectReportTotalCount(searchMap);
 	}
 
+	@Override
+	public List<MemberDTO> selectSearchMemberList(String searchMember) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
+		
+		MemberDTO ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
+		
+		return ceoDetailInfos;
+	}
+
+
+   /**
+    * 공지사항 리스트 조회
+    * @author junheekim
+    */
+   @Override
+   public List<PostDTO> selectNoticeList(Pagination pagination) {
+      return managerDAO.selectNoticeList(pagination);
+   }
+
 	/**
 	 * 신고된 리뷰 조회
 	 */
-//	@Override
-//	public List<ReviewDTO> selectReportList(Pagination pagination) {
-//		
-//		List<ReviewDTO> selectReportList = managerDAO.selectReportList(pagination);
-//		
-//		return selectReportList;
-//	}
+	@Override
+	public List<Map<String, Object>> selectReportList(Pagination pagination) {
+		
+		List<Map<String, Object>> selectReportList = managerDAO.selectReportList(pagination);
+		
+		return selectReportList;
+	}
+
+	/**
+	 * 신고된 리뷰 상세 조회
+	 */
+	@Override
+	public Map<String, Object> selectRepDetailView(Map<String, Object> repMap) {
+		
+		Map<String, Object> reportInfo = managerDAO.selectRepDetailView(repMap);
+		
+		return reportInfo;
+	}
+
+	/**
+	 * 신고된 리뷰 반려처리
+	 */
+	@Override
+	public boolean updateRepCompanion(Map<String, Integer> repComMap) {
+		
+		return managerDAO.updateRepCompanion(repComMap) > 0? true : false;
+	}
+
+	/**
+	 * 신고된 리뷰 경고 주기
+	 */
+	@Override
+	public boolean updateWarning(Map<String, Integer> warMap) {
+		
+		int result = managerDAO.updateWarning(warMap);
+		int result2 = managerDAO.updateWarning2(warMap);
+		int result3 = managerDAO.updateWarning3(warMap);
+		
+		return result + result2 + result3 > 2? true : false;
+	}
+
+	/**
+	 * 신고된 해당 리뷰 작성자 블랙등록
+	 */
+	@Override
+	public boolean updateBlack(Map<String, Object> blackMap) {
+		
+		int result = managerDAO.updateBlack(blackMap);
+		int result2 = managerDAO.updateBlack2(blackMap);
+		int result3 = managerDAO.updateBlack3(blackMap);
+		
+		return result + result2 + result3 > 2? true : false;
+	}
+
    
+	/**
+	 * 공지사항 작성
+	 * @author junheekim
+	 */
+	@Override
+	public int postWriting(Map<String, Object> map) {
+
+		int result = managerDAO.postWriting(map);
+		
+		return result;
+	}
+
+	/**
+	 * 공지사항 게시글 조회
+	 * @author junheekim
+	 */
+	@Override
+	public PostDTO selectNotice(int postNo) {
+		
+		PostDTO selectNotice = managerDAO.selectNotice(postNo);
+		
+		return selectNotice;
+	}
+
+	
+	/**
+	 * 공지사항 게시글 조회수
+	 * @author junheekim
+	 */
+	@Override
+	public boolean selectNoticeCnt(int postNo) {
+		
+		return managerDAO.selectNoticeCnt(postNo);
+	}
+
+	/**
+	 * 공지사항 게시글 수정
+	 * @author junheekim
+	 */
+	@Override
+	public int postRevise(Map<String, Object> map) {
+		
+		int result = managerDAO.noticeRevise(map);
+		
+		return result;
+	}
+
+	/**
+	 * 공지사항 게시글 삭제(선택박스)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean deleteNotice(List<Integer> addNoticeDeleteList) {
+		
+		int result = managerDAO.deleteNotice(addNoticeDeleteList);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 게시글 삭제
+	 * @author junheekim
+	 */
+	@Override
+	public boolean deleteSelectNotice(int postNo) {
+		
+		int result = managerDAO.deleteSelectNotice(postNo);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 게시글 상단 고정(up)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean noticeUp(int postNo) {
+		
+		int result = managerDAO.noticeUp(postNo);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 상단 고정 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectNoticeUpList() {
+		
+		return managerDAO.selectNoticeUpList();
+	}
+
+	/**
+	 * 공지사항 게시글 상단 고정 해제(down)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean noticeDown(int postNo) {
+		
+		int result = managerDAO.noticeDown(postNo);
+		
+		return result > 0? true : false;
+	}
+
+
 }

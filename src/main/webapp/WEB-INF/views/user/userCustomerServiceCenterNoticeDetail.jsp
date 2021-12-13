@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,18 +42,18 @@
                     <thead>
                         <tr style="border-bottom: 1px solid #B1B1B1;">
                             <th>제목</th>
-                            <td colspan="3">[공지]근무자 코로나19 확진 관련 안내 </td>
+                            <td colspan="3"><c:out value="${requestScope.noticeContentList[0].postTitle }"/></td>
                         </tr>
                         <tr>
                             <th>작성일</th>
-                            <td>2021-11-23</td>
+                            <td><c:out value="${ requestScope.noticeContentList[0].postDate }"/></td>
                             <th>조회수</th>
-                            <td>123</td>
+                            <td><c:out value="${ requestScope.noticeContentList[0].viewCnt }"/></td>
                         </tr>
                     </thead>
                 </table>
                 <div class="text_area">
-                    텍스트
+                    <c:out value="${ requestScope.noticeContentList[0].postContent }"/>
                 </div>
                 
             </form>

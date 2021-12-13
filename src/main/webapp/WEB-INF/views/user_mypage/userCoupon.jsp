@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +22,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-3">
-                      <jsp:include page="../commons/userMyPageSidebar.jsp"></jsp:include>
+                      <jsp:include page="../commons/userMyPageSidebar.jsp"/>
           </div>
 
          
@@ -41,41 +42,26 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/1 2.png"></td><!-- 450 * 550-->
-                  <td style="padding-top: 40px;">리뷰작성 감사쿠폰</td>
-                  <td style="padding-top: 40px;">10%</td>
-                </tr>
-                <tr>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/1 2.png"></td><!-- 450 * 550-->
-                  <td style="padding-top: 40px;"">리뷰작성 감사쿠폰</td>
-                  <td style="padding-top: 40px;">10%</td>
-                </tr>
+              	<c:forEach var="myCoupon" items="${ requestScope.myCouponList }">
+	                <tr>
+	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath } +'/' + ${ myCoupon.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
+	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.cpName }"/></td>
+	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.disWon }"/></td>
+	                </tr>
+              	</c:forEach>
               </tbody>
             </table>
             <!-- 페이징 -->
             <nav class="page_box" aria-label="Page navigation example">
               <ul class="pagination">
-                <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                 <jsp:include page="../commons/userMyPagePagination.jsp"/>
               </ul>
               <ul>
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                  <form action="" method="get">
-                  	<input type="text" class="searchtext" placeholder="찾고싶은 쿠폰 내용을 입력해주세요" name="couponSearch"></li>
-                  	<button type="submit" class="searchbutton">검색하기</button></li>
+                  <form action="${ pageContext.servletContext.contextPath }/userMyPage/userCoupon" method="get">
+                	<input type="hidden" name="currentPage" value="1">
+                  	<input type="text" class="searchtext" placeholder="찾고싶은 쿠폰 내용을 입력해주세요" name="searchValue">
+                  	<button type="submit" class="searchbutton">검색하기</button>
                   </form>
                </ul>
             </nav>
@@ -84,6 +70,7 @@
         </div>
       </div>
     </section>
+          <%--   <h1><c:out value="${ requestScope.myCouponList[0].store.storeImg }"/></h1> --%>
   	<jsp:include page="../commons/footer.jsp"/>
   </body>
   </html>

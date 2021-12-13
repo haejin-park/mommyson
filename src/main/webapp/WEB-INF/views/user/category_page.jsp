@@ -43,7 +43,7 @@
             <div class="row">
             	<c:forEach items="${ requestScope.productList }" var="product">
             		<div class="col-3">
-	                    <img src="${ product.sdImg }">
+	                    <img src="${ pageContext.servletContext.contextPath}/${ product.sdImg }">
 	                    <div class="menu_div">
 	                        <a href="${ pageContext.servletContext.contextPath }/user/storepage/${ store.memCode }" class="menu_name"><c:out value="${ product.sdName }"/>(<c:out value="${ product.volume }"/>)g</a>
 	                        <pre> <strong><c:out value="${ product.price }"/>원</strong></pre>

@@ -118,7 +118,7 @@
 	 			location.href = document.location.href + "?searchValue=" + searchValue;
 	 		}
 			
-		};  
+		};
 		
 	  	/* $(".searchbutton").on('click',function(){
 	    	let searchValue = $('input[name=searchValue]').val();
