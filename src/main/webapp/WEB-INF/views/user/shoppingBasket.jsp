@@ -21,60 +21,57 @@
 
 	<jsp:include page="../commons/header.jsp"/>
 	<br>
-	<form>
-	    <img class=cart1 src="${ pageContext.servletContext.contextPath }/resources/images/cart1.png" >
-	    <table id="table1">
-	      <tr id="tr1">
-	        <th><input type=checkbox id="all"></th>
-	        <th>가게 정보</th>
-	        <th>제품 정보</th>
-	        <th>제품 금액</th>
-	        <th>수량</th>
-	        <th>총 제품 금액</th>
-	      </tr>
-	      <tr id="tr2">
-	        <td><input type=checkbox name="checkbox"></td>
-	        <td><img class=restaurantLogo001 src="${ pageContext.servletContext.contextPath }/resources/images/restaurantLogo001.png"><br>찜닭최고</td>
-	        <td><img class=chicken src="${ pageContext.servletContext.contextPath }/resources/images/chicken.png"><br>고추장 야채 찜닭</td>
-	        <td>10,000원</td>
-	        <td>
-          	<div class="number">
-            	<a href="#" id="decreaseQuantity"> - </a>
-	            <span id="numberUpDown">1</span>
-	            <a href="#" id="increaseQuantity"> + </a>
-         	</div>
-	        </td>
-	        <td>10,000원</td>
-	      </tr>
-	    </table>
-    	<div id="div1">
-		  <table id="table2">
-	        <tr>
-	          <th>가게별 총 제품 금액(배달시 배송비 별도)</th>
-	          <td id="totalAmountByStore">10,000원</td>
-	        </tr>
-	      </table>
-	    </div>
-	    <div id="div2">
-	      <table id="table3">
-	        <tr>
-	          <th>총 제품 금액 합계(배달 시 배송비 별도)</th>
-	          <td id="paymentAmount">10,000원</td>
-	        </tr>
-	      </table>
-	    </div>
-	    <br> 
-	    <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
-	    <br>  
-      	<button type="button" id="selectDelete">선택삭제</button>
-      	<button type="submit" id="package">방문포장</button>
-      	<button type="submit" id="delivery">배달예약</button>
-	</form>  
+    <img class=cart1 src="${ pageContext.servletContext.contextPath }/resources/images/cart1.png" >
+    <table id="table1">
+      <tr id="tr1">
+        <th><input type=checkbox id="all"></th>
+        <th>가게 정보</th>
+        <th>제품 정보</th>
+        <th>제품 금액</th>
+        <th>수량</th>
+        <th>총 제품 금액</th>
+      </tr>
+      <tr id="tr2">
+        <td><input type=checkbox name="checkbox"></td>
+        <td><img class=restaurantLogo001 src="${ pageContext.servletContext.contextPath }/resources/images/restaurantLogo001.png"><br>찜닭최고</td>
+        <td><img class=chicken src="${ pageContext.servletContext.contextPath }/resources/images/chicken.png"><br>고추장 야채 찜닭</td>
+        <td>10,000원</td>
+        <td>
+         	<div class="number">
+           	<a href="#" id="decreaseQuantity"> - </a>
+            <span id="numberUpDown">1</span>
+            <a href="#" id="increaseQuantity"> + </a>
+        	</div>
+        </td>
+        <td>10,000원</td>
+      </tr>
+    </table>
+   	<div id="div1">
+	  <table id="table2">
+        <tr>
+          <th>가게별 총 제품 금액(배달시 배송비 별도)</th>
+          <td id="totalAmountByStore">10,000원</td>
+        </tr>
+      </table>
+    </div>
+    <div id="div2">
+      <table id="table3">
+        <tr>
+          <th>총 제품 금액 합계(배달 시 배송비 별도)</th>
+          <td id="paymentAmount">10,000원</td>
+        </tr>
+      </table>
+    </div>
+    <br> 
+    <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
+    <br>  
+   	<button id="selectDelete">선택삭제</button>
+   	<button id="package" onclick="gopay('pack')">방문포장</button>
+   	<button id="delivery" onclick="gopay('deli')">배달예약</button>
 	<br><br><br><br><br>
     <jsp:include page="../commons/footer.jsp"/>
 
 	<script>
-	 
 	  /* 전체 체크, 해제 */
 	  $("#all").on("change",function(){
 	        if($("#all").is(":checked")){
@@ -82,8 +79,22 @@
 	        } else {
 	            $("input[name=checkbox]").prop("checked",false);
 	        }
-	    });
-	
+	  });
+	  
+	  /* 주문번호 가지고 결제창으로 이동 */
+	  function gopay(str) {
+		  let orderList = [];
+		  $("input:checkbox[name='checkbox']:checked").each(function(i, ival) {
+			  orderList.push($(this).val());
+	  	  });
+		  
+		  if(str == "pack") {
+			  location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList;
+		  } else if(str == "deli") {
+			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList;
+		  }
+	  }
+	  
 	  /* 수량 증감 */
 	  $(function(){
 	    $('#decreaseQuantity').click(function(e){

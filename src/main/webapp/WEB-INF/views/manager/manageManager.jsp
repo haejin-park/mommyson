@@ -27,7 +27,7 @@
                 <div class="top_btn">
                 <input type="button" value="삭제" class="del_btn" onclick="deleteManager();">
               	<script>
-                	if(${ requestScope.result != null }) {
+                	if(${ requestScope.result } != null) {
                 		alert('${ requestScope.result }');
                 	}
                 

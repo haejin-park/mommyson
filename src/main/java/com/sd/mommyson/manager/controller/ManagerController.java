@@ -26,6 +26,8 @@ import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
@@ -154,7 +156,7 @@ public class ManagerController {
 		
 		return result? "1" : "2";
 	}
-	
+
 	
 	/* 사업자 회원 조회 */
 	/**
@@ -358,9 +360,8 @@ public class ManagerController {
 	}
 	
 	/**
-	 * @author kimjunhee
-	 * @category 공지사항
-	 * @return "manager/noticeSelect"
+	 * @author junheekim
+	 * @category 공지사항 조회 + 상단 고정 공지사항 조회
 	 */
 	@GetMapping("noticeSelect")
 	public String noticeSelect(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
@@ -416,23 +417,203 @@ public class ManagerController {
 		
 //		System.out.println("pagination : " + pagination);
 		
+		/* 공지사항 리스트 조회 */
 		List<PostDTO> noticeList = managerService.selectNoticeList(pagination);
 		
-//		System.out.println("리스트 확인 : " + noticeList);
+		/* 상단 고정 게시글 값 불러오는 메소드 */
+		List<PostDTO> noticeUpList = managerService.selectNoticeUpList();
 		
 		if(noticeList != null) {
 			model.addAttribute("pagination",pagination);
 			model.addAttribute("noticeList", noticeList);
+			model.addAttribute("noticeUpList",noticeUpList);
 		} else {
-			System.out.println("조회실패");
+			System.out.println("공지사항 리스트 조회 실패");
 		}
 		
 		return "manager/noticeSelect";
 	}
 	
-	/* 공지사항 상세보기 */
+	/**
+	 * @author junheekim
+	 * @category 공지사항 작성
+	 */
+	@GetMapping("noticeWrite")
+	public void noticeWrite() {
+	}
+	
+	@PostMapping(value = "noticeWrite")
+	public String noticeWrite(@ModelAttribute PostDTO post, Model model) {
+		System.out.println(post);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardCode", post.getBoardCode());
+		map.put("postTitle", post.getPostTitle());
+		map.put("postContent", post.getPostContent());
+		
+		int result = managerService.postWriting(map);
+	
+		if(result > 0) {
+			model.addAttribute("result", "공지 등록에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "공지 등록에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/noticeSelect";
+	}
+	
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시물 조회
+	 */
 	@GetMapping("noticeDetailView")
-	public void noticeDetailView() {}
+	public String noticeDetailView(Model model, @RequestParam(value = "postNo", required = false) int postNo) {
+		
+		PostDTO selectNotice = managerService.selectNotice(postNo);
+		boolean isCnt = managerService.selectNoticeCnt(postNo);
+		
+		System.out.println("조회수 결과 : " + isCnt);
+		
+		if(selectNotice != null) {
+			model.addAttribute("selectNotice", selectNotice);
+		} else {
+			System.out.println("공지사항 게시글 조회 실패");
+		}
+		
+		return "manager/noticeDetailView";
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시물 수정 페이지
+	 */
+	@GetMapping("noticeRevise")
+	public void noticeRevise(Model model, @RequestParam(value = "postNo", required = false) int postNo) {
+		
+		PostDTO selectNotice = managerService.selectNotice(postNo);
+		
+		if(selectNotice != null) {
+			model.addAttribute("selectNotice", selectNotice);
+		} else {
+			System.out.println("공지사항 게시글 수정 진입 실패");
+		}
+		
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시물 수정
+	 */
+	@PostMapping(value = "noticeRevise")
+	public String noticeRevise(@ModelAttribute PostDTO post, Model model) {
+		System.out.println(post);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("postNo", post.getPostNo());
+		map.put("boardCode", post.getBoardCode());
+		map.put("postTitle", post.getPostTitle());
+		map.put("postContent", post.getPostContent());
+		
+		int result = managerService.postRevise(map);
+	
+		if(result > 0) {
+			model.addAttribute("result", "공지 수정에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "공지 수정에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/noticeSelect";
+	}
+	
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 삭제(체크박스)
+	 */
+	@GetMapping(value = "noticeSelect/{chkNotice}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String noticeDelete(@PathVariable("chkNotice")  int[] chkDelNotice) {
+		
+		List<Integer> addNoticeDeleteList = new ArrayList<>();
+		
+		String message = "";
+		for(int i = 0; i < chkDelNotice.length; i++) {
+			addNoticeDeleteList.add(chkDelNotice[i]);
+			
+			boolean result = managerService.deleteNotice(addNoticeDeleteList);
+			
+			if(result) {
+				message = "선택한 게시글을 삭제하였습니다.";
+			} else {
+				message = "게시글 삭제에 실패하였습니다.";
+			}
+		}
+		
+		return message;
+		
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 삭제(상세보기)
+	 */
+	@GetMapping(value = "noticeSelectDelete/{postNo}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String noticeSelectDelete(@PathVariable("postNo") int postNo) {
+		
+		boolean result = managerService.deleteSelectNotice(postNo);
+		
+		String message = "";
+		if(result) {
+			message = "선택한 게시글을 삭제하였습니다.";
+		} else {
+			message = "게시글 삭제에 실패하였습니다.";
+		}
+		
+		return message;
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 상단 고정 등록
+	 */
+	@GetMapping(value = "noticeUp/{postNo}", produces = "text/plain; charset=UTF-8; ")
+	@ResponseBody
+	public String noticeUp(@PathVariable("postNo") int postNo) {
+		
+		boolean result = managerService.noticeUp(postNo);
+		
+		String message = "";
+		if(result) {
+			message = "게시글이 상단 고정되었습니다.";
+		} else {
+			message = "게시글 상단 고정 등록에 실패하였습니다.";
+		}
+		
+		return message;
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 게시글 상단 고정 해제
+	 */
+	@GetMapping(value = "noticeDown/{postNo}", produces = "text/plain; charset=UTF-8; ")
+	@ResponseBody
+	public String noticeDown(@PathVariable("postNo") int postNo) {
+		
+		boolean result = managerService.noticeDown(postNo);
+		
+		String message = "";
+		if(result) {
+			message = "게시글 상단 고정이 해제되었습니다.";
+		} else {
+			message = "게시글 상단 고정 해제에 실패하였습니다.";
+		}
+		
+		return message;
+	}
+	
 	
 	/* 자주하는 질문 */
 	@GetMapping("oftenQuestion")
@@ -447,9 +628,16 @@ public class ManagerController {
 	public void normalInquiry() {}
 	
 	/* 리뷰 신고 현황 */
+	/**
+	 * @param model
+	 * @param currentPage
+	 * @param sv
+	 * @throws JsonProcessingException
+	 * @author leeseungwoo
+	 */
 	@GetMapping("statusStoreWarning")
 	public void statusStoreWarning(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
-			, @RequestParam(value="searchValue", required = false) String sv) {
+								   , @RequestParam(value="searchValue", required = false) String sv) {
 		
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
@@ -498,15 +686,112 @@ public class ManagerController {
 		
 		System.out.println("pagination : " + pagination);
 		
-//		List<ReviewDTO> reportList = managerService.selectReportList(pagination);
-//		System.out.println("리스트 확인 : " + reportList);
-//		
-//		if(reportList != null) {
-//			model.addAttribute("pagination", pagination);
-//			model.addAttribute("normalMemberList", reportList);
-//		} else {
-//			System.out.println("조회실패");
-//		}
+		List<Map<String, Object>> reportList = managerService.selectReportList(pagination);
+		System.out.println("리스트 확인 : " + reportList);
+		
+		if(reportList != null) {
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("reportList", reportList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
+	}
+	
+	/**
+	 * 신고된 리뷰 상세조회
+	 * @param repCode
+	 * @return
+	 * @throws JsonProcessingException
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "repDetailView", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public Map<String, Object> repDetailView(@RequestParam("repCode") int repCode) throws JsonProcessingException{
+		
+		System.out.println("들어옴");
+		
+		Map<String, Object> repMap = new HashMap<>();
+		repMap.put("repCode", repCode);
+		
+		Map<String, Object> reportInfo = managerService.selectRepDetailView(repMap);
+		System.out.println("reportInfo : " + reportInfo);
+		
+		return reportInfo;
+	}
+	
+	/**
+	 * 신고된 리뷰 반려처리
+	 * @param repRvCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repCompanion{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String repCompanion(@PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Integer> repComMap = new HashMap<>();
+		repComMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateRepCompanion(repComMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
+	}
+	
+	/**
+	 * 신고된 해당리뷰 회원 경고주기
+	 * @param repMemCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repWarning/{repMemCode}/{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String warning(@PathVariable("repMemCode") int repMemCode, @PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("회원코드 : " + repMemCode);
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Integer> warMap = new HashMap<>();
+		warMap.put("repMemCode", repMemCode);
+		warMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateWarning(warMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
+	}
+	
+	/**
+	 * 신고된 리뷰 해당 회원 블랙처리
+	 * @param repMemCode
+	 * @param repRvCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repBlack/{repMemCode}/{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String black(@PathVariable("repMemCode") int repMemCode, @PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("회원코드 : " + repMemCode);
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Object> blackMap = new HashMap<>();
+		blackMap.put("repMemCode", repMemCode);
+		blackMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateBlack(blackMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
 	}
 	
 	/* 배너설정 */

@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-<title>Insert title here</title>
+<title>리뷰페이지</title>
 </head>
 <body>
 <script>
@@ -35,7 +35,12 @@
       <jsp:include page="../commons/ownerSidebar.jsp"/>
       
       <div style="text-align: center;">
-        <div style="margin-left: 450px;">
+      <br><br>
+        <img src="${ pageContext.servletContext.contextPath }/${ owner.ceo.store.storeImg }" width="300px"><br><br>
+        <br><br>
+        <div style="margin-left: 450px;" id="before">
+        <h3 style="font-weight: 900; text-align: left; margin-left: 30px;">작성된 리뷰</h3>
+        <br>
        		<form action="${ pageContext.servletContext.contextPath}/owner/registGiveAndDeleteCp" method="POST">
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
@@ -47,15 +52,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
                 <c:forEach var="review" items="${ reviews }">
+              <tr>
                 <th scope="row"><input type="checkbox" name="chkreview" class="test" value="${ review.rvCode }" ></th>
                 <th>${ review.rvCode }</th>
-                <input type="hidden" value="${ review.memCode }"/>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
-                </c:forEach>
               </tr>
+                <input type="hidden" value="${ review.memCode }"/>
+                </c:forEach>
             </tbody>
           </table>
           <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" 
@@ -103,7 +108,7 @@
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
-                      <th scope="col">{param.memCode}</th>
+                      <th scope="col">할인금액</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -160,9 +165,9 @@
 	$(document).ready(function(){
 		$('#staticBackdrop1').on('show.bs.modal', function(event){
 			console.log(event);
-			/* memCode = $(event.relatedTarget).data('memCode'); */
-		});
-	});
+			/* memCode = $(event.relatedTarget).data('memCode'); 
+		}); 
+	});		
 	  
   </script>
   

@@ -8,6 +8,8 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerDAO {
@@ -40,12 +42,46 @@ public interface ManagerDAO {
 
 	int selectNormalMemberTotalCount(Map<String, Object> searchMap);
 
+	int postWriting(Map<String, Object> map);
+
+	PostDTO selectNotice(int postNo);
+
+	boolean selectNoticeCnt(int postNo);
+
 	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
 	int terminateBlack(List<Integer> blackMember);
 
 	int selectReportTotalCount(Map<String, Object> searchMap);
 
-//	List<ReviewDTO> selectReportList(Pagination pagination);
+	int noticeRevise(Map<String, Object> map);
+
+	int deleteNotice(List<Integer> addNoticeDeleteList);
+
+	int deleteSelectNotice(int postNo);
+
+	int noticeUp(int postNo);
+
+	List<PostDTO> selectNoticeUpList();
+
+	int noticeDown(int postNo);
+	
+	List<Map<String, Object>> selectReportList(Pagination pagination);
+
+	Map<String, Object> selectRepDetailView(Map<String, Object> repMap);
+
+	int updateRepCompanion(Map<String, Integer> repComMap);
+
+	int updateWarning(Map<String, Integer> warMap);
+	
+	int updateWarning2(Map<String, Integer> warMap);
+	
+	int updateWarning3(Map<String, Integer> warMap);
+
+	int updateBlack(Map<String, Object> blackMap);
+
+	int updateBlack2(Map<String, Object> blackMap);
+
+	int updateBlack3(Map<String, Object> blackMap);
 
 }
