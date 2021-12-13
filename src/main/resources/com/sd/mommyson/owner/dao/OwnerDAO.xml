@@ -69,18 +69,6 @@
 		<result property="dCcon" column="DC_CONDITION"/>
 	</resultMap>
 	
-	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="tatalPrice" column="TOTAL_PRICE"/>
-		<result property="orderCode" column="ORDER_CODE"/>
-		<result property="orderType" column="ORDER_TYPE"/>
-		<result property="tatalPrice" column="TOTAL_PRICE"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
-		<result property="storeName" column="STORE_NAME"/>
-		<result property="code" column="CODE"/>
-	</resultMap>
-	
 	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
