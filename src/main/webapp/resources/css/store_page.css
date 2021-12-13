@@ -61,6 +61,7 @@ a:hover {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    margin-top: 18px;
 }
 
 .menu_img {

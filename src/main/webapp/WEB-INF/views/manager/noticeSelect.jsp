@@ -62,7 +62,7 @@
 					<tbody>
 					   <c:forEach items="${ requestScope.noticeUpList }" var="up">
 						<tr class="important_notice">
-							<th scope="row"><input type="checkbox" name="ch1"></th>
+							<th scope="row"><input type="checkbox" name="ch1" value="${ up.postNo }"></th>
 							<td>공지</td>
 							<td class="tal">
 							<a href="${ pageContext.servletContext.contextPath }/manager/noticeDetailView?postNo=${ up.postNo }">${ up.postTitle }</a>

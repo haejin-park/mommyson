@@ -2,8 +2,11 @@ package com.sd.mommyson.user.dto;
 
 import java.util.List;
 
+<<<<<<< HEAD
 import com.sd.mommyson.member.dto.MemberDTO;
 
+=======
+>>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 public class ReviewDTO {
 
 	private int memCode;
@@ -13,16 +16,25 @@ public class ReviewDTO {
 	private int grade;
 	private int rvCode;
 	private String memId;
+<<<<<<< HEAD
 	private OrderDTO orderDTO;
 	private MemberDTO memberDTO;
 	private List<ReportDTO> report;
+=======
+	private String isDeleted;
+	private List<String> orderList;
+>>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 	
 	public ReviewDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public ReviewDTO(int memCode, int orderCode, String img, String content, int grade, int rvCode, String memId,
+<<<<<<< HEAD
 			OrderDTO orderDTO, MemberDTO memberDTO, List<ReportDTO> report) {
+=======
+			String isDeleted, List<String> orderList) {
+>>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 		super();
 		this.memCode = memCode;
 		this.orderCode = orderCode;
@@ -31,9 +43,14 @@ public class ReviewDTO {
 		this.grade = grade;
 		this.rvCode = rvCode;
 		this.memId = memId;
+<<<<<<< HEAD
 		this.orderDTO = orderDTO;
 		this.memberDTO = memberDTO;
 		this.report = report;
+=======
+		this.isDeleted = isDeleted;
+		this.orderList = orderList;
+>>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 	}
 
 	public int getMemCode() {
@@ -92,6 +109,7 @@ public class ReviewDTO {
 		this.memId = memId;
 	}
 
+<<<<<<< HEAD
 	public OrderDTO getOrderDTO() {
 		return orderDTO;
 	}
@@ -114,14 +132,39 @@ public class ReviewDTO {
 
 	public void setReport(List<ReportDTO> report) {
 		this.report = report;
+=======
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public List<String> getOrderList() {
+		return orderList;
+	}
+
+	public void setOrderList(List<String> orderList) {
+		this.orderList = orderList;
+>>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 	}
 
 	@Override
 	public String toString() {
 		return "ReviewDTO [memCode=" + memCode + ", orderCode=" + orderCode + ", img=" + img + ", content=" + content
+<<<<<<< HEAD
 				+ ", grade=" + grade + ", rvCode=" + rvCode + ", memId=" + memId + ", orderDTO=" + orderDTO
 				+ ", memberDTO=" + memberDTO + ", report=" + report + "]";
 	}
 
 
+=======
+				+ ", grade=" + grade + ", rvCode=" + rvCode + ", memId=" + memId + ", isDeleted=" + isDeleted
+				+ ", orderList=" + orderList + "]";
+	}
+
+	
+	
+>>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 }
