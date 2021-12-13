@@ -1004,6 +1004,7 @@ public class UserController {
 		}
 				
 		model.addAttribute("type", cg);
+		model.addAttribute("realType", type);
 		
 		return "user/famousStore";
 	}

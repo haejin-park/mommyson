@@ -43,11 +43,13 @@
     <script>
    
         let link = "";
-         link = document.location.href;
-         if(!(document.location.href).includes("?memCode")) {
-           link = document.location.pathname;
-        } else {
-             link = document.location.pathname + '?memCode=${ requestScope.store.MEM_CODE }';
+        link = document.location.href;
+        if(!(document.location.href).includes("?memCode") && !(document.location.href).includes("?type")) {
+            link = document.location.pathname;
+        } else if((document.location.href).includes("?memCode")) {
+            link = document.location.pathname + '?memCode=${ requestScope.store.MEM_CODE }';
+        } else if((document.location.href).includes("?type")) {
+        	link = document.location.pathname + '?type=${ requestScope.realType }';
         }
 
       let searchText = "";
@@ -63,7 +65,7 @@
       if(document.getElementById("startPage")) {
          const $startPage = document.getElementById("startPage");
          $startPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=1" + searchText;
               } else {
                  location.href = link + "&currentPage=1" + searchText;
@@ -74,7 +76,7 @@
       if(document.getElementById("prevPage")) {
          const $prevPage = document.getElementById("prevPage");
          $prevPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=${ requestScope.pagination.pageNo - 1 }" + searchText;
               } else {
                  location.href = link + "&currentPage=${ requestScope.pagination.pageNo - 1 }" + searchText;
@@ -85,18 +87,18 @@
       if(document.getElementById("nextPage")) {
          const $nextPage = document.getElementById("nextPage");
          $nextPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
-              } else {
-                 location.href = link + "&currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
-              }
+            } else {
+               location.href = link + "&currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
+            }
          }
       }
       
       if(document.getElementById("maxPage")) {
          const $maxPage = document.getElementById("maxPage");
          $maxPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=${ requestScope.pagination.maxPage }" + searchText;
               } else {
                  location.href = link + "&currentPage=${ requestScope.pagination.maxPage }" + searchText;
@@ -108,11 +110,11 @@
          let pageNo = $(this).text();
          console.log(link);
          location.href = link + "?currentPage=" + pageNo + searchText;
-         if(!(document.location.href).includes("?memCode")) {
-            location.href = link + "?currentPage=" + pageNo + searchText;
-           } else {
-              location.href = link + "&currentPage=" + pageNo + searchText;
-           }
+         if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
+             location.href = link + "?currentPage=" + pageNo + searchText;
+         } else {
+             location.href = link + "&currentPage=" + pageNo + searchText;
+         }
       });
    </script>
 </body>
