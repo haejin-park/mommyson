@@ -21,7 +21,6 @@
 		<association property="user" resultMap="userResultMap"/>
 		<association property="ceo" resultMap="ceoResultMap"/>
 		<association property="manager" resultMap="managerResultMap"/>
-		
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.ManagerDTO" id="managerResultMap">
@@ -57,22 +56,70 @@
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="name" column="NAME"/>
 		<result property="repCount" column="REP_COUNT"/>
+		<collection property="review" resultMap="reviewResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="img" column="RV_IMG"/>
+		<result property="content" column="RV_CONTENT"/>
+		<result property="grade" column="RV_GRADE"/>
+		<result property="memId" column="MEM_ID"/>
+		<collection property="report" resultMap="reportResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.user.dto.ReportDTO" id="reportResultMap">
+		<id property="rvCode" column="RV_CODE"/>
+		<result property="repTypeCode" column="REP_TYPE_CODE"/>
+		<result property="repNo" column="REP_NO"/>
+		<result property="repDate" column="REP_DATE"/>
+		<result property="status" column="STATUS"/>
+		<collection property="reportType" resultMap="reportTypeResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.user.dto.ReportTypeDTO" id="reportTypeResultMap">
+		<id property="repTypeCode" column="REP_TYPE_CODE"/>
+		<result property="repType" column="REP_TYPE"/>
 	</resultMap>
 	
 	<select id="selectNormalMemberTotalCount" resultType="_int">
 	    SELECT
-   	  	  COUNT(*)
-   	  	 FROM MEMBER_TBL A
+   	  	       COUNT(*)
+   	  	  FROM MEMBER_TBL A
+   	  	  LEFT JOIN CEO_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+   	  	  LEFT JOIN STORE_TBL C ON (B.MEM_CODE = C.MEM_CODE)
    	  	 <where>
+   	  	 	<if test='searchValue != null and memberTypeUser'>
+   	  	 		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+	   	  	</if>
+	   	  	<if test='searchValue != null and memberTypeCeo'>
+	   	  		A.MEM_TYPE = 'ceo' AND
+	   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		B.CEO_NAME LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		C.STORE_NAME LIKE '%' ||  #{ searchValue } || '%') AND
+	   	  	</if>
+	   	  	<if test='searchValue != null and blackMember'>
+	   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+	   	  	</if>
 	   	  	<if test="memberTypeUser">
-		      	A.MEM_TYPE = 'user'
+		      	A.MEM_TYPE = 'user' AND
+		      	A.IS_DELETED = 'N'
 		    </if>
 		    <if test="memberTypeCeo">
 		    	A.MEM_TYPE = 'ceo'
 		    </if>
-   	  	 	<if test="searchValue != null">
-   	  	 		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%'
-   	  	 	</if>
+		    <if test="blackMember">
+		    	A.IS_DELETED = 'B'
+		    </if>
    	  	 </where>
 	</select>
 	
@@ -155,15 +202,40 @@
 						  LEFT JOIN CEO_TBL F ON (A.MEM_CODE = F.MEM_CODE)
 						  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
 						  <where>
-						  	A.IS_DELETED = 'N' AND
+						  	<if test='searchValue != null and searchCondition == "user"'>
+					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+					   	  	</if>
+					   	  	<if test='searchValue != null and searchCondition == "ceo"'>
+					   	  		A.MEM_TYPE = 'ceo' AND
+					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		F.CEO_NAME LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		D.STORE_NAME LIKE '%' ||  #{ searchValue } || '%') AND
+					   	  	</if>
+					   	  	<if test='searchValue != null and searchCondition == "black"'>
+					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+					   	  	</if>
 						  	<if test='searchCondition == "user"'>
-						  		A.MEM_TYPE = 'user'
+						  		A.IS_DELETED = 'N' AND
+						  		A.MEM_TYPE = 'user' 
 						  	</if>
 						  	<if test='searchCondition == "ceo"'>
-						  		A.MEM_TYPE = 'ceo'
+						  		A.IS_DELETED = 'N' AND
+						  		A.MEM_TYPE = 'ceo' 
+						  	</if>
+						  	<if test='searchCondition == "black"'>
+						  		A.IS_DELETED = 'B' AND
+						  		A.MEM_TYPE = 'user'
 						  	</if>
 						  </where>
-						 ORDER BY A.ENROLL_DATE DESC)B
+						 ORDER BY A.MEM_CODE DESC)B
 				 <![CDATA[        
 		          WHERE ROWNUM <= #{ endRow }
 		          ]]>)C
@@ -220,6 +292,183 @@
 	     		#{ item }
 	     	</foreach>
 	   	 </where>
+	</update>
+	
+	<update id="terminateBlack" parameterType="list">
+		UPDATE
+		       MEMBER_TBL A
+		   SET A.IS_DELETED = 'N'
+		 <where>
+	     	A.MEM_CODE IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	   	 </where>
+	</update>
+	
+	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
+	    SELECT
+	           A.MEM_CODE
+			 , A.EMAIL
+			 , A.ADDRESS
+			 , A.POST_CODE
+			 , A.D_ADDRESS
+			 , A.PHONE
+			 , A.LOCATION_CODE
+			 , A.NICKNAME
+			 , A.MEM_ID
+			 , A.ENROLL_DATE
+			 , A.IS_DELETED
+			 , B.ACCOUNT
+			 , B.STORE_NO
+			 , B.CEO_NAME
+			 , C.STORE_NAME
+			 , E.MS_CODE
+			 , E.MS_TYPE
+			 , E.MS_DATE
+			 , E.MS_PRICE
+		  FROM MEMBER_TBL A
+		  LEFT JOIN CEO_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+		  LEFT JOIN STORE_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		  LEFT JOIN MS_STORE_TBL D ON (C.MEM_CODE = D.MEM_CODE)
+		  LEFT JOIN MEMBERSHIP_TBL E ON (D.MS_CODE = E.MS_CODE)
+		 WHERE A.MEM_CODE = #{ ceoNum }
+	</select>
+	
+	<select id="selectReportTotalCount" resultType="_int">
+	    SELECT
+	           COUNT(*)
+	      FROM REPORT_TBL A
+	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
+	     <where>
+	     	<if test="searchValue != null">
+	     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+	     	</if>
+	     </where>
+	</select>
+	
+	<select id="selectReportList" resultType="hashmap" parameterType="hashmap">
+	    SELECT
+	           F.RV_CODE
+	         , F.REP_TYPE_CODE
+	         , F.REP_NO
+	         , F.REP_DATE
+	         , F.STATUS
+	         , F.MEM_CODE
+	         , F.RV_CONTENT
+	         , F.MEM_ID
+	         , F.REP_TYPE
+	         , F.REP_COUNT
+	      FROM (SELECT
+	                   ROWNUM RNUM
+	                 , E.RV_CODE
+	                 , E.REP_TYPE_CODE
+	                 , E.REP_NO
+	                 , E.REP_DATE
+	                 , E.STATUS
+	                 , E.MEM_CODE
+	                 , E.RV_CONTENT
+	                 , E.MEM_ID
+				     , E.REP_TYPE	    
+	                 , E.REP_COUNT
+			      FROM (SELECT
+					           A.RV_CODE
+					         , A.REP_TYPE_CODE
+					         , A.REP_NO
+					         , A.REP_DATE
+					         , A.STATUS
+					         , B.MEM_CODE
+					         , B.RV_CONTENT
+					         , B.MEM_ID
+					         , C.REP_TYPE
+					         , D.REP_COUNT
+					      FROM REPORT_TBL A
+					      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
+					      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
+					      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
+					     <where>
+					     	<if test="searchValue != null">
+					     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+					     	</if>
+					     </where>
+					     ORDER BY A.REP_NO ASC)E
+			     <![CDATA[        
+		           WHERE ROWNUM <= #{ endRow }
+		          ]]>)F
+		  <![CDATA[
+		   WHERE F.RNUM >= #{ startRow } 
+	      ]]>
+	</select>
+	
+	<select id="selectRepDetailView" resultType="hashmap">
+		SELECT
+	           A.RV_CODE
+	         , A.REP_TYPE_CODE
+	         , A.REP_NO
+	         , A.REP_DATE
+	         , A.STATUS
+	         , B.MEM_CODE
+	         , B.RV_CONTENT
+	         , B.MEM_ID
+	         , C.REP_TYPE
+	         , D.REP_COUNT
+	      FROM REPORT_TBL A
+	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
+	      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
+	      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
+	     WHERE A.RV_CODE = #{ repCode }
+	     ORDER BY A.REP_NO ASC
+	</select>
+	
+	<update id="updateRepCompanion" parameterType="hashmap">
+	    UPDATE 
+	           REPORT_TBL A
+	       SET A.STATUS = 'N'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateWarning" parameterType="hashmap">
+	    UPDATE
+	           USER_TBL A
+	       SET A.REP_COUNT = A.REP_COUNT + 1
+	     WHERE A.MEM_CODE = #{ repMemCode }
+	</update>
+	
+	<update id="updateWarning2" parameterType="hashmap">
+	    UPDATE
+	           REVIEW_TBL A
+	       SET A.IS_DELETED = 'Y'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateWarning3" parameterType="hashmap">
+	    UPDATE
+	           REPORT_TBL A
+	       SET A.STATUS = 'Y'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateBlack" parameterType="hashmap">
+	    UPDATE
+	           MEMBER_TBL A
+	       SET A.IS_DELETED = 'B'
+	     WHERE A.MEM_CODE = #{ repMemCode }
+	</update>
+	
+	<update id="updateBlack2" parameterType="hashmap">
+	    UPDATE
+	           REVIEW_TBL A
+	       SET A.IS_DELETED = 'Y'
+	     WHERE A.RV_CODE = #{ repRvCode }
+	</update>
+	
+	<update id="updateBlack3" parameterType="hashmap">
+	    UPDATE
+	           REPORT_TBL A
+	       SET A.STATUS = 'Y'
+	     WHERE A.RV_CODE = #{ repRvCode }
 	</update>
 	
 	<select id="selectAuth" resultMap="authResultMap">
@@ -282,26 +531,27 @@
    	  	  COUNT(*)
    	  	 FROM POST_TBL A
    	  	<where>
+   	  	  A.STATUS = 'N'
    	  	  <if test='searchValue != null'>
-   	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	  	  AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
    	  	  </if>
-   	  	  <if test="searchCondition == 'all'">
-   	  	    A.BOARD_CODE IN('1','2','3','4','5')
+   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+   	  	  AND A.BOARD_CODE IN('1','2','3','4','5')
    	  	  </if>
    	  	  <if test="searchCondition == 'notice'">
-   	  	   A.BOARD_CODE = '1'
+   	  	  AND A.BOARD_CODE = '1'
    	  	  </if>
    	  	  <if test="searchCondition == 'guide'">
-   	  	   A.BOARD_CODE = '2'
+   	  	  AND A.BOARD_CODE = '2'
    	  	  </if>
    	  	  <if test="searchCondition == 'check'">
-   	  	   A.BOARD_CODE = '3'
+   	  	  AND A.BOARD_CODE = '3'
    	  	  </if>
    	  	  <if test="searchCondition == 'event'">
-   	  	   A.BOARD_CODE = '4'
+   	  	  AND A.BOARD_CODE = '4'
    	  	  </if>
    	  	  <if test="searchCondition == 'owner'">
-   	  	   A.BOARD_CODE = '5'
+   	  	  AND A.BOARD_CODE = '5'
    	  	  </if>
    	  	</where>
    </select>
@@ -345,26 +595,27 @@
 	                   ,A.VIEW_CNT
 	                   FROM POST_TBL A
 	                  <where>
+	                  A.STATUS = 'N'
 			   	  	  <if test='searchValue != null'>
-			   	  	   A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	  	   AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == 'all'">
-			   	  	    A.BOARD_CODE IN('1','2','3','4','5')
+			   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+			   	  	   AND A.BOARD_CODE IN('1','2','3','4','5')
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'notice'">
-			   	  	   A.BOARD_CODE = '1'
+			   	  	   AND A.BOARD_CODE = '1'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'guide'">
-			   	  	   A.BOARD_CODE = '2'
+			   	  	   AND A.BOARD_CODE = '2'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'check'">
-			   	  	   A.BOARD_CODE = '3'
+			   	  	   AND A.BOARD_CODE = '3'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'event'">
-			   	  	   A.BOARD_CODE = '4'
+			   	  	   AND A.BOARD_CODE = '4'
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'owner'">
-			   	  	   A.BOARD_CODE = '5'
+			   	  	   AND A.BOARD_CODE = '5'
 			   	  	  </if>
 			   	  	  </where>
 	                  ORDER BY A.POST_DATE DESC)B
@@ -376,6 +627,79 @@
        ]]>
    </select>
    
+   <!-- 공지사항 등록 -->
+   <insert id="postWriting" parameterType="hashmap" >
+ 	INSERT ALL
+ 		INTO POST_TBL
+ 	VALUES
+ 	(SEQ_POST.nextval, #{ boardCode }, #{ postTitle }, 2, #{ postContent }, SYSDATE, 'N', NULL, 'N', 0)
+ 	SELECT * FROM DUAL
+   </insert>
+
+   <!-- 공지사항 게시글 조회 -->
+   <select id="selectNotice" parameterType="_int" resultMap="PostResultMap">
+     SELECT
+	   	A.*
+	   FROM POST_TBL A
+	  WHERE A.POST_NO = #{ postNo }
+   </select>
+   
+   <!-- 공지사항 조회수 -->
+   <update id="selectNoticeCnt" parameterType="int">
+   	UPDATE POST_TBL
+   	   SET VIEW_CNT = VIEW_CNT + 1
+   	 WHERE POST_NO = #{ postNo }
+   </update>
+   
+   <!-- 공지사항 수정 -->
+   <update id="noticeRevise" parameterType="hashmap">
+    UPDATE POST_TBL
+       SET POST_TITLE = #{ postTitle }
+         , BOARD_CODE = #{ boardCode }
+         , POST_CONTENT = #{ postContent }
+	WHERE POST_NO = #{ postNo }
+   </update>
+   
+   <!-- 공지사항 삭제(선택박스) -->
+   <update id="deleteNotice" parameterType="list">
+    UPDATE POST_TBL
+       SET STATUS = 'D'
+     WHERE POST_NO IN
+           <foreach collection="list" item="postNo" separator="," open="(" close=")">
+           		#{ postNo }
+           </foreach>
+   </update>
+   
+   <!-- 공지사항 삭제 -->
+   <update id="deleteSelectNotice" parameterType="int">
+   	UPDATE POST_TBL
+       SET STATUS = 'P'
+     WHERE POST_NO = #{ postNo }
+   </update>
+	
+   <!-- 공지사항 게시글 상단 고정 up -->
+   <update id="noticeUp" parameterType="int">
+    UPDATE POST_TBL
+      SET STATUS = 'U'
+    WHERE POST_NO = #{ postNo }
+   </update>
+   
+   <!-- 공지사랑 상단 고정 리스트 -->
+   <select id="selectNoticeUpList" resultMap="PostResultMap">
+  	 SELECT
+          A.*
+          FROM POST_TBL A
+         WHERE A.STATUS = 'U'
+           AND A.BOARD_CODE IN('1','2','3','4','5')
+   </select> 
+   
+   <!-- 공지사항 게시글 상단 고정 해제 down -->
+   <update id="noticeDown" parameterType="int">
+    UPDATE POST_TBL
+      SET STATUS = 'N'
+    WHERE POST_NO = #{ postNo }
+   </update> 
+	
    <select id="idDupCheck" parameterType="string" resultType="int">
        SELECT 
        		  COUNT(*) 

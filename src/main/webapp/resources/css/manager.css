@@ -148,6 +148,13 @@
 .search_box ul li { float: left; }
 .search_box ul li .searchtext { margin: 0 5px 0 0; padding: 5px; }
 
+/* 리뷰신고 */
+.detailView { cursor: pointer; }
+.reportProcess { width: auto !important; float: right; margin-top: 15px !important; }
+.reportProcess li { float: left; margin: 0 0 0 15px; }
+.reportProcess li a { font-size: 14px; line-height: 16px; color: #333; font-weight: 600; padding: 10px; background-color: #F89E91; display: block; }
+
+
 /*== 이미지 파일 ==*/
 .photo1 {
     display: inline-block;
@@ -397,4 +404,11 @@
 .searchtext::-webkit-input-placeholder {
 text-align: center;  
 }  
-    
+
+/* 버튼 오른쪽 정렬 */
+.total_container .board_container .btn_box2 { text-align: right; margin: 30px 0 150px; }
+.total_container .board_container .btn_box2 .btn.write_btn { margin-right: 25px; border-radius: 5px; color: white !important; width: 150px; background-color: #F89E91;}
+.total_container .board_container .btn_box2 .prev_btn { background-color: #BEBEBE; border-radius: 5px; color: white; width: 150px; background-color: #BEBEBE !important;}
+.up_btn { margin-left: 100px; border-radius: 10px; color: #68BF6B !important; width: 100px; border: 1px solid #68BF6B; background-color: white !important; }
+.down_btn { margin-left: 100px; border-radius: 10px; color: white !important; width: 100px; border: 1px solid #68BF6B; background-color: #68BF6B !important; text-shadow: 2px 2px 2 #666666; }
+.btntd { padding: 0 !important; padding-top: 10px !important; }

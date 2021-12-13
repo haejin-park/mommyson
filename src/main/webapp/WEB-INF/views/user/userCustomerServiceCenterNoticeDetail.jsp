@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,18 +42,18 @@
                     <thead>
                         <tr style="border-bottom: 1px solid #B1B1B1;">
                             <th>제목</th>
-                            <td colspan="3">[공지]근무자 코로나19 확진 관련 안내 </td>
+                            <td colspan="3"><c:out value="${requestScope.noticeContentList[0].postTitle }"/></td>
                         </tr>
                         <tr>
                             <th>작성일</th>
-                            <td>2021-11-23</td>
+                            <td><c:out value="${ requestScope.noticeContentList[0].postDate }"/></td>
                             <th>조회수</th>
-                            <td>123</td>
+                            <td><c:out value="${ requestScope.noticeContentList[0].viewCnt }"/></td>
                         </tr>
                     </thead>
                 </table>
                 <div class="text_area">
-                    텍스트
+                    <c:out value="${ requestScope.noticeContentList[0].postContent }"/>
                 </div>
                 
             </form>
@@ -64,36 +65,6 @@
         </div>
       </div>
     </section>
-
-
-
-      <footer class="at-container">
-        <ul class="df_ul ft_list">
-          <li>
-            <a href="">마미손맛 소개</a>   
-          </li>
-          <li>
-            <a href="">이용약관</a>
-          </li>
-          <li>
-            <a href="">개인정보처리방침</a>
-          </li>
-          <li>
-            <a href="">전자금융거래이용약관</a>
-          </li>
-        </ul>
-        <div class="ft_img_line">
-          <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
-        <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-        <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
-      </div>
-      <div class="ft_info">
-        <p>(주)마미손맛 자세히 보기</p>
-        <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
-        <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
-        <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
-        <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
-      </div>
-    </footer>
+	<jsp:include page="../commons/footer.jsp"/>
   </body>
   </html>

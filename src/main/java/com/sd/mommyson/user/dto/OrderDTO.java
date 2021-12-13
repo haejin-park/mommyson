@@ -1,25 +1,26 @@
 package com.sd.mommyson.user.dto;
 
-import java.sql.Time;
+import java.sql.Date;
 
 public class OrderDTO {
-	
-	private int memCode;
+
+	private int memCode;		// 회원코드
 	private int totalPrice;
 	private int orderCode;
 	private String orderType;
-	private Time takeTime;
+	private Date takeTime;
 	private String address;
 	private String phone;
 	private String storeName;
-	private int code;
+	private int code;			// 상태코드 (1 : 주문접수중  2: 주문수락  3: 주문취소  4: 주문완료  )
+
 	
 	public OrderDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Time takeTime, String address,
+	
+	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
 			String phone, String storeName, int code) {
 		super();
 		this.memCode = memCode;
@@ -65,11 +66,11 @@ public class OrderDTO {
 		this.orderType = orderType;
 	}
 
-	public Time getTakeTime() {
+	public Date getTakeTime() {
 		return takeTime;
 	}
 
-	public void setTakeTime(Time takeTime) {
+	public void setTakeTime(Date takeTime) {
 		this.takeTime = takeTime;
 	}
 
@@ -111,7 +112,6 @@ public class OrderDTO {
 				+ ", orderType=" + orderType + ", takeTime=" + takeTime + ", address=" + address + ", phone=" + phone
 				+ ", storeName=" + storeName + ", code=" + code + "]";
 	}
-	
 	
 	
 }

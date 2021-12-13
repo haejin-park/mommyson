@@ -64,7 +64,7 @@
 		            <a href="#homeSubmenu4" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">신고 관리</a>
 		            <ul class="collapse list-unstyled" id="homeSubmenu4">
 		                <li>
-		                    <a href="${ pageContext.servletContext.contextPath }/manager/statusStoreWarning">가게 신고 현황</a>
+		                    <a href="${ pageContext.servletContext.contextPath }/manager/statusStoreWarning">리뷰 신고 현황</a>
 		                </li>
 		            </ul>
 		        </li>

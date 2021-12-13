@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
@@ -42,9 +41,10 @@ public class OwnerServiceImpl implements OwnerService{
 
 
 	@Override
-	public List<ReviewDTO> selectReview(ReviewDTO review) {
-		
-		return ownerDAO.selectReview(review);
+	public List<ReviewDTO> selectReview(String storeName) {
+		List<ReviewDTO> list = ownerDAO.selectReview(storeName);
+		System.out.println("list 확인 : " + list);
+		return list;
 	}
 
 	@Override
@@ -127,6 +127,23 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
+	public int deleteReview(List<Integer> deleteReviewList) {
+		
+		int result = ownerDAO.deleteReview(deleteReviewList);
+		
+		return result;
+		
+	}
+
+	@Override
+	public int deleteCoupon(List<Integer> deleteCouponList) {
+		
+		int result = ownerDAO.deleteCoupon(deleteCouponList);
+		
+		return result;
+	}
+	
+	@Override	
 	public int modifyStatus(ProductDTO product) {
 
 		int result = ownerDAO.modifyStatus(product);
@@ -149,7 +166,7 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return result;
 	}
-
+	
 	@Override
 	public List<ProductDTO> selectDC(Map<String, Object> searchMap) {
 
@@ -157,6 +174,7 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return result;
 	}
+
 
 	@Override
 	public int selectTotalModal(Map<String, Object> searchMap) {

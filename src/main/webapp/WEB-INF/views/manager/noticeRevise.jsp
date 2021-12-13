@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>공지사항 작성</title>
+    <title>공지사항 수정</title>
 </head>
 <body>
    <header class="manager_header at-container">
@@ -22,7 +22,7 @@
         <div class="board_container">
             <h1>공지사항</h1>
             
-            <form action="${ pageContext.servletContext.contextPath }/manager/noticeWrite" method="post">
+            <form action="${ pageContext.servletContext.contextPath }/manager/noticeRevise" method="post">
             
                 <table class="table bd_write_header">
                     <colgroup>
@@ -35,27 +35,31 @@
                         <tr>
                             <th>제목</th>
                             <td>
-                                <input type="text" name="postTitle" id="postTitle" placeholder="제목을 입력해주세요." required>
+                                <input type="text" name="postTitle" id="postTitle" placeholder="제목을 입력해주세요." value="${ selectNotice.postTitle }" required>
                             </td>
                             <th>분류</th>
                             <td>
                                 <select name="boardCode" id="boardCode">
-                                    <option value="1">공지</option>
-                                    <option value="2">안내</option>
-                                    <option value="3">점검</option>
-                                    <option value="4">이벤트</option>
-                                    <option value="5">사업자</option>
+                                    <option id="notice" value="1">공지</option>
+                                    <option id="guide" value="2">안내</option>
+                                    <option id="check" value="3">점검</option>
+                                    <option id="event" value="4">이벤트</option>
+                                    <option id="owner" value="5">사업자</option>
                                 </select>
+                                <input type="hidden" id="cate" value="${ selectNotice.boardCode }">
+                                <input type="hidden" id="postNo" name="postNo" value="${ selectNotice.postNo }">
                             </td>
                         </tr>
                     </thead>
                 </table>
+                
+                
                 <div class="text_area">
-                    <textarea name="postContent" id="postContent" placeholder="내용을 작성해주세요." required></textarea>
+                    <textarea name="postContent" id="postContent" placeholder="내용을 작성해주세요." required>${ selectNotice.postContent }</textarea>
                 </div>
                 <div class="btn_box">
                     <input type="submit" value="등록하기" class="btn write_btn" id="write_btn" style="background-color: #F89E91;">
-                    <a href="${ pageContext.servletContext.contextPath }/manager/noticeSelect" class="btn cancle_btn" style="background-color: #BEBEBE;">취소하기</a>
+                    <a href="${ pageContext.servletContext.contextPath }/manager/noticeSelect?postNo=${ selectNotice.postNo }" class="btn cancle_btn" style="background-color: #BEBEBE;">취소하기</a>
                 </div>
             </form>
             
@@ -65,15 +69,26 @@
 
     <script>
 	    
-	    $('#write_btn').on('click',function(){
+    	var cate = $('#cate').val();
+    	
+    	switch(cate){
+    	case '1': $("#notice").prop('selected', true); break;
+    	case '2': $("#guide").prop('selected', true); break;
+    	case '3': $("#check").prop('selected', true); break;
+    	case '4': $("#event").prop('selected', true); break;
+    	case '5': $("#owner").prop('selected', true); break;
+    	default: break;
+    	} 
+    	
+	   /*  $('#write_btn').on('click',function(){
 	    	alert('${ requestScope.result }');
-	    });
+	    }); */
 	    
-        $('#boardCode').on('change',function() {
+        /* $('#boardCode').on('change',function() {
         	let changedCode = $('#boardCode').val();
         	console.log($(this).val());
  
-        });
+        }); */
      </script>
 </body>
 </html>

@@ -23,12 +23,12 @@
     </div>
     <form onsubmit="return validate();">
     <div class=text>
-        <input type="text" class="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자">
+        <input type="text" class="id" id="id" placeholder="아이디는 [영문,숫자] 4~12글자" style=" border-radius: 9px;">
         <br><br> 
         <input type="password" class="email" id="email" placeholder="이메일을 입력해주세요">
         <button type="button" id="button">코드전송</button>
         <br><br>
-        <input type="text" class="code" id="code" placeholder="인증번호를 입력해주세요">
+        <input type="text" class="code" id="code" placeholder="인증번호를 입력해주세요"  style=" border-radius: 9px;">
         <br><br>
     </div>    
     <!-- null값일 경우 ~를 입력해주세요 -->

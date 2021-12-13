@@ -4,11 +4,11 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sd.mommyson.owner.dao.OwnerDAO">
 
-	<resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="name" column="NAME"/>
-		<result property="repCount" column="REP_COUNT"/>
-	</resultMap>
+   <resultMap type="com.sd.mommyson.member.dto.UserDTO" id="userResultMap">
+      <id property="memCode" column="MEM_CODE"/>
+      <result property="name" column="NAME"/>
+      <result property="repCount" column="REP_COUNT"/>
+   </resultMap>
 
 	<resultMap type="com.sd.mommyson.member.dto.CeoDTO" id="ceoResultMap">
 		<id property="memCode" column="MEM_CODE"/>
@@ -16,7 +16,7 @@
 		<result property="startDate" column="START_DATE"/>
 		<result property="no" column="STORE_NO"/>
 		<result property="name" column="CEO_NAME"/>
-		<association property="store" resultMap="storeResultMap"/>
+		<collection property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -55,6 +55,11 @@
 		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.member.dto.AuthDTO" id="authResultMap">
+		<id property="code" column="CODE"/>
+		<result property="auth" column="AUTH"/>
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
 		<id property="cpCode" column="CP_CODE"/>
 		<result property="cpName" column="CP_NAME"/>
@@ -64,19 +69,6 @@
 		<result property="dCcon" column="DC_CONDITION"/>
 	</resultMap>
 	
-	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="tatalPrice" column="TOTAL_PRICE"/>
-		<result property="orderCode" column="ORDER_CODE"/>
-		<result property="orderType" column="ORDER_TYPE"/>
-		<result property="tatalPrice" column="TOTAL_PRICE"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
-		<result property="storeName" column="STORE_NAME"/>
-		<result property="code" column="CODE"/>
-		
-	</resultMap>
-	
 	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
@@ -84,7 +76,19 @@
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
-		<collection property="orderDTO" resultMap="orderResultMap"/>
+		<collection property="orderDTO" resultMap="orderResultMap"></collection>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="totalPrice" column="TOTAL_PRICE"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="orderType" column="ORDER_TYPE"/>
+		<result property="takeTime" column="TAKE_TIME"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="storeName" column="STORE_NAME"/>
+		<result property="code" column="CODE"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -205,17 +209,16 @@
 	
 	<!-- 리뷰 목록 가져오기 -->
 	<select id="selectReview" resultMap="reviewResultMap">
-		<!-- SELECT
+		SELECT
 				A.RV_CODE
 			  , A.MEM_CODE
-			  , A.RV_COMTENT
-			  , B.NICKNAME
-			  , C.ORDER_CODE
-     		  , C.STORE_NAME  
+			  , A.RV_CONTENT
+			  , B.NICKNAME 
 		  FROM REVIEW_TBL A
 		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
 		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
-		 WHERE C.STORE_NAME =  -->
+		 WHERE C.STORE_NAME = #{storeName}
+		   AND A.IS_DELETED = 'N'
 	</select>
 	
 	<!-- 사업자 가게정보 변경 쿼리문 -->
@@ -356,15 +359,14 @@
 		  #{ product.volume },
 		  #{ fileName },
 		  #{ product.category },
-		  0,
+		  default,
 		  #{ memCode },
 		  #{ product.orderableStatus },
 		  #{ product.eDate },
 		  default,
 		  #{ product.categoryCode },
 		  #{ product.storageMethod },
-		  #{ product.detail },
-		  default
+		  #{ product.detail }
 	    )
 	    <foreach collection="tagList" item="item">
 	    INTO PRODUCT_TAG_TBL 
@@ -373,6 +375,31 @@
 	      </foreach>
 	    SELECT * FROM DUAL
 	</insert>
+	
+	<!-- 리뷰삭제 -->
+	<delete id="deleteReview" parameterType="list">
+	 UPDATE  
+	 		 REVIEW_TBL A
+	 	SET  A.IS_DELETED = 'Y'
+	  <where>
+	     	RV_CODE IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	  </where>
+	</delete>
+	
+	<!-- 쿠폰삭제  -->
+	<delete id="deleteCoupon" parameterType="list">
+	DELETE 
+	  FROM COUPON_TBL 
+	  <where>
+	     	 CP_CODE IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+	  </where> 
+	</delete>
 	
 	<!-- 조건에 맞는 결과값 가져오는 쿼리문 -->
 	<select id="selectTotalCount" resultType="_int">
@@ -411,7 +438,7 @@
 		    AND MEM_CODE = #{ memCode }
 		</where>
 	</select>
-	
+	   
 	<!-- 반찬 조회 쿼리문 -->
 	<select id="selectProduct" resultMap="productResultMap">
 		SELECT

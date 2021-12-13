@@ -24,18 +24,25 @@
                 <c:if test="${ sessionScope.loginMember != null }">
                    <!-- 소비자의 경우 -->
                 	<c:if test="${ sessionScope.loginMember.memType == 'user' }">
+                  		<li>
+                    		<a href=""><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
+                  		</li>
                    		<li id="ca_lo">
                     		<a href="#">장바구니</a>
                   		</li>
                  		 <li>
-                  			<a href=""><img style="height: 35px" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  			<a href=""><img style="height: 25px; margin-right: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   		</li>
                    </c:if>
                    
                    <!-- 사업자인 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
+                    	<li>
+                    		<a href="${ pageContext.servletContext.contextPath }/owner/order"><img style="margin-bottom: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
+                  		</li>
                    		<li>
-                    		<a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 30px" src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.ceo.store.storeName }</a>
+                    		<a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 25px; margin-right: 5px; margin-bottom: 10px;" 
+                    		src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.ceo.store.storeName }</a>
                     	</li>
                     </c:if>
                     
@@ -45,12 +52,9 @@
 	                    	<a href="${ pageContext.servletContext.contextPath }/manager/normalMember">관리페이지</a>
 	                  	</li>
                     </c:if> 
-                    	<li>
-                    		<a href="${ pageContext.servletContext.contextPath }/member/logout">로그아웃</a>
+                    	<li style="margin-bottom: 5px;">
+                    		<a href="${ pageContext.servletContext.contextPath }/member/logout" >로그아웃</a>
                  	   </li>
-                  		<li>
-                    		<a href="#"><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
-                  		</li>
                   </c:if> 
                 <!-- 로그인 전 -->
                 <c:if test="${ sessionScope.loginMember == null }">

@@ -40,15 +40,16 @@
         
         <div style="text-align: center;">
         <br><br>
-        <img src="../resources/images/owner-logo.png" width="300px"><br><br>
+        <img src="${ pageContext.servletContext.contextPath }/${ owner.ceo.store.storeImg }" width="300px"><br><br>
         <br><br>
         <div style="margin-left: 450px;" id="before">
-        <h3 style="font-weight: 900; text-align: left; margin-left: 70px;">발행한 쿠폰</h3>
-        <br><br>
+        <h3 style="font-weight: 900; text-align: left; margin-left: 30px;">발행한 쿠폰</h3>
+        <br>
+        <form action="${ pageContext.servletContext.contextPath}/owner/couponDelete" method="POST">
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="ch1" id="allCheck"></th>
+                <th scope="col"><input type="checkbox"  id="allCheck"></th>
                 <th scope="col">발행일</th>
                 <th scope="col">쿠폰이름</th>
                 <th scope="col">할인율</th>
@@ -59,7 +60,7 @@
             <tbody>
 			<c:forEach var="cp" items="${ coupon }">
               <tr>
-                <th scope="row"><input type="checkbox" name="ch1"></th>
+                <th scope="row"><input type="checkbox" name="chkcoupon" value="${ cp.cpCode }"></th>
                 <td>${ cp.startDate }</td>
                 <td>${ cp.cpName }</td>
                 <td>${ cp.disWon }</td>
@@ -73,7 +74,8 @@
           <!-- 모달쿠폰 -->
           <button type="button"  id="couponBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="height: 40px;">
             추가</button>
-          <button class="couponBtn" style="background-color: #777777; height: 40px; margin-left: 50px;">삭제</button>
+          <button class="couponBtn" type="submit" style="background-color: #777777; height: 40px; margin-left: 50px;">삭제</button>
+        </form>
         </div>  
       </div>
 	    
@@ -98,8 +100,8 @@
 	          <br><br>
 	        </div>
 	        <div class="modal-footer">
-	          <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
 	          <button type="submit" class="btn btn-primary"  id="couponBtn" style="width: 100px;">추가하기</button>
+	          <button type="reset" class="btn btn-secondary" data-dismiss="modal">취소</button>
 	        </div>
 	        </form>
 	      </div>

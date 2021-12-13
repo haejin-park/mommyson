@@ -86,6 +86,7 @@
                   <ul>
                       <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                       <form action="" method="get">
+                      <input type="hidden" name="currentPage" value="1">
                       <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요." name="searchProduct"></li>
                       <button type="submit" class="searchbutton">검색하기</button></li>
                       </form>
@@ -100,34 +101,6 @@
         </div>
       </div>
     </section>
-
-      <footer class="at-container">
-        <ul class="df_ul ft_list">
-          <li>
-            <a href="">마미손맛 소개</a>   
-          </li>
-          <li>
-            <a href="">이용약관</a>
-          </li>
-          <li>
-            <a href="">개인정보처리방침</a>
-          </li>
-          <li>
-            <a href="">전자금융거래이용약관</a>
-          </li>
-        </ul>
-        <div class="ft_img_line">
-          <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
-        <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-        <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
-      </div>
-      <div class="ft_info">
-        <p>(주)마미손맛 자세히 보기</p>
-        <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
-        <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
-        <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
-        <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
-      </div>
-    </footer>
+	<jsp:include page="../commons/footer.jsp"/>
   </body>
   </html>

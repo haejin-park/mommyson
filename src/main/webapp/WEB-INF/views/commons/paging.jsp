@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
 	<nav class="page_box" aria-label="Page navigation example">
@@ -18,7 +17,7 @@
 			<!-- 이전 페이지 버튼 -->
 			<c:if test="${ requestScope.pagination.pageNo > 1 }">
 				<li class="page-item"><a class="page-link-num" id="prevPage" href="#">&lt;</a></li>
-			</c:if>
+			</c:if> 
 			
 			<!-- 숫자 버튼 -->
 			<c:forEach var="page" begin="${ requestScope.pagination.startPage }" end="${ requestScope.pagination.endPage }" step="1">
@@ -38,28 +37,30 @@
 			<!-- 마지막 페이지로 이동 버튼 -->
 				 <li class="page-item"><a class="page-link-num" id="maxPage" href="#">&raquo;</a></li> 
         </ul>
+        <!-- 검색 -->
         <div class="search_box">
         	<ul class="df_ul">
 		        <li><img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png"></li>
-		        <li><input type="search" class="searchtext" name="searchTxt" placeholder="찾고싶은 내용 검색하기"></li>
-		        <li><button type="submit" class="searchbutton">검색하기</button></li>
+		        <li><input type="search" class="searchtext" name="searchValue" placeholder="찾고싶은 내용 검색하기" onKeyup="javascript:if(event.keyCode==13) {search_onclick_submit()}"></li>
+		        <li><button type="submit" class="searchbutton" onclick="search_onclick_submit()">검색하기</button></li>
         	</ul>
         </div>
     </nav>
     
     <script>
 	
-        let link = "";
-        if(!(document.location.href).includes("?type")) {
-        	link = document.location.pathname;
-        } else {
-        	if(${ requestScope.type == '우리동네 인기 맛집' } || (document.location.search).includes('famous')) {
-        		link = document.location.href;
-			} else if(${ requestScope.type == '신규 반찬 가게' } || (document.location.search).includes('new')) {
-				link = document.location.href;
-			}
-        }
-		let searchText = "";
+	    let link = "";
+	    if(!(document.location.href).includes("?type")) {
+	       link = document.location.pathname;
+	    } else {
+	       if(${ requestScope.type == '우리동네 인기 맛집' } || (document.location.search).includes('famous')) {
+	          link = document.location.href;
+	     } else if(${ requestScope.type == '신규 반찬 가게' } || (document.location.search).includes('new')) {
+	        link = document.location.href;
+	     }
+	    }
+	    
+	   let searchText = "";
 		
 		if(${ !empty requestScope.pagination.searchCondition? true : false }) {
 			searchText += "&searchCondition=${ requestScope.pagination.searchCondition }";
@@ -103,12 +104,36 @@
 			console.log(link);
 			location.href = link + "?currentPage=" + pageNo + searchText;
 		});
+
+		function search_onclick_submit(){
+			let searchValue = $('input[name=searchValue]').val();
+			// 현재 페이지 주소
+			if((document.location.href).includes("?searchCondition") && (document.location.href).includes("&searchValue")) {
+				location.href = document.location.pathname + "?searchCondition=${ requestScope.pagination.searchCondition }" + "&searchValue=" + searchValue;
+			} else if((document.location.href).includes("?searchCondition")){
+				location.href = document.location.href + "&searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("?searchValue") || (document.location.href).includes("&searchValue")){
+				location.href = document.location.pathname + "?searchValue=" + searchValue;
+	 		} else {
+	 			location.href = document.location.href + "?searchValue=" + searchValue;
+	 		}
+			
+		};
 		
-		 $(".searchbutton").on('click',function(){
+	  	/* $(".searchbutton").on('click',function(){
 	    	let searchValue = $('input[name=searchValue]').val();
 							// 현재 페이지 주소
-	    	location.href = "${ location.href }?searchValue=" + searchValue;
-		 }); 
+	    	if((document.location.href).includes("?searchCondition") && (document.location.href).includes("&searchValue")) {
+				location.href = document.location.pathname + "?searchCondition=${ requestScope.pagination.searchCondition }" + "&searchValue=" + searchValue;
+			} else if((document.location.href).includes("?searchCondition")){
+				location.href = document.location.href + "&searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("?searchValue") || (document.location.href).includes("&searchValue")){
+				location.href = document.location.pathname + "?searchValue=" + searchValue;
+	 		} else {
+	 			location.href = document.location.href + "?searchValue=" + searchValue;
+	 		}
+		 }); */
+ 
 		
 	</script>
 </body>
