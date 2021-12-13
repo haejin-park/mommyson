@@ -52,9 +52,13 @@
             <div class="row">
                 <c:forEach items="${ requestScope.storeList }" var="store">
                 <div class="col-3">
-                    <img class="logo" src="${ store.storeImg }">
+                    <img class="logo" src="${ pageContext.servletContext.contextPath}/${ store.storeImg }">
                     <div class="store_name" style="text-align: center; width: 200px; font-size: large;"><br>
+<<<<<<< HEAD
 		                <a href="${ pageContext.servletContext.contextPath }/user/storepage/${ store.memCode }" class="menu_name"><c:out value="${ store.storeName }"/></a>
+=======
+		                <a href="${ pageContext.servletContext.contextPath }/user/storepage?memCode=${ store.memCode }" class="menu_name"><c:out value="${ store.storeName }"/></a>
+>>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 		                <div class="menu_div2">
 		                    <pre style="font-size: 13pt; display: flex; align-items: center;"><svg style="color: #EFCA45;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
 		                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>

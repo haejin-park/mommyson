@@ -20,20 +20,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
-import com.sd.mommyson.owner.dto.ForReviewDTO;
+import com.sd.mommyson.owner.dto.DCProduct;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
+import com.sd.mommyson.user.dto.OrderDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -328,8 +333,8 @@ public class OwnerController {
 		MemberDTO owner = ownerService.selectOwner(member);
 		String storeName = owner.getCeo().getStore().getStoreName();
 		System.out.println(storeName);
-		
-		List<ForReviewDTO> reviews = ownerService.selectReview(storeName);
+		System.out.println("확인");
+		List<ReviewDTO> reviews = ownerService.selectReview(storeName);
 		System.out.println("리뷰들아 들어왔니 : " + reviews);	
 		
 		model.addAttribute("owner", owner);
@@ -449,6 +454,100 @@ public class OwnerController {
 		}
 		
 	}
+	
+	@GetMapping("order")
+	public void orderList(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+		
+		// 주문 접수 가져오기
+//		List<OrderDTO> orderList = ownerService.selectOrderList(member); 
+	}
+	
+	/* 오늘의 할인 */
+	@GetMapping("todayDiscount")
+	public void todayDiscount(Model model, @RequestParam(required = false) Map<String, String> param) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		
+		
+		int pageNo = 1;
+		
+		String currentPage = param.get("currentPage");
+		String searchValue = param.get("searchValue");
+		
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("memCode", memCode);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		int totalCount = ownerService.selectTotalDC(searchMap);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagenation = null;
+		
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
+			searchMap.put("pagenation", pagenation);
+		} else {
+			pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+			searchMap.put("pagenation", pagenation);
+		}
+		
+		List<ProductDTO> DCList = ownerService.selectDC(searchMap);
+		List<ProductDTO> productList = ownerService.selectProdouct(memCode);
+		
+		System.out.println("productList : " + productList);
+		
+		if(DCList != null && !DCList.isEmpty()) {
+			
+			model.addAttribute("DCList",DCList);
+			model.addAttribute("pagenation", pagenation);
+			
+		} else {
+			model.addAttribute("fail","등록된 할인 상품이 없습니다.");
+		}
+		
+		if(productList != null && !productList.isEmpty()) {
+			
+			model.addAttribute("productList",productList);
+			
+		} else {
+			model.addAttribute("fail","조회된 결과값이 없습니다.");
+		}
+		
+		
+	}
+	
+	
+	@PostMapping("todayDiscount")
+	public String dcProduct(@RequestParam List<Integer>sdCode, @RequestParam List<Integer>dcRate, RedirectAttributes rd) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sdCode", sdCode);
+		map.put("dcRate", dcRate);
+		
+		int insertDc = ownerService.registDc(map);
+		
+		if(insertDc > 0) {
+			rd.addFlashAttribute("success","등록에 성공하였습니다.");
+		} else {
+			rd.addFlashAttribute("fail","등록에 실패하였습니다.");
+		}
+		
+		return "redirect:todayDiscount";
+		
+	}
+	
 	
 	@GetMapping("salesDay")
 	public void salseDay(Model model) {

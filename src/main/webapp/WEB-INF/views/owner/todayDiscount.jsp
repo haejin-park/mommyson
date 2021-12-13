@@ -42,16 +42,23 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="list" items="${ productList }">
+            <c:forEach var="list" items="${ DCList }">
             <c:set var="i" value="${ i + 1 }"/>
-            <c:set var="price" value=${ list.price }/>
-            <c:set var="dcRate" value="${ list.discountRate }"/>s
+            <c:set var="price" value="${ list.price }"/>
+            <c:set var="value" value="${ pagenation.pageNo * 10}"></c:set>
+            <c:set var="dcRate" value="${ list.discountRate }"/>
+            <c:set var="dcPrice" value="${ (price * (100 - dcRate)) / 100 }"/>
             <tr>
                 <th scope="row"><input type="checkbox" name="ch1" value="${ list.sdCode }"></th>
-                <td>${ i }</td>
+                <c:if test="${ pagenation.pageNo > 1 }">
+                	<td>${ i + value }</td>
+                </c:if>
+                <c:if test="${ pagenation.pageNo <= 1 }">
+                	<td>${ i }</td>
+                </c:if>
                 <td>${ list.sdName }</td>
                 <td>${ list.discountRate }%</td>
-                <td></td>
+                <td>${ dcPrice }</td>
             </tr>
             </c:forEach>
             </tbody>
@@ -72,7 +79,7 @@
 	<!-- 모오오오달 -->
 	<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="padding-right: 544px;">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
-	    <div class="modal-dialog modal-xl" >
+	    <div class="modal-dialog modal-xl" style="text-align: center;">
 	      <div class="modal-content">
 	        <div class="modal-header">
 	          <h5 class="modal-title" id="staticBackdropLabel">할인 추가</h5>
@@ -85,34 +92,30 @@
 	                <thead style="background-color: #EDEDED;">
 	                <tr>
 	                    <th scope="col"></th>
-	                    <th scope="col">상품번호</th>
+	                    <th scope="col">번호</th>
 	                    <th scope="col">상품</th>
-	                    <th scope="col">등록일</th>
+	                    <th scope="col">제조일</th>
 	                    <th scope="col">할인율</th>
 	                </tr>
 	                </thead>
 	                <tbody>
-	            <form>
+	            	<c:forEach var="product" items="${ productList }">
+	            	<c:set var="j" value="${ j + 1 }"/>
 	                <tr>
-	                    <th scope="row"><input type="checkbox" name="ch1"></th>
-	                    <td>011</td>
-	                    <td>미역줄기 볶음</td>
-	                    <td>21-11-22</td>
+	                    <th scope="row"><input type="checkbox" name="checkCode" value="${ product.sdCode }"></th>
+	                    <td>${ j }</td>
+	                    <td>${ product.sdName }</td>
+	                    <td>${ product.mDate }</td>
 	                    <td>
-	                    <select>
-	                        <option>10%</option>
-	                        <option>15%</option>
-	                        <option>20%</option>
-	                        <option>25%</option>
-	                    </select>
+	                    	<input type="number" name="rate">
 	                    </td>
 	                </tr>
-	            </form>
+	                </c:forEach>
 	                </tbody>
 	            </table>
 	        </div>
 	        <div class="modal-footer" >
-	          <button type="button" class="btn btn-primary" id="button1" >할인 등록</button>
+	          <button type="button" class="btn btn-primary submit" id="button1">할인 등록</button>
 	          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 	        </div>
 	       </div>
@@ -121,6 +124,35 @@
 	   </div>
 	  </div>
 	 </div>
+    
+    <script>
+    	$(function() {
+	    	$(".submit").click(function(){
+	    		let arr = [];
+		    	$('input:checkbox[name=checkCode]:checked').each(function(){
+		    		let value = $(this).val();
+		    		arr.push(value);
+		    	});
+		    	
+				console.log(arr);
+				
+				let dcRate = []; 
+				$("input[name=rate]").each(function(index, item){
+					dcRate.push(item);
+				});
+				
+				console.log(dcRate);
+		    	
+		    	let form = $('<form></form>');
+		        form.attr('action', '${pageContext.servletContext.contextPath}/owner/todayDiscount');
+		        form.attr('method', 'post');
+		        form.appendTo('body');
+		        form.append($('<input type="hidden" value="' + arr + '" name=sdCode>'));
+		        form.append($('<input type="hidden" value="' + dcRate + '" name=dcRate>'));
+		        form.submit();
+	    	});
+    	});
+    </script>
     
     <!-- footer -->
   <jsp:include page="../commons/footer.jsp"/>

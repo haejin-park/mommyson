@@ -26,6 +26,8 @@ import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
@@ -626,9 +628,16 @@ public class ManagerController {
 	public void normalInquiry() {}
 	
 	/* 리뷰 신고 현황 */
+	/**
+	 * @param model
+	 * @param currentPage
+	 * @param sv
+	 * @throws JsonProcessingException
+	 * @author leeseungwoo
+	 */
 	@GetMapping("statusStoreWarning")
 	public void statusStoreWarning(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
-			, @RequestParam(value="searchValue", required = false) String sv) {
+								   , @RequestParam(value="searchValue", required = false) String sv) {
 		
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
@@ -677,15 +686,112 @@ public class ManagerController {
 		
 		System.out.println("pagination : " + pagination);
 		
-//		List<ReviewDTO> reportList = managerService.selectReportList(pagination);
-//		System.out.println("리스트 확인 : " + reportList);
-//		
-//		if(reportList != null) {
-//			model.addAttribute("pagination", pagination);
-//			model.addAttribute("normalMemberList", reportList);
-//		} else {
-//			System.out.println("조회실패");
-//		}
+		List<Map<String, Object>> reportList = managerService.selectReportList(pagination);
+		System.out.println("리스트 확인 : " + reportList);
+		
+		if(reportList != null) {
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("reportList", reportList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
+	}
+	
+	/**
+	 * 신고된 리뷰 상세조회
+	 * @param repCode
+	 * @return
+	 * @throws JsonProcessingException
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "repDetailView", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public Map<String, Object> repDetailView(@RequestParam("repCode") int repCode) throws JsonProcessingException{
+		
+		System.out.println("들어옴");
+		
+		Map<String, Object> repMap = new HashMap<>();
+		repMap.put("repCode", repCode);
+		
+		Map<String, Object> reportInfo = managerService.selectRepDetailView(repMap);
+		System.out.println("reportInfo : " + reportInfo);
+		
+		return reportInfo;
+	}
+	
+	/**
+	 * 신고된 리뷰 반려처리
+	 * @param repRvCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repCompanion{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String repCompanion(@PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Integer> repComMap = new HashMap<>();
+		repComMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateRepCompanion(repComMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
+	}
+	
+	/**
+	 * 신고된 해당리뷰 회원 경고주기
+	 * @param repMemCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repWarning/{repMemCode}/{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String warning(@PathVariable("repMemCode") int repMemCode, @PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("회원코드 : " + repMemCode);
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Integer> warMap = new HashMap<>();
+		warMap.put("repMemCode", repMemCode);
+		warMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateWarning(warMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
+	}
+	
+	/**
+	 * 신고된 리뷰 해당 회원 블랙처리
+	 * @param repMemCode
+	 * @param repRvCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repBlack/{repMemCode}/{repRvCode}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String black(@PathVariable("repMemCode") int repMemCode, @PathVariable("repRvCode") int repRvCode) {
+		
+		System.out.println("들어옴");
+		System.out.println("회원코드 : " + repMemCode);
+		System.out.println("리뷰코드 : " + repRvCode);
+		
+		Map<String, Object> blackMap = new HashMap<>();
+		blackMap.put("repMemCode", repMemCode);
+		blackMap.put("repRvCode", repRvCode);
+		
+		boolean result = managerService.updateBlack(blackMap);
+		
+		System.out.println("result : " + result);
+		
+		return result? "1" : "2";
 	}
 	
 	/* 배너설정 */
