@@ -20,16 +20,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.DCProduct;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
@@ -469,17 +473,47 @@ public class OwnerController {
 			searchMap.put("pagenation", pagenation);
 		}
 		
-		List<ProductDTO> productList = ownerService.selectDC(searchMap);
+		List<ProductDTO> DCList = ownerService.selectDC(searchMap);
+		List<ProductDTO> productList = ownerService.selectProdouct(memCode);
 		
 		System.out.println("productList : " + productList);
 		
-		if(productList != null) {
+		if(DCList != null && !DCList.isEmpty()) {
+			
+			model.addAttribute("DCList",DCList);
+			model.addAttribute("pagenation", pagenation);
+			
+		} else {
+			model.addAttribute("fail","등록된 할인 상품이 없습니다.");
+		}
+		
+		if(productList != null && !productList.isEmpty()) {
 			
 			model.addAttribute("productList",productList);
-			model.addAttribute("productList", productList);
+			
 		} else {
 			model.addAttribute("fail","조회된 결과값이 없습니다.");
 		}
+		
+		
+	}
+	
+	@PostMapping("todayDiscount")
+	public String dcProduct(@RequestParam List<Integer>sdCode, @RequestParam List<Integer>dcRate, RedirectAttributes rd) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sdCode", sdCode);
+		map.put("dcRate", dcRate);
+		
+		int insertDc = ownerService.registDc(map);
+		
+		if(insertDc > 0) {
+			rd.addFlashAttribute("success","등록에 성공하였습니다.");
+		} else {
+			rd.addFlashAttribute("fail","등록에 실패하였습니다.");
+		}
+		
+		return "redirect:todayDiscount";
 		
 	}
 	
