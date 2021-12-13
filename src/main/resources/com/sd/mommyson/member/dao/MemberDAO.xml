@@ -166,6 +166,13 @@
 	     WHERE MEM_ID = #{memId} 
 	</select>
 	
+	<!-- 이메일 중복검사 -->
+	<select id="emailChk" resultType="int">
+		SELECT COUNT(*)
+		  FROM MEMBER_TBL
+		 WHERE EMAIL = #{ email } 
+	</select>
+	
 	<!-- 지역코드 조회 -->
 	<select id="locationCode" resultType="String">
 		SELECT A.LOCATION_CODE
@@ -207,12 +214,12 @@
 		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
 	</update>
 	
-	<select id="findId2" resultType="String">
+	<select id="findIdCheck" resultType="String">
 		SELECT MEM_ID
 		  FROM MEMBER_TBL A
 		  JOIN USER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
 		 WHERE A.EMAIL = #{ email }
-		   AND B.NAME = #{ name }
+		  
 			
 	</select>
 </mapper>

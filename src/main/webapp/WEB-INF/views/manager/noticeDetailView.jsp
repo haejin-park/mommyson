@@ -1,105 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항 상세보기</title>
-    <link rel="stylesheet" href="../../../resources/css/colorset.css">
-    <link rel="stylesheet" href="../../../resources/css/mypage-sidebar.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../../resources/css/manager.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </head>
 <body>
     <header class="manager_header at-container">
-        <img src="../../../resources/images/managerLogo.png" alt="마미손맛 MANAGEMENT">
+        <img src="${ pageContext.servletContext.contextPath }/resources/images/managerLogo.png" alt="마미손맛 MANAGEMENT">
         <a href="../main.html" class="home_btn">
-            <img src="../../../resources/images/mainHome.png" alt="메인화면으로">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/mainHome.png" alt="메인화면으로">
             <p>메인화면으로</p>
         </a>
     </header>
     <div class="head_line"></div>
     <div class="at-container total_container">
-        <div class="side-2 side_menu">
-            <nav id="sidebar">
-                <ul class="list-unstyled components sidebar_list">
-                    <li class="active">
-                        <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회원관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu1">
-                            <li>
-                                <a href="normalMember.html">일반 회원 조회</a>
-                            </li>
-                            <li>
-                                <a href="buisnessMember.html">사업자 회원 조회</a>
-                            </li>
-                            <li>
-                                <a href="blackMember.html">블랙 회원 조회</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">게시글 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu2">
-                            <li>
-                                <a href="#">공지사항</a>
-                            </li>
-                            <li>
-                                <a href="#">자주하는 질문</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">1:1 문의</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu3">
-                            <li>
-                                <a href="#">사업자</a>
-                            </li>
-                            <li>
-                                <a href="#">소비자</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu4" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">신고 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu4">
-                            <li>
-                                <a href="#">가게 신고 현황</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu5" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">설정 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu5">
-                            <li>
-                                <a href="bannerManage.html">배너 설정</a>
-                            </li>
-                            <li>
-                                <a href="tagManage.html">태그 설정</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu6" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">관리자 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu6">
-                            <li>
-                                <a href="#">관리자 조회</a>
-                            </li>
-                            <li>
-                                <a href="#">관리자 아이디 생성</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        
+        <jsp:include page="../commons/managerSidebar.jsp"/>
+        
         <div class="board_container">
-            <h2>공지사항</h2>
-            <form action="">
+             <h2 style="display: inline-block; width: 91.6%;">공지사항</h2>
+            <a href="javascript:history.go(-1)" class="btn prev_btn" style="border-bottom: 1px solid black; margin-top:16px; margin-left: -1%; border-radius: 0 !important">&lt; 뒤로가기</a>
+            <form action="${ pageContext.servletContext.contextPath }/manager/noticeSelectDelete" method="get">
                 <table class="table bd_write_header bd_detail_view">
                     <colgroup>
                         <col width="10%"/>
@@ -110,33 +33,101 @@
                     <thead>
                         <tr style="border-bottom: 1px solid #B1B1B1;">
                             <th>제목</th>
-                            <td colspan="3">[공지]근무자 코로나19 확진 관련 안내 </td>
+                            <td colspan="2">[공지]${ selectNotice.postTitle } </td>
+                            <c:if test="${ selectNotice.status eq 'N' }">
+                            <td class="btntd"><a id="postUp" class="btn up_btn">공지 등록</a></td>
+                            </c:if>
+                            <c:if test="${ selectNotice.status eq 'U' }">
+                            <td class="btntd"><a id="postDown" class="btn down_btn">공지 해제</a></td>
+                            </c:if>
                         </tr>
                         <tr>
                             <th>작성일</th>
-                            <td>2021-11-23</td>
+                            <td>${ selectNotice.postDate }</td>
                             <th>조회수</th>
-                            <td>123</td>
+                            <td>${ selectNotice.viewCnt }</td>
                         </tr>
                     </thead>
                 </table>
                 <div class="text_area">
-                    텍스트
+                    ${ selectNotice.postContent }
                 </div>
-                <div class="btn_box">
-                    <input type="submit" value="수정하기" class="btn write_btn" style="background-color: #F89E91;">
-                    <a href="noticeSelect.html" class="btn prev_btn">이전</a>
+                <input type="hidden" name="postNo" id="postNo" value="${ selectNotice.postNo }">
+                <div class="btn_box2">
+                   
+                    <a href="${ pageContext.servletContext.contextPath }/manager/noticeRevise?postNo=${ selectNotice.postNo }" class="btn write_btn">수정하기</a>
+                    <input type="button" id="delNotice" name="delNotice" value="삭제하기" class="btn prev_btn">
                 </div>
             </form>
             
         </div>
     </div>
-    <!-- <div class="line"></div> -->
-    <jsp:include page="../commons/footer.jsp"></jsp:include>
+   
+    <jsp:include page="../commons/footer.jsp"/>
 
     <script>
-         $("#homeSubmenu2").addClass("show");
-         $("#homeSubmenu2 > li:first-child > a").attr("style","color: #F89E91 !important");
-     </script>
+    $('#delNotice').on('click',function(){
+		
+    	if(confirm("선택한 게시글을 삭제하시겠습니까?") == false){
+    		return false;
+    	}
+		
+		var postNo = $("#postNo").val();
+	
+		$.ajax({
+			url: '${ pageContext.servletContext.contextPath }/manager/noticeSelectDelete/' + postNo,
+			type: 'GET',
+			success: function(data){
+				alert(data);
+				location.href="${ pageContext.servletContext.contextPath }/manager/noticeSelect";
+			},
+			error: function(data){
+				alert(data);
+			}
+		});		
+	});
+    
+    $('#postUp').on('click',function(){
+		
+    	if(confirm("해당 게시글을 상단 고정하시겠습니까?") == false){
+    		return false;
+    	}
+		
+		var postNo = $("#postNo").val();
+	
+		$.ajax({
+			url: '${ pageContext.servletContext.contextPath }/manager/noticeUp/' + postNo,
+			type: 'GET',
+			success: function(data){
+				alert(data);
+				location.href="${ pageContext.servletContext.contextPath }/manager/noticeSelect";
+			},
+			error: function(data){
+				alert(data);
+			}
+		});		
+	});
+    
+	$('#postDown').on('click',function(){
+			
+	    	if(confirm("해당 게시글을 고정 해제하시겠습니까?") == false){
+	    		return false;
+	    	}
+			
+			var postNo = $("#postNo").val();
+		
+			$.ajax({
+				url: '${ pageContext.servletContext.contextPath }/manager/noticeDown/' + postNo,
+				type: 'GET',
+				success: function(data){
+					alert(data);
+					location.href="${ pageContext.servletContext.contextPath }/manager/noticeSelect";
+				},
+				error: function(data){
+					alert(data);
+				}
+			});		
+		});
+    </script>
 </body>
 </html>

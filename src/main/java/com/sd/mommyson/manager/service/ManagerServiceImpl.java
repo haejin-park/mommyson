@@ -1,5 +1,7 @@
 package com.sd.mommyson.manager.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,10 +91,6 @@ public class ManagerServiceImpl implements ManagerService {
       return managerDAO.selectNoticeTotalCount(searchMap);
    }
 
-   @Override
-   public List<PostDTO> selectNoticeList(Pagination pagination) {
-      return managerDAO.selectNoticeList(pagination);
-   }
 
    @Override
    public int idDupCheck(String memId) {
@@ -116,16 +114,169 @@ public class ManagerServiceImpl implements ManagerService {
    }
 
    @Override
-   public List<MemberDTO> selectSearchMemberList(String searchMember) {
-      
-      List<MemberDTO> searchMemberList = managerDAO.selectSearchMemberList(searchMember);
-      
-      return searchMemberList;
-   }
-
-   @Override
    public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
       return managerDAO.selectNormalMemberTotalCount(searchMap);
    }
+
+	/**
+	 * 블랙해지
+	 */
+	@Override
+	public boolean terminateBlack(List<Integer> blackMember) {
+		
+		int result = managerDAO.terminateBlack(blackMember);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 신고된 리뷰 총 갯수
+	 */
+	@Override
+	public int selectReportTotalCount(Map<String, Object> searchMap) {
+		
+		return managerDAO.selectReportTotalCount(searchMap);
+	}
+
+	@Override
+	public List<MemberDTO> selectSearchMemberList(String searchMember) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 신고된 리뷰 조회
+	 */
+//	@Override
+//	public List<ReviewDTO> selectReportList(Pagination pagination) {
+//		
+//		List<ReviewDTO> selectReportList = managerDAO.selectReportList(pagination);
+//		
+//		return selectReportList;
+//	}
+
+	@Override
+	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
+		
+		MemberDTO ceoDetailInfos = managerDAO.selectCeoDetailInfo(ceoDetailInfo);
+		
+		return ceoDetailInfos;
+	}
+
+
+   /**
+    * 공지사항 리스트 조회
+    * @author junheekim
+    */
+   @Override
+   public List<PostDTO> selectNoticeList(Pagination pagination) {
+      return managerDAO.selectNoticeList(pagination);
+   }
    
+	/**
+	 * 공지사항 작성
+	 * @author junheekim
+	 */
+	@Override
+	public int postWriting(Map<String, Object> map) {
+
+		int result = managerDAO.postWriting(map);
+		
+		return result;
+	}
+
+	/**
+	 * 공지사항 게시글 조회
+	 * @author junheekim
+	 */
+	@Override
+	public PostDTO selectNotice(int postNo) {
+		
+		PostDTO selectNotice = managerDAO.selectNotice(postNo);
+		
+		return selectNotice;
+	}
+
+	
+	/**
+	 * 공지사항 게시글 조회수
+	 * @author junheekim
+	 */
+	@Override
+	public boolean selectNoticeCnt(int postNo) {
+		
+		return managerDAO.selectNoticeCnt(postNo);
+	}
+
+	/**
+	 * 공지사항 게시글 수정
+	 * @author junheekim
+	 */
+	@Override
+	public int postRevise(Map<String, Object> map) {
+		
+		int result = managerDAO.noticeRevise(map);
+		
+		return result;
+	}
+
+	/**
+	 * 공지사항 게시글 삭제(선택박스)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean deleteNotice(List<Integer> addNoticeDeleteList) {
+		
+		int result = managerDAO.deleteNotice(addNoticeDeleteList);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 게시글 삭제
+	 * @author junheekim
+	 */
+	@Override
+	public boolean deleteSelectNotice(int postNo) {
+		
+		int result = managerDAO.deleteSelectNotice(postNo);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 게시글 상단 고정(up)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean noticeUp(int postNo) {
+		
+		int result = managerDAO.noticeUp(postNo);
+		
+		return result > 0? true : false;
+	}
+
+	/**
+	 * 공지사항 상단 고정 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectNoticeUpList() {
+		
+		return managerDAO.selectNoticeUpList();
+	}
+
+	/**
+	 * 공지사항 게시글 상단 고정 해제(down)
+	 * @author junheekim
+	 */
+	@Override
+	public boolean noticeDown(int postNo) {
+		
+		int result = managerDAO.noticeDown(postNo);
+		
+		return result > 0? true : false;
+	}
+
+
 }

@@ -8,6 +8,7 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerDAO {
 
@@ -37,8 +38,32 @@ public interface ManagerDAO {
 
 	int memberAddBlack(List<Integer> memberAddBlackList);
 
-	List<MemberDTO> selectSearchMemberList(String searchMember);
-
 	int selectNormalMemberTotalCount(Map<String, Object> searchMap);
+
+	int postWriting(Map<String, Object> map);
+
+	PostDTO selectNotice(int postNo);
+
+	boolean selectNoticeCnt(int postNo);
+
+	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
+
+	int terminateBlack(List<Integer> blackMember);
+
+	int selectReportTotalCount(Map<String, Object> searchMap);
+
+	int noticeRevise(Map<String, Object> map);
+
+	int deleteNotice(List<Integer> addNoticeDeleteList);
+
+	int deleteSelectNotice(int postNo);
+
+	int noticeUp(int postNo);
+
+	List<PostDTO> selectNoticeUpList();
+
+	int noticeDown(int postNo);
+
+//	List<ReviewDTO> selectReportList(Pagination pagination);
 
 }
