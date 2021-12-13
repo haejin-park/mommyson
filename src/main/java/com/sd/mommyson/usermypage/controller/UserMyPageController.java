@@ -284,6 +284,8 @@ public class UserMyPageController {
 		}
 		
 		System.out.println("selectCriteria : " + selectCriteria);
+
+		
 		
 		return "user_mypage/userRecommendStore";
 	}
