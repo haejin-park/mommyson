@@ -86,7 +86,7 @@ public class UserController {
 	}
 	
 	/**@author 양윤제
-	 * @category 공지사항 출력
+	 * @category 공지사항 게시글 목룍 출력
 	 */
 	@GetMapping("ucc/uccNoticeSelect")
 	public String userCustomerServiceCenterNoticeSelect(HttpSession session, Model mv, @RequestParam(required = false) Map<String, String> parameters) {
@@ -158,16 +158,27 @@ public class UserController {
 	}
 	
 	/**@author 양윤제
-	 * @category 공지사항 내용 출력
+	 * @category 공지사항 게시글 내용 출력
 	 */
 	@GetMapping("ucc/uccNoticeDetail")
-	public String userCustomerServiceCenterNoticeDetail(HttpSession session) {
+	public String userCustomerServiceCenterNoticeDetail(HttpSession session,  Model mv, @RequestParam("postNo") String postInfo) {
 		
 		System.out.println("공지사항 내용 출력 콘트롤러 진입");
-		int postNo; 
-
-//		List<PostDTO> noticeList = userService.selectNotice();
+		int postNo = Integer.parseInt(postInfo);
 		
+		/*조회수 수정*/
+		int result = userService.updateincrementNoticeBoardCount(postNo);
+		if( result > 0) {
+			System.out.println("조회수 증가 성공");
+		} else {
+			System.out.println("조회수 증가 실패");
+		}
+
+		List<PostDTO> noticeContentList = userService.selectNoticeContents(postNo);
+		
+		System.out.println("공지사항 내용출력 " + noticeContentList);
+		
+		mv.addAttribute("noticeContentList",noticeContentList);
 		
 		return "user/userCustomerServiceCenterNoticeDetail";
 	}

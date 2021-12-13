@@ -26,4 +26,8 @@ public interface UserDAO {
 
 	int selectFqaTotalCount(Map<String, String> searchMap);
 
+	List<PostDTO> selectNoticeContents(int postNo);
+
+	int updateincrementNoticeBoardCount(int postNo);
+
 }
