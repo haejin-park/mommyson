@@ -28,6 +28,20 @@
     	<result property="rvCount" column="COUNT"/>
     </resultMap>
     
+    <resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
+    	<id property="rvCode" column="RV_CODE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderCode" column="ORDER_CODE"/>
+    	<result property="img" column="RV_IMG"/>
+    	<result property="content" column="RV_CONTENT"/>
+    	<result property="grade" column="RV_GRADE"/>
+    	<result property="memId" column="MEM_ID"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<collection property="orderList" ofType="java.lang.String" javaType="list">
+    		<result column="SD_NAME"/>
+    	</collection>
+    </resultMap>
+    
     <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
@@ -108,11 +122,34 @@
     	<result property="memCode" column="MEM_CODE"/>
     	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
     	<result property="eDate" column="EXPIRY_DATE"/>
-    	<result property="categoryCode" column="IS_DELETED"/>
-    	<result property="storageMethod" column="CATEGORY_CODE"/>
-    	<result property="detail" column="STORAGE_METHOD"/>
-    	<result property="isDeleted" column="SD_DETAIL"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
     	<result property="storeName" column="STORE_NAME"/>
+    </resultMap>
+    
+    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productTagResultMap">
+    	<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<result property="storeName" column="STORE_NAME"/>
+    	<collection property="tagList" ofType="java.lang.String" javaType="list">
+    		<result column="TAG"/>
+    	</collection>
     </resultMap>
 
     <!-- 공지사항 페이지네이션 페이지수  -->
@@ -350,4 +387,137 @@
 	  WHERE C.RNUM >= #{ startRow } 
        ]]>
     </select>
+    
+    <select id="selectStoreMyMemCode" resultType="hashmap">
+    	SELECT
+    		   A.MEM_CODE
+    		 , A.PHONE 
+    		 , B.STORE_IMG
+    		 , B.STORE_NAME
+    		 , B.GRADE
+    		 , (SELECT COUNT(*) FROM JJIM_TBL C WHERE C.MEM_CODE = #{ memCode }) AS JJIM
+    	  FROM MEMBER_TBL A
+    	  LEFT JOIN STORE_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+    	 WHERE A.MEM_CODE = #{ memCode }
+    </select>
+    
+    <select id="selectReviewList" resultMap="reviewResultMap">
+    	SELECT
+		       C.RNUM
+		     , C.MEM_CODE
+             , C.RV_IMG
+             , C.RV_CONTENT
+             , C.RV_GRADE 
+             , C.RV_CODE 
+             , C.MEM_ID 
+             , C.SD_NAME 
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , B.MEM_CODE
+	                , B.RV_IMG
+	                , B.RV_CONTENT
+	                , B.RV_GRADE 
+                    , B.RV_CODE 
+                    , B.MEM_ID 
+                    , B.SD_NAME 
+	            FROM (SELECT
+	                         A.MEM_CODE
+	                       , A.RV_IMG
+	                       , A.RV_CONTENT
+	                       , A.RV_GRADE
+	                       , A.RV_CODE
+	                       , A.MEM_ID 
+	                       , P.SD_NAME
+	                    FROM REVIEW_TBL A
+	                    LEFT JOIN ORDER_INFO_TBL O ON(A.ORDER_CODE = O.ORDER_CODE)
+						JOIN PRODUCT_TBL P ON(O.SD_CODE = P.SD_CODE)
+	                    <where>
+	                    	A.IS_DELETED = 'N'
+	                    	<if test="searchCondition != null ">
+		                    AND P.MEM_CODE = #{ searchCondition }
+		                    </if>
+			   	        </where>
+	                    )B
+	          <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)C
+	   <![CDATA[
+	  WHERE C.RNUM >= #{ startRow } 
+       ]]>
+    </select>
+    
+    <select id="selectReviewTotalCount" parameterType="hashmap" resultType="_int">
+    	SELECT
+			   COUNT(*)
+		  FROM REVIEW_TBL A
+		  JOIN ORDER_INFO_TBL B ON(A.ORDER_CODE = B.ORDER_CODE)
+		  JOIN PRODUCT_TBL C ON(B.SD_CODE = C.SD_CODE)
+		 WHERE A.IS_DELETED = 'N'
+		 <if test="memCode != null">
+		   AND C.MEM_CODE = #{ memCode }
+		 </if>
+    </select>
+    
+    <select id="selectProducts" resultMap="productResultMap">
+    	SELECT
+    		   A.SD_CODE
+    		 , A.SD_IMG
+    		 , A.SD_NAME
+    		 , A.SD_DETAIL
+    		 , A.DISCOUNT_RATE
+    		 , A.PRICE
+    		 , A.ORDERABLE_STATUS
+    	  FROM PRODUCT_TBL A
+    	 WHERE A.IS_DELETED = 'N'
+    	   AND A.MEM_CODE = #{ memCode }
+    </select>
+    
+    <select id="selectProductBySdCode" resultMap="productTagResultMap">
+    	SELECT
+    		   A.SD_CODE
+    		 , A.SD_IMG
+    		 , A.M_DATE
+    		 , A.EXPIRY_DATE
+    		 , A.VOLUME
+    		 , A.DISCOUNT_RATE
+    		 , A.CATEGORY
+    		 , A.STORAGE_METHOD
+    		 , A.INGREDIENT
+    		 , A.SD_NAME
+    		 , A.SD_DETAIL
+    		 , A.DISCOUNT_RATE
+    		 , A.PRICE
+    		 , A.ORDERABLE_STATUS
+    		 , C.TAG
+    	  FROM PRODUCT_TBL A
+    	  LEFT JOIN PRODUCT_TAG_TBL B ON(A.SD_CODE = B.SD_CODE)
+    	  JOIN TAGS_TBL C ON(B.TAG_NO = C.TAG_NO)
+    	 WHERE A.IS_DELETED = 'N'
+    	   AND A.SD_CODE = #{ sdCode }
+    </select>
+    
+    <insert id="insertShoppingBasket">
+    	INSERT
+    	INTO CART_TBL
+    	VALUES
+    	(
+    	  #{ memCode }
+    	, #{ sdCode }
+    	, #{ amount }
+    	, SEQ_CART.NEXTVAL
+    	)
+    </insert>
+    
+    <insert id="insertReport">
+    	INSERT
+    	INTO REPORT_TBL
+    	VALUES
+    	(
+    	  #{ rvCode }
+    	, #{ reportType }
+    	, SEQ_PREPORT.NEXTVAL
+    	, SYSDATE
+    	, DEFAULT
+    	)
+    </insert>
     </mapper>
