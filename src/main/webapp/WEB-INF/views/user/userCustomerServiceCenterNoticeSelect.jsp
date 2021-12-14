@@ -47,13 +47,15 @@
                       </tr>
                   </thead>
                   <tbody>
+                  	<c:forEach var="important" items="${ requestScope.importantNotice }">
                       <tr class="important_notice"> 
-                          <td>공지</td>
+                          <td><c:out value="${ important.postNo }"/></td>
                           <br>
-                          <td class="tal">[소비자] 신규 회원 가입 이벤트 당첨자 발표</td>
-                          <td>2021-11-01</td>
-                          <td>123</td>
+                          <td class="tal"><c:out value="${ important.postTitle }"/></td>
+                          <td><c:out value="${ important.postDate }"/> </td>
+                          <td><c:out value="${ important.viewCnt }"/> </td>
                       </tr>
+                  	</c:forEach>	
                       <c:forEach var="noticeBoard" items="${ requestScope.noticeList }">
                       <tr>
                           <td><c:out value="${ noticeBoard.postNo }"/></td>

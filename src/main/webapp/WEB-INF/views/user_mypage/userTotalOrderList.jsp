@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>       
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,23 +42,48 @@
                   <th id="tablecol5" scope="col">수량</th>        
                   <th id="tablecol6" scope="col">수령일자</th>        
                   <th id="tablecol7" scope="col">구매금액</th>      
-                  <th id="tablecol8" scope="col"></th><!-- 리뷰쓰기 버튼// 접수상테(배달이완료되고 나서 뜨도록) -->     
+                  <th id="tablecol8" scope="col">상태</th><!-- 리뷰쓰기 버튼// 접수상테(배달이완료되고 나서 뜨도록) -->     
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td style="padding-top: 40px;"><input type="checkbox" name="choose" style="width: 20px; height: 20px;"></td>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/1 2.png"></td>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/8 (1).png"></td>
-                  <td style="padding-top: 40px;">새 물고기 구이</td>
-                  <td style="padding-top: 40px;">10000원</td>
-                  <td style="padding-top: 40px;"><p id="ea">1</p></td><!--추후 수량 표시-->
-                  <td style="padding-top: 40px;">2021-11-24</td>
-                  <td style="padding-top: 40px;">9000원</td>
-                  <!-- <td style="padding-top: 40px;"><button class="urBtn">리뷰쓰기</button></td> -->
-                  <td style="padding-top: 40px;"></td>
+              <c:forEach var="myOrder"  items="${ requestScope.myOrderList }">
+                  <td style="padding-top: 40px;">
+                  	<c:if test="${ myOrder.orderAcceptTime eq null }">
+             	     <input type="checkbox" name="choose" style="width: 20px; height: 20px;">
+           		    </c:if>
+             	     <input type="hidden" name="orderCode" value="${ myOrder.orderCode }">
+             	     <c:out value="${ myOrder.orderCode }"/>
+                  </td>
+                  <td rowspan="i"><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${myOrder.orderInfo[0].sdInfo.storeInfo.storeImg}"></td>
+	         	  <td colspan="4" style="padding-top: 40px; padding-left: 0px; padding-right: 0px;">
+	         	      <ul style="list-style: none">
+                  <c:forEach var="productInfo" items="${ myOrder.orderInfo }">
+	         	      <c:set var="i" value="${ i+1 }"/>
+	         	      	<li style="display: flex;">	         	      	
+	         	      	<img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ productInfo.sdInfo.sdImg }">
+	         	      	<p style="width: 220px"><c:out value="${ productInfo.sdInfo.sdName }"/></p>
+	         	      	<p style="width: 100px"><c:out value="${ productInfo.sdInfo.price }"/></p>
+	         	      	<p style="width: 100px"><c:out value="${ productInfo.amount }"/></p>
+	         	      	</li>
+	         	      <br>
+                  </c:forEach>
+	         	      </ul>
+	         	  </td>
+	         	  
+	         	  
+                  <td rowspan="i" style="padding-top: 40px;"><c:out value="${ myOrder.orderCompleteTime }"/></td>
+                  
+                 
+                  <td rowspan="i" style="padding-top: 40px;"><c:out value="${ myOrder.totalPrice }"/></td>
+                  <td rowspan="i" style="padding-top: 40px;">
+                  <c:if test="${ myOrder.orderCompleteTime ne null || myOrder.takeTime ne null }">
+                  <button class="urBtn">리뷰쓰기</button>                             
+                  </c:if>
+                  </td>
+                  <!-- <td style="padding-top: 40px;"></td> -->
                   <!-- 주문접수가 완료 되면 위의 리뷰쓰기 버튼이 뜨도록 만든다 동시에  주문이 접수되면 체크박스가 비활성화 되도록 만든다.(주문취소버튼이 의미없도록)  -->
                 </tr>
+              </c:forEach>
                 
               </tbody>
             </table>
@@ -68,27 +94,14 @@
                 <!-- 페이징 -->
                 <nav class="page_box" aria-label="Page navigation example">
                   <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
+                    <jsp:include page="../commons/userMyPagePagination.jsp"/>
                   </ul>
                   <ul>
                       <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                      <form action="" method="get">
+                      <form action="${ pageContext.servletContext.contextPath }/userMyPage/myOrderList" method="get">
                       <input type="hidden" name="currentPage" value="1">
-                      <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요." name="searchProduct"></li>
-                      <button type="submit" class="searchbutton">검색하기</button></li>
+                      <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요." name="searchValue">
+                      <button type="submit" class="searchbutton">검색하기</button>
                       </form>
                    </ul>
                 </nav>

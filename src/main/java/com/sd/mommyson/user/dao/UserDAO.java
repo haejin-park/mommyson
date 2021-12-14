@@ -47,4 +47,6 @@ public interface UserDAO {
 
 	int insertReport(Map<String, Integer> reportInfo);
 
+	List<ProductDTO> selectImportantNotice();
+
 }

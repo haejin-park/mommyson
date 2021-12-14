@@ -241,6 +241,24 @@
          WHERE A.POST_NO = #{ postNo }
 	</update>
 	
+	<!-- 중요공지사항 출력 -->
+	<select id="selectImportantNotice" resultMap="postResultMap">
+	SELECT 
+		   A.POST_NO
+		 , A.BOARD_CODE
+		 , A.POST_TITLE
+		 , A.MEM_CODE
+		 , A.POST_CONTENT
+		 , A.POST_DATE
+		 , A.ANS_STATUS
+		 , A.QUE_NO
+		 , A.STATUS
+		 , A.VIEW_CNT
+	  FROM POST_TBL A
+	  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+	 WHERE A.STATUS LIKE 'U'
+	</select>
+	
 	<!-- 자주하는 질문 -->
 	<select id="selectFqaList" resultMap="postResultMap">
     	SELECT

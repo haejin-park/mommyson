@@ -136,9 +136,29 @@
     	<result property="sdCode" column="SD_CODE"/>
     	<result property="amount" column="AMONT"/>
     	<result property="orderCode" column="ORDER_CODE"/>
+    	<association property="sdInfo" resultMap="productResultMap"/>
+    </resultMap>
+    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+    	<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<association property="storeInfo" resultMap="storeResultMap"/>
     </resultMap>
     
-
+ 
     <!-- 나의 주문내역 총 갯수 확인 -->
     <select id="selectMyOrderNum" resultType="_int" parameterType="hashmap">
 	SELECT
@@ -168,6 +188,11 @@
 			  ,	A.ORDER_ACCEPT_TIME
 			  ,	A.ORDER_RUQEUST_TIME
 			  , A.SD_CODE
+			  , A.AMONT
+			  ,	A.SD_NAME
+			  , A.SD_IMG
+			  , A.PRICE
+			  , A.STORE_IMG
 		   FROM	(SELECT ROWNUM RNUM
 					  ,	B.MEM_CODE
 					  , B.TOTAL_PRICE
@@ -183,6 +208,11 @@
 					  ,	B.ORDER_ACCEPT_TIME
 					  ,	B.ORDER_RUQEUST_TIME
 					  , B.SD_CODE
+					  , B.AMONT
+					  ,	B.SD_NAME
+					  , B.SD_IMG
+					  , B.PRICE
+					  , B.STORE_IMG
 				   FROM (SELECT C.MEM_CODE
 							  , C.TOTAL_PRICE
 							  ,	C.ORDER_CODE
@@ -197,12 +227,19 @@
 							  ,	C.ORDER_ACCEPT_TIME
 							  ,	C.ORDER_RUQEUST_TIME
 							  , D.SD_CODE
+							  , D.AMONT
+							  ,	E.SD_NAME
+							  , E.SD_IMG
+							  , E.PRICE
+							  , F.STORE_IMG
 						   FROM ORDER_TBL C
 						   JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE=C.ORDER_CODE)
+						   JOIN PRODUCT_TBL E ON(E.SD_CODE = D.SD_CODE)
+						   JOIN STORE_TBL F ON(F.MEM_CODE=E.MEM_CODE)
 						   <where>
 						   		C.MEM_CODE = #{ searchCondition }
 						   		<if test="searchValue != null">
-						   		C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+						   		AND F.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 						   		</if>
 						   </where>
 						   ORDER BY C.ORDER_RUQEUST_TIME DESC
