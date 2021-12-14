@@ -16,23 +16,23 @@ public interface MemberService  {
 
 	public List<HashMap<String, String>> selectCategoryList();
 
-	/*  아이디 중복 검사 */
+	/* 아이디 중복 검사 */
 	public int idChk(String memId);
 
 	/* 이메일 중복 검사 */
 	public int emailChk(String email); 
 	
-	
 	/* 회원가입시 지역코드 조회 */
 	public String locationCode(String locationName);
-	
 	
 	/* 사용자 회원가입 */
 	public void customerJoin(MemberDTO member) throws Exception;
 
-
 	/* 아이디 찾기 */
-	public String findIdCheck(MemberDTO dto);
+	public String findIdCheck(MemberDTO mdto);
+
+	/* 비밀번호 찾기 */
+	public String findPwdCheck(MemberDTO mdto);
 
 
 	

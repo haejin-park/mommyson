@@ -63,12 +63,12 @@
             <br>
            	<span id = "emailCheckResult"></span>
             <br>
-            <input type="number" class="code" name="code" id="code" placeholder=" 인증번호(이메일 수신 확인 후 입력)" value="N"
+            <input type="number" class="code" name="code" id="code" placeholder=" 인증번호(이메일 전송 버튼 클릭 후 수신된 인증번호 입력)" value="N"
             style=" height:40px;width:440px;border-radius: 9px;">
             <br>
             <span id="codeCheckResult"></span>
             <br>
-            <input type="text" class="input1" name="postCode" id="zipCode" placeholder=" 우편번호" readonly
+            <input type="text" class="input1" name="postCode" id="zipCode" placeholder=" 우편번호(검색버튼을 눌러 주소 검색 후 클릭)" readonly
              style=" height:40px;width:440px;border-radius: 9px;">
             <input type="button" id="searchZipCode" value="검색">
             <br><br>
@@ -153,7 +153,7 @@
     <jsp:include page="../commons/footer.jsp"/>
     <script> 
      
-     /* =========================== 회원가입 정규식 ========================== */
+     /*  회원가입 정규식 */
         function validate(){
             var id = document.getElementById("id");
             var pwd1 = document.getElementById("pwd1");
@@ -235,7 +235,7 @@
  
             var codeCheckResult = $("#codeCheckResult");
             if(code.value == ""){
-            	codeCheckResult.html("이메일 전송 버튼을 눌러 이메일에 발송된 인증 번호를 입력해주세요.");
+            	codeCheckResult.html("이메일 전송 버튼을 클릭하여 수신된 인증 번호를 입력해주세요.");
             	codeCheckResult.attr("class", "incorrect");
                 code.focus();
                 return false;
@@ -472,8 +472,7 @@
 		 		} else {
 		 			
 		 			if(result != null){
-		 				emailCheckResult.html("이메일 형식이 올바릅니다.");
-		 				emailCheckResult.attr("class", "correct");
+		 				emailCheckResult.html("");
 		 				return true;
 		 				
 		 			} else {

@@ -3,8 +3,6 @@ package com.sd.mommyson.member.dao;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
@@ -39,7 +37,10 @@ public interface MemberDAO {
 	public void customerJoin(MemberDTO member) ;
 
 	/* 아이디 찾기 */
-	public String findIdCheck(MemberDTO dto);
+	public String findIdCheck(MemberDTO mdto);
+	
+	/* 비밀번호 찾기 */
+	public String findPwdCheck(MemberDTO mdto);
 
 	
 

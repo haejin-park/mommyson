@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css"href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"crossorigin="anonymous"></script>
-	
+
 </head>
 <body>
 	<div class="center">
@@ -24,83 +24,112 @@
 		<img class="logo"
 			src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
 		<br>
-	
-			<input type="text" class="name" id="name" name="name" placeholder=" 이름을 입력해주세요" style="border-radius: 9px;"> <br>
-			<br> <input type="email" class="email" id="email" name="email" placeholder=" 이메일을 입력해주세요"> <br>
-			<br>
+			<input type="text" class="name" id="name" name="name" placeholder=" 이름(한글 2글자 이상)" style="border-radius: 9px;"> 
+			<br><br>
+			
+		 	<input type="email" class="email" id="email" name="email" placeholder=" 이메일(@를 포함)"> 
+			<br><br>
 
-			<!-- 아이디 찾기 누르면 알럿이나 모달창으로 아이디 띄워주고 로그인 페이지로 이동 -->
-			<button type="submit" class="btn btn-primary" data-toggle="modal"
-				data-target="#exampleModal" id="findIdButton" 
-				onclick="findIdButton1()"
+	 		<button type="submit" class="btn btn-primary"  id="findIdButton" onclick="findIdButton1()"
 				style="width: 100px; height: 40px; border-radius: 9px; 
-				background-color: rgb(247, 170, 145); color: black; border: 2px solid black;">아이디찾기</button>
+				background-color: rgb(247, 170, 145); color: black; border: 2px solid black;">아이디찾기</button> 
 			&nbsp; &nbsp; &nbsp; &nbsp;
 			<button type="reset" class="goLogin" id="goLogin"
-				style="border-radius: 9px; background-color: rgb(247, 170, 145);">취소</button>
-
-			<!-- 아이디 찾기 모달 -->
-			<div class="modal fade" id="exampleModal" tabindex="-1"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">아이디 찾기</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body" style="text-align: center;">
-							<p id="id"></p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" id="ok">확인</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		<br>
+				style="border-radius: 9px; background-color: rgb(247, 170, 145);">로그인</button>
 	</div>
-	<jsp:include page="../commons/footer.jsp" />
 	<script>
-        
+		/* 이름 입력 여부 확인 & 정규식 확인 */
+		$("#name").blur(function(){
+			var inputName = $("#name").val();
+			var regex = /^[가-힣]{2,}$/;
+			var result = regex.exec(inputName);
+			var nameCheckResult = $("#nameCheckResult");
+				
+			if(inputName == ""){
+				alert("이름을 입력해주세요.");
+				return false;
 
-  		/* 아이디 찾기 모달창 */
-		$('#findIdButton').click(function(){
-			$('#exampleModal').modal('show');
+			} else {
+				if(result != null) {
+					return true;
+					
+				} else {
+					alert("이름 형식이 올바르지 않습니다. 이름은 한글로 2글자 이상 입력해주세요. ");
+						return false;
+				} 
+			}				
 		});
 		
-	  	$('#ok').click(function(){
-			$('#exampleModal').modal('hide');
+		/* 이메일 입력 여부 확인 & 정규식 확인 */
+		$("#email").blur(function(){
+			var inputEmail = $("#email").val();
+			var regex = /.+@[a-z]+(\.[a-z]+){1,2}$/;
+			var result = regex.exec(inputEmail);
+			var emailCheckResult = $("emailCheckResult");
+			
+			if(inputEmail == ""){
+				alert("이메일을 입력해주세요.");
+				return false;
+				
+			} else {
+				
+				if(result != null) {
+					return true;
+					
+				} else {
+					alert("이메일 형식이 올바르지않습니다. @를 포함하여 올바른 형식으로 작성해주세요.");
+	 				return false;
+				}
+			}
+			
 		});
-	
-
-	  /* 아이디 찾기 */
-       
+		
+		
+	  
+	  	
+	  /* 아이디 찾기 버튼 클릭 */
+	  /* 이름이나 이메일을 입력하지 않고 아이디찾기를 누르면 회원정보를 입력해주세요 라는 알럿이 나오게 한다.  */	
+	  /* 이름과 이메일이 회원정보와 일치하지 않은 상태에서 아이디찾기를 누르면 "회원정보를 다시 확인해주세요." 라는 알럿이 나오게 한다.  */	
+	   
     	function findIdButton1(){
     		 var name = $('#name').val();        	
        		 var email = $('#email').val();	
 	    	
-	    	$.ajax({
-	    		url:"${ pageContext.servletContext.contextPath }/member/findIdCheck",
-	    		type:"post",
-	    		data : {
-	    			name : name, 
-	    			email : email
-	    		}, 
-	    		async : false, 
-	    		success:function(data){
-	    				console.log(data);
-	    			if(data == null) {
-	    				$('#id').text("회원정보를 다시 확인해주세요.");
-	    			} else if(data != null) {
-	    				$('#id').text(data);
-	    			}
-	    		}
-    		});
-    	}
-        
+       		 if(name == "" || email ==""){
+       			 alert("회원 정보를 입력해 주세요.");
+       		     return false;
+       			 
+       		 } else {
+       			 
+		    	$.ajax({
+		    		url:"${ pageContext.servletContext.contextPath }/member/findIdCheck",
+		    		type:"post",
+		    		data : {
+		    			name : name, 
+		    			email : email
+		    		}, 
+		    		async : false, 
+		    		success:function(data){
+		    				console.log("data : " + data);
+		    				
+		    			if(data != null && data != "") {
+		    				alert("고객님의 아이디는 " + data + "입니다.");
+		    				return true;
+		    				
+		    			} else {
+		    				alert("입력하신 정보가 일치하지 않습니다. 올바른 정보를 입력해주세요.");
+		    				return false;
+		    			}
+		    		},
+	    			error : function(error){
+	    				alert(error);
+	    			}	
+	    		});
+	    	 }
+		  } 
    
+		
+		  
     	/* 로그인 화면으로 돌아가기 */
     	const $goLogin = document.getElementById("goLogin");
     		$goLogin.onclick = function() {

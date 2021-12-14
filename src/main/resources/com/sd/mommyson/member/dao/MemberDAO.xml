@@ -180,6 +180,8 @@
 		 WHERE A.LOCATION_NAME = #{ locationName }
 		  
 	</select>
+	
+	<!-- 소비자 회원가입 -->
  	<insert id="customerJoin">
 		INSERT ALL
 		  INTO MEMBER_TBL
@@ -208,18 +210,29 @@
 		)
 		SELECT * FROM DUAL
 	</insert>
-	<update id="updateLastLogin">
-		UPDATE MANAGER_TBL
-		   SET LAST_LOGIN = SYSTIMESTAMP
-		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
-	</update>
 	
+	<!-- 아이디 찾기 -->
 	<select id="findIdCheck" resultType="String">
 		SELECT MEM_ID
 		  FROM MEMBER_TBL A
 		  JOIN USER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
 		 WHERE A.EMAIL = #{ email }
 		  
-			
-	</select>
+	</select> 
+	
+	
+	<select id="findPwdCheck" resultType="String">
+		SELECT MEM_PWD
+		  FROM MEMBER_TBL A
+		 WHERE A.EMAIL = #{ email }
+		   AND A.MEM_ID = #{ memId }
+	</select> 
+	
+	<update id="updateLastLogin">
+		UPDATE MANAGER_TBL
+		   SET LAST_LOGIN = SYSTIMESTAMP
+		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
+	</update>
+	
+
 </mapper>

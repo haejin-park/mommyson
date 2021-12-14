@@ -195,12 +195,12 @@ public class MemberController {
 	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
 	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
 //
-//		String rawPw = "";
-//		String encodePw = "";
+//		String rawPwd = "";
+//		String encodePwd = "";
 //		
-//		rawPw = member.getMemPwd(); //비밀번호 데이터 얻음 
-//		encodePw = pwEncoder.encode(rawPw); //비밀번호 인코딩 
-//		member.setMemPwd(encodePw); //인코딩 비밀번호 member 객체에 다시 저장 
+//		rawPwd = member.getMemPwd(); //비밀번호 데이터 얻음 
+//		encodePwd = passwordEncoder.encode(rawPwd); //비밀번호 인코딩 
+//		member.setMemPwd(encodePwd); //인코딩 비밀번호 member 객체에 다시 저장 
 		
 		member.setMemPwd(passwordEncoder.encode(member.getMemPwd()));
 		
@@ -229,18 +229,39 @@ public class MemberController {
 		System.out.println(name);
 		System.out.println(email);
 		
-		MemberDTO m = new MemberDTO();
-		UserDTO u = new UserDTO();
-		u.setName(name);
-		m.setUser(u);
-		m.setEmail(email);
-		System.out.println(m);
-		String member = memberService.findIdCheck(m);
+		MemberDTO mdto = new MemberDTO(); // 이메일이 담긴 객체 
+		UserDTO udto = new UserDTO(); // 이름이 담긴 객체  
+		udto.setName(name);
+		mdto.setUser(udto);
+		mdto.setEmail(email);
+		System.out.println(mdto);
+		String member = memberService.findIdCheck(mdto);
 		System.out.println(member);
 		 return member;
 	}
 	
+	
+	/* 비밀번호 찾기 화면 띄우기 */
 	@GetMapping("findPwd")
 	public void findPwd() {}
+	
+	/* 비밀번호 찾기 */
+	@PostMapping(value = "findPwdCheck", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String findPwdCheck(@RequestParam("id") String memId, @RequestParam String email) {
+		System.out.println("memId : " + memId);
+		System.out.println("email : " + email);
+		
+		MemberDTO mdto = new MemberDTO();
+		mdto.setMemId(memId);
+		mdto.setEmail(email);
+		System.out.println("mdto : " + mdto);
+		
+		String member = memberService.findPwdCheck(mdto);
+		System.out.println(member);
+		return member;
+		
+		
+	}
 	
 }

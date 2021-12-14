@@ -104,18 +104,28 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 
+	
 	/* 아이디 찾기 */
 	@Override
-	public String findIdCheck(MemberDTO dto) {
+	public String findIdCheck(MemberDTO mdto) {
 		
-		String member = memberDAO.findIdCheck(dto);
+		String member = memberDAO.findIdCheck(mdto);
 	
+		return member;
+	}
+
+	
+	/* 비밀번호 찾기 */
+	@Override
+	public String findPwdCheck(MemberDTO mdto) {
+		
+		String member = memberDAO.findPwdCheck(mdto);
 		return member;
 	}
 
 
 
-	
+
 	
 
 	
