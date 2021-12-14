@@ -92,10 +92,10 @@
 		<result property="storeName" column="STORE_NAME"/>
 		<result property="code" column="CODE"/>
 		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
-		<collection property="memberDTO" resultMap="memberResultMap"></collection>
-		<collection property="orderInfoDTO" resultMap="InfoResultMap"></collection>
-		<collection property="acceptDTO" resultMap="acceptResultMap"></collection>
-		<collection property="productDTO" resultMap="productResultMap"></collection>
+		<collection property="memberDTO" resultMap="memberResultMap"/>
+		<collection property="orderInfoDTO" resultMap="InfoResultMap"/>
+		<collection property="acceptDTO" resultMap="acceptResultMap"/>
+		<collection property="productDTO" resultMap="productResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.AcceptDTO" id="acceptResultMap">

@@ -71,7 +71,9 @@
 	                <td>${ ol.orderCode }</td>
 	                <td>${ ol.memberDTO.nickname }</td>
 	                <td>${ ol.orderType }</td>
-	                <td>${ ol.productDTO.sdName }</td>
+	                <c:forEach items="${ ol.productDTO }" var="p">
+	                <td>${ p.sdName }</td>
+	                </c:forEach>
 	                <td><button class="couponBtn" id="btn1">접수</button> &nbsp;&nbsp; <button class="couponBtn" id="can1" style="background-color: #777777;">취소</button></td>
 	              </tr>
 	              </c:forEach>
@@ -98,7 +100,9 @@
 	                <th scope="row">${ ol.orderCode }</th>
 	                <td>${ ol.acceptTime }</td>
 	                <td>${ ol.memberDTO.nickname }</td>
-	                <td>${ ol.productDTO.sdName }</td>
+	                <c:forEach items="${ ol.productDTO }" var="p">
+	                <td>${ p.sdName }</td>
+	                </c:forEach>
 	              </tr>
 	              </c:forEach>
 	            </tbody>

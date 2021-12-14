@@ -43,8 +43,9 @@ public class OwnerServiceImpl implements OwnerService{
 
 	@Override
 	public List<ReviewDTO> selectReview(String storeName) {
+		
 		List<ReviewDTO> list = ownerDAO.selectReview(storeName);
-		System.out.println("list 확인 : " + list);
+		
 		return list;
 	}
 

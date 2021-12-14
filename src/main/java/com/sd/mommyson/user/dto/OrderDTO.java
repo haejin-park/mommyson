@@ -1,6 +1,7 @@
 package com.sd.mommyson.user.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
@@ -23,7 +24,7 @@ public class OrderDTO {
 	private OrderInfoDTO orderInfoDTO;
 	private MemberDTO memberDTO;
 	private AcceptDTO acceptDTO;
-	private ProductDTO productDTO;
+	private List<ProductDTO> productDTO; // 하나의 오더코드 안에 여러개의 반찬네임이 존재해서 리스트로
 
 	
 	public OrderDTO() {
@@ -35,7 +36,7 @@ public class OrderDTO {
 	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
 			String phone, String storeName, int code, String acceptTime, Date cancleTime, Date completeTime,
 			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO,
-			ProductDTO productDTO) {
+			List<ProductDTO> productDTO) {
 		super();
 		this.memCode = memCode;
 		this.totalPrice = totalPrice;
@@ -217,12 +218,12 @@ public class OrderDTO {
 	}
 
 
-	public ProductDTO getProductDTO() {
+	public List<ProductDTO> getProductDTO() {
 		return productDTO;
 	}
 
 
-	public void setProductDTO(ProductDTO productDTO) {
+	public void setProductDTO(List<ProductDTO> productDTO) {
 		this.productDTO = productDTO;
 	}
 
@@ -237,6 +238,4 @@ public class OrderDTO {
 				+ "]";
 	}
 
-
-	
 }
