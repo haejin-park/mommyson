@@ -341,10 +341,26 @@
 	      FROM REPORT_TBL A
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	     <where>
-	     	<if test="searchValue != null">
+	     	<if test="searchValue != null and all">
 	     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
 	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
 	     	</if>
+	     	<if test="condition1">
+	     		A.STATUS = 'W'
+	     	</if>
+	     	<if test="searchValue != null and condition1">
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+	     	</if>
+	     	<if test="condition2">
+	     		(A.STATUS = 'Y' OR
+	     		A.STATUS = 'N')
+	     	</if>
+	     	<if test="searchValue != null and condition2">
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+	     	</if>
+	     	
 	     </where>
 	</select>
 	
@@ -388,9 +404,24 @@
 					      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 					      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
 					     <where>
-					     	<if test="searchValue != null">
+					     	<if test='searchValue != null and searchCondition == "all"'>
 					     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
 					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+					     	</if>
+					     	<if test='searchCondition == "W"'>
+					     		A.STATUS = 'W'
+					     	</if>
+					     	<if test='searchValue != null and searchCondition == "W"'>
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+					     	</if>
+					     	<if test='searchCondition == "YN"'>
+					     		(A.STATUS = 'Y' OR
+					     		A.STATUS = 'N')
+					     	</if>
+					     	<if test='searchValue != null and searchCondition == "YN"'>
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
 					     	</if>
 					     </where>
 					     ORDER BY A.REP_NO ASC)E
@@ -418,7 +449,7 @@
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 	      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
-	     WHERE A.RV_CODE = #{ repCode }
+	     WHERE A.REP_NO = #{ repNo }
 	     ORDER BY A.REP_NO ASC
 	</select>
 	
