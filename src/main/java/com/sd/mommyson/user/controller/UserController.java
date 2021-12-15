@@ -1218,6 +1218,6 @@ public class UserController {
 		
 		
 //		int result = userService.insertJJIMplus();
-		return result;
+		return 1;
 	}
 }
