@@ -26,8 +26,25 @@
                 <!-- 찜, 평점 -->
                 <div style="float: left;">
                     <div class="df-ac">
-                        <button class="btn_none"><img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" style="width: 35px; height: 35px;"></button>&nbsp;&nbsp;<h4 style="margin: 0;"><strong>찜</strong> ${ requestScope.store.JJIM }</h4>
+                        <button class="btn_none" onclick="jjim_plus()"><img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" style="width: 35px; height: 35px;"></button>&nbsp;&nbsp;<h4 style="margin: 0;"><strong>찜</strong> ${ requestScope.store.JJIM }</h4>
                     </div>
+                    <script>
+                    	function jjim_plus() {
+                    		let storeCode = ${ requestScope.store.MEM_CODE };
+                    		let memCode = ${ sessionScope.loginMember.memCode };
+                    		$.ajax({
+                    			url: '${ pageContext.servletContext.contextPath }/user/jjimplus',
+                    			type: 'post',
+                    			data: {
+                    				storeCode : storeCode,
+                    				memCode : memCode
+                    			},
+                    			success: function(data) {
+                    				
+                    			}
+                    		});
+                    	}
+                    </script>
                     <br>
                     <div>
                         <span class="df-ac">
@@ -94,7 +111,7 @@
 	                                </svg>
                                 </c:if>
                             </div>
-                            &nbsp;&nbsp;<h4 style="margin: 0">${ requestScope.store.GRADE }</h4>
+                            &nbsp;&nbsp;<h4 style="margin: 0;">${ requestScope.store.GRADE }</h4>
                         </span>
                     </div>
                 </div>
@@ -181,12 +198,12 @@
 		                            <h3 style="margin-bottom: 20px;"><c:out value="${ product.sdName }"/></h3>
 		                            <p style="width: 450px;"><c:out value="${ product.detail }"/></p>
 		                        </div>
-		                        <div>
+		                        <div style="display: flex; align-items: flex-end;">
 		                            <c:if test="${ product.orderableStatus == 'Y' }">
-			                            <h3 style="margin-top: 100px;"><c:out value="${ product.price }"/> 원</h3>
+			                            <h3 style="margin-right: 20px; margin-bottom: 7px;"><c:out value="${ product.price }"/> 원</h3>
 		                            </c:if>
 		                            <c:if test="${ product.orderableStatus == 'N' }">
-			                            <h3 style="margin-top: 100px;"><c:out value="${ product.price }"/> 원</h3>
+			                            <h3 style="margin-right: 20px; margin-bottom: 7px;"><c:out value="${ product.price }"/> 원</h3>
 		                            </c:if>
 		                            <button class="pink_btn" style="width: 80px" value="${ product.sdCode }">담기</button>
 		                        </div>
