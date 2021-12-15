@@ -143,12 +143,12 @@
 	   	 
 	    });
         
-        $('#searchCondition').on('change',function() {
-        	 let changedCondition = $('#searchCondition').val();
-        	 console.log($(this).val());
-        	 location.href = "${ location.href }?searchCondition=" + changedCondition;
-     
-        });
+	   	 $('#searchCondition').on('change',function() {
+	    	 let changedCondition = $('#searchCondition').val();
+	    	 console.log($(this).val());
+	    	 location.href = "${ location.href }?searchCondition=" + changedCondition;
+	 
+	    });
        
         
      </script>

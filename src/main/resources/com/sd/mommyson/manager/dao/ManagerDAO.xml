@@ -535,7 +535,7 @@
    	  	  <if test='searchValue != null'>
    	  	  AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
    	  	  </if>
-   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+   	  	  <if test="searchCondition == 'all' || searchCondition == null || searchCondition == ''">
    	  	  AND A.BOARD_CODE IN('1','2','3','4','5')
    	  	  </if>
    	  	  <if test="searchCondition == 'notice'">
@@ -599,7 +599,7 @@
 			   	  	  <if test='searchValue != null'>
 			   	  	   AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+			   	  	  <if test="searchCondition == 'all' || searchCondition == null || searchCondition == ''">
 			   	  	   AND A.BOARD_CODE IN('1','2','3','4','5')
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'notice'">
@@ -627,7 +627,7 @@
        ]]>
    </select>
    
-   <!-- 공지사항 등록 -->
+   <!-- 공지사항/자주묻는질문 게시글 등록 -->
    <insert id="postWriting" parameterType="hashmap" >
  	INSERT ALL
  		INTO POST_TBL
@@ -660,8 +660,8 @@
 	WHERE POST_NO = #{ postNo }
    </update>
    
-   <!-- 공지사항 삭제(선택박스) -->
-   <update id="deleteNotice" parameterType="list">
+   <!-- 공지사항/자주묻는질문 게시글 삭제(선택박스) -->
+   <update id="deletePost" parameterType="list">
     UPDATE POST_TBL
        SET STATUS = 'D'
      WHERE POST_NO IN
@@ -699,6 +699,114 @@
       SET STATUS = 'N'
     WHERE POST_NO = #{ postNo }
    </update> 
+   
+   <!-- 자주묻는질문 게시글 수 조회 -->
+   <select id="OftenQuestionTotalCount" resultType="_int">
+   	  SELECT
+   	  	  COUNT(*)
+   	  	 FROM POST_TBL A
+   	  	<where>
+   	  	  A.STATUS = 'N'
+   	  	  <if test='searchValue != null'>
+   	  	  AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	  	  </if>
+   	  	  <if test="searchCondition == null || searchCondition == ''">
+   	  	  AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	  	  </if>
+   	  	  <if test="searchCondition == 'memberJoinQuestion'">
+   	  	  AND A.BOARD_CODE = '6'
+   	  	  </if>
+		  <if test="searchCondition == 'billAndOrderQuestion'">
+   	  	  AND A.BOARD_CODE = '7'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'reviewManagementQuestion'">
+   	  	  AND A.BOARD_CODE = '8'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'userQuestion'">
+   	  	  AND A.BOARD_CODE = '9'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'inconvenienceQuestion'">
+   	  	  AND A.BOARD_CODE = '10'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'etcQuestion'">
+   	  	  AND A.BOARD_CODE = '11'
+   	  	  </if>
+   	  	</where>
+   </select>
+   
+   <!-- 자주묻는질문 리스트 조회 -->
+   <select id="selectOftenQuestionList" resultMap="PostResultMap">
+	   SELECT
+	    C.RNUM
+	   ,C.POST_NO
+	   ,C.BOARD_CODE
+	   ,C.POST_TITLE
+	   ,C.MEM_CODE
+	   ,C.POST_CONTENT
+	   ,C.POST_DATE
+	   ,C.ANS_STATUS
+	   ,C.QUE_NO
+	   ,C.STATUS
+	   ,C.VIEW_CNT
+	   FROM (SELECT
+	            ROWNUM RNUM
+	           ,B.POST_NO
+	           ,B.BOARD_CODE
+	           ,B.POST_TITLE
+	           ,B.MEM_CODE
+	           ,B.POST_CONTENT
+	           ,B.POST_DATE
+	           ,B.ANS_STATUS
+	           ,B.QUE_NO
+	           ,B.STATUS
+	           ,B.VIEW_CNT
+	         FROM (SELECT
+	                    A.POST_NO
+	                   ,A.BOARD_CODE
+	                   ,A.POST_TITLE
+	                   ,A.MEM_CODE
+	                   ,A.POST_CONTENT
+	                   ,A.POST_DATE
+	                   ,A.ANS_STATUS
+	                   ,A.QUE_NO
+	                   ,A.STATUS
+	                   ,A.VIEW_CNT
+	                   FROM POST_TBL A
+	                  <where>
+	                  A.STATUS = 'N'
+			   	  	  <if test='searchValue != null'>
+			   	  	   AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == null || searchCondition == ''">
+			   	  	   AND A.BOARD_CODE IN('6','7','8','9','10','11')
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'memberJoinQuestion'">
+			   	  	   AND A.BOARD_CODE = '6'
+			   	  	  </if>
+					  <if test="searchCondition == 'billAndOrderQuestion'">
+			   	  	   AND A.BOARD_CODE = '7'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'reviewManagementQuestion'">
+			   	  	   AND A.BOARD_CODE = '8'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'userQuestion'">
+			   	  	   AND A.BOARD_CODE = '9'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'inconvenienceQuestion'">
+			   	  	   AND A.BOARD_CODE = '10'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'etcQuestion'">
+			   	  	   AND A.BOARD_CODE = '11'
+			   	  	  </if>
+			   	  	  </where>
+	                  ORDER BY A.POST_DATE DESC)B
+	          <![CDATA[        
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)C
+	   <![CDATA[
+	  WHERE C.RNUM >= #{ startRow } 
+       ]]>
+   </select>
 	
    <select id="idDupCheck" parameterType="string" resultType="int">
        SELECT 
