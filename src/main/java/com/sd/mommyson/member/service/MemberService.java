@@ -32,8 +32,11 @@ public interface MemberService  {
 	/* 회원가입 이메일 인증 */ 
 	public int registEmailCode(String num);
 	
+	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
+	public int selectMemCode(int memCode);
+	
 	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode MEMBER_TBL 의 memCode로 업데이트 */
-	public void updateEmailVerificationMemCode(MemberDTO member);
+	public void updateEmailVerificationMemCode(int memCode);
 	
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO mdto);

@@ -217,8 +217,8 @@ public class MemberController {
 		memberService.customerJoin(member);
 		logger.info("customerJoin Service 성공");
 		
-		member.getMemCode();
-		memberService.updateEmailVerificationMemCode(member);
+//		member.getMemCode();
+//		memberService.updateEmailVerificationMemCode(member);
 		
 		return "/member/login";
 		

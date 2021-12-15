@@ -111,18 +111,29 @@ public class MemberServiceImpl implements MemberService {
 	public int registEmailCode(String num) {
 		
 		int emailNum = memberDAO.registEmailCode(num);
+		
 		return emailNum;
 	}
 
+
+	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
+	@Override
+	public int selectMemCode(int memCode) {
+		
+		memberDAO.selectMemCode(memCode);
+		
+		return memCode;
+	}
+	
 	
 	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode MEMBER_TBL 의 memCode로 업데이트 */
 	@Override
-	public void updateEmailVerificationMemCode(MemberDTO member) {
-		memberDAO.updateEmailVerificationMemCode(member);
+	public void updateEmailVerificationMemCode(int memCode) {
+		
+		memberDAO.updateEmailVerificationMemCode(memCode);
+		
 	}
-	
 
-	
 	/* 아이디 찾기 */
 	@Override
 	public String findIdCheck(MemberDTO mdto) {
@@ -137,7 +148,9 @@ public class MemberServiceImpl implements MemberService {
 	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 */
 	@Override
 	public int findPwdEmailCode(String num) {
+		
 		int emailNum = memberDAO.findPwdEmailCode(num);
+		
 		return emailNum;
 	}
 
@@ -145,6 +158,7 @@ public class MemberServiceImpl implements MemberService {
 	/* 비밀번호 변경하기 */
 	@Override
 	public void changePwd(Map<String, Object> map, MemberDTO dto) throws Exception {
+		
 		memberDAO.changePwd(map, dto);
 	}
 

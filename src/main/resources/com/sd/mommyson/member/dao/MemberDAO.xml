@@ -237,8 +237,7 @@
  	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
 <!--	<update id="updateEmailVerificationMemCode" parameterType="int">
 		UPDATE EMAIL_CODE_TBL
-		   SET MEM_CODE = #{ memCode.memCode }
-		  
+		   SET MEM_CODE = #{ memCode }
 	</update> -->
 	
 		<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
@@ -246,7 +245,6 @@
  		UPDATE EMAIL_CODE_TBL E
 		   SET MEM_CODE = #{ memCode }
 		 WHERE E.MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL M WHERE M.MEM_CODE = E.MEM_CODE)
-		   
 	</update>
 	
 	<!-- 아이디 찾기 -->
