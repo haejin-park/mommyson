@@ -60,6 +60,12 @@
 
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.member.dto.EmailCodeDTO" id="emailCodeResultMap">
+		<id property="code" column="CODE"/>
+		<result property="emailCode" column="EMAIL_CODE"/>
+		<association property="memCode" resultMap="memberResultMap"/>
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
 		<id property="locationCode" column="LOCATION_CODE"/>
 		<result property="locationName" column="LOCATION_NAME"/>
@@ -189,6 +195,8 @@
 		 WHERE A.LOCATION_NAME = #{ locationName }
 		  
 	</select>
+	
+	<!-- 소비자 회원가입 -->
  	<insert id="customerJoin">
 		INSERT ALL
 		  INTO MEMBER_TBL
@@ -217,12 +225,40 @@
 		)
 		SELECT * FROM DUAL
 	</insert>
-	<update id="updateLastLogin">
-		UPDATE MANAGER_TBL
-		   SET LAST_LOGIN = SYSTIMESTAMP
-		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
+
+	<!--회원가입시 이메일 인증 코드 인설트 -->
+	<insert id ="registEmailCode">
+		INSERT 
+		  INTO EMAIL_CODE_TBL
+		(
+		  CODE			
+		, MEM_CODE
+		, EMAIL_CODE
+		)
+		VALUES
+		(
+		  SEQ_CODE.NEXTVAL
+		, null
+		, #{ emailCode }
+		)
+	</insert>
+	
+ 	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
+<!--	<update id="updateEmailVerificationMemCode" parameterType="int">
+		UPDATE EMAIL_CODE_TBL
+		   SET MEM_CODE = #{ memCode.memCode }
+		  
+	</update> -->
+	
+		<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
+	<update id="updateEmailVerificationMemCode">
+ 		UPDATE EMAIL_CODE_TBL E
+		   SET MEM_CODE = #{ memCode }
+		 WHERE E.MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL M WHERE M.MEM_CODE = E.MEM_CODE)
+		   
 	</update>
 	
+	<!-- 아이디 찾기 -->
 	<select id="findIdCheck" resultType="String">
 		SELECT MEM_ID
 		  FROM MEMBER_TBL A
@@ -294,5 +330,35 @@
 		 WHERE M.IS_DELETED = 'N'
 		 ORDER BY M.ENROLL_DATE DESC
 	</select>
+	
+	<!--비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증-->
+	<insert id ="findPwdEmailCode">
+		INSERT 
+		  INTO EMAIL_CODE_TBL
+		(
+		  CODE			
+		, MEM_CODE
+		, EMAIL_CODE
+		)
+		VALUES
+		(
+		  SEQ_CODE.NEXTVAL
+		, null
+		, #{ emailCode }
+		)
+	</insert> 
+	
+ 	<!-- 비밀번호 변경하기 -->
+ 	<update id="changePwd" parameterType="hashMap">
+ 		UPDATE MEMBER_TBL A
+ 		   SET A.MEM_PWD = #{ memPwd }
+ 		 WHERE A.EMAIL = #{ email } 
+ 	</update>
+ 
+	<update id="updateLastLogin">
+		UPDATE MANAGER_TBL
+		   SET LAST_LOGIN = SYSTIMESTAMP
+		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
+	</update>
 	
 </mapper>

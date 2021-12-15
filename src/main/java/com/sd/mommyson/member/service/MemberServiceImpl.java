@@ -2,6 +2,7 @@ package com.sd.mommyson.member.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -107,11 +108,28 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 
+	
+	/* 회원가입시 이메일 인증 */ 
+	@Override
+	public int registEmailCode(String num) {
+		
+		int emailNum = memberDAO.registEmailCode(num);
+		return emailNum;
+	}
+
+	
+	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode MEMBER_TBL 의 memCode로 업데이트 */
+	@Override
+	public void updateEmailVerificationMemCode(MemberDTO member) {
+		memberDAO.updateEmailVerificationMemCode(member);
+	}
+
+	
 	/* 아이디 찾기 */
 	@Override
-	public String findIdCheck(MemberDTO dto) {
+	public String findIdCheck(MemberDTO mdto) {
 		
-		String member = memberDAO.findIdCheck(dto);
+		String member = memberDAO.findIdCheck(mdto);
 	
 		return member;
 	}
@@ -131,10 +149,22 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.selectHotKeywordList();
 	}
 
+	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 */
+	@Override
+	public int findPwdEmailCode(String num) {
+		int emailNum = memberDAO.findPwdEmailCode(num);
+		return emailNum;
+	}
+	
+	/* 비밀번호 변경하기 */
+	@Override
+	public void changePwd(Map<String, Object> map, MemberDTO dto) throws Exception {
+		memberDAO.changePwd(map, dto);
+	}
+
 	@Override
 	public List<StoreDTO> selectStoreList() {
 		return memberDAO.selectStoreList();
 	}
-	
 
 }
