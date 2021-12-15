@@ -74,12 +74,18 @@
           <!-- 모달쿠폰 -->
           <button type="button"  id="couponBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="height: 40px;">
             추가</button>
-          <button class="couponBtn" type="submit" style="background-color: #777777; height: 40px; margin-left: 50px;">삭제</button>
+          <button class="couponBtn" type="submit">삭제</button>
         </form>
         </div>  
       </div>
 	    
+		    <!-- 페이지네이션 -->
+			<div style="margin-left: 450px; position: relative; top: 100px;">
+			<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
+			</div>
+			
 	    </div>  
+	    
 	    <!-- 모오오오달 -->
 	    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >

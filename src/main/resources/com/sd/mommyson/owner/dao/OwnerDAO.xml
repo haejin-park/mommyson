@@ -27,6 +27,7 @@
 		<result property="grade" column="GRADE"/>
 		<result property="delCost" column="DEL_COST"/>
 		<result property="workTime" column="WORK_TIME"/>
+		<result property="statusYN" column="STATUS_YN"/>
 	</resultMap>
 	
 
@@ -76,19 +77,43 @@
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
-		<collection property="orderDTO" resultMap="orderResultMap"></collection>
+		<collection property="orderDTO" resultMap="orderResultMap"/>
+		<collection property="memberDTO" resultMap="memberResultMap"/>
+	</resultMap>
+	
+	<!-- 리뷰가져오는 맵 -->
+	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap1">
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="img" column="RV_IMG"/>
+		<result property="content" column="RV_CONTENT"/>
+		<result property="grade" column="RV_GRADE"/>
+		<result property="rvCode" column="RV_CODE"/>
+		<collection property="memberDTO" resultMap="memberResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-		<id property="memCode" column="MEM_CODE"/>
 		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="orderType" column="ORDER_TYPE"/>
-		<result property="takeTime" column="TAKE_TIME"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
-		<result property="storeName" column="STORE_NAME"/>
-		<result property="code" column="CODE"/>
+		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
+		<association property="memberDTO" resultMap="memberResultMap"/>
+		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
+		<association property="acceptDTO" resultMap="acceptResultMap"/>
+		<collection property="product" ofType="java.lang.String" javaType="list">
+    		<result column="SD_NAME"/>
+    	</collection>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.user.dto.AcceptDTO" id="acceptResultMap">
+		<id property="code" column="CODE"/>
+		<result property="orderStatus" column="ORDER_STATUS"/>
+	</resultMap>
+
+	<resultMap type="com.sd.mommyson.user.dto.OrderInfoDTO" id="InfoResultMap">
+		<id property="proNo" column="PRO_NO"/>
+		<result property="amount" column="AMONT"/>
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="sdCode" column="SD_CODE"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -121,6 +146,22 @@
 		<result property="locationName" column="LOCATION_NAME"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.owner.dto.DCProduct" id="dcProductResultMap">
+		<id property="dcCode" column="DC_CODE"/>
+		<result property="discountRate" column="DISCOUNT_RATE"/>
+		<result property="insertDate" column="INSERT_DATE"/>
+		<result property="sdCode" column="SD_CODE"/>
+		<result property="sdName" column="SD_NAME"/>
+		<result property="price" column="PRICE"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.MembershipDTO" id="membershipResultMap">
+		<id property="msCode" column="MS_CODE"/>
+		<result property="msType" column="MS_TYPE"/>
+		<result property="msDate" column="MS_DATE"/>
+		<result property="msPrice" column="MS_PRICE"/>
+	</resultMap>
+		
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
@@ -145,18 +186,52 @@
 		   AND A.MEM_ID = #{ memId }
 	</select>
 	
-	<!-- 사업자의 쿠폰을 불러오는 쿼리문 -->
-	<select id="selectCoupon" resultMap="couponResultMap">
+	<!-- 쿠폰페이지 페이지네이션 (조건 넣어주기) -->
+	<select id="selectCouponListTotalCount" resultType="_int">
 		SELECT
-			    A.CP_CODE,
-			    A.CP_NAME, 
-			    A.START_DATE, 
-			    A.DISCOUNT_WON, 
-			    A.END_DATE, 
-			    A.DC_CONDITION
+			    COUNT(*)
 		  FROM  COUPON_TBL A
 		  JOIN  COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
 		 WHERE  B.MEM_CODE = #{ memCode }
+	</select>
+	
+	<!-- 사업자의 쿠폰을 불러오는 쿼리문 -->
+	<select id="selectCoupon" resultMap="couponResultMap">
+	   SELECT
+		       C.RNUM
+		     , C.CP_CODE
+		     , C.CP_NAME
+		     , C.START_DATE
+		     , C.DISCOUNT_WON 
+		     , C.END_DATE
+		     , C.DC_CONDITION
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , D.CP_CODE
+				    , D.CP_NAME 
+				    , D.START_DATE
+				    , D.DISCOUNT_WON
+				    , D.END_DATE
+				    , D.DC_CONDITION
+	            FROM (SELECT
+	                          A.CP_CODE
+						    , A.CP_NAME
+						    , A.START_DATE
+						    , A.DISCOUNT_WON
+						    , A.END_DATE
+						    , A.DC_CONDITION
+					    FROM  COUPON_TBL A
+					    LEFT  JOIN COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
+					   <where>
+					 		  B.MEM_CODE = #{ searchCondition }
+					   </where>
+		  			   )D
+		  			   <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)C
+	   <![CDATA[
+	  WHERE C.RNUM >= #{ startRow } 
+       ]]>
 	</select>
 	
 	<!-- 쿠폰등록 -->
@@ -199,17 +274,47 @@
 	</insert>
 	
 	<!-- 리뷰 목록 가져오기 -->
-	<select id="selectReview" resultMap="reviewResultMap">
+	<select id="selectReviewListTotalCount" resultType="_int">
 		SELECT
-				A.RV_CODE
-			  , A.MEM_CODE
-			  , A.RV_CONTENT
-			  , B.NICKNAME 
+			    COUNT(*)
 		  FROM REVIEW_TBL A
 		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
 		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
-		 WHERE C.STORE_NAME = #{storeName}
+		 WHERE C.STORE_NAME = #{ storeName }
 		   AND A.IS_DELETED = 'N'
+	</select>
+	<select id="selectReview" resultMap="reviewResultMap1">
+		SELECT
+		        E.RNUM
+		      ,	E.RV_CODE
+			  , E.MEM_CODE
+			  , E.RV_CONTENT
+			  , E.NICKNAME 
+	     FROM (SELECT
+		                ROWNUM RNUM
+		              ,	D.RV_CODE
+					  , D.MEM_CODE
+					  , D.RV_CONTENT
+					  , D.NICKNAME 
+	            FROM (SELECT
+								A.RV_CODE
+							  , A.MEM_CODE
+							  , A.RV_CONTENT
+							  , B.NICKNAME 
+						  FROM REVIEW_TBL A
+						  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
+						  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
+					   <where>
+					 		  C.STORE_NAME = #{ searchCondition }
+		   				  AND A.IS_DELETED = 'N'
+					   </where>
+		  			   )D
+		  			   <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)E
+	   <![CDATA[
+	  WHERE E.RNUM >= #{ startRow } 
+       ]]>
 	</select>
 	
 	<!-- 사업자 가게정보 변경 쿼리문 -->
@@ -536,88 +641,179 @@
 	</select>
 	
 	<!-- 오늘의 할인 상품 조회 쿼리문 -->
-	<select id="selectDC" resultMap="productResultMap">
+	<select id="selectDC" resultMap="dcProductResultMap">
 	    SELECT 
 			   A.RNUM
 		     , A.SD_CODE
 		     , A.SD_NAME
 		     , A.DISCOUNT_RATE
-		     , A.PRICE  
+		     , A.PRICE
+		     , A.INSERT_DATE    
 	    FROM (SELECT 
 					   ROWNUM RNUM
 				     , B.SD_CODE
 				     , B.SD_NAME
 				     , B.DISCOUNT_RATE
-				     , B.PRICE  
+				     , B.PRICE
+				     , B.INSERT_DATE  
 				  FROM (SELECT 
 						       C.SD_CODE
 						     , C.SD_NAME
-						     , C.DISCOUNT_RATE
 						     , C.PRICE  
+						     , D.DISCOUNT_RATE
+						     , D.INSERT_DATE
 						  FROM PRODUCT_TBL C
+						  JOIN DC_PRODUCT D ON (C.SD_CODE = D.SD_CODE)
 						 <where>
-						  IS_DELETED = 'N' 
+						  C.IS_DELETED = 'N' 
 						  <if test="searchValue != null and searchValue != '' ">
-						  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						  </if>
-						  AND DISCOUNT_RATE <![CDATA[ > ]]> 0
-						  AND MEM_CODE = #{ memCode } 
+						  AND C.MEM_CODE = #{ memCode } 
 						</where>    
-						  ORDER BY DISCOUNT_RATE ASC)B
+						  ORDER BY D.INSERT_DATE DESC)B
 						)A
 			WHERE A.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow }
 	</select>
-
-	<!-- 할인이 적용되지 않은 반찬의 토탈 수 구하는 쿼리문 -->
-	<!-- <select id="selectTotalModal" resultType="_int">
-		SELECT
-		      COUNT(*)
-		 FROM PRODUCT_TBL
-		<where>
-		  IS_DELETED = 'N' 
-		  <if test="searchValue != null and searchValue != '' ">
-		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
-		  </if>
-		  AND DISCOUNT_RATE <![CDATA[ = ]]> 0
-		  AND MEM_CODE = #{ memCode }
-		</where>
-	</select> -->
 	
 	<!-- 할인되지 않은 반찬 리스트 조회하는 쿼리문 -->
 	<select id="selectProdouct" resultMap="productResultMap">
 		 SELECT 
 		       A.SD_CODE
 		     , A.SD_NAME
-		     , A.DISCOUNT_RATE
 		     , A.PRICE
 		     , A.M_DATE 
 		  FROM PRODUCT_TBL A
-		  JOIN 
+		  LEFT OUTER JOIN DC_PRODUCT B ON (A.SD_CODE = B.SD_CODE)
 		 WHERE A.IS_DELETED = 'N' 
-		   AND A.DISCOUNT_RATE <![CDATA[ = ]]> 0
-		   AND A.MEM_CODE = #{ memCode } 
-		  ORDER BY A.M_DATE DESC
+		   AND A.MEM_CODE = #{ memCode }
+		   AND B.SD_CODE IS NULL
+		 ORDER BY A.M_DATE DESC
 	</select>
 	
 	<!-- 할인 등록 쿼리문 -->
 	<insert id="registDc">
 		INSERT
-		  INTO DC_PRODUCT A
+		  INTO DC_PRODUCT 
 		(
-			A.DC_CODE
-		   ,A.DISCOUNT_RATE
-		   ,A.INSERT_DATE
-		   ,A.SD_CODE
-		)  
-		VALUES
-		(
-			SEQ_DC_CODE.NEXTVAL
-			<foreach collection="map" item="list">
-				<foreach collection="list" item="list">
-		  		 ,#{ list.dcRate }, DEFAULT, #{ list.sdCode }
-		  		 </foreach>
-		    </foreach>
-		)
+			DC_CODE
+		   ,DISCOUNT_RATE
+		   ,INSERT_DATE
+		   ,SD_CODE
+		   ,DC_YN
+		) 
+		SELECT 
+		       SEQ_DC_CODE.NEXTVAL
+		     , A.* 
+		  FROM(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT
+				   #{ item.discountRate } AS DISCOUNT_RATE
+			     , SYSDATE AS INSERT_DATE
+				 , #{ item.sdCode } AS SD_CODE
+				 , 'Y' AS DC_YN
+			  FROM DUAL	 
+	 </foreach>) A
 	</insert>
+	
+	<!-- 주문페이지 주문 접수 토탈타운트  -->
+	<select id="selectOrderListTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM ORDER_TBL A
+		 WHERE A.STORE_NAME = #{ storeName }
+		   AND A.CODE = 1 OR A.CODE = 2
+	</select>
+	
+	<!-- 주문페이지 주문 접수  -->
+	<select id="selectOrderList" resultMap="orderResultMap">
+		 SELECT
+		         G.RNUM
+		       , G.ORDER_ACCEPT_TIME
+		       , G.TOTAL_PRICE
+               , G.ORDER_CODE
+               , G.NICKNAME
+               , G.ORDER_TYPE 
+               , G.ORDER_STATUS 
+               , G.SD_NAME 
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , F.ORDER_ACCEPT_TIME
+		            , F.TOTAL_PRICE
+	                , F.ORDER_CODE
+	                , F.NICKNAME
+	                , F.ORDER_TYPE 
+                    , F.ORDER_STATUS 
+                    , F.SD_NAME 
+	            FROM (SELECT
+						        A.ORDER_ACCEPT_TIME
+						      , A.ORDER_CODE
+						      , A.TOTAL_PRICE
+						      , C.NICKNAME
+						      , A.ORDER_TYPE
+						      , D.ORDER_STATUS
+						      , E.SD_NAME        
+						  FROM ORDER_TBL A
+						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+						  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
+						  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+	                    <where>
+		                    	A.STORE_NAME = #{ searchCondition }
+			 				AND A.CODE = 1 OR A.CODE = 2
+			 				<!-- AND TO DATE(A.ORDER_ACCEPT_TIME,'YYYYMMDD') = TO DATE(SYSDATE,'YYYYMMDD') 오늘날짜만 조건 넣어야해-->
+			   	        </where>
+			   	        ORDER BY A.ORDER_ACCEPT_TIME DESC
+	                    )F
+	          <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)G
+	   <![CDATA[
+	  WHERE G.RNUM >= #{ startRow } 
+       ]]>
+	</select>
+	
+	<!-- 주문페이지  완료된 주문 -->
+	<select id="selectOrderList2" resultMap="orderResultMap">
+		SELECT
+		        TO_CHAR(A.ORDER_ACCEPT_TIME, 'YYYY-MM-DD HH24:MI:SS') AS ORDER_ACCEPT_TIME
+		      , A.ORDER_CODE
+		      , C.NICKNAME
+		      , A.ORDER_TYPE
+		      , E.SD_NAME        
+		      , D.ORDER_STATUS
+		  FROM ORDER_TBL A
+		  JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
+		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+		  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+		 WHERE A.STORE_NAME = #{ storeName }
+		   AND A.CODE = 3 OR A.CODE = 4
+	</select>
+	
+	<!-- 영업상태 업데이트 쿼리문 -->
+	<update id="modifyOwnerStatus">
+		UPDATE STORE_TBL
+		   SET STATUS_YN = #{ statusYN }
+		 WHERE MEM_CODE = #{ memCode }  
+	</update>
+	
+	<!-- 멤버십 정보 select 쿼리문 -->
+	<select id="selectMembership" resultMap="membershipResultMap">
+		SELECT
+			   MS_TYPE
+			 , MS_DATE
+			 , MS_PRICE
+	 	  FROM MEMBERSHIP_TBL
+	 	 WHERE MS_CODE = #{ msCode }	 
+	</select>
+	
+	<update id="modifyProduct">
+		<foreach collection="list" item="item">
+			UPDATE PRODUCT_TBL
+			   SET DISCOUNT_RATE = #{ item.discountRate }
+			 WHERE SD_CODE = #{ item.sdCode }
+		</foreach>
+	</update>
 	
 </mapper>

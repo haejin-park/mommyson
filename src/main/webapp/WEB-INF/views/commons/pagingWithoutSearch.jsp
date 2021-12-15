@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
    <nav class="page_box" aria-label="Page navigation example">
@@ -30,7 +29,7 @@
             </c:if>
          </c:forEach>
            
-            <!-- 다음 페이지 버튼 -->
+          <!-- 다음 페이지 버튼 -->
          <c:if test="${ requestScope.pagination.pageNo < requestScope.pagination.maxPage }">
             <li class="page-item"><a class="page-link-num" id="nextPage" href="#">&gt;</a></li>
          </c:if>
@@ -115,6 +114,22 @@
              location.href = link + "&currentPage=" + pageNo + searchText;
          }
       });
+      
+      function search_onclick_submit(){
+			let searchValue = $('input[name=searchValue]').val();
+			console.log(searchValue);
+			// 현재 페이지 주소
+			if((document.location.href).includes("?searchCondition") && (document.location.href).includes("&searchValue")) {
+				location.href = document.location.pathname + "?searchCondition=${ requestScope.pagination.searchCondition }" + "&searchValue=" + searchValue;
+			} else if((document.location.href).includes("?searchCondition")){
+				location.href = document.location.href + "&searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("?searchValue") || (document.location.href).includes("&searchValue")){
+				location.href = document.location.pathname + "?searchValue=" + searchValue;
+	 		} else {
+	 			location.href = document.location.href + "?searchValue=" + searchValue;
+	 		}
+			
+		};
    </script>
 </body>
 </html>

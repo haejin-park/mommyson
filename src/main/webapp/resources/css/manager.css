@@ -57,11 +57,11 @@
 
 
 /* 자주하는 질문 */
-.question_category { border: 2px solid #ddd; padding: 23px 0; margin-bottom: 30px; }
+.question_category { border: 2px solid #ddd; padding: 23px 0 !important; margin-bottom: 30px !important; }
 .question_category li { float: left; width: 16.66666%; text-align: center; padding: 18px; border-right: 1px solid #ddd; }
 .question_category li:last-child { border-right: 0; }
 .question_category li a { font-size: 18px; line-height: 20px; color: #333; display: block; width: 100%; }
-.question_table tbody tr.answer.tal { text-align: left !important; background-color: #ffddd7; display: none; }
+.question_table tbody tr.answer.tal { text-align: left !important; background-color: #FDEEEB; display: none; }
 .question_table tbody tr.answer td { padding: 30px; font-size: 16px; line-height: 22px; color: #333; }
 
 

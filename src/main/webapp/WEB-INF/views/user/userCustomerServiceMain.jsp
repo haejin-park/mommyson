@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +110,12 @@
             </div>
             <div class="row" id="notice">
               <ul>
-                <li>최신 공지사항 5개 정도를 출력해주시면 됩니다. 구현 하시는 분은 높이도 이쁘게 조절해주세요</li>
+              <c:forEach var = "importantNotice" items="${ requestScope.importantNotice }">
+                <li><c:out value="${ importantNotice.postTitle }"/> </li>
+              </c:forEach>
+              <c:forEach var = "noticeBoard" items="${ requestScope.noticeList }">
+              	<li><c:out value="${ importantNotice.postTitle }"/></li>
+              </c:forEach>
               </ul>
             </div>
         </div>

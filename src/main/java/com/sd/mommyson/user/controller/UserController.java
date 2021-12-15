@@ -169,8 +169,14 @@ public class UserController {
 		List<PostDTO> noticeList = userService.selectNotice(selectCriteria);
 		System.out.println(" 공지리스트 : " + noticeList);
 		
+		/*중요공지 출력*/
+		
+		List<ProductDTO> importantNotice = userService.selectImportantNotice();
+		System.out.println("중요 공지 사항 리스트 : " + importantNotice);
+		
 		mv.addAttribute("noticeList", noticeList);
 		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("importantNotice", importantNotice);
 		
 		return "user/userCustomerServiceCenterNoticeSelect";
 	}

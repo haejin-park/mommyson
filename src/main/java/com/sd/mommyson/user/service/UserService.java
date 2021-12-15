@@ -52,6 +52,8 @@ public interface UserService {
 	int selectSearchTotalCount(Map<String, Object> searchMap);
 
 	List<ProductDTO> selectSearchList(Map<String, Object> searchMap);
+	
+	List<ProductDTO> selectImportantNotice();
 
 	Integer insertJJIMplus(Map<String, Integer> map);
 

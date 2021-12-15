@@ -34,19 +34,20 @@
 				</li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<div class="tab-pane fade show active tab1" id="home" role="tabpanel" aria-labelledby="home-tab">
 					<table class="table board_table">
 			            <colgroup>
 			                <col width=""/>
 			                <col width=""/>
+			                <col width="40%"/>
 			                <col width=""/>
 			                <col width=""/>
 			                <col width=""/>
-			                <col width=""/>
+			                <col width="10%"/>
 			            </colgroup>
 			            <thead style="background-color: #EDEDED;">
 			            	<tr>
-				                <th>번호</th>
+				                <th>리뷰번호</th>
 				                <th>신고유형</th>
 				                <th>리뷰내용</th>
 				                <th>신고대상</th>
@@ -58,33 +59,35 @@
 			            <tbody>
 				           <c:forEach items="${ requestScope.reportList }" var="rp">
 					            <tr class="detailView" onclick="repDetailView(this);" data-toggle="modal" data-target="#exampleModal">
-						            <td>${ rp.REP_NO }</td>
+						            <td style="display: none;">${ rp.REP_NO }</td>
+						            <td>${ rp.RV_CODE }</td>
 						            <td>${ rp.REP_TYPE }</td>
-						            <td>${ rp.RV_CONTENT }</td>
+						            <td class="tal">${ rp.RV_CONTENT }</td>
 						            <td>${ rp.MEM_ID }</td>
 						            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${ rp.REP_DATE }"/></td>
 						            <td>${ rp.REP_COUNT }</td>
 						            <td class="reportStatus">${ rp.STATUS }</td>
 						            <td class="repNo" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.RV_CODE }"></td>
+						            <td class="repMemCode" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.MEM_CODE }"></td>
 					            </tr>
 				            </c:forEach>
 			            </tbody>
 		           	</table>
 				</div>
-				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+				<div class="tab-pane fade tab2" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 					<table class="table board_table">
 			            <colgroup>
 			                <col width=""/>
 			                <col width=""/>
+			                <col width="40%"/>
 			                <col width=""/>
 			                <col width=""/>
 			                <col width=""/>
-			                <col width=""/>
-			                <col width=""/>
+			                <col width="10%"/>
 			            </colgroup>
 			            <thead style="background-color: #EDEDED;">
 			            	<tr>
-				                <th>번호</th>
+				                <th>리뷰번호</th>
 				                <th>신고유형</th>
 				                <th>리뷰내용</th>
 				                <th>신고대상</th>
@@ -95,37 +98,38 @@
 			            </thead>
 			            <tbody>
 			            	
-			            	<c:forEach items="${ requestScope.reportList }" var="rp">
-				            	<c:if test='${ rp.STATUS == "W" }'>
-						            <tr class="detailView" onclick="repDetailView(this);" data-toggle="modal" data-target="#exampleModal">
-							            <td>${ rp.REP_NO }</td>
-							            <td>${ rp.REP_TYPE }</td>
-							            <td>${ rp.RV_CONTENT }</td>
-							            <td>${ rp.MEM_ID }</td>
-							            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${ rp.REP_DATE }"/></td>
-							            <td>${ rp.REP_COUNT }</td>
-							            <td class="reportStatus">${ rp.STATUS }</td>
-							            <td class="repNo" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.RV_CODE }"></td>
-						            </tr>
-					            </c:if>
+			            	<c:forEach items="${ requestScope.repReceptionList }" var="rp">
+					            <tr class="detailView" onclick="repDetailView(this);" data-toggle="modal" data-target="#exampleModal">
+						            <td style="display: none;">${ rp.REP_NO }</td>
+						            <td>${ rp.RV_CODE }</td>
+						            <td>${ rp.REP_TYPE }</td>
+						            <td class="tal">${ rp.RV_CONTENT }</td>
+						            <td>${ rp.MEM_ID }</td>
+						            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${ rp.REP_DATE }"/></td>
+						            <td>${ rp.REP_COUNT }</td>
+						            <td class="reportStatus">${ rp.STATUS }</td>
+						            <td class="repNo" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.RV_CODE }"></td>
+						            <td class="repMemCode" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.MEM_CODE }"></td>
+					            </tr>
 				            </c:forEach>
 				            
 			            </tbody>
 		           	</table>
 				</div>
-				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+				<div class="tab-pane fade tab3" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 					<table class="table board_table">
 			            <colgroup>
 			                <col width=""/>
 			                <col width=""/>
+			                <col width="40%"/>
 			                <col width=""/>
 			                <col width=""/>
 			                <col width=""/>
-			                <col width=""/>
+			                <col width="10%"/>
 			            </colgroup>
 			            <thead style="background-color: #EDEDED;">
 			            	<tr>
-				                <th>번호</th>
+				                <th>리뷰번호</th>
 				                <th>신고유형</th>
 				                <th>리뷰내용</th>
 				                <th>신고대상</th>
@@ -135,20 +139,19 @@
 			            	</tr>
 			            </thead>
 			            <tbody>
-				           	<c:forEach items="${ requestScope.reportList }" var="rp">
-				            	<c:if test='${ rp.STATUS != "W" }'>
-						            <tr class="detailView" onclick="repDetailView(this);" data-toggle="modal" data-target="#exampleModal">
-							            <td>${ rp.REP_NO }</td>
-							            <td>${ rp.REP_TYPE }</td>
-							            <td>${ rp.RV_CONTENT }</td>
-							            <td>${ rp.MEM_ID }</td>
-							            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${ rp.REP_DATE }"/></td>
-							            <td>${ rp.REP_COUNT }</td>
-							            <td class="reportStatus">${ rp.STATUS }</td>
-							            <td class="repNo" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.RV_CODE }"></td>
-							            <td class="repMemCode" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.MEM_CODE }"></td>
-						            </tr>
-					            </c:if>
+				           	<c:forEach items="${ requestScope.repCompleteList }" var="rp">
+					            <tr class="detailView" onclick="repDetailView(this);" data-toggle="modal" data-target="#exampleModal">
+						            <td style="display: none;">${ rp.REP_NO }</td>
+						            <td>${ rp.RV_CODE }</td>
+						            <td>${ rp.REP_TYPE }</td>
+						            <td class="tal">${ rp.RV_CONTENT }</td>
+						            <td>${ rp.MEM_ID }</td>
+						            <td><fmt:formatDate pattern="yyyy-MM-dd" value="${ rp.REP_DATE }"/></td>
+						            <td>${ rp.REP_COUNT }</td>
+						            <td class="reportStatus">${ rp.STATUS }</td>
+						            <td class="repNo" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.RV_CODE }"></td>
+						            <td class="repMemCode" style="display: none;"><input type="hidden" name="reportMem" value="${ rp.MEM_CODE }"></td>
+					            </tr>
 				            </c:forEach>
 			            </tbody>
 		           	</table>
@@ -178,9 +181,13 @@
 		                                <col width="80%"/>
 		                            </colgroup>
 		                            <tbody>
+		                            	<tr>
+		                                    <th>리뷰 번호</th>
+		                                    <td class="reportNum"></td>
+		                                </tr>
 		                                <tr>
 		                                    <th>신고 번호</th>
-		                                    <td class="reportNum"></td>
+		                                    <td class="repRvCode"></td>
 		                                </tr>
 		                                <tr>
 		                                    <th>신고유형</th>
@@ -205,6 +212,9 @@
 		                                <tr>
 		                                    <th>처리상황</th>
 		                                    <td class="repStatus"></td>
+		                                </tr>
+		                                <tr style="display: none;">
+		                                    <td class="repStatusReal"></td>
 		                                </tr>
 		                                <tr style="display: none;">
 		                                	<td class="repRvCode"></td>
@@ -244,12 +254,13 @@
          
         $('#myTab a').on('click', function (event) {
         	event.preventDefault()
-        	$(this).tab('show')
+        	//$(this).tab('show');
        	})
 		
 		function repDetailView(e){
 			
-			const repCode = e.lastElementChild.firstElementChild.value;
+			/* const repCode = e.lastElementChild.previousElementSibling.firstElementChild.value; */
+			const repNo = e.firstElementChild.textContent;
 			const reportNum = $('.txt_info_box .reportNum');
 			const repType = $('.txt_info_box .repType');
 			const repContent = $('.txt_info_box .repContent');
@@ -257,6 +268,7 @@
 			const repDate = $('.txt_info_box .repDate');
 			const repCount = $('.txt_info_box .repCount');
 			const repStatus = $('.txt_info_box .repStatus');
+			const repStatusReal = $('.txt_info_box .repStatusReal');
 			const repRvCode = $('.txt_info_box .repRvCode');
 			const repMemCode = $('.txt_info_box .repMemCode');
 			
@@ -264,7 +276,7 @@
 				url : '${ pageContext.servletContext.contextPath }/manager/repDetailView',
 				type : 'POST',
 				data : {
-					repCode : repCode
+					repNo : repNo
 				},
 				success : function(data){
 					console.log(data);
@@ -275,6 +287,7 @@
 					repDate.text((new Date(data.REP_DATE)).toLocaleDateString());
 					repCount.text(data.REP_COUNT);
 					repStatus.text(data.STATUS);
+					repStatusReal.text(data.STATUS);
 					repRvCode.text(data.RV_CODE);
 					repMemCode.text(data.MEM_CODE);
 					
@@ -298,13 +311,13 @@
 					}
 					
 					if(repStatus.text() == "Y"){
-						repStatus.text("삭제처리완료")
-						$('.reportProcess').css('display','none')
+						repStatus.text("삭제처리완료");
+						$('.reportProcess').css('display','none');
 					}
 					
 					if(repStatus.text() == "N"){
-						repStatus.text("반려처리완료")
-						$('.reportProcess').css('display','none')
+						repStatus.text("반려처리완료");
+						$('.reportProcess').css('display','none');
 					}
 				},
 				error : function(error){
@@ -314,9 +327,11 @@
 			
 		}
         
+        /* 신고된 리뷰 반려처리 */
         function companion(e){
         	
         	const repRvCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.previousElementSibling.firstElementChild.textContent;
+        	const repNo = e.parentElement.parentElement.previousElementSibling.lastElementChild.firstElementChild.lastElementChild.textContent;
         	
         	$.ajax({
         		url : '${ pageContext.servletContext.contextPath }/manager/repCompanion' + repRvCode,
@@ -331,10 +346,12 @@
         	});
         }
         
+        /* 신고된 리뷰 대상회원에게 경고주기 */
         function warning(e){
         	
         	const repMemCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.lastElementChild.textContent;
         	const repRvCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.previousElementSibling.firstElementChild.textContent;
+        	const repNo = e.parentElement.parentElement.previousElementSibling.lastElementChild.firstElementChild.lastElementChild.textContent;
         	
         	$.ajax({
         		url : '${ pageContext.servletContext.contextPath }/manager/repWarning/' + repMemCode + "/" + repRvCode,
@@ -349,6 +366,7 @@
         	});
         }
         
+        /* 신고된 리뷰 대상회원에게 블랙처리 */
         function black(e){
         	
         	const repMemCode = e.parentElement.parentElement.previousElementSibling.lastElementChild.lastElementChild.lastElementChild.textContent;
@@ -372,17 +390,41 @@
         /* 리뷰신고현황 전체 */
         $('#home-tab').on('click',function(){
         	
+        	location.href="${ pageContext.servletContext.contextPath }/manager/statusStoreWarning";
         });
         
         /* 리뷰신고현황 신고접수 */
 		$('#profile-tab').on('click',function(){
-        	
+			
+        	location.href="${ pageContext.servletContext.contextPath }/manager/repReception?searchCondition=W";
         });
-		
+        
         /* 리뷰신고현황 처리완료 */
 		$('#contact-tab').on('click',function(){
         	
+			location.href="${ pageContext.servletContext.contextPath }/manager/repComplete?searchCondition=YN";
         });
+        
+        /* 신고된 리뷰 탭 별로 클릭시 css 변경 */
+		$(document).ready(function(){
+			if(${ requestScope.pagination.searchCondition == 'W' }){
+				$('.top_box2 > li > a').removeClass('active');
+				$('.top_box2 > li:nth-child(2) > a').addClass('active');
+				$('.tab-content > div').removeClass('active');
+				$('.tab-content > div').removeClass('show');
+				$('.tab-content > .tab2').addClass('active');
+				$('.tab-content > .tab2').addClass('show');
+			}
+			
+			if(${ requestScope.pagination.searchCondition == "YN" }){
+				$('.top_box2 > li > a').removeClass('active');
+				$('.top_box2 > li:nth-child(3) > a').addClass('active');
+				$('.tab-content > div').removeClass('active');
+				$('.tab-content > div').removeClass('show');
+				$('.tab-content > .tab3').addClass('active');
+				$('.tab-content > .tab3').addClass('show');
+			}
+		});
          
     </script>
 </body>

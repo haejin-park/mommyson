@@ -24,12 +24,12 @@
             <form action="${ pageContext.servletContext.contextPath }/manager/terminateBlack" method="POST">
 	            <div class="top_box">
 	                <p>블랙 회원 조회</p>
-	                <input type="submit" value="블랙해지">
+	                <input  value="블랙해지" onclick="terminateFinish(this);">
 	            </div>
 	            <table class="table board_table">
 	                <colgroup>
 	                    <col width=""/>
-	                    <col width=""/>
+	                    <%-- <col width=""/> --%>
 	                    <col width=""/>
 	                    <col width=""/>
 	                    <col width=""/>
@@ -41,28 +41,32 @@
 	                <thead style="background-color: #EDEDED;">
 		                <tr>
 		                    <th><input type="checkbox" name="chkAll" id="chk_all"></th>
-		                    <th>번호</th>
+		                    <!-- <th>번호</th> -->
 		                    <th>아이디</th>
 		                    <th>닉네임</th>
 		                    <th>이메일</th>
 		                    <th>가입일</th>
 		                    <th>주문횟수</th>
 		                    <th>총 결제금액</th>
-		                    <th>-</th>
+		                    <th>경고내역</th>
 		                </tr>
 	                </thead>
 	                <tbody>
 	                	<c:forEach items="${ requestScope.blackMemberList }" var="nm">
 			                <tr>
 		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
-		                        <td>${ nm.memCode }</td>
+		                        <td style="display: none;">
+			                        <c:forEach items="${ nm.user.review }" varStatus="status" var="rv">
+			                        	${ rv.rvCode }<c:if test="${ !status.last }">,</c:if>
+			                        </c:forEach>
+		                        </td>
 		                        <td>${ nm.memId }</td>
 		                        <td>${ nm.nickname }</td>
 		                        <td>${ nm.email }</td>
 		                        <td>${ nm.enrollDate }</td>
-		                        <td>${ nm.ceo.store.storeName }</td>
 		                        <td></td>
-		                        <td><a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModal">[상세보기]</a></td>
+		                        <td></td>
+		                        <td><a href="javascript:void(0);" onclick="blackMemDetail(this);" data-toggle="modal" data-target="#exampleModal">[경고내역보기]</a></td>
 			                </tr>
 	                	</c:forEach>
 	                </tbody>
@@ -86,26 +90,28 @@
                 <div class="modal-body">
                    <table border="1" class="tb_content">
                        <colgroup>
+                            <col width="10%"/>
+                            <col width="10%"/>
                             <col width="15%"/>
-                            <col width="15%"/>
-                            <col width="55%"/>
+                            <col width="50%"/>
                             <col width="15%"/>
                        </colgroup>
                        <thead>
                            <tr>
                                <th>경고순번</th>
+                               <th>리뷰코드</th>
                                <th>카테고리</th>
                                <th>내용</th>
-                               <th>날짜</th>
+                               <th>신고날짜</th>
                            </tr>
                        </thead>
-                       <tbody>
-                           <tr>
-                               <td>1</td>
-                               <td>욕설</td>
-                               <td>XX별로다.</td>
-                               <td>2021-11-29</td>
-                           </tr>
+                       <tbody class="infoTbody">
+                           <!-- <tr>
+                               <td class="no">1</td>
+                               <td class="category"></td>
+                               <td class="content"></td>
+                               <td class="date"></td>
+                           </tr> -->
                        </tbody>
                    </table>
                 </div>
@@ -128,6 +134,58 @@
  
          $("#homeSubmenu1").addClass("show");
          $("#homeSubmenu1 > li:last-child > a").attr("style","color: #F89E91 !important");
+         
+         function blackMemDetail(e){
+        	 
+        	 const memCode = e.parentElement.parentElement.firstElementChild.firstElementChild.value;
+        	 let no = $('.no');
+        	 let category = $('.category');
+        	 let content = $('.content');
+        	 let date = $('.date');
+        	 
+        	 $.ajax({
+        		url : '${ pageContext.servletContext.contextPath }/manager/blackMemDetail',
+        		type : 'POST',
+        		data : {
+        			memCode : memCode
+        		},
+        		success : function(data,index){
+        			console.log(data);
+        			
+        			const infoTbody = $('.infoTbody');
+        			infoTbody.html("");
+        			
+        			let count = 1;
+        			for(let index in data){
+        				
+        				$tr = $("<tr>");
+        				$noTd = $("<td>").text(count);
+        				$reviewNoTd = $("<td>").text(data[index].RV_CODE);
+        				$categoryTd = $("<td>").text(data[index].REP_TYPE);
+        				$contentTd = $("<td>").text(data[index].RV_CONTENT);
+        				$dateTd = $("<td>").text((new Date(data[index].REP_DATE)).toLocaleDateString());
+        				
+        				$tr.append($noTd);
+        				$tr.append($reviewNoTd);
+        				$tr.append($categoryTd);
+        				$tr.append($contentTd);
+        				$tr.append($dateTd);
+        				
+        				infoTbody.append($tr);
+        				
+        				count++;
+        			}
+        			
+        		},
+        		error : function(error){
+        			console.log(error);
+        		}
+        	 });
+         }
+         
+         function terminateFinish(e){
+        	 
+         }
      </script>
 </body>
 </html>

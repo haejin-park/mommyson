@@ -62,6 +62,12 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
+	@Override
+	public List<ProductDTO> selectImportantNotice() {
+
+		List<ProductDTO> importantNotice = userDAO.selectImportantNotice();
+		return importantNotice;
+	}
 
 	@Override
 	public List<StoreDTO> selectStoreList(Pagination pagination) {
@@ -154,7 +160,7 @@ public class UserServiceImpl implements UserService{
 		return userDAO.selectSearchList(searchMap);
 	}
 
-
+	
 	@Override
 	public Integer insertJJIMplus(Map<String, Integer> map) {
 		return userDAO.insertJJIMplus(map);

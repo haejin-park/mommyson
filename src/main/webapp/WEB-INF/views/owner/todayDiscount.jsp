@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>오늘의 할인</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <link rel="stylesheet" href="../resources/css/owners.css">
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -13,6 +14,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </head>
 <body>
+<script>
+	if(${ requestScope.msg != null && requestScope.msg != ''}){
+		alert('${ requestScope.msg }');
+	}
+</script>
 
 	<!-- header -->
 	<jsp:include page="../commons/header.jsp"/>
@@ -34,10 +40,11 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
             <tr>
-                <th scope="col"><input type="checkbox" name="ch1"></th>
+                <th scope="col"><input type="checkbox" name="ch1" id="ch1"></th>
                 <th scope="col">번호</th>
                 <th scope="col">상품</th>
                 <th scope="col">할인율</th>
+                <th scope="col">등록일</th>
                 <th scope="col">할인가</th>
             </tr>
             </thead>
@@ -47,7 +54,7 @@
             <c:set var="price" value="${ list.price }"/>
             <c:set var="value" value="${ pagenation.pageNo * 10}"></c:set>
             <c:set var="dcRate" value="${ list.discountRate }"/>
-            <c:set var="dcPrice" value="${ (price * (100 - dcRate)) / 100 }"/>
+            <c:set var="dcPrice" value="${ price * ((100 - dcRate) / 100) }"/>
             <tr>
                 <th scope="row"><input type="checkbox" name="ch1" value="${ list.sdCode }"></th>
                 <c:if test="${ pagenation.pageNo > 1 }">
@@ -58,12 +65,13 @@
                 </c:if>
                 <td>${ list.sdName }</td>
                 <td>${ list.discountRate }%</td>
-                <td>${ dcPrice }</td>
+                <td>${ list.insertDate }</td>
+                <td><fmt:formatNumber value="${ dcPrice }" type="number"/>원</td>
             </tr>
             </c:forEach>
             </tbody>
         </table>
-
+        
         <br><br>
         
         <!-- 모달버튼 -->
@@ -73,6 +81,16 @@
         <button id="button2" style="height: 35px;">삭제</button>
         </div>
     </div>
+    
+     <script>
+	        $("#ch1").click(function(){
+	  	      if($("#ch1").prop("checked")){
+	  	        $("input[type=checkbox]").prop("checked",true);
+	  	      } else{
+	  	        $("input[type=checkbox]").prop("checked",false);
+	  	      }
+	  	    });
+        </script>
     
     <jsp:include page="../commons/ownerPaging.jsp"/>
 
@@ -99,15 +117,27 @@
 	                </tr>
 	                </thead>
 	                <tbody>
-	            	<c:forEach var="product" items="${ productList }">
+	            	<c:forEach var="product" varStatus="index" items="${ productList }">
 	            	<c:set var="j" value="${ j + 1 }"/>
 	                <tr>
-	                    <th scope="row"><input type="checkbox" name="checkCode" value="${ product.sdCode }"></th>
+	                    <td scope="row"><input type="checkbox" name="checkCode" value="${ product.sdCode }"></td>
 	                    <td>${ j }</td>
 	                    <td>${ product.sdName }</td>
 	                    <td>${ product.mDate }</td>
 	                    <td>
-	                    	<input type="number" name="rate">
+	                    	<select name="rate">
+	                    		<option value="0">선택해주세요</option>
+	                    		<option value="5">5%</option>
+	                    		<option value="10">10%</option>
+	                    		<option value="15">15%</option>
+	                    		<option value="20">20%</option>
+	                    		<option value="25">25%</option>
+	                    		<option value="30">30%</option>
+	                    		<option value="35">35%</option>
+	                    		<option value="40">40%</option>
+	                    		<option value="45">45%</option>
+	                    		<option value="50">50%</option>
+	                    	</select>
 	                    </td>
 	                </tr>
 	                </c:forEach>
@@ -115,7 +145,7 @@
 	            </table>
 	        </div>
 	        <div class="modal-footer" >
-	          <button type="button" class="btn btn-primary submit" id="button1">할인 등록</button>
+	          <button type="button" class="btn btn-primary" id="button">할인 등록</button>
 	          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 	        </div>
 	       </div>
@@ -127,30 +157,45 @@
     
     <script>
     	$(function() {
-	    	$(".submit").click(function(){
+	    	$("#button").click(function(){
+	    		
 	    		let arr = [];
+	    		let dcRate = [];
+
+	    		let count = 0;
 		    	$('input:checkbox[name=checkCode]:checked').each(function(){
 		    		let value = $(this).val();
 		    		arr.push(value);
+		    		
+		    		let result = $(this).parent().parent().children().last().children().val();
+		    		if(result == 0){
+		    			count = 1;
+		    		}
+		    		
+		    		dcRate.push(result);
 		    	});
 		    	
-				console.log(arr);
-				
-				let dcRate = []; 
-				$("input[name=rate]").each(function(index, item){
-					dcRate.push(item);
-				});
-				
-				console.log(dcRate);
 		    	
-		    	let form = $('<form></form>');
-		        form.attr('action', '${pageContext.servletContext.contextPath}/owner/todayDiscount');
-		        form.attr('method', 'post');
-		        form.appendTo('body');
-		        form.append($('<input type="hidden" value="' + arr + '" name=sdCode>'));
-		        form.append($('<input type="hidden" value="' + dcRate + '" name=dcRate>'));
-		        form.submit();
-	    	});
+		    	
+				console.log(arr); 
+				console.log(dcRate);
+				
+				
+				if(count == 0){
+				 	$('input:checkbox[name=checkCode]').attr("checked",false).prop('disabled');
+					$('input:checkbox[name=checkCode]').attr("checked",false).parent().last().prop('disabled');
+					
+			    	 let form = $('<form></form>');
+			        form.attr('action', '${ pageContext.servletContext.contextPath }/owner/todayDiscount');
+			        form.attr('method', 'post');
+			        form.appendTo('body');
+			        form.append($('<input type="hidden" value="' + arr + '" name=sdCode>'));
+			        form.append($('<input type="hidden" value="' + dcRate + '" name=dcRate>'));
+			        form.submit(); 
+				} else {
+					 alert('할인율이 선택되지 않았습니다.');
+				}
+	    	}); 
     	});
     </script>
     
