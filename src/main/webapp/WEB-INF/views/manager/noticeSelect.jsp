@@ -52,7 +52,7 @@
 					</colgroup>
 					<thead style="background-color: #EDEDED;">
 						<tr>
-							<th><input type="checkbox" name="ch1" id="chk_all"></th>
+							<th><input type="checkbox" name="ch1" id="chk_all" ></th>
 							<th>번호</th>
 							<th>제목</th>
 							<th>작성일</th>
@@ -62,7 +62,7 @@
 					<tbody>
 					   <c:forEach items="${ requestScope.noticeUpList }" var="up">
 						<tr class="important_notice">
-							<th scope="row"><input type="checkbox" name="ch1" value="${ up.postNo }"></th>
+							<th scope="row"><input type="checkbox" name="chkNotice" value="${ up.postNo }"></th>
 							<td>공지</td>
 							<td class="tal">
 							<a href="${ pageContext.servletContext.contextPath }/manager/noticeDetailView?postNo=${ up.postNo }">${ up.postTitle }</a>
@@ -143,12 +143,12 @@
 	   	 
 	    });
         
-        $('#searchCondition').on('change',function() {
-        	 let changedCondition = $('#searchCondition').val();
-        	 console.log($(this).val());
-        	 location.href = "${ location.href }?searchCondition=" + changedCondition;
-     
-        });
+	   	 $('#searchCondition').on('change',function() {
+	    	 let changedCondition = $('#searchCondition').val();
+	    	 console.log($(this).val());
+	    	 location.href = "${ location.href }?searchCondition=" + changedCondition;
+	 
+	    });
        
         
      </script>

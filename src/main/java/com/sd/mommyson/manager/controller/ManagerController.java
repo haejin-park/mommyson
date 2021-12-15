@@ -428,7 +428,7 @@ public class ManagerController {
 		} else if(searchCondition != null && !"".equals(searchCondition)) {  // 조건변경할때
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
 		} else { //둘 다null값으로 들어올 때
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, "전체", null);
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, "all", null);
 		}
 		
 //		System.out.println("pagination : " + pagination);
@@ -452,12 +452,16 @@ public class ManagerController {
 	
 	/**
 	 * @author junheekim
-	 * @category 공지사항 작성
+	 * @category 공지사항 작성 화면
 	 */
 	@GetMapping("noticeWrite")
 	public void noticeWrite() {
 	}
 	
+	/**
+	 * @author junheekim
+	 * @category 공지사항 작성
+	 */
 	@PostMapping(value = "noticeWrite")
 	public String noticeWrite(@ModelAttribute PostDTO post, Model model) {
 		System.out.println(post);
@@ -557,7 +561,7 @@ public class ManagerController {
 		for(int i = 0; i < chkDelNotice.length; i++) {
 			addNoticeDeleteList.add(chkDelNotice[i]);
 			
-			boolean result = managerService.deleteNotice(addNoticeDeleteList);
+			boolean result = managerService.deletePost(addNoticeDeleteList);
 			
 			if(result) {
 				message = "선택한 게시글을 삭제하였습니다.";
@@ -631,9 +635,137 @@ public class ManagerController {
 	}
 	
 	
-	/* 자주하는 질문 */
+	
+	/**
+	 * @author junheekim
+	 * @category 자주묻는질문 리스트 조회
+	 */
 	@GetMapping("oftenQuestion")
-	public void oftenQuestion() {}
+	public String oftenQuestion(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+			, @RequestParam(value="searchCondition", required=false) String sc
+			, @RequestParam(value="searchValue", required=false) String sv) {
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchCondition = sc;
+		String searchValue = sv;
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		
+		System.out.println("searchMap : " + searchMap);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.OftenQuestionTotalCount(searchMap);
+		
+		System.out.println("OftenQuestionTotalCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		System.out.println("조건 : " + searchCondition);
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) { //검색할 때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else if(searchCondition != null && !"".equals(searchCondition)) {  // 조건변경할때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		} else { //둘 다null값으로 들어올 때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		}
+		
+//		System.out.println("pagination : " + pagination);
+		
+		/* 자주묻는질문 리스트 조회 */
+		List<PostDTO> OftenQuestionList = managerService.selectOftenQuestionList(pagination);
+		
+
+		if(OftenQuestionList != null) {
+			model.addAttribute("pagination",pagination);
+			model.addAttribute("OftenQuestionList",OftenQuestionList);
+		} else {
+			System.out.println("자주묻는질문 리스트 조회 실패");
+		}
+		
+		return "manager/oftenQuestion";
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 자주묻는질문
+	 */
+	@GetMapping("oftenQuestionWrite")
+	public void oftenQuestionWrite() {
+		
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 자주묻는질문 작성
+	 */
+	@PostMapping(value = "oftenQuestionWrite")
+	public String oftenQuestionWrite(@ModelAttribute PostDTO post, Model model) {
+		System.out.println("포스트 : " + post);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("boardCode", post.getBoardCode());
+		map.put("postTitle", post.getPostTitle());
+		map.put("postContent", post.getPostContent());
+		
+		
+		int result = managerService.postWriting(map);
+	
+		if(result > 0) {
+			model.addAttribute("result", "자주묻는질문에 등록에 성공했습니다.");
+		} else {
+			model.addAttribute("result", "자주묻는질문에 등록에 실패했습니다.");
+		}
+		
+		return "redirect:/manager/oftenQuestion";
+	}
+	
+	/**
+	 * @author junheekim
+	 * @category 자주묻는질문 게시글 삭제(체크박스)
+	 */
+	@GetMapping(value = "oftenQuestion/{chkQuestion}", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String oftenQuestion(@PathVariable("chkQuestion")  int[] chkDelQuestion) {
+		
+		List<Integer> questionDeleteList = new ArrayList<>();
+		
+		String message = "";
+		for(int i = 0; i < chkDelQuestion.length; i++) {
+			questionDeleteList.add(chkDelQuestion[i]);
+			
+			boolean result = managerService.deletePost(questionDeleteList);
+			
+			if(result) {
+				message = "선택한 게시글을 삭제하였습니다.";
+			} else {
+				message = "게시글 삭제에 실패하였습니다.";
+			}
+		}
+		
+		return message;
+		
+	}
 	
 	/* 1:1문의 사업자*/
 	@GetMapping("businessInquiry")

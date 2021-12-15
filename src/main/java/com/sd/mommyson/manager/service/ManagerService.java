@@ -72,7 +72,7 @@ public interface ManagerService {
 	public int postRevise(Map<String, Object> map);
 
 	/* 공지사항 게시글 삭제(선택박스) */
-	public boolean deleteNotice(List<Integer> addNoticeDeleteList);
+	public boolean deletePost(List<Integer> addPostDeleteList);
 
 	/* 공지사항 게시글 삭제(상세조회) */
 	public boolean deleteSelectNotice(int postNo);
@@ -103,5 +103,11 @@ public interface ManagerService {
 
 	/* 블랙회원 상세정보 */
 	public List<Map<String, Object>> selectblackMemDetail(Map<String, Object> blackMemDetailMap);
+	
+	/* 자주묻는질문 리스트 */
+	public List<PostDTO> selectOftenQuestionList(Pagination pagination);
+
+	/* 자주묻는질문 총 게시글 갯수 */
+	public int OftenQuestionTotalCount(Map<String, String> searchMap);
 
 }

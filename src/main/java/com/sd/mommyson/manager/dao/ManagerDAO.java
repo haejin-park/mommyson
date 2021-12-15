@@ -60,7 +60,7 @@ public interface ManagerDAO {
 
 	int noticeRevise(Map<String, Object> map);
 
-	int deleteNotice(List<Integer> addNoticeDeleteList);
+	int deletePost(List<Integer> addPostDeleteList);
 
 	int deleteSelectNotice(int postNo);
 
@@ -89,5 +89,9 @@ public interface ManagerDAO {
 	int updateBlack3(Map<String, Object> blackMap);
 
 	List<Map<String, Object>> selectblackMemDetail(Map<String, Object> blackMemDetailMap);
+	
+	List<PostDTO> selectOftenQuestionList(Pagination pagination);
+
+	int OftenQuestionTotalCount(Map<String, String> searchMap);
 
 }

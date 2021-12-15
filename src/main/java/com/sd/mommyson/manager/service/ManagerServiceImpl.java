@@ -92,11 +92,6 @@ public class ManagerServiceImpl implements ManagerService {
       int result = managerDAO.deleteManager(list);
       return result;
    }
-   
-   public int selectNoticeTotalCount(Map<String, String> searchMap) {
-      return managerDAO.selectNoticeTotalCount(searchMap);
-   }
-
 
    @Override
    public int idDupCheck(String memId) {
@@ -186,7 +181,15 @@ public class ManagerServiceImpl implements ManagerService {
 		return ceoDetailInfos;
 	}
 
-
+	   
+   /**
+	* 공지사항 게시글 총 갯수
+	* @author junheekim
+	*/
+	public int selectNoticeTotalCount(Map<String, String> searchMap) {
+	      return managerDAO.selectNoticeTotalCount(searchMap);
+	   }
+	
    /**
     * 공지사항 리스트 조회
     * @author junheekim
@@ -272,7 +275,7 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	/**
-	 * 공지사항 게시글 조회
+	 * 공지사항/자주묻는질문 게시글 조회
 	 * @author junheekim
 	 */
 	@Override
@@ -307,13 +310,13 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	/**
-	 * 공지사항 게시글 삭제(선택박스)
+	 * 공지사항/자주묻는질문 게시글 삭제(선택박스)
 	 * @author junheekim
 	 */
 	@Override
-	public boolean deleteNotice(List<Integer> addNoticeDeleteList) {
+	public boolean deletePost(List<Integer> addPostDeleteList) {
 		
-		int result = managerDAO.deleteNotice(addNoticeDeleteList);
+		int result = managerDAO.deletePost(addPostDeleteList);
 		
 		return result > 0? true : false;
 	}
@@ -363,6 +366,27 @@ public class ManagerServiceImpl implements ManagerService {
 		
 		return result > 0? true : false;
 	}
+
+	/**
+	 * 자주 묻는 질문 게시글 총 갯수
+	 * @author junheekim
+	 */
+	@Override
+	public int OftenQuestionTotalCount(Map<String, String> searchMap) {
+		
+		return managerDAO.OftenQuestionTotalCount(searchMap);
+	}
+	
+	/**
+	 * 자주 묻는 질문 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectOftenQuestionList(Pagination pagination) {
+		
+		return managerDAO.selectOftenQuestionList(pagination);
+	}
+
 
 
 }
