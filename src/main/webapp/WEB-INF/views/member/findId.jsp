@@ -43,7 +43,6 @@
 			var inputName = $("#name").val();
 			var regex = /^[가-힣]{2,}$/;
 			var result = regex.exec(inputName);
-			var nameCheckResult = $("#nameCheckResult");
 				
 			if(inputName == ""){
 				alert("이름을 입력해주세요.");
@@ -65,7 +64,6 @@
 			var inputEmail = $("#email").val();
 			var regex = /.+@[a-z]+(\.[a-z]+){1,2}$/;
 			var result = regex.exec(inputEmail);
-			var emailCheckResult = $("emailCheckResult");
 			
 			if(inputEmail == ""){
 				alert("이메일을 입력해주세요.");

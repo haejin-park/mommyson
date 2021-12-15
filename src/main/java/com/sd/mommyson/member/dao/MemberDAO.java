@@ -2,6 +2,7 @@ package com.sd.mommyson.member.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -39,9 +40,9 @@ public interface MemberDAO {
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO mdto);
 	
-	/* 비밀번호 찾기 */
-	public String findPwdCheck(MemberDTO mdto);
-
+	/* 비밀번호 변경하기 */
+	public void changePwd(Map<String, Object> map, MemberDTO dto);
+	
 	
 
 	

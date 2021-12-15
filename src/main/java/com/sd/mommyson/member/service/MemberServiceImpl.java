@@ -2,6 +2,7 @@ package com.sd.mommyson.member.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -114,16 +115,12 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 
-	
-	/* 비밀번호 찾기 */
+
+	/* 비밀번호 변경하기 */
 	@Override
-	public String findPwdCheck(MemberDTO mdto) {
-		
-		String member = memberDAO.findPwdCheck(mdto);
-		return member;
+	public void changePwd(Map<String, Object> map, MemberDTO dto) throws Exception {
+		memberDAO.changePwd(map, dto);
 	}
-
-
 
 
 	

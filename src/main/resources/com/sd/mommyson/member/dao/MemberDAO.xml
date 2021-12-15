@@ -220,14 +220,13 @@
 		  
 	</select> 
 	
-	
-	<select id="findPwdCheck" resultType="String">
-		SELECT MEM_PWD
-		  FROM MEMBER_TBL A
-		 WHERE A.EMAIL = #{ email }
-		   AND A.MEM_ID = #{ memId }
-	</select> 
-	
+ 	<!-- 비밀번호 변경하기 -->
+ 	<update id="changePwd" parameterType="hashMap">
+ 		UPDATE MEMBER_TBL A
+ 		   SET A.MEM_PWD = #{ memPwd }
+ 		 WHERE A.EMAIL = #{ email } 
+ 	</update>
+ 
 	<update id="updateLastLogin">
 		UPDATE MANAGER_TBL
 		   SET LAST_LOGIN = SYSTIMESTAMP

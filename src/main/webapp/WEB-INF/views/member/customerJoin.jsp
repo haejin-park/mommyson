@@ -59,7 +59,6 @@
             style=" height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">중복확인</button>
             <input type="hidden" value="N" id="emailChkHd">
             <button  type="submit" class ="submit"  name="submit" id="submit">전송</button>
-            <input type="hidden" id="emailCodeChkHd" value ="N">
             <br>
            	<span id = "emailCheckResult"></span>
             <br>
@@ -163,6 +162,7 @@
             var phone = document.getElementById("phone");
             var email = document.getElementById("email");
             var code = document.getElementById("code");
+            var codeCheckResult = $("#codeCheckResult");
             var zipCode = document.getElementById("zipCode");
             var addr1 = document.getElementById("address1");
             var addr2 = document.getElementById("address2");
@@ -233,7 +233,6 @@
             }
 
  
-            var codeCheckResult = $("#codeCheckResult");
             if(code.value == ""){
             	codeCheckResult.html("이메일 전송 버튼을 클릭하여 수신된 인증 번호를 입력해주세요.");
             	codeCheckResult.attr("class", "incorrect");
