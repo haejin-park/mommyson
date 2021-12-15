@@ -193,6 +193,8 @@ public class MemberController {
 
 		
 		String num = Integer.toString(checkNum);
+		
+		memberService.registEmailCode(num);
 		return num;
 	}
 	
@@ -308,38 +310,39 @@ public class MemberController {
 	
 	
 	/* 인증번호를 입력한 후 확인 버튼 누르면 자료가 넘어오는 컨트롤러 */
-//	@RequestMapping(value ="pass_injeung.do{code},{email}", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
-//	@ResponseBody
-//	public ModelAndView pass_injeung(String pass_injeung, String inputPass_injeung, @RequestParam String email) throws IOException{
-//		
-//		System.out.println("pass_injeung : " + pass_injeung);
-//		
-//		System.out.println("inputPass_injeung : " + inputPass_injeung);
-//		
-//		System.out.println("email : " + email);
-//		
-//		ModelAndView mv = new ModelAndView();
-//		
-//		if(pass_injeung.equals(inputPass_injeung)) {	//인증번호가 일치할 경우 
-//			
-//			mv.setViewName("/member/changePwd"); // 비밀번호 변경 화면으로 이동시켜 
-//			
-//			mv.addObject("email", email);  //이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
-//			
-//			return mv;
-//			
-//		} else if(pass_injeung != inputPass_injeung) {
-//			
-//			ModelAndView mv2 = new ModelAndView();
-//			
-//			mv2.setViewName("/member/findPwd");
-//			
-//			return mv2;
-//		}
-//		
-//		return mv;
-//		
-//	}
+  //문제 pass_injeung은 값이 들어오는데 inputPass_injeung은 값이 안들어옴,,
+	@RequestMapping(value ="pass_injeung.do{code},{email}", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public ModelAndView pass_injeung(String pass_injeung, String inputPass_injeung, @RequestParam String email) throws IOException{
+		
+		System.out.println("pass_injeung : " + pass_injeung);
+		
+		System.out.println("inputPass_injeung : " + inputPass_injeung);
+		
+		System.out.println("email : " + email);
+		
+		ModelAndView mv = new ModelAndView();
+		
+		if(pass_injeung.equals(inputPass_injeung)) {	//인증번호가 일치할 경우 
+			
+			mv.setViewName("/member/changePwd"); // 비밀번호 변경 화면으로 이동시켜 
+			
+			mv.addObject("email", email);  //이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
+			
+			return mv;
+			
+		} else if(pass_injeung != inputPass_injeung) {
+			
+			ModelAndView mv2 = new ModelAndView();
+			
+			mv2.setViewName("/member/findPwd");
+			
+			return mv2;
+		}
+		
+		return mv;
+		
+	}
 	
 	
 	/* 비밀번호 변경하기 화면 띄우기 */

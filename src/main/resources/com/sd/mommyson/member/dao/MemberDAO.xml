@@ -58,6 +58,12 @@
 
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.member.dto.EmailCodeDTO" id="emailCodeResultMap">
+		<id property="code" column="CODE"/>
+		<result property="memCode" column="MEM_CODE"/>
+		<result property="emailCode" column="EMAIL_CODE"/>
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
 		<id property="locationCode" column="LOCATION_CODE"/>
 		<result property="locationName" column="LOCATION_NAME"/>
@@ -209,6 +215,22 @@
 		, 0
 		)
 		SELECT * FROM DUAL
+	</insert>
+
+	<insert id ="registEmailCode">
+		INSERT 
+		  INTO EMAIL_CODE_TBL
+		(
+		  CODE			
+		, MEM_CODE
+		, EMAIL_CODE
+		)
+		VALUES
+		(
+		  SEQ_CODE.NEXTVAL
+		, #{ memCode }
+		, #{ emailCode }
+		)
 	</insert>
 	
 	<!-- 아이디 찾기 -->

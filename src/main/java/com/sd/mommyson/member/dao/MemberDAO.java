@@ -42,6 +42,9 @@ public interface MemberDAO {
 	
 	/* 비밀번호 변경하기 */
 	public void changePwd(Map<String, Object> map, MemberDTO dto);
+
+	/* 회원가입시 이메일 인증 */ 
+	public int registEmailCode(String num);
 	
 	
 

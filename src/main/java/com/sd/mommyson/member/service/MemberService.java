@@ -35,6 +35,9 @@ public interface MemberService  {
 	/* 비밀번호 변경하기 */
 	public void changePwd(Map<String, Object> map, MemberDTO dto) throws Exception;
 
+	/* 회원가입 이메일 인증 */ 
+	public int registEmailCode(String num);
+	
 
 	
 

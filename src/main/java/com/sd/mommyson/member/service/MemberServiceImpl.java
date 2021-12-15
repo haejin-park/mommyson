@@ -122,6 +122,15 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.changePwd(map, dto);
 	}
 
+	
+	/* 회원가입시 이메일 인증 */ 
+	@Override
+	public int registEmailCode(String num) {
+		
+		int emailNum = memberDAO.registEmailCode(num);
+		return emailNum;
+	}
+
 
 	
 
