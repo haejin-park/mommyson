@@ -60,8 +60,8 @@
 	
 	<resultMap type="com.sd.mommyson.member.dto.EmailCodeDTO" id="emailCodeResultMap">
 		<id property="code" column="CODE"/>
-		<result property="memCode" column="MEM_CODE"/>
 		<result property="emailCode" column="EMAIL_CODE"/>
+		<association property="memCode" resultMap="memberResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
@@ -228,7 +228,7 @@
 		VALUES
 		(
 		  SEQ_CODE.NEXTVAL
-		, #{ memCode }
+		, null
 		, #{ emailCode }
 		)
 	</insert>
