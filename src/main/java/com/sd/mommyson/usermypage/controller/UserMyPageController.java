@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
@@ -38,7 +39,7 @@ public class UserMyPageController {
 	
 	/*주문내역*/
 	@GetMapping(value={"myOrderList","/"})
-	public String myOrderList(HttpSession session, Model model, @RequestParam(required = false) Map<String,String> parameters) {
+	public String myOrderList(HttpSession session, Model mv, @RequestParam(required = false) Map<String,String> parameters) {
 		
 		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
 		System.out.println("로그인 멤버: " + memberInfo);
@@ -76,10 +77,10 @@ public class UserMyPageController {
 		int totalCount = userMyPageService.selectMyOrderNum(searchMap);
 		
 
-		System.out.println("totalPostCount : " + totalCount);
+		System.out.println("totalCount : " + totalCount);
 		
 		/* 한 페이지에 보여 줄 게시물 수 */
-		int limit = 10;		//얘도 파라미터로 전달받아도 된다.
+		int limit = 4;		//얘도 파라미터로 전달받아도 된다.
 		/* 한 번에 보여질 페이징 버튼의 갯수 */
 		int buttonAmount = 5;
 		
@@ -96,6 +97,8 @@ public class UserMyPageController {
 		
 		List<MyOrderDTO> myOrderList = userMyPageService.selectMyOrderList(selectCriteria);
 		
+		
+		
 		//반찬코드를 담는다.
 		List<Object> sdCode = new ArrayList<>();
 		
@@ -106,28 +109,10 @@ public class UserMyPageController {
 			}
 		}
 		System.out.println(sdCode);
-//		List<Object> orderInfo = new ArrayList<>();
-//		for(int i = 0 ; i < myOrderList.size(); i++) {
-//			orderInfo.add(myOrderList.get(i).getOrderInfo());
-//		}
-//		System.out.println(orderInfo);
-//		
-//		List<Object> sideCode = new ArrayList<>;
-//		for(int i = 0 ; i < myOrderList.size(); i++) {
-//			sideCode.add(orderInfo);
-//		}
 		
-		//내 주문내역에 필요한 추가 정보를 담아온다. 
-		List<Object> sdInfo = new ArrayList<>();
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		mv.addAttribute("myOrderList", myOrderList);
+		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("myOrderBoard", "myOrderBoard");
 		
 		return "user_mypage/userTotalOrderList";
 	}
@@ -191,7 +176,7 @@ public class UserMyPageController {
 		System.out.println("totalPostCount : " + totalCount);
 		
 		/* 한 페이지에 보여 줄 게시물 수 */
-		int limit = 10;		//얘도 파라미터로 전달받아도 된다.
+		int limit = 5;		//얘도 파라미터로 전달받아도 된다.
 		/* 한 번에 보여질 페이징 버튼의 갯수 */
 		int buttonAmount = 5;
 		
@@ -266,6 +251,34 @@ public class UserMyPageController {
 		System.out.println("searchMap : " + searchMap);
 		
 		int totalCount = userMyPageService.selectMyRecommendStore(searchMap);
+		
+		System.out.println("totalPostCount : " + totalCount);
+		
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 5;		//얘도 파라미터로 전달받아도 된다.
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+		
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+			System.out.println("들어왔음");
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("selectCriteria : " + selectCriteria);
+		
+		List<StoreDTO> storeReconmendList = userMyPageService.selectRecommendStore(selectCriteria);
+		
+		System.out.println("내가찜한 가게 " + storeReconmendList);
+		
+		mv.addAttribute("storeReconmendList", storeReconmendList);
+		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("totalCount", totalCount);
+		mv.addAttribute("Paging", "recommendStore");
 		
 		return "user_mypage/userRecommendStore";
 	}

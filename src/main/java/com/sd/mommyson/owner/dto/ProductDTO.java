@@ -3,6 +3,8 @@ package com.sd.mommyson.owner.dto;
 import java.sql.Date;
 import java.util.List;
 
+import com.sd.mommyson.member.dto.StoreDTO;
+
 public class ProductDTO {
 
 	private int sdCode;
@@ -23,14 +25,14 @@ public class ProductDTO {
 	private String isDeleted;
 	private String storeName;
 	private List<String> tagList;
+	private StoreDTO storeInfo; //양윤제 추가
 	
-	public ProductDTO() {
-
-	}
+	public ProductDTO() {}
 
 	public ProductDTO(int sdCode, String sdName, Date mDate, int price, String ingredient, String volume, String sdImg,
 			String category, float discountRate, int memCode, String orderableStatus, Date eDate, String categoryCode,
-			String storageMethod, String detail, String isDeleted, String storeName, List<String> tagList) {
+			String storageMethod, String detail, String isDeleted, String storeName, List<String> tagList,
+			StoreDTO storeInfo) {
 		super();
 		this.sdCode = sdCode;
 		this.sdName = sdName;
@@ -50,6 +52,7 @@ public class ProductDTO {
 		this.isDeleted = isDeleted;
 		this.storeName = storeName;
 		this.tagList = tagList;
+		this.storeInfo = storeInfo;
 	}
 
 	public int getSdCode() {
@@ -196,6 +199,14 @@ public class ProductDTO {
 		this.tagList = tagList;
 	}
 
+	public StoreDTO getStoreInfo() {
+		return storeInfo;
+	}
+
+	public void setStoreInfo(StoreDTO storeInfo) {
+		this.storeInfo = storeInfo;
+	}
+
 	@Override
 	public String toString() {
 		return "ProductDTO [sdCode=" + sdCode + ", sdName=" + sdName + ", mDate=" + mDate + ", price=" + price
@@ -203,9 +214,10 @@ public class ProductDTO {
 				+ ", discountRate=" + discountRate + ", memCode=" + memCode + ", orderableStatus=" + orderableStatus
 				+ ", eDate=" + eDate + ", categoryCode=" + categoryCode + ", storageMethod=" + storageMethod
 				+ ", detail=" + detail + ", isDeleted=" + isDeleted + ", storeName=" + storeName + ", tagList="
-				+ tagList + "]";
+				+ tagList + ", storeInfo=" + storeInfo + "]";
 	}
-
+	
+	
 	
 
 }

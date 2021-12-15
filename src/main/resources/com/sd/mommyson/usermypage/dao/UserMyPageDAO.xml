@@ -135,9 +135,30 @@
     	<id property="proNo" column="PRO_NO"/>
     	<result property="sdCode" column="SD_CODE"/>
     	<result property="amount" column="AMONT"/>
-    	<result property="orderCode" column="ORDER_CODE"/>   
+    	<result property="orderCode" column="ORDER_CODE"/>
+    	<association property="sdInfo" resultMap="productResultMap"/>
+    </resultMap>
+    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+    	<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<association property="storeInfo" resultMap="storeResultMap"/>
     </resultMap>
     
+ 
     <!-- 나의 주문내역 총 갯수 확인 -->
     <select id="selectMyOrderNum" resultType="_int" parameterType="hashmap">
 	SELECT
@@ -167,6 +188,11 @@
 			  ,	A.ORDER_ACCEPT_TIME
 			  ,	A.ORDER_RUQEUST_TIME
 			  , A.SD_CODE
+			  , A.AMONT
+			  ,	A.SD_NAME
+			  , A.SD_IMG
+			  , A.PRICE
+			  , A.STORE_IMG
 		   FROM	(SELECT ROWNUM RNUM
 					  ,	B.MEM_CODE
 					  , B.TOTAL_PRICE
@@ -182,6 +208,11 @@
 					  ,	B.ORDER_ACCEPT_TIME
 					  ,	B.ORDER_RUQEUST_TIME
 					  , B.SD_CODE
+					  , B.AMONT
+					  ,	B.SD_NAME
+					  , B.SD_IMG
+					  , B.PRICE
+					  , B.STORE_IMG
 				   FROM (SELECT C.MEM_CODE
 							  , C.TOTAL_PRICE
 							  ,	C.ORDER_CODE
@@ -196,12 +227,19 @@
 							  ,	C.ORDER_ACCEPT_TIME
 							  ,	C.ORDER_RUQEUST_TIME
 							  , D.SD_CODE
+							  , D.AMONT
+							  ,	E.SD_NAME
+							  , E.SD_IMG
+							  , E.PRICE
+							  , F.STORE_IMG
 						   FROM ORDER_TBL C
 						   JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE=C.ORDER_CODE)
+						   JOIN PRODUCT_TBL E ON(E.SD_CODE = D.SD_CODE)
+						   JOIN STORE_TBL F ON(F.MEM_CODE=E.MEM_CODE)
 						   <where>
 						   		C.MEM_CODE = #{ searchCondition }
 						   		<if test="searchValue != null">
-						   		C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+						   		AND F.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 						   		</if>
 						   </where>
 						   ORDER BY C.ORDER_RUQEUST_TIME DESC
@@ -228,8 +266,48 @@
 		  </if>
 	</select>
 	
-		   
-		   	
-    
+	<!-- 자주 찾는 가게 출력  -->
+ 	<select id="selectRecommendStore" resultMap="storeResultMap">
+	SELECT
+	       A.RNUM
+	     , A.STORE_NAME
+		 , A.STORE_IMG
+		 , A.STORE_INFO
+		 , A.GRADE
+		 , A.DEL_COST
+		 , A.WORK_TIME
+		 , A.MEM_CODE
+	  FROM (SELECT ROWNUM RNUM
+			     , B.STORE_NAME
+				 , B.STORE_IMG
+				 , B.STORE_INFO
+				 , B.GRADE
+				 , B.DEL_COST
+				 , B.WORK_TIME
+				 , B.MEM_CODE
+	   		  FROM (SELECT C.STORE_NAME
+						 , C.STORE_IMG
+						 , C.STORE_INFO
+						 , C.GRADE
+						 , C.DEL_COST
+						 , C.WORK_TIME
+						 , C.MEM_CODE
+				 	  FROM STORE_TBL C
+				 	  JOIN CEO_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+				 	  JOIN JJIM_TBL E ON(D.MEM_CODE = E.CEO_CODE)
+				 	 WHERE E.MEM_CODE = #{ searchCondition }
+				 	 <if test="searchValue != null">
+				 	   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+				 	 </if>
+				 	 ORDER BY STORE_NAME ASC
+			  		 )B
+			   <![CDATA[
+			 	 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+			 	 )A
+	 <![CDATA[
+	 WHERE A.RNUM >= #{ startRow }
+	 ]]>	   
+	</select>
     </mapper>
     
