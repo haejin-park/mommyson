@@ -69,10 +69,10 @@
               </table>
 
               <!-- 페이징 -->
+                  	<jsp:include page="../commons/userNoticePagination.jsp"></jsp:include>
               <nav class="page_box" aria-label="Page navigation example">
                   <ul class="pagination">
                   <!--   <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li> -->
-                  	<jsp:include page="../commons/userNoticePagination.jsp"></jsp:include>
                   </ul>
                   <ul>
                   	<form action="${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeSelect" method="get">

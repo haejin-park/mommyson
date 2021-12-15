@@ -133,12 +133,8 @@
             });
             
         </script>
-   <nav class="page_box" aria-label="Page navigation example">
-    <ul class="pagination">
-      <jsp:include page="../commons/userFqaPagination.jsp"></jsp:include>
-    </ul>
-    
-  </nav>
+
+      <jsp:include page="../commons/userFqaPagination.jsp"/>
             
           </div>
         </div>
