@@ -1,11 +1,24 @@
 package com.sd.mommyson.user.controller;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +38,7 @@ import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
+
 
 @Controller
 //@SessionAttributes("")
@@ -763,11 +777,20 @@ public class UserController {
 	
 
 	
+	/**@author ShinHyungi
+	 * @return
+	 */
 	@GetMapping("cart")
 	public String cart() {
 		return "user/shoppingBasket";
 	}
 	
+	/**@author ShinHyungi
+	 * @param amount
+	 * @param sdCode
+	 * @param session
+	 * @return
+	 */
 	@PostMapping("cart")
 	public String addCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode, HttpSession session) {
 		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
@@ -852,7 +875,7 @@ public class UserController {
 		
 		System.out.println("pagination : " + pagination);
 		
-		List<StoreDTO> productList = userService.selectProductList(pagination);
+		List<ProductDTO> productList = userService.selectProductList(pagination);
 		
 		System.out.println("리스트 확인 : " + productList);
 		
@@ -868,6 +891,10 @@ public class UserController {
 		return "user/category_page";
 	}
 	
+	/**@author ShinHyungi
+	 * @param model
+	 * @param currentPage
+	 */
 	@GetMapping("sale")
 	public void todaySale(Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
@@ -900,7 +927,7 @@ public class UserController {
 		
 		System.out.println("totalInquiryBoardCount : " + totalCount);
 		
-		int limit = 10;
+		int limit = 12;
 		int buttonAmount = 10;
 		
 		Pagination pagination = null;
@@ -916,7 +943,7 @@ public class UserController {
 		
 		System.out.println("pagination : " + pagination);
 		
-		List<StoreDTO> productList = userService.selectProductList(pagination);
+		List<ProductDTO> productList = userService.selectProductList(pagination);
 		
 		System.out.println("리스트 확인 : " + productList);
 		
@@ -973,7 +1000,7 @@ public class UserController {
 		
 		System.out.println("totalInquiryBoardCount : " + totalCount);
 		
-		int limit = 10;
+		int limit = 12;
 		int buttonAmount = 10;
 		
 		Pagination pagination = null;
@@ -1009,6 +1036,12 @@ public class UserController {
 		return "user/famousStore";
 	}
 	
+	/**@author ShinHyungi
+	 * @param memCode
+	 * @param model
+	 * @param currentPage
+	 * @return
+	 */
 	@GetMapping("storepage")
 	public String storePage(@RequestParam String memCode, Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
 		
@@ -1063,16 +1096,27 @@ public class UserController {
 		return "user/store_page";
 	}
 	
+	/**@author ShinHyungi
+	 * @param orderList
+	 */
 	@GetMapping("packagePay")
 	public void packagePay(@RequestParam(value = "orderList", required = false) int orderList[]) {
 		
 	}
 	
+	/**@author ShinHyungi
+	 * @param orderList
+	 */
 	@GetMapping("deliveryPay")
 	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[]) {
 		
 	}
 	
+	/**@author ShinHyungi
+	 * @param sdCode
+	 * @param memCode
+	 * @param model
+	 */
 	@GetMapping("sidedish_detail")
 	public void orderProduct(@RequestParam("sdCode") int sdCode, @RequestParam("memCode") String memCode ,Model model) {
 		
@@ -1082,6 +1126,11 @@ public class UserController {
 		model.addAttribute("store", store);
 	}
 	
+	/**@author ShinHyungi
+	 * @param rvCode
+	 * @param reportType
+	 * @return
+	 */
 	@PostMapping(value = "report", produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String report(@RequestParam("rvCodee") int rvCode, @RequestParam("reportType") int reportType) {
@@ -1094,4 +1143,68 @@ public class UserController {
 		
 		return result > 0? "1" : "0";
 	}
+	
+	/**@author ShinHyungi
+	 * @param memCode
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("storeInfo")
+	public String storeInfo(@RequestParam("memCode") int memCode, Model model) {
+		Map<String, String> store = userService.selectStoreInfoByMemcode(memCode);
+		model.addAttribute("store", store);
+		return "user/store_info";
+	}
+	
+	/**@author ShinHyungi
+	 * @param model
+	 * @param searchValue
+	 */
+	@PostMapping("searchResult")
+	public void search(Model model, @RequestParam(value = "searchValue") String searchValue) {
+		
+		List<String> list = new ArrayList<String>();
+		Map<String, Object> searchMap = new HashMap<>();
+		
+		if(searchValue.contains(",")) {
+			String[] words = searchValue.split(",");
+			for(String a : words) {
+				String word = a.replace("#", "");
+				if(!word.equals("")) {
+					list.add(word);
+				}
+			}
+			searchMap.put("searchValue", list);
+		} else {
+			searchMap.put("searchValue", searchValue);
+			searchMap.put("searchCondition", "title");
+		}
+		
+		List<ProductDTO> productList = userService.selectSearchList(searchMap);
+		System.out.println("리스트 확인 : " + productList);
+		
+		if(productList != null) {
+			model.addAttribute("productList", productList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
+	}
+	
+	/**@author ShinHyungi
+	 * 주문 시작할 때 생성된 주문 업데이트
+	 * @return
+	 */
+	@GetMapping("payComplete")
+	public String payComplete(@RequestParam("orderCode") int orderCode, @RequestParam("totalPrice") int totalPrice) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("orderCode",orderCode);
+		map.put("totalPrice",totalPrice);
+		
+//		int result = userService.updateOrder(map);
+		
+		return "user/cart";
+	}
+	
 }

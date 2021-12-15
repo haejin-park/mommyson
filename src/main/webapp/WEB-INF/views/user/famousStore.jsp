@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/store_page.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>우리동네 인기맛집</title>
+    <title>가게 리스트</title>
     <style>
     	.col-3 {
     		display: flex;

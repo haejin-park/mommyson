@@ -20,14 +20,10 @@
     <jsp:include page="../commons/header.jsp"/>
     
     <section class="at-container">
-       	<c:if test="${ requestScope.category != '오늘만 할인' && requestScope.category != '오늘의 추천' && requestScope.category != '우리동네 인기 맛집' }">
-       		<div style="display: flex; justify-content: space-between; align-items: center; width: 83%;">
-	            <h4 style="float: left; margin-left: 50px; margin-top: 80px;">반찬조회 > ${ requestScope.category }</h4>
-	            <div></div>
-	        </div>
-       	</c:if>
+   		<div style="display: flex; justify-content: space-between; align-items: center; width: 83%;">
+        </div>
        	<!-- 카테고리 -->
-        <h1 align="center" style="margin-top: 100px;">${ requestScope.category }</h1>
+        <h1 align="center" style="margin-top: 100px;">검색 결과</h1>
         
        	<!-- 메뉴  -->
         <div class="container-xl" style=" margin-top: 150px;">
@@ -46,12 +42,11 @@
             	</c:forEach>
             	<c:if test="${ empty requestScope.productList }">
             		<div class="col-12" style="margin-bottom: 100px;">
-            			<h1 align="center">지금은 상품이 없어요 ㅠ.ㅠ</h1>
+            			<h1 align="center">검색 결과가 없습니다.</h1>
             		</div>
             	</c:if>
 	       </div>
 	       
-			<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
         </div>
         
         <c:if test="${ sessionScope.loginMember != null }">

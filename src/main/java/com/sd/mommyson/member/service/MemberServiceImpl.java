@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -113,11 +116,25 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 
+	@Override
+	public List<TagDTO> selectTagList() {
+		return memberDAO.selectTagList();
+	}
 
+	@Override
+	public List<ProductDTO> selectProductList() {
+		return memberDAO.selectProductList();
+	}
 
-	
-	
+	@Override
+	public List<TagDTO> selectHotKeywordList() {
+		return memberDAO.selectHotKeywordList();
+	}
 
+	@Override
+	public List<StoreDTO> selectStoreList() {
+		return memberDAO.selectStoreList();
+	}
 	
 
 }
