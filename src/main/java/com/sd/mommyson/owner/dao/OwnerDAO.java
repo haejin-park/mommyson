@@ -7,6 +7,8 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.OrderDTO;
@@ -56,8 +58,6 @@ public interface OwnerDAO {
 
 	public List<ProductDTO> selectProdouct(int memCode);
 
-	public int registDc(Map<String, Object> map);
-
 	public List<OrderDTO> selectOrderList(Pagination pagination);
 
 	public List<OrderDTO> selectOrderList2(String storeName);
@@ -69,5 +69,13 @@ public interface OwnerDAO {
 	public List<CouponDTO> selectCoupon(MemberDTO member);
 
 	public int selectReviewListTotalCount(String storeName);
+	
+	public int registDc(List<DCProduct> maps);
+
+	public int modifyOwnerStatus(Map<String, Object> map);
+
+	public MembershipDTO selectMembership(int msCode);
+
+	public int modifyProduct(List<DCProduct> maps);
 	
 }

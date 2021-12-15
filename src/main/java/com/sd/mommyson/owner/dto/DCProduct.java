@@ -8,15 +8,26 @@ public class DCProduct {
 	private int discountRate;
 	private Date insertDate;
 	private int sdCode;
+	private String sdName;
+	private int price; 
 	
 	public DCProduct() {}
+	
+	public DCProduct(int discountRate, int sdCode) {
+		super();
+		this.discountRate = discountRate;
+		this.sdCode = sdCode;
+	}
 
-	public DCProduct(int dcCode, int discountRate, Date insertDate, int sdCode) {
+
+	public DCProduct(int dcCode, int discountRate, Date insertDate, int sdCode, String sdName, int price) {
 		super();
 		this.dcCode = dcCode;
 		this.discountRate = discountRate;
 		this.insertDate = insertDate;
 		this.sdCode = sdCode;
+		this.sdName = sdName;
+		this.price = price;
 	}
 
 	public int getDcCode() {
@@ -51,9 +62,25 @@ public class DCProduct {
 		this.sdCode = sdCode;
 	}
 
+	public String getSdName() {
+		return sdName;
+	}
+
+	public void setSdName(String sdName) {
+		this.sdName = sdName;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
 		return "DCProduct [dcCode=" + dcCode + ", discountRate=" + discountRate + ", insertDate=" + insertDate
-				+ ", sdCode=" + sdCode + "]";
+				+ ", sdCode=" + sdCode + ", sdName=" + sdName + ", price=" + price + "]";
 	}
 }

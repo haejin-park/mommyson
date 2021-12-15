@@ -1,42 +1,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/mypage-sidebar.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </head>
 <body>
 		<div class="side-all">
             <div class="side-1">
                 <br>
-                <form>
+                <form action="" method="post" id="ownerFrm">
                     <img src="${ pageContext.servletContext.contextPath }/${ sessionScope.owner.ceo.store.storeImg }" width="150px;"><br> <hr>
                     <h3>${ sessionScope.owner.ceo.name }사장님</h3>
                     <br>
                     <h5>21-11-22 ~</h5>
                     <h6>정액제 사용중</h6>
                     <h6>만료일 : 22-2-22</h6>
+                    <input type="hidden" name="statusYN">
                 </form><br>
 
-                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; margin-bottom: 10px; ">연장하기</button>
+                <a href="${ pageContext.servletContext.contextPath }/owner/ownerPay">
+                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; margin-bottom: 10px;" id="pay">연장하기</button>
+                </a>
                 <hr>
-                <button id="button3" style="margin-top: 10px; margin-bottom: 30px;">영업시작</button> 
+               	<c:if test="${ sessionScope.loginMember.ceo.store.statusYN == 'Y' }">
+                	<button id="button3" style="margin-top: 10px; margin-bottom: 30px;">영업중</button> 
+                </c:if>
+                <c:if test="${ sessionScope.loginMember.ceo.store.statusYN == 'N' }">
+                	<button id="button3" style="margin-top: 10px; margin-bottom: 30px; background-color: #777777">영업시작</button> 
+                </c:if>
                 </div>
             <script>
             $(function(){
-                $("#button3").click(function(){
-                	$("#button3").click(function(){
-                        if($("#button3").html() == "영업시작"){
-                          $(this).css("background-color","#777777").html("영업정지");
-                        } else{
-                          $(this).css("background-color","#F89E91").html("영업시작");
-                        }
-                      });
-           		 });
+              	$("#button3").click(function(){
+              		let result = "";
+                    if($("#button3").html() == "영업시작"){
+                      $(this).css("background-color","#F89E91").html("영업중");
+                      result = "Y";
+                    } else{
+                      $(this).css("background-color","#777777").html("영업시작");
+                      result="N";
+                    }
+                    
+                    $.ajax({
+                    	url : '${ pageContext.servletContext.contextPath }/owner/ownerSidebar',
+                    	type : 'post',
+                    	data : { statusYN : result },
+                    	success : function(data){
+                    		console.log(data);
+                    	}
+                    })
+               });
+              	
+               $('#pay').click(function(){
+            	   
+               })	
             });
                 </script> 
+                
             
             <div class="side-2" style="width: 300px; ">
               <nav id="sidebar" style="min-width: 295px; max-width: 295px;">

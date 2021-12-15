@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.tribes.membership.Membership;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,11 +32,15 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
+
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -552,6 +558,39 @@ public class OwnerController {
 		}
 		
 	}
+
+	@PostMapping("productManagement")
+	public String product(@RequestParam(value="sdCode", required = false ,defaultValue = "0") int sdCode, @RequestParam(value="deleteCode",required = false) List<Integer> deleteCode,
+			RedirectAttributes redirect) {
+		// redirect할때는 RedirectAttributes 사용해야함 정신차려..!
+		if(sdCode > 0 ) {
+
+			ProductDTO product = new ProductDTO();
+			product.setSdCode(sdCode);
+			System.out.println("sdCode : " + product);
+			int updateStatus = ownerService.modifyStatus(product);
+
+			if(updateStatus > 0) {
+				redirect.addFlashAttribute("success","success");
+			} 
+		}
+
+		if(deleteCode != null && deleteCode.size() > 0) {
+
+			System.out.println("deleteCode : " + deleteCode);
+
+			int removeProduct = ownerService.removeProduct(deleteCode);
+
+			if(removeProduct > 0) {
+				redirect.addFlashAttribute("message","삭제가 완료되었습니다");
+			} else {
+				redirect.addFlashAttribute("message","삭제에 실패하였습니다");
+			}
+
+		}
+
+		return "redirect:productManagement";
+	}
 	
 	@GetMapping("order")
 	public String orderList(@ModelAttribute("loginMember") MemberDTO member, @RequestParam(value = "currentPage", required = false) String currentPage ,Model model) {
@@ -615,7 +654,6 @@ public class OwnerController {
 		
 		Map<String, Object> searchMap = new HashMap<>();
 		
-		
 		int pageNo = 1;
 		
 		String currentPage = param.get("currentPage");
@@ -669,27 +707,78 @@ public class OwnerController {
 			model.addAttribute("fail","조회된 결과값이 없습니다.");
 		}
 		
+		model.addAttribute("msg", model.getAttribute("msg"));
 		
 	}
 	
-	
 	@PostMapping("todayDiscount")
-	public String dcProduct(@RequestParam List<Integer>sdCode, @RequestParam List<Integer>dcRate, RedirectAttributes rd) {
+	public String dcProduct(@RequestParam(value="sdCode") int[] sdCode, @RequestParam(value="dcRate") int[] dcRate, RedirectAttributes rd) {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("sdCode", sdCode);
-		map.put("dcRate", dcRate);
+		List<DCProduct> maps = new ArrayList<DCProduct>();
 		
-		int insertDc = ownerService.registDc(map);
+		for(int i = 0; i < sdCode.length; i++) {
+			maps.add(new DCProduct(dcRate[i],sdCode[i]));
+		}
 		
-		if(insertDc > 0) {
-			rd.addFlashAttribute("success","등록에 성공하였습니다.");
+		int insertDc = ownerService.registDc(maps);
+		
+		int updateDC = ownerService.modifyProduct(maps);
+		
+		
+		if(insertDc > 0 && updateDC > 0) {
+			rd.addFlashAttribute("msg","등록에 성공하였습니다.");
 		} else {
-			rd.addFlashAttribute("fail","등록에 실패하였습니다.");
+			rd.addFlashAttribute("msg","등록에 실패하였습니다.");
 		}
 		
 		return "redirect:todayDiscount";
 		
+	}
+	
+	/* 사용자 가게 영업상태 변경 */
+	@PostMapping(value="ownerSidebar",produces="text/plan; charset=UTF-8")
+	@ResponseBody
+	public String ownersidebar(Model model, @RequestParam(value="statusYN") String statusYN, RedirectAttributes rd) {
+		
+		System.out.println("statusYN : " + statusYN);
+
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		
+		int memCode = member.getMemCode();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memCode", memCode);
+		map.put("statusYN", statusYN);
+		
+		int updateStatus =ownerService.modifyOwnerStatus(map);
+		
+		member.getCeo().getStore().setStatusYN(statusYN);
+		model.addAttribute("loginMember", member);
+		
+		return updateStatus + "";
+		
+	}
+	
+	/* 사용자 이용권 결제 */
+	@GetMapping("ownerPay")
+	public void pay() {}
+	
+	
+	@PostMapping("ownerPay2")
+	public String payInfo(Model model, @RequestParam(value="pay") int msCode) {
+		
+		System.out.println("msCode : " + msCode);
+		
+		MemberDTO ownerInfo = (MemberDTO)model.getAttribute("loginMember");
+		
+		MembershipDTO membership = ownerService.selectMembership(msCode);
+		
+		System.out.println("membership : " + membership);
+		
+		model.addAttribute("ownerInfo",ownerInfo);
+		model.addAttribute("membership",membership);
+		
+		return "owner/ownerPay2";
 	}
 	
 	
