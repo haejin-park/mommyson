@@ -101,7 +101,7 @@
                 <!-- 가게정보, 전화, 신고 -->
                 <div>
                     <div>
-                        <a href="#"><h4><strong>가게정보</strong></h4></a>
+                        <a href="${ pageContext.servletContext.contextPath }/user/storeInfo?memCode=${ requestScope.store.MEM_CODE }"><h4><strong>가게정보</strong></h4></a>
                     </div>
                     <div style="display: flex; justify-content: space-between; width: 400px;">
                         <div><h4><strong>전화 :</strong>&nbsp;${ requestScope.store.PHONE }</h4></div>

@@ -23,7 +23,7 @@ public interface UserService {
 
 	int selectProductTotalCount(Map<String, String> searchMap);
 
-	List<StoreDTO> selectProductList(Pagination pagination);
+	List<ProductDTO> selectProductList(Pagination pagination);
 
 	List<PostDTO> selectFqaList(SelectCriteria selectCriteria);
 
@@ -46,5 +46,11 @@ public interface UserService {
 	void insertShoppingBasket(Map<String, Integer> order);
 
 	int insertReport(Map<String, Integer> reportInfo);
+
+	Map<String, String> selectStoreInfoByMemcode(int memCode);
+
+	int selectSearchTotalCount(Map<String, Object> searchMap);
+
+	List<ProductDTO> selectSearchList(Map<String, Object> searchMap);
 
 }

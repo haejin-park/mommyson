@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.member.service.MemberService;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 @Controller
 @RequestMapping("/*")
-@SessionAttributes({"locationList","categoryList"})
+@SessionAttributes({"locationList","categoryList","tagList"})
 public class MainController {
 	
 	private MemberService memberService;
@@ -29,9 +32,17 @@ public class MainController {
 		
 		List<HashMap<String, String>> locationList = memberService.selectLoation();
 		List<HashMap<String, String>> categoryList = memberService.selectCategoryList();
+		List<TagDTO> tagList = memberService.selectTagList();
+		List<ProductDTO> productList = memberService.selectProductList();
+		List<TagDTO> hotKeywordList = memberService.selectHotKeywordList();
+		List<StoreDTO> storeList = memberService.selectStoreList();
 		System.out.println(categoryList);
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("tagList", tagList);
+		model.addAttribute("productList", productList);
+		model.addAttribute("hotKeywordList", hotKeywordList);
+		model.addAttribute("storeList", storeList);
 		
 		return "user/main";
 	}

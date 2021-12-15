@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 public interface MemberDAO {
 
@@ -40,6 +43,14 @@ public interface MemberDAO {
 
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO dto);
+
+	public List<TagDTO> selectTagList();
+
+	public List<ProductDTO> selectProductList();
+
+	public List<TagDTO> selectHotKeywordList();
+
+	public List<StoreDTO> selectStoreList();
 
 	
 

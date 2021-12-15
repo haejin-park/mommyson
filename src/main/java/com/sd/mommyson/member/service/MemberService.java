@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 public interface MemberService  {
 
@@ -33,6 +36,14 @@ public interface MemberService  {
 
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO dto);
+
+	public List<TagDTO> selectTagList();
+
+	public List<ProductDTO> selectProductList();
+
+	public List<TagDTO> selectHotKeywordList();
+
+	public List<StoreDTO> selectStoreList();
 
 
 	

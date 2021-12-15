@@ -125,43 +125,37 @@
                     <div class="row" id="categoryList">
                     </div>
                 </div>
-            </div> 
+            </div>
             </li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/category?category=recommend">오늘의 추천</a></li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore?type=famous">우리동네 인기 맛집</a></li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a></li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore?type=new">신규 반찬 가게</a></li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <form action="${ pageContext.servletContext.contextPath }/user/searchResult" method="post" style="display: flex;">
+	          <input class="form-control mr-sm-2" id="search" name="searchValue" type="search" placeholder="# 혹은 이름으로 검색해주세요" aria-label="Search">
+	          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
       </nav>
     <!-- 태그 div -->
     <div id="tags" style="display: none;">
-        <div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
-          <input type="button" class="tag" value="#무침">
-          <input type="button" class="tag" value="#볶음">
-          <input type="button" class="tag" value="#조림">
-          <input type="button" class="tag" value="#김치/절임/젓갈">
-          <input type="button" class="tag" value="#전/생선">
-        </div>
-        <div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
-         <input type="button" class="tag" value="#국/찌개/탕">
-         <input type="button" class="tag" value="#메인요리">
-         <input type="button" class="tag" value="#곡류/양념">
-         <input type="button" class="tag" value="#매콤한">
-         <input type="button" class="tag" value="#달콤한">
-        </div>
-        <div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
-         <input type="button" class="tag" value="#얼큰한">
-         <input type="button" class="tag" value="#톡쏘는">
-         <input type="button" class="tag" value="#짭짤한">
-         <input type="button" class="tag" value="#시원한">
-         <input type="button" class="tag" value="#부드러운">
-        </div>
-      </div>
+	    	<div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
+	    	<c:forEach items="${ sessionScope.tagList }" var="tag" end="4">
+		       <button type="button" class="tag" name="searchValue" value="${ tag.tagNo }">#${ tag.tagName }</button>
+	    	</c:forEach>
+	        </div>
+	    	<div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
+    		<c:forEach items="${ sessionScope.tagList }" var="tag" begin="5" end="9">
+	       	   <button type="button" class="tag" name="searchValue" value="${ tag.tagNo }">#${ tag.tagName }</button>
+    		</c:forEach>
+	        </div>
+	    	<div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
+    		<c:forEach items="${ sessionScope.tagList }" var="tag" begin="10">
+		       <button type="button" class="tag" name="searchValue" value="${ tag.tagNo }">#${ tag.tagName }</button>
+	    	</c:forEach>
+	        </div>
+	</div>    	
       <script>
         // 태그 div 출력 이벤트
         $('#search').on('keyup', function() {
@@ -178,7 +172,7 @@
          
          let text = $('#search').val();
          let index = text.lastIndexOf('#');
-         let replace = text.replaceAt(index, e.target.value + ", ");
+         let replace = text.replaceAt(index, e.target.innerText + ",");
          $('#search').val(replace);
          $('#tags').css('display', 'none');
          $('#search').focus();
@@ -187,6 +181,7 @@
         String.prototype.replaceAt=function(index, character) {
           return this.substr(0, index) + character + this.substr(index+character.length); 
         }
+        
       </script>
 </body>
 </html>
