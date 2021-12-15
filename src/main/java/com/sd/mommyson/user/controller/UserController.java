@@ -1047,7 +1047,9 @@ public class UserController {
 		
 		Map<String, String> store = userService.selectStoreByMemCode(memCode);
 		List<ProductDTO> products = userService.selectProducts(memCode);
-		
+		List<String> jjimList = userService.selectJJIMList(memCode);
+		System.out.println(store);
+		model.addAttribute("jjimList", jjimList);
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
 		
@@ -1207,11 +1209,39 @@ public class UserController {
 		return "user/cart";
 	}
 	
-	@PostMapping("jjimplus")
-	public int jjimplus() {
+	/**@author ShinHyungi
+	 * @param storeCode
+	 * @param memCode
+	 * @return
+	 */
+	@PostMapping(value = "jjimplus", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String jjimplus(@RequestParam("storeCode") int storeCode, @RequestParam("memCode") int memCode) {
 		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("storeCode",storeCode);
+		map.put("memCode",memCode);
 		
-//		int result = userService.insertJJIMplus();
-		return result;
+		Integer result = userService.insertJJIMplus(map);
+		
+		return result > 0? "삭제 완료" : "삭제 실패";
+	}
+	
+	/**@author ShinHyungi
+	 * @param storeCode
+	 * @param memCode
+	 * @return
+	 */
+	@PostMapping(value = "jjimdelete", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String jjimdelete(@RequestParam("storeCode") int storeCode, @RequestParam("memCode") int memCode) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("storeCode",storeCode);
+		map.put("memCode",memCode);
+		
+		Integer result = userService.deleteJJIMplus(map);
+		
+		return result > 0? "삭제 완료" : "삭제 실패";
 	}
 }

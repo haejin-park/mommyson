@@ -155,4 +155,22 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	@Override
+	public Integer insertJJIMplus(Map<String, Integer> map) {
+		return userDAO.insertJJIMplus(map);
+	}
+
+
+	@Override
+	public List<String> selectJJIMList(String memCode) {
+		return userDAO.selectJJIMList(memCode);
+	}
+
+
+	@Override
+	public Integer deleteJJIMplus(Map<String, Integer> map) {
+		return userDAO.deleteJJIMplus(map);
+	}
+
+
 }

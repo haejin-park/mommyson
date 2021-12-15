@@ -53,4 +53,10 @@ public interface UserDAO {
 
 	List<ProductDTO> selectSearchList(Map<String, Object> searchMap);
 
+	Integer insertJJIMplus(Map<String, Integer> map);
+
+	List<String> selectJJIMList(String memCode);
+
+	Integer deleteJJIMplus(Map<String, Integer> map);
+
 }

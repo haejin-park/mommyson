@@ -26,23 +26,42 @@
                 <!-- 찜, 평점 -->
                 <div style="float: left;">
                     <div class="df-ac">
-                        <button class="btn_none" onclick="jjim_plus()"><img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" style="width: 35px; height: 35px;"></button>&nbsp;&nbsp;<h4 style="margin: 0;"><strong>찜</strong> ${ requestScope.store.JJIM }</h4>
+                    	<c:set var="jjimCount" value="0"/>
+                    	<c:forEach items="${ requestScope.jjimList }" var="j">
+                    		<c:if test="${ j == sessionScope.loginMember.memCode }">
+                    			<c:set var="jjimCount" value="${ jjimCount + 1 }"/>
+                    		</c:if>
+                    	</c:forEach>
+                    	<c:if test="${ jjimCount > 0 }">
+	                        <button class="btn_none" onclick="jjim_plus('delete')"><img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" style="width: 35px; height: 35px;"></button>&nbsp;&nbsp;<h4 style="margin: 0;"><strong>찜</strong> ${ requestScope.store.JJIM }</h4>
+                    	</c:if>
+                    	<c:if test="${ jjimCount == 0 }">
+	                        <button class="btn_none" onclick="jjim_plus('plus')"><img src="${ pageContext.servletContext.contextPath }/resources/images/whiteHeart.png" style="width: 35px; height: 35px;"></button>&nbsp;&nbsp;<h4 style="margin: 0;"><strong>찜</strong> ${ requestScope.store.JJIM }</h4>
+                    	</c:if>
                     </div>
                     <script>
-                    	function jjim_plus() {
-                    		let storeCode = ${ requestScope.store.MEM_CODE };
-                    		let memCode = ${ sessionScope.loginMember.memCode };
-                    		$.ajax({
-                    			url: '${ pageContext.servletContext.contextPath }/user/jjimplus',
-                    			type: 'post',
-                    			data: {
-                    				storeCode : storeCode,
-                    				memCode : memCode
-                    			},
-                    			success: function(data) {
-                    				
-                    			}
-                    		});
+                    	function jjim_plus(str) {
+                    		if(${ sessionScope.loginMember != null}) {
+                    			let storeCode = '${ requestScope.store.MEM_CODE }';
+                        		let memCode = '${ sessionScope.loginMember.memCode }';
+                        		$.ajax({
+                        			url: '${ pageContext.servletContext.contextPath }/user/jjim' + str,
+                        			type: 'post',
+                        			data: {
+                        				storeCode : storeCode,
+                        				memCode : memCode
+                        			},
+                        			success: function(data) {
+                        				console.log(data)
+                        				if(data == '삭제 완료') {
+                        					location.reload();
+                        				}
+                        			}
+                        		});
+                    		} else {
+                    			alert("로그인이 필요한 기능입니다.");
+                    			location.href='${ pageContext.servletContext.contextPath }/member/login';
+                    		}
                     	}
                     </script>
                     <br>
