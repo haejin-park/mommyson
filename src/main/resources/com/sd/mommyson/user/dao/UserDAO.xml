@@ -241,6 +241,24 @@
          WHERE A.POST_NO = #{ postNo }
 	</update>
 	
+	<!-- 중요공지사항 출력 -->
+	<select id="selectImportantNotice" resultMap="postResultMap">
+	SELECT 
+		   A.POST_NO
+		 , A.BOARD_CODE
+		 , A.POST_TITLE
+		 , A.MEM_CODE
+		 , A.POST_CONTENT
+		 , A.POST_DATE
+		 , A.ANS_STATUS
+		 , A.QUE_NO
+		 , A.STATUS
+		 , A.VIEW_CNT
+	  FROM POST_TBL A
+	  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+	 WHERE A.STATUS LIKE 'U'
+	</select>
+	
 	<!-- 자주하는 질문 -->
 	<select id="selectFqaList" resultMap="postResultMap">
     	SELECT
@@ -565,4 +583,51 @@
     	, DEFAULT
     	)
     </insert>
+    
+    <select id="selectStoreInfoByMemcode" resultType="hashmap">
+    	SELECT
+    		   C.STORE_NAME
+    		 , C.STORE_IMG
+    		 , A.ADDRESS
+    		 , A.D_ADDRESS
+    		 , C.WORK_TIME
+    		 , A.PHONE
+    		 , C.STORE_INFO
+    		 , B.CEO_NAME
+    		 , B.STORE_NO
+    	  FROM MEMBER_TBL A
+    	  LEFT JOIN CEO_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+    	  LEFT JOIN STORE_TBL C ON(C.MEM_CODE = B.MEM_CODE)
+    	 WHERE A.MEM_CODE = #{ memCode }
+    </select>
+    
+    <select id="selectSearchList" resultMap="productResultMap">
+    	SELECT
+               A.SD_CODE
+             , A.SD_NAME
+             , A.PRICE 
+             , A.VOLUME 
+             , A.SD_IMG 
+             , A.CATEGORY 
+             , A.DISCOUNT_RATE 
+             , A.MEM_CODE 
+             , S.STORE_NAME
+          FROM PRODUCT_TBL A
+          LEFT JOIN PRODUCT_TAG_TBL P ON(A.SD_CODE = P.SD_CODE)
+          LEFT JOIN TAGS_TBL T ON(P.TAG_NO = T.TAG_NO)
+          LEFT JOIN STORE_TBL S ON(A.MEM_CODE = S.MEM_CODE)
+         <where>
+           	A.IS_DELETED = 'N'
+           	AND A.ORDERABLE_STATUS = 'Y'
+      		<if test="searchCondition == null">
+   				AND T.TAG IN 
+			    <foreach collection="searchValue" item="item" index="index" separator="," open="(" close=")">
+			    		#{ item }
+			   	</foreach>
+			</if>
+      		<if test="searchCondition != null">
+   				AND A.SD_NAME LIKE '%' || #{ searchValue } || '%'
+			</if>
+         </where>
+    </select>
     </mapper>

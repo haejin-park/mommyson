@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
    <nav class="page_box" aria-label="Page navigation example">
@@ -31,7 +30,7 @@
             </c:if>
          </c:forEach>
            
-            <!-- 다음 페이지 버튼 -->
+          <!-- 다음 페이지 버튼 -->
          <c:if test="${ requestScope.pagination.pageNo < requestScope.pagination.maxPage }">
             <li class="page-item"><a class="page-link-num" id="nextPage" href="#">&gt;</a></li>
          </c:if>
@@ -43,11 +42,13 @@
     <script>
    
         let link = "";
-         link = document.location.href;
-         if(!(document.location.href).includes("?memCode")) {
-           link = document.location.pathname;
-        } else {
-             link = document.location.pathname + '?memCode=${ requestScope.store.MEM_CODE }';
+        link = document.location.href;
+        if(!(document.location.href).includes("?memCode") && !(document.location.href).includes("?type")) {
+            link = document.location.pathname;
+        } else if((document.location.href).includes("?memCode")) {
+            link = document.location.pathname + '?memCode=${ requestScope.store.MEM_CODE }';
+        } else if((document.location.href).includes("?type")) {
+        	link = document.location.pathname + '?type=${ requestScope.realType }';
         }
 
       let searchText = "";
@@ -63,7 +64,7 @@
       if(document.getElementById("startPage")) {
          const $startPage = document.getElementById("startPage");
          $startPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=1" + searchText;
               } else {
                  location.href = link + "&currentPage=1" + searchText;
@@ -74,7 +75,7 @@
       if(document.getElementById("prevPage")) {
          const $prevPage = document.getElementById("prevPage");
          $prevPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=${ requestScope.pagination.pageNo - 1 }" + searchText;
               } else {
                  location.href = link + "&currentPage=${ requestScope.pagination.pageNo - 1 }" + searchText;
@@ -85,18 +86,18 @@
       if(document.getElementById("nextPage")) {
          const $nextPage = document.getElementById("nextPage");
          $nextPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
-              } else {
-                 location.href = link + "&currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
-              }
+            } else {
+               location.href = link + "&currentPage=${ requestScope.pagination.pageNo + 1 }" + searchText;
+            }
          }
       }
       
       if(document.getElementById("maxPage")) {
          const $maxPage = document.getElementById("maxPage");
          $maxPage.onclick = function() {
-            if(!(document.location.href).includes("?memCode")) {
+            if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
                location.href = link + "?currentPage=${ requestScope.pagination.maxPage }" + searchText;
               } else {
                  location.href = link + "&currentPage=${ requestScope.pagination.maxPage }" + searchText;
@@ -108,12 +109,28 @@
          let pageNo = $(this).text();
          console.log(link);
          location.href = link + "?currentPage=" + pageNo + searchText;
-         if(!(document.location.href).includes("?memCode")) {
-            location.href = link + "?currentPage=" + pageNo + searchText;
-           } else {
-              location.href = link + "&currentPage=" + pageNo + searchText;
-           }
+         if(!(document.location.href).includes("?memCode")  && !(document.location.href).includes("?type")) {
+             location.href = link + "?currentPage=" + pageNo + searchText;
+         } else {
+             location.href = link + "&currentPage=" + pageNo + searchText;
+         }
       });
+      
+      function search_onclick_submit(){
+			let searchValue = $('input[name=searchValue]').val();
+			console.log(searchValue);
+			// 현재 페이지 주소
+			if((document.location.href).includes("?searchCondition") && (document.location.href).includes("&searchValue")) {
+				location.href = document.location.pathname + "?searchCondition=${ requestScope.pagination.searchCondition }" + "&searchValue=" + searchValue;
+			} else if((document.location.href).includes("?searchCondition")){
+				location.href = document.location.href + "&searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("?searchValue") || (document.location.href).includes("&searchValue")){
+				location.href = document.location.pathname + "?searchValue=" + searchValue;
+	 		} else {
+	 			location.href = document.location.href + "?searchValue=" + searchValue;
+	 		}
+			
+		};
    </script>
 </body>
 </html>

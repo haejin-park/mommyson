@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 public interface MemberService  {
 
@@ -47,8 +50,13 @@ public interface MemberService  {
 	/* 비밀번호 변경하기 */
 	public void changePwd(Map<String, Object> map, MemberDTO dto) throws Exception;
 
+	public List<TagDTO> selectTagList();
 
-	
+	public List<ProductDTO> selectProductList();
+
+	public List<TagDTO> selectHotKeywordList();
+
+	public List<StoreDTO> selectStoreList();
 
 
 

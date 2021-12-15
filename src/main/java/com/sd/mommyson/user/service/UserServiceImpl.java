@@ -62,6 +62,12 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
+	@Override
+	public List<ProductDTO> selectImportantNotice() {
+
+		List<ProductDTO> importantNotice = userDAO.selectImportantNotice();
+		return importantNotice;
+	}
 
 	@Override
 	public List<StoreDTO> selectStoreList(Pagination pagination) {
@@ -85,8 +91,8 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public List<StoreDTO> selectProductList(Pagination pagination) {
-		List<StoreDTO> productList = userDAO.selectProductList(pagination);
+	public List<ProductDTO> selectProductList(Pagination pagination) {
+		List<ProductDTO> productList = userDAO.selectProductList(pagination);
 		return productList;
 	}
 
@@ -134,6 +140,24 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int insertReport(Map<String, Integer> reportInfo) {
 		return userDAO.insertReport(reportInfo);
+	}
+
+
+	@Override
+	public Map<String, String> selectStoreInfoByMemcode(int memCode) {
+		return userDAO.selectStoreInfoByMemcode(memCode);
+	}
+
+
+	@Override
+	public int selectSearchTotalCount(Map<String, Object> searchMap) {
+		return userDAO.selectSearchTotalCount(searchMap);
+	}
+
+
+	@Override
+	public List<ProductDTO> selectSearchList(Map<String, Object> searchMap) {
+		return userDAO.selectSearchList(searchMap);
 	}
 
 }

@@ -110,7 +110,7 @@
 	                            }
 	                        </script>
 	                    </div>
-	                    <div style="display: flex; justify-content: space-between; width: 70%; margin: 50px 0 300px 0;">
+	                    <div style="display: flex; justify-content: space-between; width: 25%; margin: 50px 0 300px 0;">
 	                        <button class="pink_btn" onclick="location.href='${ pageContext.servletContext.contextPath }/storepage?memCode=${ requestScope.store.MEM_CODE }'">취소</button>
 	                        <button class="pink_btn" type="submit">장바구니 추가</button>
 	                    </div>

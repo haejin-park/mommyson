@@ -36,6 +36,8 @@
 		<result property="grade" column="GRADE"/>
 		<result property="delCost" column="DEL_COST"/>
 		<result property="workTime" column="WORK_TIME"/>
+		<result property="rvCount" column="COUNT"/>
+		<result property="statusYN" column="STATUS_YN"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap">
@@ -67,6 +69,12 @@
 	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
 		<id property="locationCode" column="LOCATION_CODE"/>
 		<result property="locationName" column="LOCATION_NAME"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
+		<id property="tagNo" column="TAG_NO"/>
+		<result property="tagName" column="TAG"/>
+		<result property="status" column="STATUS"/>
 	</resultMap>
 
 	<select id="selectAll" resultType="_int">
@@ -101,6 +109,7 @@
 			 , C.CEO_NAME
 			 , D.STORE_IMG
 			 , D.STORE_NAME
+			 , D.STATUS_YN
 			 , E.LAST_LOGIN
 			 , E.CODE
 		  FROM MEMBER_TBL A
@@ -253,7 +262,71 @@
 		  FROM MEMBER_TBL A
 		  JOIN USER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
 		 WHERE A.EMAIL = #{ email }
-		  
+	</select>
+	
+	<select id="selectTagList" resultMap="tagResultMap">
+		SELECT
+			   A.TAG_NO
+			 , A.TAG
+			 , A.STATUS
+		  FROM TAGS_TBL A
+		 WHERE A.STATUS = 'Y'
+	</select>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+		<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<result property="storeName" column="STORE_NAME"/>
+	</resultMap>
+	
+	<select id="selectProductList" resultMap="productResultMap">
+		SELECT
+    		   A.SD_CODE
+    		 , A.SD_IMG
+    		 , A.SD_NAME
+    		 , A.SD_DETAIL
+    		 , A.DISCOUNT_RATE
+    		 , A.PRICE
+    		 , A.ORDERABLE_STATUS
+    		 , A.MEM_CODE
+    		 , B.STORE_NAME
+    	  FROM PRODUCT_TBL A
+    	  JOIN STORE_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+    	 WHERE A.ORDERABLE_STATUS = 'Y'
+    	   AND A.IS_DELETED = 'N'
+	</select>
+	
+	<select id="selectHotKeywordList" resultMap="tagResultMap">
+		SELECT
+			   A.HOT_NO AS TAG_NO
+			 , A.HOT_TAG AS TAG
+		  FROM HOT_TBL A
+	</select>
+	
+	<select id="selectStoreList" resultMap="storeResultMap">
+		SELECT
+			   A.MEM_CODE
+			 , A.STORE_NAME
+			 , A.STORE_IMG
+			 , (SELECT COUNT(*) FROM STORE_TBL S LEFT JOIN REVIEW_TBL R ON(S.MEM_CODE = R.MEM_CODE)) AS COUNT
+		  FROM STORE_TBL A
+		  LEFT JOIN MEMBER_TBL M ON(A.MEM_CODE = M.MEM_CODE)
+		 WHERE M.IS_DELETED = 'N'
+		 ORDER BY M.ENROLL_DATE DESC
 	</select>
 	
 	<!--비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증-->
@@ -286,5 +359,4 @@
 		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
 	</update>
 	
-
 </mapper>

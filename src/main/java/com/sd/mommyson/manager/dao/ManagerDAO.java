@@ -50,13 +50,17 @@ public interface ManagerDAO {
 
 	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
-	int terminateBlack(List<Integer> blackMember);
+	int updateTerminateBlack(List<Integer> blackMember);
+	
+	int updateBlackCountReset(List<Integer> blackMember);
+
+	int deleteRealReview(List<Integer> blackMember);
 
 	int selectReportTotalCount(Map<String, Object> searchMap);
 
 	int noticeRevise(Map<String, Object> map);
 
-	int deleteNotice(List<Integer> addNoticeDeleteList);
+	int deletePost(List<Integer> addPostDeleteList);
 
 	int deleteSelectNotice(int postNo);
 
@@ -83,5 +87,11 @@ public interface ManagerDAO {
 	int updateBlack2(Map<String, Object> blackMap);
 
 	int updateBlack3(Map<String, Object> blackMap);
+
+	List<Map<String, Object>> selectblackMemDetail(Map<String, Object> blackMemDetailMap);
+	
+	List<PostDTO> selectOftenQuestionList(Pagination pagination);
+
+	int OftenQuestionTotalCount(Map<String, String> searchMap);
 
 }

@@ -9,9 +9,10 @@
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/packagePay.css">
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -20,8 +21,6 @@
 <body>
   	<jsp:include page="../commons/header.jsp"></jsp:include>
     <br>
-
-    <form>
       <div id="information">
         <h3>주문자정보</h3>
         <br><br>
@@ -48,7 +47,7 @@
                 <option value="2">회원가입기념10%할인</option>
               </select>
             </td>
-            <td><input type="time" id="time"></td>
+            <td><input type="time" name="time" id="time"></td>
           </tr>
       </table>
       <br>  
@@ -69,13 +68,43 @@
             <td> - </td>
             <td>1,000원</td>
             <td> = </td>
-            <td id="paymentAmount">9,000원</td>
+            <td id="paymentAmount"><input type="number" id="totalPrice" value="9000" disabled="disabled" style="background: white; width: 80px; border: none;">원</td>
           </tr>
         </table>  
       </div>
       <br><br>
-      <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
       <button type="reset" id="goShoppingBasket">취소하기</button>
+      <script>
+      	$('#pay').on('click',function() {
+      		let name = $('#name').val();
+      		let phone = $('#phone').val();
+      		let totalPrice = $('#totalPrice').val();
+      		var IMP = window.IMP; 
+      	    IMP.init('imp43692691'); 
+      	    IMP.request_pay({
+      	    	pg : 'kakaopay',
+      	        pay_method : 'card', //생략 가능
+      	        merchant_uid: "${ requestScope.orderCode }", // 상점에서 관리하는 주문 번호 db에서 가져와야함
+      	        name : '포장예약 결제',
+      	        amount : totalPrice,
+      	        buyer_email : 'iamport@siot.do',
+      	        buyer_name : name,
+      	        buyer_tel : phone,
+      	        buyer_addr : '서울특별시 강남구 삼성동',
+      	        buyer_postcode : '123-456',
+      	        m_redirect_url : '${ pageContext.servletContext.contextPage }/user/payComplete?orderCode=${ requestScope.orderCode }&totalPrice=' + totalPrice
+      	    },  function(rsp) {
+      	      if ( !rsp.success ) {
+      	    	//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
+      	        var msg = '오류로 인하여 결제가 시작되지 못하였습니다.';
+      	        msg += '에러내용 : ' + rsp.error_msg;
+
+      	        alert(msg);
+      	      }
+      		});
+      	})
+      </script>
     
 <!--       결제하기 Modal
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -100,7 +129,6 @@
           </div>
         </div>
     </div> -->
-    </form>
     <br><br><br><br>
     <jsp:include page="../commons/footer.jsp"/>
     

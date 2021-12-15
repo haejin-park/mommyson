@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 public interface MemberDAO {
 
@@ -56,6 +59,14 @@ public interface MemberDAO {
 	public void changePwd(Map<String, Object> map, MemberDTO dto);
 
 
+
+	public List<TagDTO> selectTagList();
+
+	public List<ProductDTO> selectProductList();
+
+	public List<TagDTO> selectHotKeywordList();
+
+	public List<StoreDTO> selectStoreList();
 
 	
 

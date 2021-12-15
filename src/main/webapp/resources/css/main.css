@@ -26,6 +26,8 @@ a {
 .recommend-img img {
     width: 140px;
     height: 140px;
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 .pinkbtn {

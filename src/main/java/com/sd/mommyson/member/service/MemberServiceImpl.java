@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.ProductDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -143,7 +146,20 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 
-	
+	@Override
+	public List<TagDTO> selectTagList() {
+		return memberDAO.selectTagList();
+	}
+
+	@Override
+	public List<ProductDTO> selectProductList() {
+		return memberDAO.selectProductList();
+	}
+
+	@Override
+	public List<TagDTO> selectHotKeywordList() {
+		return memberDAO.selectHotKeywordList();
+	}
 
 	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 */
 	@Override
@@ -153,7 +169,6 @@ public class MemberServiceImpl implements MemberService {
 		
 		return emailNum;
 	}
-
 	
 	/* 비밀번호 변경하기 */
 	@Override
@@ -162,11 +177,9 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.changePwd(map, dto);
 	}
 
-	
-
-
-	
-
-	
+	@Override
+	public List<StoreDTO> selectStoreList() {
+		return memberDAO.selectStoreList();
+	}
 
 }

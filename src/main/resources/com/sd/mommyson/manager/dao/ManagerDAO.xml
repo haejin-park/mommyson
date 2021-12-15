@@ -65,6 +65,7 @@
 		<result property="img" column="RV_IMG"/>
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
+		<result property="rvCode" column="RV_CODE"/>
 		<result property="memId" column="MEM_ID"/>
 		<collection property="report" resultMap="reportResultMap"/>
 	</resultMap>
@@ -148,6 +149,7 @@
 			  , C.GRADE
 			  , C.DEL_COST
 			  , C.WORK_TIME
+			  , C.RV_CODE
 		   FROM (SELECT 
 		                ROWNUM RNUM
 					  , B.MEM_CODE
@@ -173,6 +175,7 @@
 					  , B.GRADE
 					  , B.DEL_COST
 					  , B.WORK_TIME
+					  , B.RV_CODE
 				   FROM (SELECT 
 							   A.MEM_CODE
 							 , A.EMAIL
@@ -197,10 +200,12 @@
 							 , D.GRADE
 							 , D.DEL_COST
 							 , D.WORK_TIME
+							 , R.RV_CODE
 						  FROM MEMBER_TBL A
 						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
 						  LEFT JOIN CEO_TBL F ON (A.MEM_CODE = F.MEM_CODE)
 						  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
+						  LEFT JOIN REVIEW_TBL R ON (U.MEM_CODE = R.MEM_CODE)
 						  <where>
 						  	<if test='searchValue != null and searchCondition == "user"'>
 					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
@@ -270,6 +275,19 @@
 		 WHERE A.IS_DELETED = 'B'
 	</select>
 	
+	<select id="selectblackMemDetail" resultType="hashmap" parameterType="hashmap">
+	    SELECT
+	           A.RV_CODE
+	         , A.RV_CONTENT
+	         , B.REP_DATE
+	         , C.REP_TYPE
+	      FROM REVIEW_TBL A
+	      JOIN REPORT_TBL B ON (A.RV_CODE = B.REP_NO)
+	      JOIN REPORT_TYPE_TBL C ON (B.REP_TYPE_CODE = C.REP_TYPE_CODE)
+	     WHERE A.MEM_CODE = #{ memCode }
+	       AND A.IS_DELETED = 'Y'
+	</select>
+	
 	<update id="deleteMembers" parameterType="list">
 	    UPDATE
 	           MEMBER_TBL A
@@ -294,7 +312,7 @@
 	   	 </where>
 	</update>
 	
-	<update id="terminateBlack" parameterType="list">
+	<update id="updateTerminateBlack" parameterType="list">
 		UPDATE
 		       MEMBER_TBL A
 		   SET A.IS_DELETED = 'N'
@@ -305,6 +323,29 @@
 	     	</foreach>
 	   	 </where>
 	</update>
+	
+	<update id="updateBlackCountReset" parameterType="list">
+		UPDATE
+		       USER_TBL A
+		   SET A.REP_COUNT = 0
+		<where>
+	     	A.MEM_CODE IN
+     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+ 	 	</where>
+	</update>
+	
+	<delete id="deleteRealReview" parameterType="list">
+	    DELETE
+	      FROM REVIEW_TBL A
+    	<where>
+	     	A.MEM_CODE IN
+     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+ 		</where> 
+	</delete>
 	
 	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
 	    SELECT
@@ -341,10 +382,26 @@
 	      FROM REPORT_TBL A
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	     <where>
-	     	<if test="searchValue != null">
+	     	<if test="searchValue != null and all">
 	     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
 	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
 	     	</if>
+	     	<if test="condition1">
+	     		A.STATUS = 'W'
+	     	</if>
+	     	<if test="searchValue != null and condition1">
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+	     	</if>
+	     	<if test="condition2">
+	     		(A.STATUS = 'Y' OR
+	     		A.STATUS = 'N')
+	     	</if>
+	     	<if test="searchValue != null and condition2">
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+	     	</if>
+	     	
 	     </where>
 	</select>
 	
@@ -388,9 +445,24 @@
 					      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 					      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
 					     <where>
-					     	<if test="searchValue != null">
+					     	<if test='searchValue != null and searchCondition == "all"'>
 					     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
 					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+					     	</if>
+					     	<if test='searchCondition == "W"'>
+					     		A.STATUS = 'W'
+					     	</if>
+					     	<if test='searchValue != null and searchCondition == "W"'>
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+					     	</if>
+					     	<if test='searchCondition == "YN"'>
+					     		(A.STATUS = 'Y' OR
+					     		A.STATUS = 'N')
+					     	</if>
+					     	<if test='searchValue != null and searchCondition == "YN"'>
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
 					     	</if>
 					     </where>
 					     ORDER BY A.REP_NO ASC)E
@@ -418,7 +490,7 @@
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 	      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
-	     WHERE A.RV_CODE = #{ repCode }
+	     WHERE A.REP_NO = #{ repNo }
 	     ORDER BY A.REP_NO ASC
 	</select>
 	
@@ -535,7 +607,7 @@
    	  	  <if test='searchValue != null'>
    	  	  AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
    	  	  </if>
-   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+   	  	  <if test="searchCondition == 'all' || searchCondition == null || searchCondition == ''">
    	  	  AND A.BOARD_CODE IN('1','2','3','4','5')
    	  	  </if>
    	  	  <if test="searchCondition == 'notice'">
@@ -599,7 +671,7 @@
 			   	  	  <if test='searchValue != null'>
 			   	  	   AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
 			   	  	  </if>
-			   	  	  <if test="searchCondition == 'all' || searchCondition == null">
+			   	  	  <if test="searchCondition == 'all' || searchCondition == null || searchCondition == ''">
 			   	  	   AND A.BOARD_CODE IN('1','2','3','4','5')
 			   	  	  </if>
 			   	  	  <if test="searchCondition == 'notice'">
@@ -627,7 +699,7 @@
        ]]>
    </select>
    
-   <!-- 공지사항 등록 -->
+   <!-- 공지사항/자주묻는질문 게시글 등록 -->
    <insert id="postWriting" parameterType="hashmap" >
  	INSERT ALL
  		INTO POST_TBL
@@ -660,8 +732,8 @@
 	WHERE POST_NO = #{ postNo }
    </update>
    
-   <!-- 공지사항 삭제(선택박스) -->
-   <update id="deleteNotice" parameterType="list">
+   <!-- 공지사항/자주묻는질문 게시글 삭제(선택박스) -->
+   <update id="deletePost" parameterType="list">
     UPDATE POST_TBL
        SET STATUS = 'D'
      WHERE POST_NO IN
@@ -699,6 +771,114 @@
       SET STATUS = 'N'
     WHERE POST_NO = #{ postNo }
    </update> 
+   
+   <!-- 자주묻는질문 게시글 수 조회 -->
+   <select id="OftenQuestionTotalCount" resultType="_int">
+   	  SELECT
+   	  	  COUNT(*)
+   	  	 FROM POST_TBL A
+   	  	<where>
+   	  	  A.STATUS = 'N'
+   	  	  <if test='searchValue != null'>
+   	  	  AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	  	  </if>
+   	  	  <if test="searchCondition == null || searchCondition == ''">
+   	  	  AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	  	  </if>
+   	  	  <if test="searchCondition == 'memberJoinQuestion'">
+   	  	  AND A.BOARD_CODE = '6'
+   	  	  </if>
+		  <if test="searchCondition == 'billAndOrderQuestion'">
+   	  	  AND A.BOARD_CODE = '7'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'reviewManagementQuestion'">
+   	  	  AND A.BOARD_CODE = '8'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'userQuestion'">
+   	  	  AND A.BOARD_CODE = '9'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'inconvenienceQuestion'">
+   	  	  AND A.BOARD_CODE = '10'
+   	  	  </if>
+   	  	  <if test="searchCondition == 'etcQuestion'">
+   	  	  AND A.BOARD_CODE = '11'
+   	  	  </if>
+   	  	</where>
+   </select>
+   
+   <!-- 자주묻는질문 리스트 조회 -->
+   <select id="selectOftenQuestionList" resultMap="PostResultMap">
+	   SELECT
+	    C.RNUM
+	   ,C.POST_NO
+	   ,C.BOARD_CODE
+	   ,C.POST_TITLE
+	   ,C.MEM_CODE
+	   ,C.POST_CONTENT
+	   ,C.POST_DATE
+	   ,C.ANS_STATUS
+	   ,C.QUE_NO
+	   ,C.STATUS
+	   ,C.VIEW_CNT
+	   FROM (SELECT
+	            ROWNUM RNUM
+	           ,B.POST_NO
+	           ,B.BOARD_CODE
+	           ,B.POST_TITLE
+	           ,B.MEM_CODE
+	           ,B.POST_CONTENT
+	           ,B.POST_DATE
+	           ,B.ANS_STATUS
+	           ,B.QUE_NO
+	           ,B.STATUS
+	           ,B.VIEW_CNT
+	         FROM (SELECT
+	                    A.POST_NO
+	                   ,A.BOARD_CODE
+	                   ,A.POST_TITLE
+	                   ,A.MEM_CODE
+	                   ,A.POST_CONTENT
+	                   ,A.POST_DATE
+	                   ,A.ANS_STATUS
+	                   ,A.QUE_NO
+	                   ,A.STATUS
+	                   ,A.VIEW_CNT
+	                   FROM POST_TBL A
+	                  <where>
+	                  A.STATUS = 'N'
+			   	  	  <if test='searchValue != null'>
+			   	  	   AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == null || searchCondition == ''">
+			   	  	   AND A.BOARD_CODE IN('6','7','8','9','10','11')
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'memberJoinQuestion'">
+			   	  	   AND A.BOARD_CODE = '6'
+			   	  	  </if>
+					  <if test="searchCondition == 'billAndOrderQuestion'">
+			   	  	   AND A.BOARD_CODE = '7'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'reviewManagementQuestion'">
+			   	  	   AND A.BOARD_CODE = '8'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'userQuestion'">
+			   	  	   AND A.BOARD_CODE = '9'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'inconvenienceQuestion'">
+			   	  	   AND A.BOARD_CODE = '10'
+			   	  	  </if>
+			   	  	  <if test="searchCondition == 'etcQuestion'">
+			   	  	   AND A.BOARD_CODE = '11'
+			   	  	  </if>
+			   	  	  </where>
+	                  ORDER BY A.POST_DATE DESC)B
+	          <![CDATA[        
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)C
+	   <![CDATA[
+	  WHERE C.RNUM >= #{ startRow } 
+       ]]>
+   </select>
 	
    <select id="idDupCheck" parameterType="string" resultType="int">
        SELECT 

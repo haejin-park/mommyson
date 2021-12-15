@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
@@ -26,8 +26,25 @@
                 <!-- 찜, 평점 -->
                 <div style="float: left;">
                     <div class="df-ac">
-                        <button class="btn_none"><img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" style="width: 35px; height: 35px;"></button>&nbsp;&nbsp;<h4 style="margin: 0;"><strong>찜</strong> ${ requestScope.store.JJIM }</h4>
+                        <button class="btn_none" onclick="jjim_plus()"><img src="${ pageContext.servletContext.contextPath }/resources/images/heart.png" style="width: 35px; height: 35px;"></button>&nbsp;&nbsp;<h4 style="margin: 0;"><strong>찜</strong> ${ requestScope.store.JJIM }</h4>
                     </div>
+                    <script>
+                    	function jjim_plus() {
+                    		let storeCode = ${ requestScope.store.MEM_CODE };
+                    		let memCode = ${ sessionScope.loginMember.memCode };
+                    		$.ajax({
+                    			url: '${ pageContext.servletContext.contextPath }/user/jjimplus',
+                    			type: 'post',
+                    			data: {
+                    				storeCode : storeCode,
+                    				memCode : memCode
+                    			},
+                    			success: function(data) {
+                    				
+                    			}
+                    		});
+                    	}
+                    </script>
                     <br>
                     <div>
                         <span class="df-ac">
@@ -94,14 +111,14 @@
 	                                </svg>
                                 </c:if>
                             </div>
-                            &nbsp;&nbsp;<h4 style="margin: 0">${ requestScope.store.GRADE }</h4>
+                            &nbsp;&nbsp;<h4 style="margin: 0;">${ requestScope.store.GRADE }</h4>
                         </span>
                     </div>
                 </div>
                 <!-- 가게정보, 전화, 신고 -->
                 <div>
                     <div>
-                        <a href="#"><h4><strong>가게정보</strong></h4></a>
+                        <a href="${ pageContext.servletContext.contextPath }/user/storeInfo?memCode=${ requestScope.store.MEM_CODE }"><h4><strong>가게정보</strong></h4></a>
                     </div>
                     <div style="display: flex; justify-content: space-between; width: 400px;">
                         <div><h4><strong>전화 :</strong>&nbsp;${ requestScope.store.PHONE }</h4></div>
@@ -115,7 +132,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">가게 신고</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">리뷰 신고</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -152,8 +169,10 @@
 	                			success: function(data) {
 	                				if(data == 1) {
 	                					alert('신고 완료!');
+	                					location.reload();
 	                				} else {
 	                					alert('신고가 정상 처리되지 않았습니다.');
+	                					location.reload();
 	                				}
 	                			}
 	                		})
@@ -179,12 +198,12 @@
 		                            <h3 style="margin-bottom: 20px;"><c:out value="${ product.sdName }"/></h3>
 		                            <p style="width: 450px;"><c:out value="${ product.detail }"/></p>
 		                        </div>
-		                        <div>
+		                        <div style="display: flex; align-items: flex-end;">
 		                            <c:if test="${ product.orderableStatus == 'Y' }">
-			                            <h3 style="margin-top: 100px;"><c:out value="${ product.price }"/> 원</h3>
+			                            <h3 style="margin-right: 20px; margin-bottom: 7px;"><c:out value="${ product.price }"/> 원</h3>
 		                            </c:if>
 		                            <c:if test="${ product.orderableStatus == 'N' }">
-			                            <h3 style="margin-top: 100px;"><c:out value="${ product.price }"/> 원</h3>
+			                            <h3 style="margin-right: 20px; margin-bottom: 7px;"><c:out value="${ product.price }"/> 원</h3>
 		                            </c:if>
 		                            <button class="pink_btn" style="width: 80px" value="${ product.sdCode }">담기</button>
 		                        </div>
@@ -211,7 +230,7 @@
                     <!-- 리뷰 -->
                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0px 40px 0px 40px;">
                         <h1 style="margin-bottom: 70px; margin-top: 100px; border-bottom: 1px solid black;">리뷰</h1>
-                        <a href="#">더보기 ></a>
+                        <div></div>
                     </div>
                     <c:forEach items="${ requestScope.rvList }" var="rv">
 	                    <div class="review">
@@ -229,7 +248,7 @@
 			                                </svg>
 		                                </c:forEach>
 	                                </div>
-	                                <div class="df-ac"><h5 style="margin: 0;">신고</h5>&nbsp;<button id="reportBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color: white; border: none;" value="${ rv.rvCode }"><img src="${ pageContext.servletContext.contextPath }/resources/images/reportbtn.png" style="width: 40px; height: 40px;"></button></div>
+	                                <div class="df-ac">&nbsp;<button id="reportBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" style="background-color: white; border: none;" value="${ rv.rvCode }"><img src="${ pageContext.servletContext.contextPath }/resources/images/reportbtn.png" style="width: 40px; height: 40px;"></button></div>
 	                            </div>
 	                            <div class="review_text">
 	                                <p>

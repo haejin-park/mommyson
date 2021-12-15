@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/store_page.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>우리동네 인기맛집</title>
+    <title>가게 리스트</title>
     <style>
     	.col-3 {
     		display: flex;
@@ -54,11 +54,7 @@
                 <div class="col-3">
                     <img class="logo" src="${ pageContext.servletContext.contextPath}/${ store.storeImg }">
                     <div class="store_name" style="text-align: center; width: 200px; font-size: large;"><br>
-<<<<<<< HEAD
-		                <a href="${ pageContext.servletContext.contextPath }/user/storepage/${ store.memCode }" class="menu_name"><c:out value="${ store.storeName }"/></a>
-=======
 		                <a href="${ pageContext.servletContext.contextPath }/user/storepage?memCode=${ store.memCode }" class="menu_name"><c:out value="${ store.storeName }"/></a>
->>>>>>> 0654fd0e3b493d135f664e4fa2db95d1752178b1
 		                <div class="menu_div2">
 		                    <pre style="font-size: 13pt; display: flex; align-items: center;"><svg style="color: #EFCA45;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
 		                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
@@ -68,7 +64,7 @@
                 </div>
                 </c:forEach>
 	       </div>
-	       <jsp:include page="../commons/paging.jsp"/>
+	       <jsp:include page="../commons/pagingWithoutSearch.jsp"/>
         </div>
       </div>
 
@@ -79,42 +75,6 @@
       </c:if>
     </section>
 
-      <footer class="at-container">
-        <ul class="df_ul ft_list">
-            <li>
-                <a href="">마미손맛 소개</a>   
-            </li>
-            <li>
-                <a href="">이용약관</a>
-            </li>
-            <li>
-                <a href="">개인정보처리방침</a>
-            </li>
-            <li>
-                <a href="">전자금융거래이용약관</a>
-            </li>
-        </ul>
-        <div class="ft_img_line">
-            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img01.png" alt="소비자중심경영">
-            <img src="${ pageContext.servletContext.contextPath }/resources/images/ft_img02.png" alt="정보보호 관리체계 인증">
-            <img src="${ pageContext.servletContext.contextPath }/resources/images/kakaopay.png" alt="KakaoPay" class="kakaopay">
-        </div>
-        <div class="ft_info">
-            <p>대표 : 유승제 / 주소 : 서울특별시 서초구 서초대로78길 48 송림빌딩 13층</p>
-            <p>사업자번호 : 123-45-67890 / 통신판매업신고 : 제 2021-서울-503호 / 개인정보 정책 및 담당 : 김준희</p>
-            <p>대표번호 : 1588-0000 / 팩스번호 : 02-123-1234 / 이메일 : mommysonmat@greedy.com</p>
-            <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
-        </div>
-        <div class="manager_center">
-            <h4>고객센터</h4>
-            <div class="callNum">
-                <img src="${ pageContext.servletContext.contextPath }/resources/images/callImg.png" alt="call">
-                <span>1644 - 1234</span>    
-            </div>
-            <p>평일 10:00~18:50</p>
-            <p>점심시간 12:00~13:00</p>
-            <p>(주말과 공휴일은 휴무입니다.)</p>
-        </div>
-    </footer>
+    <jsp:include page="../commons/footer.jsp"/>
 </body>
 </html>
