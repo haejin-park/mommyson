@@ -36,11 +36,8 @@
 		<result property="grade" column="GRADE"/>
 		<result property="delCost" column="DEL_COST"/>
 		<result property="workTime" column="WORK_TIME"/>
-<<<<<<< HEAD
 		<result property="rvCount" column="COUNT"/>
-=======
 		<result property="statusYN" column="STATUS_YN"/>
->>>>>>> 5760261fdf05e061c41371ed9d5ce198c2aa7fce
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap">
@@ -233,7 +230,6 @@
 		 WHERE A.EMAIL = #{ email }
 	</select>
 	
-<<<<<<< HEAD
 	<select id="selectTagList" resultMap="tagResultMap">
 		SELECT
 			   A.TAG_NO
@@ -298,7 +294,5 @@
 		 WHERE M.IS_DELETED = 'N'
 		 ORDER BY M.ENROLL_DATE DESC
 	</select>
-=======
 	
->>>>>>> 5760261fdf05e061c41371ed9d5ce198c2aa7fce
 </mapper>
