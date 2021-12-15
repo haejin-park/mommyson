@@ -45,7 +45,7 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" id="allCheck"></th>
+                <th scope="col"><input type="checkbox" name="allCheck"></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -54,7 +54,7 @@
             <tbody>
                 <c:forEach var="review" items="${ reviews }">
               <tr>
-                <th scope="row"><input type="checkbox" name="chkreview" class="test" value="${ review.rvCode }" ></th>
+                <th scope="row"><input type="checkbox" name="allCheck" class="test" value="${ review.rvCode }" ></th>
                 <th>${ review.rvCode }</th>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
@@ -63,9 +63,10 @@
                 </c:forEach>
             </tbody>
           </table>
-          <button type="button" id="rebtn1" class="btn btn-primary" data-toggle="modal" 
+          <br><br><br>
+          <button type="button" id="couponBtn" class="btn btn-primary" data-toggle="modal" 
           data-target="#staticBackdrop" data-memCode ="${ review.memCode }" >쿠폰 주기</button>
-          <button id="rebtn2">삭제</button>
+          <button class="couponBtn">삭제</button>
         	</form>
         </div>
         
@@ -133,7 +134,7 @@
   <script>
   	/* 체크박스 체크 */
 	  $("input[name=allCheck]").click(function(){
-	      if($("#allCheck").prop("checked")){
+	      if($("input[name=allCheck]").prop("checked")){
 	        $("input[name=allCheck]").prop("checked",true);
 	      } else{
 	        $("input[name=allCheck]").prop("checked",false);
@@ -148,21 +149,6 @@
 	        $("input[name=allCheck2]").prop("checked",false);
 	      }
 	    });
-	  
-	/* 모달로 memCode 넘겨주기 */
-	var memCode ="";
-	
-	$('#btn1').on('click',function(){
-		let checkBox = $('.test');
-		
-	});
-	
-	/* $(document).ready(function(){
-		$('#staticBackdrop1').on('show.bs.modal', function(event){
-			console.log(event);
-			/* memCode = $(event.relatedTarget).data('memCode'); 
-		}); 
-	});		 */
 	  
   </script>
   

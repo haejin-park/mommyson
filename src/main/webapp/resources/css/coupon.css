@@ -45,7 +45,7 @@
      border: none; 
      border-radius: 5px;
      color: white; 
-     width: 80px;
+     width: 100px;
 }
 #rebtn1{
     width: 150px; 
@@ -58,7 +58,7 @@
 #rebtn2{
     width: 150px; 
     height: 45px; 
-    background: #F89E91; 
+    background: #808080; 
     border: none;
     border-radius: 5px; 
     color: white;
@@ -70,8 +70,17 @@
     border: none; 
     border-radius: 5px;
     color: white; 
-    width: 80px;
+    width: 100px;
+    height: 40px; 
 }
+.couponBtn{
+	background-color: #777777; 
+	height: 40px; 
+	margin-left: 50px;
+	position: relative;
+    top: 2px;
+}
+
 .modal-body h4, .modal-body h6{
     display: inline;
     margin-right: 50px;
