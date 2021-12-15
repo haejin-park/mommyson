@@ -20,7 +20,7 @@
     <jsp:include page="../commons/header.jsp"/>
     
     <section class="at-container">
-       	<c:if test="${ requestScope.category != '오늘만 할인' && requestScope.category != '오늘의 추천' && requestScope.category != '우리동네 인기 맛집' }">
+       	<c:if test="${ requestScope.category != '오늘의 추천' }">
        		<div style="display: flex; justify-content: space-between; align-items: center; width: 83%;">
 	            <h4 style="float: left; margin-left: 50px; margin-top: 80px;">반찬조회 > ${ requestScope.category }</h4>
 	            <div></div>
@@ -34,7 +34,7 @@
             <div class="row" style="margin-bottom: 100px;">
             	<c:forEach items="${ requestScope.productList }" var="product">
             		<div class="col-3">
-	                    <img style="width: 160px; height: 160px; border-radius: 10px;" src="${ pageContext.servletContext.contextPath}/${ product.sdImg }">
+	                    <img style="width: 160px; height: 160px; border-radius: 10px; border: 1px solid black;" src="${ pageContext.servletContext.contextPath}/${ product.sdImg }">
 	                    <div class="menu_div">
 	                        <a href="${ pageContext.servletContext.contextPath }/user/storepage/${ store.memCode }" class="menu_name"><c:out value="${ product.sdName }"/>(<c:out value="${ product.volume }"/>g)</a>
 	                        <pre><strong><fmt:formatNumber value="${ product.price }" /> 원</strong></pre>
