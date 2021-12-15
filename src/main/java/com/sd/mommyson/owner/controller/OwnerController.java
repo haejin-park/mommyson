@@ -20,20 +20,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
-import com.sd.mommyson.owner.dto.DCProduct;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
@@ -72,25 +68,59 @@ public class OwnerController {
 	
 	/* 쿠폰  리스트 */
 	@GetMapping("coupon")
-	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+	public String coupon(@ModelAttribute("loginMember") MemberDTO member, Model model, @RequestParam(value = "currentPage", required = false) String currentPage ) {
 		
-		List<CouponDTO> coupon = ownerService.selectCoupon(member);
-		System.out.println(coupon);
 		
-		MemberDTO owner = ownerService.selectOwner(member);
-		System.out.println(owner);
+		 MemberDTO owner = ownerService.selectOwner(member);
+		 System.out.println(owner);
+		 
+		 int memCode = owner.getMemCode();
 		
-		//					items 이름 , 리스트이름
-		model.addAttribute( "coupon" ,coupon);
-		model.addAttribute("owner", owner);
-	
+		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
+		// 현재 페이지
+		int pageNo = 1;
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println("현재 페이지 : " + currentPage);
+
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = ownerService.selectCouponListTotalCount(memCode); // where 절에 storeName을 써야하니까 넘겨준다
+		
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		String searchCondition = String.valueOf(memCode);
+		
+		Pagination pagination = null;
+																	  // 검색 조건이 없으니까 null, null 처리
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		System.out.println("페이지 : " + pagination);
+		
+		List<CouponDTO> coupon = ownerService.selectCoupon(pagination);
+		System.out.println("리스트 확인 : " + coupon);
+		
+		if(coupon != null) {
+			//					items 이름 , 리스트이름
+			model.addAttribute("pagination",pagination);
+			model.addAttribute( "coupon" ,coupon);
+		} else {
+			System.out.println("조회실패...");
+		}
+		
 		return "owner/coupon";
 	}
 	
 
 	/* 쿠폰등록*/
 	@PostMapping("coupon") 	  // couponDTO를 선언하면 자동으로 값이 담겨져 // memCode를 가져오려면 세션이 필요
-	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session) {
+	public String couponInsert(@ModelAttribute CouponDTO coupon, RedirectAttributes ra, HttpSession session ) {
 															  		// 리다이렉트를 해줄때 값을 넘겨주는...........
 		// @ModelAttribute 을 사용하는 순간 DTO에 필드값이랑 name값이 같으면 자동으로 값을 DTO에 담아서 보낸다. 
 		
@@ -109,8 +139,6 @@ public class OwnerController {
 		} else {
 			ra.addFlashAttribute("message","쿠폰 등록에 실패하였습니다.");
 		}
-		
-		
 		
 		return "redirect:coupon"; // getMapping으로 보내준다
 	}
@@ -327,25 +355,95 @@ public class OwnerController {
 	
 	/* 리뷰 관리 */
 	@GetMapping("review")
-	public String selectReview(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+	public String selectReview(@ModelAttribute("loginMember") MemberDTO member, Model model,
+			@RequestParam(value = "currentPage", required = false) String currentPage, @RequestParam(value = "currentPage", required = false) String currentPage2) {
 		
 		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
 		MemberDTO owner = ownerService.selectOwner(member);
 		String storeName = owner.getCeo().getStore().getStoreName();
 		System.out.println(storeName);
 		
-		List<ReviewDTO> reviews = ownerService.selectReview(storeName);
-		System.out.println("리뷰들아 들어왔니 : " + reviews);	
 		
-		model.addAttribute("owner", owner);
-		model.addAttribute("reviews",reviews);
+		// 주문 접수 페이지 처리  - 조건 없는 페이지
+				// 현재 페이지
+				int pageNo2 = 1;
+				
+				if(currentPage2 != null && !"".equals(currentPage2)) {
+					pageNo2 = Integer.parseInt(currentPage2);
+				}
+				
+				if(pageNo2 <= 0) {
+					pageNo2 = 1;
+				}
+				
+				System.out.println("현재 페이지 : " + currentPage2);
+
+				
+				/* ==== 조건에 맞는 게시물 수 처리 ==== */
+				int totalCount2 = ownerService.selectReviewListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
+				
+				int limit2 = 10; //페이지당 글 갯수
+				int buttonAmount2 =  10;//페이징 버튼의 갯수
+				String searchCondition2 = storeName;
+				
+				Pagination pagination2 = null;
+																			  // 검색 조건이 없으니까 null, null 처리
+				pagination2 = Pagination.getPagination(pageNo2, totalCount2, limit2, buttonAmount2, searchCondition2, null);
+				System.out.println("페이지 : " + pagination2);
+				
+				List<ReviewDTO> reviews = ownerService.selectReview(pagination2);
+				System.out.println("리뷰들아 들어왔니 : " + reviews);	
+				
+				if(reviews != null) {
+					//					items 이름 , 리스트이름
+					model.addAttribute("pagination",pagination2);
+					model.addAttribute("owner", owner);
+					model.addAttribute("reviews",reviews);
+				} else {
+					System.out.println("조회실패...");
+				}
 		
+		/* 쿠폰 모달 리스트 가져오기 */ 
+		 System.out.println(owner);
+		 int memCode = owner.getMemCode();
 		
-		// 쿠폰 모달 리스트 가져오기
-		List<CouponDTO> coupon = ownerService.selectCoupon(member);
-		System.out.println(coupon);
+		// 주문 접수 페이지 처리  - 조건 없는 페이지
+		// 현재 페이지
+		int pageNo = 1;
 		
-		model.addAttribute("coupon",coupon);
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println("현재 페이지 : " + currentPage);
+
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = ownerService.selectCouponListTotalCount(memCode); // where 절에 storeName을 써야하니까 넘겨준다
+		
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		String searchCondition = String.valueOf(memCode);
+		
+		Pagination pagination = null;
+																	  // 검색 조건이 없으니까 null, null 처리
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		System.out.println("페이지 : " + pagination);
+		
+		List<CouponDTO> coupon = ownerService.selectCoupon(pagination);
+		System.out.println("리스트 확인 : " + coupon);
+		
+		if(coupon != null) {
+			//					items 이름 , 리스트이름
+			model.addAttribute("pagination",pagination);
+			model.addAttribute( "coupon" ,coupon);
+		} else {
+			System.out.println("조회실패...");
+		}
 		
 		return "owner/review";	
 		
@@ -456,7 +554,7 @@ public class OwnerController {
 	}
 	
 	@GetMapping("order")
-	public String orderList(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+	public String orderList(@ModelAttribute("loginMember") MemberDTO member, @RequestParam(value = "currentPage", required = false) String currentPage ,Model model) {
 		
 		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
 		MemberDTO owner = ownerService.selectOwner(member);
@@ -464,11 +562,47 @@ public class OwnerController {
 		System.out.println("스토어 이름 : " + storeName);
 		
 		// 주문 접수 가져오기
-		List<OrderDTO> orderList = ownerService.selectOrderList(storeName); 
+		
+//		List<OrderDTO> orderList2 = ownerService.selectOrderList2(storeName);
+		
+		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
+		// 현재 페이지
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = ownerService.selectOrderListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
+		
+		int limit = 15; //페이지당 글 갯수
+		int buttonAmount =  15;//페이징 버튼의 갯수
+		
+		Pagination pagination = null;
+		String searchCondition = storeName;
+																	  // 검색 조건이 없으니까 null, null 처리
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		System.out.println("페이지 : " + pagination);
+		
+		List<OrderDTO> orderList = ownerService.selectOrderList(pagination); 
 		System.out.println("주문 내역 : " + orderList);
 		
-		model.addAttribute("orderList",orderList);
+		model.addAttribute("pagination",pagination);
 		
+		/* 완료된 주문 페이지 처리 - 조건 있는 페이지 */
+		
+		model.addAttribute("orderList",orderList);
+//		model.addAttribute("orderList2",orderList2);
 		return "owner/order";
 	}
 	

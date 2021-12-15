@@ -24,7 +24,7 @@ public class OrderDTO {
 	private OrderInfoDTO orderInfoDTO;
 	private MemberDTO memberDTO;
 	private AcceptDTO acceptDTO;
-	private List<ProductDTO> productDTO; // 하나의 오더코드 안에 여러개의 반찬네임이 존재해서 리스트로
+	private List<String> product; // 하나의 오더코드 안에 여러개의 반찬네임이 존재해서 리스트로
 
 	
 	public OrderDTO() {
@@ -36,7 +36,7 @@ public class OrderDTO {
 	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
 			String phone, String storeName, int code, String acceptTime, Date cancleTime, Date completeTime,
 			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO,
-			List<ProductDTO> productDTO) {
+			List<String> product) {
 		super();
 		this.memCode = memCode;
 		this.totalPrice = totalPrice;
@@ -54,7 +54,7 @@ public class OrderDTO {
 		this.orderInfoDTO = orderInfoDTO;
 		this.memberDTO = memberDTO;
 		this.acceptDTO = acceptDTO;
-		this.productDTO = productDTO;
+		this.product = product;
 	}
 
 
@@ -218,13 +218,13 @@ public class OrderDTO {
 	}
 
 
-	public List<ProductDTO> getProductDTO() {
-		return productDTO;
+	public List<String> getProduct() {
+		return product;
 	}
 
 
-	public void setProductDTO(List<ProductDTO> productDTO) {
-		this.productDTO = productDTO;
+	public void setProduct(List<String> product) {
+		this.product = product;
 	}
 
 
@@ -234,8 +234,8 @@ public class OrderDTO {
 				+ ", orderType=" + orderType + ", takeTime=" + takeTime + ", address=" + address + ", phone=" + phone
 				+ ", storeName=" + storeName + ", code=" + code + ", acceptTime=" + acceptTime + ", cancleTime="
 				+ cancleTime + ", completeTime=" + completeTime + ", requestTime=" + requestTime + ", orderInfoDTO="
-				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", productDTO=" + productDTO
-				+ "]";
+				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product + "]";
 	}
 
+ 
 }

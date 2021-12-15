@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
@@ -35,16 +36,16 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public List<CouponDTO> selectCoupon(MemberDTO member) {
+	public List<CouponDTO> selectCoupon(Pagination pagination) {
 		
-		return ownerDAO.selectCoupon(member);
+		return ownerDAO.selectCoupon(pagination);
 	}
 
 
 	@Override
-	public List<ReviewDTO> selectReview(String storeName) {
+	public List<ReviewDTO> selectReview(Pagination pagination) {
 		
-		List<ReviewDTO> list = ownerDAO.selectReview(storeName);
+		List<ReviewDTO> list = ownerDAO.selectReview(pagination);
 		
 		return list;
 	}
@@ -203,12 +204,45 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public List<OrderDTO> selectOrderList(String storeName) {
+	public List<OrderDTO> selectOrderList(Pagination pagination) {
 		
-		List<OrderDTO> order = ownerDAO.selectOrderList(storeName);
+		List<OrderDTO> order = ownerDAO.selectOrderList(pagination);
 		
 		return order;
 	}
+
+	@Override
+	public List<OrderDTO> selectOrderList2(String storeName) {
+		
+		List<OrderDTO> order = ownerDAO.selectOrderList2(storeName);
+		
+		return order;
+	}
+
+	@Override
+	public int selectOrderListTotalCount(String storeName) {
+		
+		int result = ownerDAO.selectOrderListTotalCount(storeName);
+		
+		return result;
+	}
+
+	@Override
+	public int selectCouponListTotalCount(int memCode) {
+		
+		int result = ownerDAO.selectCouponListTotalCount(memCode);
+		
+		return result;
+	}
+
+	@Override
+	public int selectReviewListTotalCount(String storeName) {
+		
+		int result = ownerDAO.selectReviewListTotalCount(storeName);
+		
+		return result;
+	}
+
 	
 
 }

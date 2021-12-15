@@ -3,6 +3,7 @@ package com.sd.mommyson.owner.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
@@ -15,9 +16,9 @@ public interface OwnerDAO {
 
 	public CeoDTO selectOwner(MemberDTO member);
 
-	public List<CouponDTO> selectCoupon(MemberDTO member);
+	public List<CouponDTO> selectCoupon(Pagination pagination);
 
-	public List<ReviewDTO> selectReview(String storeName);
+	public List<ReviewDTO> selectReview(Pagination pagination);
 	
 	public int modifyInfo(Map<String, Object> modifyInfo);
 
@@ -57,6 +58,16 @@ public interface OwnerDAO {
 
 	public int registDc(Map<String, Object> map);
 
-	public List<OrderDTO> selectOrderList(String storeName);
+	public List<OrderDTO> selectOrderList(Pagination pagination);
+
+	public List<OrderDTO> selectOrderList2(String storeName);
+
+	public int selectOrderListTotalCount(String storeName);
+
+	public int selectCouponListTotalCount(int memCode);
+
+	public List<CouponDTO> selectCoupon(MemberDTO member);
+
+	public int selectReviewListTotalCount(String storeName);
 	
 }

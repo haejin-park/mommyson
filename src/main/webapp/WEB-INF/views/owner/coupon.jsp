@@ -79,7 +79,13 @@
         </div>  
       </div>
 	    
+		    <!-- 페이지네이션 -->
+			<div style="margin-left: 450px; position: relative; top: 100px;">
+			<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
+			</div>
+			
 	    </div>  
+	    
 	    <!-- 모오오오달 -->
 	    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >

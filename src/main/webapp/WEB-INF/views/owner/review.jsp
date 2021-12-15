@@ -68,25 +68,13 @@
           <button id="rebtn2">삭제</button>
         	</form>
         </div>
-        <div style="margin: 500px 0 300px 900px;">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-        </div>
+        
+        
+        <!-- 페이지네이션 -->
+		<div style="margin-left: 450px; position: relative; top: 100px;">
+			<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
+		</div>
+        
       </div>
     <!-- 모오오오다라라라라랄 -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="left: -180px; top: -50px;">
@@ -104,7 +92,7 @@
               <table class="table table" style="width: 1050px;">
                   <thead style="background-color: #EDEDED;">
                   <tr>
-                      <th scope="col"><input type="checkbox" name=""  id="allCheck2"></th>
+                      <th scope="col"><input type="checkbox" name="allCheck2"  id="allCheck2"></th>
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
@@ -115,7 +103,7 @@
                 
                 <c:forEach items="${ coupon }" var="cp">
                   <tr>
-                      <td><input type="checkbox" ></td>
+                      <td><input type="checkbox" name="allCheck2"></td>
                       <td>${ cp.cpCode }</td>
                       <td>${ cp.cpName }</td>
                       <td>${ cp.startDate }</td>
@@ -124,6 +112,12 @@
 				</c:forEach>
                   </tbody>
               </table>
+              <br><br>
+              
+            <!-- 페이지네이션 -->
+			<div >
+				<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
+			</div>
           </div>
           <div class="modal-footer" >
             <button type="submit" class="btn btn-primary" id="btn1">쿠폰 주기</button>
@@ -138,19 +132,20 @@
   </div>
   <script>
   	/* 체크박스 체크 */
-	  $("#allCheck").click(function(){
+	  $("input[name=allCheck]").click(function(){
 	      if($("#allCheck").prop("checked")){
-	        $("input[type=checkbox]").prop("checked",true);
+	        $("input[name=allCheck]").prop("checked",true);
 	      } else{
-	        $("input[type=checkbox]").prop("checked",false);
+	        $("input[name=allCheck]").prop("checked",false);
 	      }
 	    });
-	  
-	  $("#allCheck2").click(function(){
-	      if($("#allCheck2").prop("checked")){
-	        $("input[type=checkbox]").prop("checked",true);
+  	
+	  /* 모달로 */
+	  $("input[name=allCheck2]").click(function(){
+	      if($("input[name=allCheck2]").prop("checked")){
+	        $("input[name=allCheck2]").prop("checked",true);
 	      } else{
-	        $("input[type=checkbox]").prop("checked",false);
+	        $("input[name=allCheck2]").prop("checked",false);
 	      }
 	    });
 	  
@@ -162,12 +157,12 @@
 		
 	});
 	
-	$(document).ready(function(){
+	/* $(document).ready(function(){
 		$('#staticBackdrop1').on('show.bs.modal', function(event){
 			console.log(event);
 			/* memCode = $(event.relatedTarget).data('memCode'); 
 		}); 
-	});		
+	});		 */
 	  
   </script>
   
