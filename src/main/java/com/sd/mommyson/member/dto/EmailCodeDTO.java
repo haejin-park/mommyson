@@ -3,13 +3,13 @@ package com.sd.mommyson.member.dto;
 public class EmailCodeDTO {
 
 	int code;
-	int memCode;
+	String memCode;
 	int emailCode;
 	public EmailCodeDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public EmailCodeDTO(int code, int memCode, int emailCode) {
+	public EmailCodeDTO(int code, String memCode, int emailCode) {
 		super();
 		this.code = code;
 		this.memCode = memCode;
@@ -21,10 +21,10 @@ public class EmailCodeDTO {
 	public void setCode(int code) {
 		this.code = code;
 	}
-	public int getMemCode() {
+	public String getMemCode() {
 		return memCode;
 	}
-	public void setMemCode(int memCode) {
+	public void setMemCode(String memCode) {
 		this.memCode = memCode;
 	}
 	public int getEmailCode() {
@@ -37,7 +37,7 @@ public class EmailCodeDTO {
 	public String toString() {
 		return "EmailCodeDTO [code=" + code + ", memCode=" + memCode + ", emailCode=" + emailCode + "]";
 	}
-
+	
 	
 	
 }

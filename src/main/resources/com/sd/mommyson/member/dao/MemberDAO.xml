@@ -217,6 +217,7 @@
 		SELECT * FROM DUAL
 	</insert>
 
+	<!--회원가입시 이메일 인증 코드 인설트 -->
 	<insert id ="registEmailCode">
 		INSERT 
 		  INTO EMAIL_CODE_TBL
@@ -233,6 +234,21 @@
 		)
 	</insert>
 	
+ 	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
+<!--	<update id="updateEmailVerificationMemCode" parameterType="int">
+		UPDATE EMAIL_CODE_TBL
+		   SET MEM_CODE = #{ memCode.memCode }
+		  
+	</update> -->
+	
+		<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
+	<update id="updateEmailVerificationMemCode">
+ 		UPDATE EMAIL_CODE_TBL E
+		   SET MEM_CODE = #{ memCode }
+		 WHERE E.MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL M WHERE M.MEM_CODE = E.MEM_CODE)
+		   
+	</update>
+	
 	<!-- 아이디 찾기 -->
 	<select id="findIdCheck" resultType="String">
 		SELECT MEM_ID
@@ -240,7 +256,24 @@
 		  JOIN USER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
 		 WHERE A.EMAIL = #{ email }
 		  
-	</select> 
+	</select>
+	
+	<!--비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증-->
+	<insert id ="findPwdEmailCode">
+		INSERT 
+		  INTO EMAIL_CODE_TBL
+		(
+		  CODE			
+		, MEM_CODE
+		, EMAIL_CODE
+		)
+		VALUES
+		(
+		  SEQ_CODE.NEXTVAL
+		, null
+		, #{ emailCode }
+		)
+	</insert> 
 	
  	<!-- 비밀번호 변경하기 -->
  	<update id="changePwd" parameterType="hashMap">

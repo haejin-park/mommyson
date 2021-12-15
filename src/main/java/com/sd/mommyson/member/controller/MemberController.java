@@ -1,8 +1,6 @@
 package com.sd.mommyson.member.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.member.service.MemberService;
@@ -212,19 +211,20 @@ public class MemberController {
 //		member.setMemPwd(encodePwd); //인코딩 비밀번호 member 객체에 다시 저장 
 		
 		member.setMemPwd(passwordEncoder.encode(member.getMemPwd()));
-		
-		
 		System.out.println(member);
 		logger.info("join진입");
 		
 		memberService.customerJoin(member);
-		
 		logger.info("customerJoin Service 성공");
+		
+		member.getMemCode();
+		memberService.updateEmailVerificationMemCode(member);
 		
 		return "/member/login";
 		
 		
 	}
+	
 	
 	/* 아이디 찾기 화면 띄우기 */
 	@GetMapping("findId")
@@ -255,7 +255,7 @@ public class MemberController {
 	public void findPwd() {}
 	
 	
-	/* 비밀 번호 찾기 이메일 인증 */ 
+	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 */
 	@RequestMapping(value="find_pass.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String find_pass(@RequestParam String email) throws Exception{
@@ -297,7 +297,7 @@ public class MemberController {
 		}
 
 		String num = Integer.toString(code);
-		
+		memberService.findPwdEmailCode(num);
 //		ModelAndView mv = new ModelAndView();
 //		mv.setViewName("/member/findPwd");
 //		mv.addObject("pass_injeung", num);
@@ -351,31 +351,31 @@ public class MemberController {
 	
 	
 	/* 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러 */
-	@PostMapping(value ="pass_change.do{email}")
-	@ResponseBody
-	public ModelAndView pass_change(@RequestParam String email, @RequestParam String memPwd, MemberDTO dto) throws Exception{
-		
-		System.out.println("email : " + email);
-		System.out.println("memPwd : " + memPwd);
-		
-//		memPwd = "memPwd";
-		
-		dto.setEmail(email);
-		dto.setMemPwd(memPwd);
-		
-		//값을 여러개 담아야하므로 해쉬맵을 사용하여 값을 저장함.
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("email", dto.getEmail());
-		map.put("memPwd", dto.getMemPwd());
-		
-		memberService.changePwd(map, dto);
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/member/changePwd");
-		return mv;
-		
-	}
-	
+//	@PostMapping(value ="pass_change.do{email}")
+//	@ResponseBody
+//	public ModelAndView pass_change(@RequestParam String email, @RequestParam String memPwd, MemberDTO dto) throws Exception{
+//		
+//		System.out.println("email : " + email);
+//		System.out.println("memPwd : " + memPwd);
+//		
+////		memPwd = "memPwd";
+//		
+//		dto.setEmail(email);
+//		dto.setMemPwd(memPwd);
+//		
+//		//값을 여러개 담아야하므로 해쉬맵을 사용하여 값을 저장함.
+//		Map<String, Object> map = new HashMap<>();
+//		
+//		map.put("email", dto.getEmail());
+//		map.put("memPwd", dto.getMemPwd());
+//		
+//		memberService.changePwd(map, dto);
+//		ModelAndView mv = new ModelAndView();
+//		mv.setViewName("/member/changePwd");
+//		return mv;
+//		
+//	}
+//	
 	
 }	
 
