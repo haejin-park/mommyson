@@ -65,6 +65,7 @@
 		<result property="img" column="RV_IMG"/>
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
+		<result property="rvCode" column="RV_CODE"/>
 		<result property="memId" column="MEM_ID"/>
 		<collection property="report" resultMap="reportResultMap"/>
 	</resultMap>
@@ -148,6 +149,7 @@
 			  , C.GRADE
 			  , C.DEL_COST
 			  , C.WORK_TIME
+			  , C.RV_CODE
 		   FROM (SELECT 
 		                ROWNUM RNUM
 					  , B.MEM_CODE
@@ -173,6 +175,7 @@
 					  , B.GRADE
 					  , B.DEL_COST
 					  , B.WORK_TIME
+					  , B.RV_CODE
 				   FROM (SELECT 
 							   A.MEM_CODE
 							 , A.EMAIL
@@ -197,10 +200,12 @@
 							 , D.GRADE
 							 , D.DEL_COST
 							 , D.WORK_TIME
+							 , R.RV_CODE
 						  FROM MEMBER_TBL A
 						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
 						  LEFT JOIN CEO_TBL F ON (A.MEM_CODE = F.MEM_CODE)
 						  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
+						  LEFT JOIN REVIEW_TBL R ON (U.MEM_CODE = R.MEM_CODE)
 						  <where>
 						  	<if test='searchValue != null and searchCondition == "user"'>
 					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
@@ -270,6 +275,19 @@
 		 WHERE A.IS_DELETED = 'B'
 	</select>
 	
+	<select id="selectblackMemDetail" resultType="hashmap" parameterType="hashmap">
+	    SELECT
+	           A.RV_CODE
+	         , A.RV_CONTENT
+	         , B.REP_DATE
+	         , C.REP_TYPE
+	      FROM REVIEW_TBL A
+	      JOIN REPORT_TBL B ON (A.RV_CODE = B.REP_NO)
+	      JOIN REPORT_TYPE_TBL C ON (B.REP_TYPE_CODE = C.REP_TYPE_CODE)
+	     WHERE A.MEM_CODE = #{ memCode }
+	       AND A.IS_DELETED = 'Y'
+	</select>
+	
 	<update id="deleteMembers" parameterType="list">
 	    UPDATE
 	           MEMBER_TBL A
@@ -294,7 +312,7 @@
 	   	 </where>
 	</update>
 	
-	<update id="terminateBlack" parameterType="list">
+	<update id="updateTerminateBlack" parameterType="list">
 		UPDATE
 		       MEMBER_TBL A
 		   SET A.IS_DELETED = 'N'
@@ -305,6 +323,29 @@
 	     	</foreach>
 	   	 </where>
 	</update>
+	
+	<update id="updateBlackCountReset" parameterType="list">
+		UPDATE
+		       USER_TBL A
+		   SET A.REP_COUNT = 0
+		<where>
+	     	A.MEM_CODE IN
+     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+ 	 	</where>
+	</update>
+	
+	<delete id="deleteRealReview" parameterType="list">
+	    DELETE
+	      FROM REVIEW_TBL A
+    	<where>
+	     	A.MEM_CODE IN
+     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+ 		</where> 
+	</delete>
 	
 	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
 	    SELECT
@@ -341,10 +382,26 @@
 	      FROM REPORT_TBL A
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	     <where>
-	     	<if test="searchValue != null">
+	     	<if test="searchValue != null and all">
 	     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
 	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
 	     	</if>
+	     	<if test="condition1">
+	     		A.STATUS = 'W'
+	     	</if>
+	     	<if test="searchValue != null and condition1">
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+	     	</if>
+	     	<if test="condition2">
+	     		(A.STATUS = 'Y' OR
+	     		A.STATUS = 'N')
+	     	</if>
+	     	<if test="searchValue != null and condition2">
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+	     	</if>
+	     	
 	     </where>
 	</select>
 	
@@ -388,9 +445,24 @@
 					      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 					      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
 					     <where>
-					     	<if test="searchValue != null">
+					     	<if test='searchValue != null and searchCondition == "all"'>
 					     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
 					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+					     	</if>
+					     	<if test='searchCondition == "W"'>
+					     		A.STATUS = 'W'
+					     	</if>
+					     	<if test='searchValue != null and searchCondition == "W"'>
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
+					     	</if>
+					     	<if test='searchCondition == "YN"'>
+					     		(A.STATUS = 'Y' OR
+					     		A.STATUS = 'N')
+					     	</if>
+					     	<if test='searchValue != null and searchCondition == "YN"'>
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
 					     	</if>
 					     </where>
 					     ORDER BY A.REP_NO ASC)E
@@ -418,7 +490,7 @@
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 	      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
-	     WHERE A.RV_CODE = #{ repCode }
+	     WHERE A.REP_NO = #{ repNo }
 	     ORDER BY A.REP_NO ASC
 	</select>
 	

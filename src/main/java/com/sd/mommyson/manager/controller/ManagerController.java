@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dao.ManagerDAO;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
@@ -339,6 +340,21 @@ public class ManagerController {
 		
 	}
 	
+	@PostMapping(value = "blackMemDetail", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Map<String, Object>> blackMemDetail(@RequestParam("memCode") int memCode) {
+		
+		System.out.println("들어옴");
+		
+		Map<String, Object> blackMemDetailMap = new HashMap<>();
+		blackMemDetailMap.put("memCode", memCode);
+		
+		List<Map<String, Object>> blackMemDetailList = managerService.selectblackMemDetail(blackMemDetailMap);
+		System.out.println("blackMemDetailList : " + blackMemDetailList);
+		
+		return blackMemDetailList;
+	}
+	
 	/* 블랙 해지 */
 	/**
 	 * @param blackMember
@@ -354,7 +370,7 @@ public class ManagerController {
 			terminateBlackList.add(blackMember[i]);
 		}
 		
-		managerService.terminateBlack(terminateBlackList);
+		managerService.updateTerminateBlack(terminateBlackList);
 		
 		return "redirect:blackMember";
 	}
@@ -659,9 +675,11 @@ public class ManagerController {
 		String searchValue = sv;
 		String searchCondition = "";
 		
-		Map<String, Object> searchMap = new HashMap<>();
+		String all = "all";
 		
+		Map<String, Object> searchMap = new HashMap<>();
 		searchMap.put("searchValue", searchValue);
+		searchMap.put("all", all);
 		
 		System.out.println("searchMap : " + searchMap);
 		
@@ -682,7 +700,7 @@ public class ManagerController {
 			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
 		}
 		
-//		pagination.setSearchCondition("user");
+		pagination.setSearchCondition("all");
 		
 		System.out.println("pagination : " + pagination);
 		
@@ -699,6 +717,158 @@ public class ManagerController {
 	}
 	
 	/**
+	 * 신고 접수된 리뷰 조회
+	 * @param model
+	 * @param currentPage
+	 * @param sv
+	 * @param condition
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repReception")
+	public String repReception(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+			   , @RequestParam(value="searchValue", required = false) String sv,
+			     @RequestParam("searchCondition") String condition) {
+		
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchValue = sv;
+		String searchCondition = "";
+		
+//		String processSituation = "W";
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("condition1", condition);
+		
+		System.out.println("searchMap : " + searchMap);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.selectReportTotalCount(searchMap);
+		
+		System.out.println("totalInquiryBoardCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		pagination.setSearchCondition(condition);
+		
+		System.out.println("pagination : " + pagination);
+		
+		List<Map<String, Object>> repReceptionList = managerService.selectReportList(pagination);
+		System.out.println("리스트 확인 : " + repReceptionList);
+		
+		if(repReceptionList != null) {
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("repReceptionList", repReceptionList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
+		return "manager/statusStoreWarning";
+	}
+	
+	/**
+	 * 처리완료된 신고리뷰 조회
+	 * @param model
+	 * @param currentPage
+	 * @param sv
+	 * @param condition
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping(value = "repComplete")
+	public String repComplite(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+			   , @RequestParam(value="searchValue", required = false) String sv,
+			     @RequestParam("searchCondition") String condition) {
+		
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchValue = sv;
+		String searchCondition = "";
+		
+//		String processSituation = "W";
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("condition2", condition);
+		
+		System.out.println("searchMap : " + searchMap);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.selectReportTotalCount(searchMap);
+		
+		System.out.println("totalInquiryBoardCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		pagination.setSearchCondition(condition);
+		
+		System.out.println("pagination : " + pagination);
+		
+		List<Map<String, Object>> repCompleteList = managerService.selectReportList(pagination);
+		System.out.println("리스트 확인 : " + repCompleteList);
+		
+		if(repCompleteList != null) {
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("repCompleteList", repCompleteList);
+		} else {
+			System.out.println("조회실패");
+		}
+		
+		return "manager/statusStoreWarning";
+	}
+	
+	/**
 	 * 신고된 리뷰 상세조회
 	 * @param repCode
 	 * @return
@@ -707,12 +877,12 @@ public class ManagerController {
 	 */
 	@PostMapping(value = "repDetailView", produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public Map<String, Object> repDetailView(@RequestParam("repCode") int repCode) throws JsonProcessingException{
+	public Map<String, Object> repDetailView(@RequestParam("repNo") int repNo) throws JsonProcessingException{
 		
 		System.out.println("들어옴");
 		
 		Map<String, Object> repMap = new HashMap<>();
-		repMap.put("repCode", repCode);
+		repMap.put("repNo", repNo);
 		
 		Map<String, Object> reportInfo = managerService.selectRepDetailView(repMap);
 		System.out.println("reportInfo : " + reportInfo);
