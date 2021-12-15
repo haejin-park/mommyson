@@ -1213,4 +1213,11 @@ public class UserController {
 		return "user/cart";
 	}
 	
+	@PostMapping("jjimplus")
+	public int jjimplus() {
+		
+		
+//		int result = userService.insertJJIMplus();
+		return result;
+	}
 }
