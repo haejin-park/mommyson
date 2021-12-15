@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dao.ManagerDAO;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
@@ -339,6 +340,21 @@ public class ManagerController {
 		
 	}
 	
+	@PostMapping(value = "blackMemDetail", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Map<String, Object>> blackMemDetail(@RequestParam("memCode") int memCode) {
+		
+		System.out.println("들어옴");
+		
+		Map<String, Object> blackMemDetailMap = new HashMap<>();
+		blackMemDetailMap.put("memCode", memCode);
+		
+		List<Map<String, Object>> blackMemDetailList = managerService.selectblackMemDetail(blackMemDetailMap);
+		System.out.println("blackMemDetailList : " + blackMemDetailList);
+		
+		return blackMemDetailList;
+	}
+	
 	/* 블랙 해지 */
 	/**
 	 * @param blackMember
@@ -354,7 +370,7 @@ public class ManagerController {
 			terminateBlackList.add(blackMember[i]);
 		}
 		
-		managerService.terminateBlack(terminateBlackList);
+		managerService.updateTerminateBlack(terminateBlackList);
 		
 		return "redirect:blackMember";
 	}

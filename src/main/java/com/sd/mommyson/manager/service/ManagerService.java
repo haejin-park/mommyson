@@ -51,13 +51,10 @@ public interface ManagerService {
 	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
 	/* 블랙해지 */
-	public boolean terminateBlack(List<Integer> blackMember);
+	public boolean updateTerminateBlack(List<Integer> blackMember);
 
 	/* 신고된 리뷰 총 갯수 */
 	public int selectReportTotalCount(Map<String, Object> searchMap);
-	
-	/* 일반회원 검색 */
-	public List<MemberDTO> selectSearchMemberList(String searchMember);
 
 	/* 공지사항 리스트 */
 	public List<PostDTO> selectNoticeList(Pagination pagination);
@@ -103,5 +100,8 @@ public interface ManagerService {
 
 	/* 공지사항 상단 down */
 	public boolean noticeDown(int postNo);
+
+	/* 블랙회원 상세정보 */
+	public List<Map<String, Object>> selectblackMemDetail(Map<String, Object> blackMemDetailMap);
 
 }

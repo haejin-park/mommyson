@@ -34,6 +34,7 @@ public class ManagerServiceImpl implements ManagerService {
    
    /**
     * 회원조회
+    * @author leeseungwoo
     */
    @Override
    public List<MemberDTO> selectMember(Pagination pagination) {
@@ -53,6 +54,7 @@ public class ManagerServiceImpl implements ManagerService {
 
    /**
     * 일반회원삭제
+    * @author leeseungwoo
     */
    @Override
    public boolean deleteMembers(List<Integer> deleteMemberList) {
@@ -102,13 +104,32 @@ public class ManagerServiceImpl implements ManagerService {
       return count;
    }
 
+   /**
+    * 블랙 회원 조회
+    * @author leeseungwoo
+    */
+   @Override
    public List<MemberDTO> blackMemberSelect(MemberDTO member) {
       
       List<MemberDTO> blackMemberList = managerDAO.blackMemberSelect(member);
       
       return blackMemberList;
    }
+   
+   /**
+	 * 블랙회원 상세정보
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<Map<String, Object>> selectblackMemDetail(Map<String, Object> blackMemDetailMap) {
+		
+		return managerDAO.selectblackMemDetail(blackMemDetailMap);
+	}
 
+   /**
+    * 블랙추가
+    * @author leeseungwoo
+ 	*/
    @Override
    public boolean modifyMemberAddBlack(List<Integer> memberAddBlackList) {
       
@@ -117,24 +138,35 @@ public class ManagerServiceImpl implements ManagerService {
       return result > 0? true : false;
    }
 
-   @Override
-   public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
+   /**
+    * 회원 총 인원 수
+   	* @author leeseungwoo
+   	*/
+   	@Override
+   	public int selectNormalMemberTotalCount(Map<String, Object> searchMap) {
       return managerDAO.selectNormalMemberTotalCount(searchMap);
-   }
+   	}
 
 	/**
 	 * 블랙해지
+	 * @author leeseungwoo
 	 */
 	@Override
-	public boolean terminateBlack(List<Integer> blackMember) {
+	public boolean updateTerminateBlack(List<Integer> blackMember) {
 		
-		int result = managerDAO.terminateBlack(blackMember);
+		/* 회원 상태값 변경 */
+		int result = managerDAO.updateTerminateBlack(blackMember);
+		/* 경고 초기화 */
+		int result2 = managerDAO.updateBlackCountReset(blackMember);
+		/* 회원이 작성했던 리뷰 완전 삭제 */
+		int result3 = managerDAO.deleteRealReview(blackMember);
 		
-		return result > 0? true : false;
+		return result + result2 + result3 > 2? true : false;
 	}
 
 	/**
 	 * 신고된 리뷰 총 갯수
+	 * @author leeseungwoo
 	 */
 	@Override
 	public int selectReportTotalCount(Map<String, Object> searchMap) {
@@ -142,12 +174,10 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectReportTotalCount(searchMap);
 	}
 
-	@Override
-	public List<MemberDTO> selectSearchMemberList(String searchMember) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * 사업자 상세정보
+	 * @author leeseungwoo
+	 */
 	@Override
 	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo) {
 		
@@ -168,6 +198,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	/**
 	 * 신고된 리뷰 조회
+	 * @author leeseungwoo
 	 */
 	@Override
 	public List<Map<String, Object>> selectReportList(Pagination pagination) {
@@ -179,6 +210,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	/**
 	 * 신고된 리뷰 상세 조회
+	 * @author leeseungwoo
 	 */
 	@Override
 	public Map<String, Object> selectRepDetailView(Map<String, Object> repMap) {
@@ -190,6 +222,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	/**
 	 * 신고된 리뷰 반려처리
+	 * @author leeseungwoo
 	 */
 	@Override
 	public boolean updateRepCompanion(Map<String, Integer> repComMap) {
@@ -199,6 +232,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	/**
 	 * 신고된 리뷰 경고 주기
+	 * @author leeseungwoo
 	 */
 	@Override
 	public boolean updateWarning(Map<String, Integer> warMap) {
@@ -212,6 +246,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	/**
 	 * 신고된 해당 리뷰 작성자 블랙등록
+	 * @author leeseungwoo
 	 */
 	@Override
 	public boolean updateBlack(Map<String, Object> blackMap) {
