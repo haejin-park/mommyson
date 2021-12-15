@@ -6,10 +6,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
@@ -39,13 +42,12 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerDAO.selectCoupon(member);
 	}
 
-
 	@Override
-	public List<ReviewDTO> selectReview(String storeName) {
-		List<ReviewDTO> list = ownerDAO.selectReview(storeName);
-		System.out.println("list 확인 : " + list);
-		return list;
-	}
+	   public List<ReviewDTO> selectReview(String storeName) {
+	      List<ReviewDTO> list = ownerDAO.selectReview(storeName);
+	      
+	      return list;
+	   }
 
 	@Override
 	public int modifyInfo(Map<String, Object> modifyInfo) {
@@ -127,23 +129,6 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int deleteReview(List<Integer> deleteReviewList) {
-		
-		int result = ownerDAO.deleteReview(deleteReviewList);
-		
-		return result;
-		
-	}
-
-	@Override
-	public int deleteCoupon(List<Integer> deleteCouponList) {
-		
-		int result = ownerDAO.deleteCoupon(deleteCouponList);
-		
-		return result;
-	}
-	
-	@Override	
 	public int modifyStatus(ProductDTO product) {
 
 		int result = ownerDAO.modifyStatus(product);
@@ -166,7 +151,7 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return result;
 	}
-	
+
 	@Override
 	public List<ProductDTO> selectDC(Map<String, Object> searchMap) {
 
@@ -174,7 +159,6 @@ public class OwnerServiceImpl implements OwnerService{
 		
 		return result;
 	}
-
 
 	@Override
 	public int selectTotalModal(Map<String, Object> searchMap) {
@@ -193,10 +177,50 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int registDc(Map<String, Object> map) {
+	public int registDc(List<DCProduct> maps) {
 
-		int result = ownerDAO.registDc(map);
+		int result = ownerDAO.registDc(maps);
 				
+		return result;
+	}
+
+	@Override
+	public int modifyOwnerStatus(Map<String, Object> map) {
+
+		int result = ownerDAO.modifyOwnerStatus(map);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteReview(List<Integer> deleteReviewList) {
+
+		int result = ownerDAO.deleteCoupon(deleteReviewList);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteCoupon(List<Integer> deleteCouponList) {
+
+		int result = ownerDAO.deleteCoupon(deleteCouponList);
+		
+		return result;
+	}
+
+	@Override
+	public MembershipDTO selectMembership(int msCode) {
+
+		MembershipDTO membership = ownerDAO.selectMembership(msCode);
+		
+		return membership;
+	}
+
+	@Override
+	public int modifyProduct(List<DCProduct> maps) {
+
+		int result = ownerDAO.modifyProduct(maps);
+		
 		return result;
 	}
 	

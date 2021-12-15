@@ -12,6 +12,13 @@ public class DCProduct {
 	private int price; 
 	
 	public DCProduct() {}
+	
+	public DCProduct(int discountRate, int sdCode) {
+		super();
+		this.discountRate = discountRate;
+		this.sdCode = sdCode;
+	}
+
 
 	public DCProduct(int dcCode, int discountRate, Date insertDate, int sdCode, String sdName, int price) {
 		super();

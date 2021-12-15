@@ -27,6 +27,7 @@
 		<result property="grade" column="GRADE"/>
 		<result property="delCost" column="DEL_COST"/>
 		<result property="workTime" column="WORK_TIME"/>
+		<result property="statusYN" column="STATUS_YN"/>
 	</resultMap>
 	
 
@@ -128,6 +129,13 @@
 		<result property="sdCode" column="SD_CODE"/>
 		<result property="sdName" column="SD_NAME"/>
 		<result property="price" column="PRICE"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.MembershipDTO" id="membershipResultMap">
+		<id property="msCode" column="MS_CODE"/>
+		<result property="msType" column="MS_TYPE"/>
+		<result property="msDate" column="MS_DATE"/>
+		<result property="msPrice" column="MS_PRICE"/>
 	</resultMap>
 		
 	<!-- 사업자 정보를 불러오는 쿼리 -->
@@ -598,23 +606,51 @@
 	<!-- 할인 등록 쿼리문 -->
 	<insert id="registDc">
 		INSERT
-		  INTO DC_PRODUCT A
+		  INTO DC_PRODUCT 
 		(
-			A.DC_CODE
-		   ,A.DISCOUNT_RATE
-		   ,A.INSERT_DATE
-		   ,A.SD_CODE
-		   ,A.DC_YN
-		)  
-		VALUES
-		(
-			SEQ_DC_CODE.NEXTVAL
-			<foreach collection="map" item="list">
-				<foreach collection="list" item="list">
-		  		 ,#{ list.dcRate }, DEFAULT, #{ list.sdCode }, DEFAULT
-		  		 </foreach>
-		    </foreach>
-		)
+			DC_CODE
+		   ,DISCOUNT_RATE
+		   ,INSERT_DATE
+		   ,SD_CODE
+		   ,DC_YN
+		) 
+		SELECT 
+		       SEQ_DC_CODE.NEXTVAL
+		     , A.* 
+		  FROM(
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT
+				   #{ item.discountRate } AS DISCOUNT_RATE
+			     , SYSDATE AS INSERT_DATE
+				 , #{ item.sdCode } AS SD_CODE
+				 , 'Y' AS DC_YN
+			  FROM DUAL	 
+	 </foreach>) A
 	</insert>
+	
+	<!-- 영업상태 업데이트 쿼리문 -->
+	<update id="modifyOwnerStatus">
+		UPDATE STORE_TBL
+		   SET STATUS_YN = #{ statusYN }
+		 WHERE MEM_CODE = #{ memCode }  
+	</update>
+	
+	<!-- 멤버십 정보 select 쿼리문 -->
+	<select id="selectMembership" resultMap="membershipResultMap">
+		SELECT
+			   MS_TYPE
+			 , MS_DATE
+			 , MS_PRICE
+	 	  FROM MEMBERSHIP_TBL
+	 	 WHERE MS_CODE = #{ msCode }	 
+	</select>
+	
+	<update id="modifyProduct">
+		<foreach collection="list" item="item">
+			UPDATE PRODUCT_TBL
+			   SET DISCOUNT_RATE = #{ item.discountRate }
+			 WHERE SD_CODE = #{ item.sdCode }
+		</foreach>
+	</update>
 	
 </mapper>

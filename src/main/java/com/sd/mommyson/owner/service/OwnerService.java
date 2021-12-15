@@ -3,8 +3,11 @@ package com.sd.mommyson.owner.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
@@ -37,9 +40,6 @@ public interface OwnerService {
 
 	public int selectTotalCount(Map<String, Object> searchMap);
 
-	public int deleteReview(List<Integer> deleteReviewList);
-
-	public int deleteCoupon(List<Integer> deleteCouponList);
 	public int modifyStatus(ProductDTO product);
 
 	public int removeProduct(List<Integer> deleteCode);
@@ -52,5 +52,15 @@ public interface OwnerService {
 
 	public List<ProductDTO> selectProdouct(int memCode);
 
-	public int registDc(Map<String, Object> map);
+	public int registDc(List<DCProduct> maps);
+
+	public int modifyOwnerStatus(Map<String, Object> map);
+
+	public int deleteReview(List<Integer> deleteReviewList);
+
+	public int deleteCoupon(List<Integer> deleteCouponList);
+
+	public MembershipDTO selectMembership(int msCode);
+
+	public int modifyProduct(List<DCProduct> maps);
 }

@@ -4,21 +4,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../../resources/css/pay.css">
+<link rel="stylesheet" href="../resources/css/pay.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <title>결제</title>
 </head>
 <body>
 	
 	<div style="width: 1550px; margin: 0 auto; margin-top: 50px;">
-        <a href="#"><img src="../../resources/images/mainlogo.png" style="width: 300px;"></a>
+        <a href="${ pageContext.servletContext.contextPath }/"><img src="../resources/images/mainlogo.png" style="width: 300px;"></a>
         <br><br><br>
         <hr> 
     </div>
     <br><br>
     <div style="width: 1550px; margin: 0 auto;">
         <p style="margin: 20px 0 50px 30px; font-size: 40px; font-weight: 900; float: left">이용권 결제</p>
-        <p style="float: right; font-size: 20px; font-weight: 700; margin-top: 30px; margin-right: 30px;">결제완료</p>
+        <p style="float: right; font-size: 20px; font-weight: 700; margin-top: 30px; margin-right: 30px;">결제완료</p.>
         <p style="float: right; font-size: 20px; font-weight: 700; color: #346aff; margin-top: 30px;">이용권 결제></p>
         <br><br><br><br><br><br>
         <hr>
@@ -27,51 +27,51 @@
     <div style="margin: 80px 0 50px 850px;">
     <h2>구매자 정보</h2>
     </div>
-    <table class="tg">
+    <table class="tg" style="text-align: center;">
         <tbody>
         <tr>
             <th class="tg-c3ow">상호명</th>
-            <th class="tg-0pky">숙이네 반찬</th>
+            <th class="tg-0pky">${ requestScope.ownerInfo.ceo.store.storeName }</th>
         </tr>
         <tr>
             <td class="tg-c3ow">아이디</td>
-            <td class="tg-0pky">greedy123</td>
+            <td class="tg-0pky">${ requestScope.ownerInfo.memId }</td>
         </tr>
         <tr>
             <td class="tg-c3ow">이메일</td>
-            <td class="tg-0pky">greedy123@gmail.com</td>
+            <td class="tg-0pky">${ requestScope.ownerInfo.email }</td>
         </tr>
         <tr>
             <td class="tg-c3ow">전화번호 </td>
-            <td class="tg-0pky">02-403-1234</td>
+            <td class="tg-0pky">${ requestScope.ownerInfo.phone }</td>
         </tr>
         <tr>
             <td class="tg-c3ow">대표자명</td>
-            <td class="tg-0pky">김미숙</td>
+            <td class="tg-0pky">${ requestScope.ownerInfo.ceo.name }</td>
         </tr>
         <tr>
             <td class="tg-c3ow">사업자 등록번호</td>
-            <td class="tg-0pky">678-43-21456</td>
+            <td class="tg-0pky">${ requestScope.ownerInfo.ceo.no }</td>
         </tr>
         </tbody>
     </table>
     <br><br>
-    <div style="margin: 80px 0 50px 850px;">
+    <div style="margin: 80px 0 50px 850px;" >
         <h2>결제 정보</h2>
     </div>
-        <table class="tg">
+        <table class="tg" style="text-align: center;">
             <tbody>
             <tr>
                 <th class="tg-c3ow">상품명</th>
-                <th class="tg-0pky">3개월 이용권</th>
+                <th class="tg-0pky">${ requestScope.membership.msType }</th>
             </tr>
             <tr>
                 <td class="tg-c3ow" style="font-weight: 700;">총 결제금액</td>
-                <td class="tg-0pky" style="font-weight: 700;">199,900원</td>
+                <td class="tg-0pky" style="font-weight: 700;">${ requestScope.membership.msPrice }원</td>
             </tr>
             <tr>
                 <td class="tg-c3ow" style="font-weight: 700;">결제 방법</td>
-                <td class="tg-0pky" style="font-weight: 700;">카카오페이 <img src="../../resources/images/pay.png" width="70px" height="30px"></td>
+                <td class="tg-0pky" style="font-weight: 700;">카카오페이 <img src="../resources/images/pay.png" width="70px" height="30px" style="position: relative; top: 9px " ></td>
             </tr>
             </tbody>
         </table>
@@ -268,24 +268,43 @@
                 
         </div> 
         <p style="margin: 50px 0 0 0; font-weight: 700;">위 내용을 확인하였으며, 회원 본인은 결제에 동의합니다.</p>
-        <p style="margin: 30px 0 0 140px; font-weight: 700;">동의하기 <input type="checkbox" name="" id=""></p>
+        <p style="margin: 30px 0 0 140px; font-weight: 700;">동의하기 <input type="checkbox" id="check"></p>
     </div>
-    <script>
-        $(function(){
-            $("#btn1").click(function(){
-                $("#div1").toggle();
-            });
-            $("#btn2").click(function(){
-                $("#div2").toggle();
-            });
-        });
-    </script>
     <div style="margin: 80px 0 50px 800px;">
         <button class="payment">결제하기</button>
     </div>   
     
+    <script>
+	    $("#btn1").click(function(){
+	        $("#div1").toggle();
+	    });
+	    $("#btn2").click(function(){
+	        $("#div2").toggle();
+	    });
+	    
+	    /* $('.payment').click(function(){
+	    	
+	    	if($('#check').is(':checked')){
+	    		$.ajax({
+	    			url : '${ pageContext.servletContext.contextPath }/owner/kakaopay',
+	    			type : 'post',
+	    			dataType : 'json',
+	    			data : { },
+	    			success : function(data){
+	    				// 결제 요청이 되면 url이 넘어옴
+	    			location.href = data.next_redirect_pc_url
+	    				
+	    			}, 
+	    		});
+	    	} else {
+	    		alert("약관 동의를 하지 않았습니다.")
+	    	}
+	    }); */
+	    
+    </script>
+    
      <!-- footer -->
-  <jsp:include page="${ pageContext.servletContext.contextPath }/view/commons/footer.jsp"/>
+  <jsp:include page="../commons/footer.jsp"/>
 	
 </body>
 </html>
