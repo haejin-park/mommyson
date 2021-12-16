@@ -11,7 +11,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.tribes.membership.Membership;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
@@ -39,8 +40,6 @@ import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
-
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -643,6 +642,22 @@ public class OwnerController {
 		model.addAttribute("orderList",orderList);
 //		model.addAttribute("orderList2",orderList2);
 		return "owner/order";
+	}
+
+	@PostMapping(value="order",produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String orderList2(@RequestParam(value="orderCode") int orderCode) throws JsonProcessingException {
+		
+		System.out.println("asdasdsadsads : " + orderCode);
+		
+		// 값 가져오기
+		OrderDTO orderOne = ownerService.selectOrder(orderCode);
+		
+		System.out.println(orderOne);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		return mapper.writeValueAsString(orderOne);
 	}
 	
 	/* 오늘의 할인 */

@@ -74,4 +74,6 @@ public interface OwnerService {
 	public MembershipDTO selectMembership(int msCode);
 
 	public int modifyProduct(List<DCProduct> maps);
+
+	public OrderDTO selectOrder(int orderCode);
 }

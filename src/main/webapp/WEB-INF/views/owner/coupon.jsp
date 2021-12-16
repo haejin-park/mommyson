@@ -74,7 +74,7 @@
           <!-- 모달쿠폰 -->
           <button type="button"  id="couponBtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="height: 40px;">
             추가</button>
-          <button class="couponBtn" type="submit">삭제</button>
+          <button id="couponBtn2" type="submit">삭제</button>
         </form>
         </div>  
       </div>

@@ -263,4 +263,10 @@ public class OwnerServiceImpl implements OwnerService{
 		return null;
 	}
 
+	@Override
+	public OrderDTO selectOrder(int orderCode) {
+		
+		return ownerDAO.selectOrder(orderCode);
+	}
+
 }

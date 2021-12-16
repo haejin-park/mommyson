@@ -41,7 +41,7 @@
     
     <script>
    
-        let link = "";
+        var link = "";
         link = document.location.href;
         if(!(document.location.href).includes("?memCode") && !(document.location.href).includes("?type")) {
             link = document.location.pathname;
@@ -51,7 +51,7 @@
         	link = document.location.pathname + '?type=${ requestScope.realType }';
         }
 
-      let searchText = "";
+      var searchText = "";
       
       if(${ !empty requestScope.pagination.searchCondition? true : false }) {
          searchText += "&searchCondition=${ requestScope.pagination.searchCondition }";

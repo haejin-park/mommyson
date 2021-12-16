@@ -40,12 +40,6 @@
     top: 749px;
     background: #EDEDED;
 }
-.couponBtn{
-     background-color: rgba(248, 158, 145, 1);
-     border: none; 
-     border-radius: 5px;
-     color: white; 
-     width: 100px;
 }
 #rebtn1{
     width: 150px; 
@@ -73,14 +67,31 @@
     width: 100px;
     height: 40px; 
 }
-.couponBtn{
-	background-color: #777777; 
+#couponBtn2{
+    background-color: #777777; 
+    border: none; 
+     border-radius: 5px;
 	height: 40px; 
 	margin-left: 50px;
 	position: relative;
+	color: white; 
+    width: 100px;
+    height: 40px; 
     top: 2px;
 }
+.couponBtn2{
+	background-color: #777777; 
+	height: 40px; 
+	margin-left: 50px;
+}
 
+.couponBtn{
+     background-color: rgba(248, 158, 145, 1);
+     border: none; 
+     border-radius: 5px;
+     color: white; 
+     width: 80px;
+     
 .modal-body h4, .modal-body h6{
     display: inline;
     margin-right: 50px;
@@ -102,10 +113,4 @@
     border: none;
     border-radius: 5px; 
     color: white;
-}
-
-#detailOD{
-	border: none;
-	background: none;
-	color: black;
 }
