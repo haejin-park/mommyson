@@ -23,4 +23,6 @@ public interface UserMyPageDAO {
 
 	List<StoreDTO> selectRecommendStore(SelectCriteria selectCriteria);
 
+	int deleteRecommendStore(int storeNo);
+
 }

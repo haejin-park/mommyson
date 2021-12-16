@@ -119,6 +119,43 @@
     
     </select>
     
+    <!--고객센터 메인 공지사항 -->
+    <select id="selectRecentNotice" resultMap="postResultMap">
+	    SELECT
+				   A.POST_NO
+				 , A.BOARD_CODE
+				 , A.POST_TITLE
+				 , A.MEM_CODE
+				 , A.POST_CONTENT
+				 , A.POST_DATE
+				 , A.ANS_STATUS
+				 , A.QUE_NO
+				 , A.STATUS
+				 , A.VIEW_CNT
+			 FROM POST_TBL A
+			 JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+			WHERE B.TYPE = 'notice'	 
+			 ORDER BY A.POST_NO DESC	
+    </select>
+    <!-- 고객센터 메인 자주묻는 질문 FQA -->
+    <select id="selectOftenFqa" resultMap="postResultMap">
+    	SELECT
+    	       A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS	
+		 FROM POST_TBL A
+		 JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+		WHERE B.TYPE = 'fqa'
+		<!-- 뷰카운트 만들어야함 -->	 
+    </select>
+    
+    
     <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
     	<id property="sdCode" column="SD_CODE"/>
     	<result property="sdName" column="SD_NAME"/>
@@ -257,6 +294,7 @@
 	  FROM POST_TBL A
 	  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
 	 WHERE A.STATUS LIKE 'U'
+	   AND B.TYPE ='notice' 
 	</select>
 	
 	<!-- 자주하는 질문 -->

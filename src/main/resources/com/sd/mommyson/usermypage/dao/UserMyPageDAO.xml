@@ -73,6 +73,7 @@
 			 , A.DC_CONDITION
 			 , A.STORE_NAME
 			 , A.STORE_IMG
+			 , A.MEM_CODE
 		 FROM (SELECT  ROWNUM RNUM	
 		    		 , B.CP_CODE
 					 , B.CP_NAME
@@ -82,6 +83,7 @@
 					 , B.DC_CONDITION
 					 , B.STORE_NAME
 					 , B.STORE_IMG
+					 , B.MEM_CODE
 				 FROM (SELECT  C.CP_CODE
 							 , C.CP_NAME
 							 , C.START_DATE
@@ -90,6 +92,7 @@
 							 , C.DC_CONDITION
 							 , F.STORE_NAME
 							 , F.STORE_IMG
+							 , F.MEM_CODE
 				 		  FROM COUPON_TBL C
 				 		  JOIN CP_HISTORY_TBL D ON (C.CP_CODE = D.CP_CODE)
 				 		  JOIN COUPON_STORE_TBL E ON (C.CP_CODE = E.CP_CODE)
@@ -277,6 +280,7 @@
 		 , A.DEL_COST
 		 , A.WORK_TIME
 		 , A.MEM_CODE
+		 , A.CEO_CODE
 	  FROM (SELECT ROWNUM RNUM
 			     , B.STORE_NAME
 				 , B.STORE_IMG
@@ -285,6 +289,7 @@
 				 , B.DEL_COST
 				 , B.WORK_TIME
 				 , B.MEM_CODE
+				 , B.CEO_CODE
 	   		  FROM (SELECT C.STORE_NAME
 						 , C.STORE_IMG
 						 , C.STORE_INFO
@@ -292,6 +297,7 @@
 						 , C.DEL_COST
 						 , C.WORK_TIME
 						 , C.MEM_CODE
+						 , E.CEO_CODE
 				 	  FROM STORE_TBL C
 				 	  JOIN CEO_TBL D ON(C.MEM_CODE = D.MEM_CODE)
 				 	  JOIN JJIM_TBL E ON(D.MEM_CODE = E.CEO_CODE)
@@ -309,5 +315,12 @@
 	 WHERE A.RNUM >= #{ startRow }
 	 ]]>	   
 	</select>
+	
+	<!-- 내가 자주찾는 가게 삭제 -->
+	<delete id="deleteRecommendStore" parameterType="_int">
+	DELETE
+	  FROM JJIM_TBL A
+	WHERE A.CEO_CODE = #{ storeNo }  	
+	</delete>
     </mapper>
     

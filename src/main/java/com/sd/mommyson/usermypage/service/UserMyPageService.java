@@ -23,4 +23,6 @@ public interface UserMyPageService {
 
 	List<StoreDTO> selectRecommendStore(SelectCriteria selectCriteria);
 
+	int deleteRecommendStore(int storeNo);
+
 }

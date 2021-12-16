@@ -93,7 +93,7 @@
               <div>
                     <jsp:include page="../commons/userMyPagePagination.jsp"/>
                 <!-- 페이징 -->
-                  <ul>
+                   <ul style="display: flex; flex-direction: row; justify-content: center; align-items: baseline;">
                       <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                       <form action="${ pageContext.servletContext.contextPath }/userMyPage/myOrderList" method="get">
                       <input type="hidden" name="currentPage" value="1">

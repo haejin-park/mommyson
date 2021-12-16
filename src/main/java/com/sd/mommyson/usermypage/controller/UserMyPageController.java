@@ -1,10 +1,13 @@
 package com.sd.mommyson.usermypage.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -281,6 +284,28 @@ public class UserMyPageController {
 		mv.addAttribute("Paging", "recommendStore");
 		
 		return "user_mypage/userRecommendStore";
+	}
+	/* 자주찾는 가게 삭제 */
+	@PostMapping("delRecommend")
+	public void delRecommendStore(HttpSession session, @RequestParam("storeCode") String str, HttpServletResponse response) throws IOException {
+		
+		
+		System.out.println("str :" + str);
+		int storeNo = Integer.parseInt(str);
+		
+		int result = userMyPageService.deleteRecommendStore(storeNo);
+		response.setContentType("text/plain; charset=UTF-8");
+		
+		PrintWriter out = response.getWriter();
+		if( result > 0 ) {
+			out.print("삭제 되었습니다.");
+		} else {
+			out.print("삭제에 실패했습니다.");
+		}
+		
+		out.flush();
+		out.close();
+		
 	}
 	
 	/*나의 신고 내역*/

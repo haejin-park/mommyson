@@ -29,6 +29,22 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
+	public List<PostDTO> selectRecentNotice() {
+
+		List<PostDTO> noticeMainCon = userDAO.selectRecentNotice();		
+		
+		
+		return noticeMainCon;
+	}
+	
+	@Override
+	public List<PostDTO> selectOftenFqa() {
+		List<PostDTO> oftenFqa = userDAO.selectOftenFqa();
+		
+		return oftenFqa;
+	}
+	
+	@Override
 	public int selectTotalCount(Map<String, String> searchMap) {
 		System.out.println("서비스 searchMap: " + searchMap);
 		int totalCount = userDAO.selectTotalCount(searchMap);
@@ -63,9 +79,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<ProductDTO> selectImportantNotice() {
+	public List<PostDTO> selectImportantNotice() {
 
-		List<ProductDTO> importantNotice = userDAO.selectImportantNotice();
+		List<PostDTO> importantNotice = userDAO.selectImportantNotice();
 		return importantNotice;
 	}
 
@@ -159,5 +175,12 @@ public class UserServiceImpl implements UserService{
 	public List<ProductDTO> selectSearchList(Map<String, Object> searchMap) {
 		return userDAO.selectSearchList(searchMap);
 	}
+
+
+	
+
+
+
+
 
 }

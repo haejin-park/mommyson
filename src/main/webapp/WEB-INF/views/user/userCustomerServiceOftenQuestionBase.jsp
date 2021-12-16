@@ -33,7 +33,7 @@
             <br>
             <div style="text-align: center;">
             	<c:if test='${ requestScope.fqaList[0].boardCode eq "6"}'><!-- ""와 ''차이 주의 -->
-            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/memberJoinFqa" method="get">
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/memberJoinFqa" method="get" style="height: 50px;">
             	 	<input type="hidden" name="currentPage" value="1">
 	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
 	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
@@ -41,7 +41,7 @@
             	</form>
             	</c:if>
             	<c:if test='${ requestScope.fqaList[0].boardCode eq "7"}'>
-            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/paycheckFqa" method="get">
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/paycheckFqa" method="get" style="height: 50px;">
             	 	<input type="hidden" name="currentPage" value="1">
 	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
 	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
@@ -49,7 +49,7 @@
             	</form>
             	</c:if>
             	<c:if test='${ requestScope.fqaList[0].boardCode eq "8"}'>
-            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/reviewFqa" method="get">
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/reviewFqa" method="get" style="height: 50px;">
             	 	<input type="hidden" name="currentPage" value="1">
 	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
 	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
@@ -57,7 +57,7 @@
             	</form>
             	</c:if>
             	<c:if test='${ requestScope.fqaList[0].boardCode eq "9"}'>
-            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/usingFqa" method="get">
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/usingFqa" method="get" style="height: 50px;">
             	 	<input type="hidden" name="currentPage" value="1">
 	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
 	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
@@ -65,7 +65,7 @@
             	</form>
             	</c:if>
             	<c:if test='${ requestScope.fqaList[0].boardCode eq "10"}'>
-            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/inconFqa" method="get">
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/inconFqa" method="get" style="height: 50px;">
             	 	<input type="hidden" name="currentPage" value="1">
 	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
 	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
@@ -73,7 +73,7 @@
             	</form>
             	</c:if>
             	<c:if test='${ requestScope.fqaList[0].boardCode eq "11"}'>
-            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/etcFqa" method="get">
+            	<form action = "${ pageContext.servletContext.contextPath }/user/ucc/etcFqa" method="get" style="height: 50px;">
             	 	<input type="hidden" name="currentPage" value="1">
 	             	<img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
 	              	<input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>

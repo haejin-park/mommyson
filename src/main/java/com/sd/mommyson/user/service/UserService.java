@@ -53,6 +53,11 @@ public interface UserService {
 
 	List<ProductDTO> selectSearchList(Map<String, Object> searchMap);
 	
-	List<ProductDTO> selectImportantNotice();
+	List<PostDTO> selectImportantNotice();
+
+	List<PostDTO> selectRecentNotice();
+
+	List<PostDTO> selectOftenFqa();
+
 
 }
