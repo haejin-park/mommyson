@@ -658,6 +658,39 @@ public class OwnerController {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		return mapper.writeValueAsString(orderOne);
+		
+	}
+	
+	@PostMapping("orderUpdateAndDelete")
+	public String orderUpdate(@RequestParam("orderType") int orderType,@RequestParam("orderCode") int orderCode, Model model) {
+
+		System.out.println("코드 잘 넘어오니!! : " + orderCode);
+		
+		if(orderType == 2) {
+			
+			Map<Object,Object> orderMap = new HashMap<>();
+			orderMap.put("orderCode", orderCode);
+			orderMap.put("orderType", orderType);
+			
+ 			int acceptOrder = ownerService.acceptModifyOrder(orderMap);
+ 			
+ 			System.out.println("수락하나요~~~~");
+ 			
+		}
+		
+		if(orderType == 3) {
+			
+			Map<Object,Object> orderMap = new HashMap<>();
+			orderMap.put("orderCode", orderCode);
+			orderMap.put("orderType", orderType);
+			
+			int cancleOrder = ownerService.cancleModifyOrder(orderMap);
+			
+			System.out.println("취소하나요~~~~");
+		}
+		
+		
+		return "redirect:order";
 	}
 	
 	/* 오늘의 할인 */

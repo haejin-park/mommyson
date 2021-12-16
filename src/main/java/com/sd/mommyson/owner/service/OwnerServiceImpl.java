@@ -269,4 +269,28 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerDAO.selectOrder(orderCode);
 	}
 
+	@Override
+	public int acceptModifyOrder(Map<Object, Object> orderMap) {
+		
+		int result = ownerDAO.acceptModifyOrder(orderMap);
+		
+		if(result == 1) {
+			System.out.println("accepTime 업데이트 성공");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int cancleModifyOrder(Map<Object, Object> orderMap) {
+		
+		int result = ownerDAO.cancleModifyOrder(orderMap);
+		
+		if(result == 1) {
+			System.out.println("accepTime 업데이트 성공");
+		}
+		
+		return result;
+	}
+
 }

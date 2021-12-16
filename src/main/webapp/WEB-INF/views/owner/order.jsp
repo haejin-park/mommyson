@@ -107,10 +107,17 @@
 							</button>
 							</td>
 							
-							<td><button class="couponBtn" id="btn1">접수</button>
+							<td>
+							<form method="post">
+							<input type="hidden" name="orderCode" value="${ol.orderCode }">
+							<button type="submit" class="couponBtn" id="btn1" name="orderType" value="2" formaction="${ pageContext.servletContext.contextPath}/owner/orderUpdateAndDelete">접수</button>
 								&nbsp;&nbsp;
-								<button class="couponBtn" id="can1"
-									style="background-color: #777777;">취소</button></td>
+							<button type="submit" class="couponBtn" id="btn2" name="orderType" value="2" formaction="${ pageContext.servletContext.contextPath}/owner/orderUpdateAndDelete" style="background-color: #68BF6B;">접수</button>
+							
+							<button type="submit" class="couponBtn" id="can1" name="orderType" value="3" formaction="${ pageContext.servletContext.contextPath}/owner/orderUpdateAndDelete" style="background-color: #777777;">취소</button>
+							</form>
+									</td>
+							
 						</tr>
 						</c:forEach>
 					</tbody>
@@ -221,11 +228,19 @@
 
 		<script>
      $(function() {
-        $('#btn1').click( function() {
+    	 
+        /* $('#btn1').click( function() {
           if( $(this).html() == '접수' ) {
             $(this).html('완료').css("background-color","#68BF6B")
           }
-        });
+        }); */
+        
+        /* 접수 버튼 누르면 사라지고 -> 완료 버튼 띄워줘야지 */
+        $( document ).ready( function() {
+            $( 'button #btn1' ).click( function() {
+              $( '#btn1' ).hide();
+              $( '#btn2' ).html();
+            } );
      
         $('#can1').click( function() {
             $("#btn1").remove();

@@ -80,5 +80,9 @@ public interface OwnerDAO {
 
 	public OrderDTO selectOrder(int orderCode);
 
+	public int acceptModifyOrder(Map<Object, Object> orderMap);
+
+	public int cancleModifyOrder(Map<Object, Object> orderMap);
+
 	
 }

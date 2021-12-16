@@ -791,6 +791,23 @@
 	
 	</select>
 	
+	<!-- 주문 수락 -->
+	<update id="acceptModifyOrder">
+		UPDATE ORDER_TBL
+		   SET ORDER_ACCEPT_TIME = SYSDATE
+		     , CODE = #{ orderType }
+		 WHERE ORDER_CODE = #{ orderCode }
+	</update>
+	
+	<!-- 주문 취소 -->
+	<update id="cancleModifyOrder">
+		UPDATE ORDER_TBL
+		   SET ORDER_CANCLE_TIME = SYSDATE
+		     , CODE = #{ orderType }
+		 WHERE ORDER_CODE = #{ orderCode }
+	
+	</update>
+	
 	<!-- 주문페이지  완료된 주문 -->
 	<select id="selectOrderList2" resultMap="orderResultMap">
 		SELECT
