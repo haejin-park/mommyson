@@ -50,7 +50,7 @@
 	                        <th>가입일</th>
 	                        <th>주문횟수</th>
 	                        <th>총 결제금액</th>
-	                        <th>신고</th>
+	                        <th>경고</th>
 	                        <th>상태</th>
 	                    </tr>
 	                </thead>
@@ -83,7 +83,7 @@
             		$("input:checkbox[name='chkMember']:checked").each(function(i, ival) {
             			chkMember.push($(this).val());
             			console.log(chkMember);
-                     });
+                    });
             		
             	
             		$.ajax({

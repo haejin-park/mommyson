@@ -129,7 +129,6 @@
 		        C.MEM_CODE
 			  , C.EMAIL
 			  , C.ADDRESS
-			  , C.POST_CODE
 			  , C.D_ADDRESS
 			  , C.PHONE
 			  , C.MEM_TYPE
@@ -138,24 +137,17 @@
 			  , C.MEM_ID
 			  , C.ENROLL_DATE
 			  , C.IS_DELETED
-			  , C.NAME
 			  , C.REP_COUNT
 			  , C.ACCOUNT
 			  , C.STORE_NO
 			  , C.CEO_NAME
 			  , C.STORE_NAME
-			  , C.STORE_IMG
-			  , C.STORE_INFO
-			  , C.GRADE
-			  , C.DEL_COST
-			  , C.WORK_TIME
 			  , C.RV_CODE
 		   FROM (SELECT 
 		                ROWNUM RNUM
 					  , B.MEM_CODE
 					  , B.EMAIL
 					  , B.ADDRESS
-					  , B.POST_CODE
 					  , B.D_ADDRESS
 					  , B.PHONE
 					  , B.MEM_TYPE
@@ -164,23 +156,16 @@
 					  , B.MEM_ID
 					  , B.ENROLL_DATE
 					  , B.IS_DELETED
-					  , B.NAME
 					  , B.REP_COUNT
 					  , B.ACCOUNT
 					  , B.STORE_NO
 					  , B.CEO_NAME
 					  , B.STORE_NAME
-					  , B.STORE_IMG
-					  , B.STORE_INFO
-					  , B.GRADE
-					  , B.DEL_COST
-					  , B.WORK_TIME
 					  , B.RV_CODE
 				   FROM (SELECT 
 							   A.MEM_CODE
 							 , A.EMAIL
 							 , A.ADDRESS
-							 , A.POST_CODE
 							 , A.D_ADDRESS
 							 , A.PHONE
 							 , A.MEM_TYPE
@@ -189,17 +174,11 @@
 							 , A.MEM_ID
 							 , A.ENROLL_DATE
 							 , A.IS_DELETED
-							 , U.NAME
 							 , U.REP_COUNT
 						     , F.ACCOUNT
 							 , F.STORE_NO
 							 , F.CEO_NAME
 							 , D.STORE_NAME
-							 , D.STORE_IMG
-							 , D.STORE_INFO
-							 , D.GRADE
-							 , D.DEL_COST
-							 , D.WORK_TIME
 							 , R.RV_CODE
 						  FROM MEMBER_TBL A
 						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
@@ -238,6 +217,13 @@
 						  	<if test='searchCondition == "black"'>
 						  		A.IS_DELETED = 'B' AND
 						  		A.MEM_TYPE = 'user'
+						  		AND
+						  		R.RV_CODE IN
+						  		(
+						  		SELECT
+						  		       RV_CODE
+						  		  FROM REPORT_TBL
+						  		)
 						  	</if>
 						  </where>
 						 ORDER BY A.MEM_CODE DESC)B
@@ -312,40 +298,41 @@
 	   	 </where>
 	</update>
 	
-	<update id="updateTerminateBlack" parameterType="list">
+	<update id="updateTerminateBlack" parameterType="hashmap">
 		UPDATE
 		       MEMBER_TBL A
 		   SET A.IS_DELETED = 'N'
 		 <where>
 	     	A.MEM_CODE IN
-	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     	<foreach collection="terminateBlackList" item="item" index="index" separator="," open="(" close=")">
 	     		#{ item }
 	     	</foreach>
 	   	 </where>
 	</update>
 	
-	<update id="updateBlackCountReset" parameterType="list">
+	<update id="updateBlackCountReset" parameterType="hashmap">
 		UPDATE
 		       USER_TBL A
 		   SET A.REP_COUNT = 0
 		<where>
 	     	A.MEM_CODE IN
-     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+     		<foreach collection="terminateBlackList" item="item" index="index" separator="," open="(" close=")">
 	     		#{ item }
 	     	</foreach>
  	 	</where>
 	</update>
 	
-	<delete id="deleteRealReview" parameterType="list">
-	    DELETE
-	      FROM REVIEW_TBL A
+	<update id="updateRealReview" parameterType="hashmap">
+	    UPDATE
+	           REPORT_TBL A
+	       SET A.STATUS = 'B'
     	<where>
-	     	A.MEM_CODE IN
-     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     	A.RV_CODE IN
+	     	<foreach collection="terminateRvCodeList" item="item" index="index" separator="," open="(" close=")">
 	     		#{ item }
 	     	</foreach>
  		</where> 
-	</delete>
+	</update>
 	
 	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
 	    SELECT
@@ -382,9 +369,12 @@
 	      FROM REPORT_TBL A
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	     <where>
+	     	<if test="all">
+	     		A.STATUS IN('W','Y','N')
+	     	</if>
 	     	<if test="searchValue != null and all">
-	     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
-	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
 	     	</if>
 	     	<if test="condition1">
 	     		A.STATUS = 'W'
@@ -445,9 +435,12 @@
 					      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 					      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
 					     <where>
+					     	<if test='searchCondition == "all"'>
+					     		A.STATUS IN('W','Y','N') 
+					     	</if>
 					     	<if test='searchValue != null and searchCondition == "all"'>
-					     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
-					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
 					     	</if>
 					     	<if test='searchCondition == "W"'>
 					     		A.STATUS = 'W'
@@ -542,6 +535,26 @@
 	       SET A.STATUS = 'Y'
 	     WHERE A.RV_CODE = #{ repRvCode }
 	</update>
+	
+	<insert id="insertBannerAdd">
+	    INSERT
+	      INTO BANER_TBL
+	    (
+	      BANER_CODE
+	    , BANER_NAME
+	    , BANER_IMG
+	    , STATUS
+	    , BANER_ORDER
+	    )
+	    VALUES
+	    (
+	      SEQ_BANNER.NEXTVAL
+	    , #{ bnName }
+	    , 'test'
+	    , #{ bnStatus }
+	    , #{ bnOrder }
+	    )
+	</insert>
 	
 	<select id="selectAuth" resultMap="authResultMap">
 		SELECT

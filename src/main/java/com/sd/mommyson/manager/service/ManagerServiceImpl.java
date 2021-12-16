@@ -147,14 +147,14 @@ public class ManagerServiceImpl implements ManagerService {
 	 * @author leeseungwoo
 	 */
 	@Override
-	public boolean updateTerminateBlack(List<Integer> blackMember) {
+	public boolean updateTerminateBlack(Map<String, Object> terminateMap) {
 		
 		/* 회원 상태값 변경 */
-		int result = managerDAO.updateTerminateBlack(blackMember);
+		int result = managerDAO.updateTerminateBlack(terminateMap);
 		/* 경고 초기화 */
-		int result2 = managerDAO.updateBlackCountReset(blackMember);
+		int result2 = managerDAO.updateBlackCountReset(terminateMap);
 		/* 회원이 작성했던 리뷰 완전 삭제 */
-		int result3 = managerDAO.deleteRealReview(blackMember);
+		int result3 = managerDAO.updateRealReview(terminateMap);
 		
 		return result + result2 + result3 > 2? true : false;
 	}
@@ -385,6 +385,16 @@ public class ManagerServiceImpl implements ManagerService {
 	public List<PostDTO> selectOftenQuestionList(Pagination pagination) {
 		
 		return managerDAO.selectOftenQuestionList(pagination);
+	}
+
+	/**
+	 * 배너추가
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int insertBannerAdd(Map<String, Object> bnMap) {
+		
+		return managerDAO.insertBannerAdd(bnMap);
 	}
 
 

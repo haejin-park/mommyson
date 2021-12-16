@@ -50,11 +50,11 @@ public interface ManagerDAO {
 
 	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
-	int updateTerminateBlack(List<Integer> blackMember);
+	int updateTerminateBlack(Map<String, Object> terminateMap);
 	
-	int updateBlackCountReset(List<Integer> blackMember);
+	int updateBlackCountReset(Map<String, Object> terminateMap);
 
-	int deleteRealReview(List<Integer> blackMember);
+	int updateRealReview(Map<String, Object> terminateMap);
 
 	int selectReportTotalCount(Map<String, Object> searchMap);
 
@@ -93,5 +93,7 @@ public interface ManagerDAO {
 	List<PostDTO> selectOftenQuestionList(Pagination pagination);
 
 	int OftenQuestionTotalCount(Map<String, String> searchMap);
+
+	int insertBannerAdd(Map<String, Object> bnMap);
 
 }

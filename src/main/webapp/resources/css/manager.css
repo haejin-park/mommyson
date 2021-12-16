@@ -28,7 +28,7 @@
 .total_container .board_container .board_table thead {  }
 .total_container .board_container .board_table tbody {  }
 .total_container .board_container .board_table tr { text-align: center; border-bottom: 1px solid #ddd; }
-.total_container .board_container .board_table tr th { border-bottom: 0; }
+.total_container .board_container .board_table tr th { border-bottom: 0; vertical-align: middle; }
 .total_container .board_container .board_table tr td { vertical-align: middle; }
 .total_container .board_container .board_table tr td a { color: #333; }
 
@@ -66,7 +66,7 @@
 
 
 /* 배너관리 */
-.cor_btn { width: 70px; padding: 8px 0; border: 0; border-radius: 15px; background-color: #f6bfb7; font-size: 14px; line-height: 16px; color: #fff; }
+.cor_btn { width: 70px; padding: 8px 0; border: 0; border-radius: 15px; background-color: #F89E91; font-size: 14px; line-height: 16px; color: #fff; }
 .total_container .board_container .banner_write {}
 .total_container .board_container .banner_write thead tr { border-bottom: 1px solid #B1B1B1; }
 .total_container .board_container .banner_write thead tr td select{ width: auto; padding: 0 42px; }
@@ -247,7 +247,7 @@
     color: white;
     border-color: #F89E91;
 }
-.total_container .board_container .black_btn { text-align: center; float: right; width: 90px; padding: 12px 0; border: 0; border-radius: 10px; background-color: #5F5F5F; font-size: 14px; line-height: 16px; color: #fff; }
+.total_container .board_container .black_btn { text-align: center; float: right; width: 90px; padding: 12px 0; border: 0; border-radius: 10px; background-color: #5F5F5F; font-size: 14px; line-height: 16px; color: #fff !important; }
 .total_container .board_container .black_btn.write_btn { margin-bottom: 20px; }
 
 

@@ -3,103 +3,24 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>배너관리 추가</title>
-    <link rel="stylesheet" href="../../../resources/css/colorset.css">
-    <link rel="stylesheet" href="../../../resources/css/mypage-sidebar.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../../resources/css/manager.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </head>
 <body>
     <header class="manager_header at-container">
-        <img src="../../../resources/images/managerLogo.png" alt="마미손맛 MANAGEMENT">
+        <img src="${ pageContext.servletContext.contextPath }/resources/images/managerLogo.png" alt="마미손맛 MANAGEMENT">
         <a href="../main.html" class="home_btn">
-            <img src="../../../resources/images/mainHome.png" alt="메인화면으로">
+            <img src="${ pageContext.servletContext.contextPath }/resources/images/mainHome.png" alt="메인화면으로">
             <p>메인화면으로</p>
         </a>
     </header>
     <div class="head_line"></div>
     <div class="at-container total_container">
-        <div class="side-2 side_menu">
-            <nav id="sidebar">
-                <ul class="list-unstyled components sidebar_list">
-                    <li class="active">
-                        <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회원관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu1">
-                            <li>
-                                <a href="normalMember.html">일반 회원 조회</a>
-                            </li>
-                            <li>
-                                <a href="buisnessMember.html">사업자 회원 조회</a>
-                            </li>
-                            <li>
-                                <a href="blackMember.html">블랙 회원 조회</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">게시글 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu2">
-                            <li>
-                                <a href="#">공지사항</a>
-                            </li>
-                            <li>
-                                <a href="#">자주하는 질문</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">1:1 문의</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu3">
-                            <li>
-                                <a href="#">사업자</a>
-                            </li>
-                            <li>
-                                <a href="#">소비자</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu4" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">신고 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu4">
-                            <li>
-                                <a href="#">가게 신고 현황</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu5" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">설정 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu5">
-                            <li>
-                                <a href="bannerManage.html">배너 설정</a>
-                            </li>
-                            <li>
-                                <a href="tagManage.html">태그 설정</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="#homeSubmenu6" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">관리자 관리</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu6">
-                            <li>
-                                <a href="#">관리자 조회</a>
-                            </li>
-                            <li>
-                                <a href="#">관리자 아이디 생성</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+    
+        <jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
+        
         <div class="board_container">
             <h2>배너 관리</h2>
-            <form action="">
+            <form action="${ pageContext.servletContext.contextPath }/manager/bannerAdd" method="POST">
                 <table class="table bd_write_header banner_write">
                     <colgroup>
                         <col width="15%"/>
@@ -109,7 +30,7 @@
                         <tr>
                             <th>번호(순서)</th>
                             <td>
-                                <select name="" id="">
+                                <select name="bnOrder" id="">
                                     <option value="">1</option>
                                     <option value="">2</option>
                                     <option value="">3</option>
@@ -126,7 +47,7 @@
                         <tr>
                             <th>제목</th>
                             <td>
-                                <input type="text" name="" id="">
+                                <input type="text" name="bnSubject" id="" placeholder="제목을 입력해주세요.">
                             </td>
                         </tr>
                         <tr>
@@ -140,9 +61,9 @@
                             <th>사용여부</th>
                             <td>
                                 <label for="">사용함</label>
-                                <input type="radio" name="useBanner" id="useTrue" value="">
+                                <input type="radio" name="useBanner" id="useTrue" value="Y">
                                 <label for="">사용안함</label>
-                                <input type="radio" name="useBanner" id="useFalse" value="">
+                                <input type="radio" name="useBanner" id="useFalse" value="N">
                             </td>
                         </tr>
                     </thead>
@@ -151,7 +72,6 @@
                     <input type="submit" value="완료" class="btn write_btn" style="background-color: #F89E91;">
                 </div>
             </form>
-            
         </div>
     </div>
     <!-- <div class="line"></div> -->
