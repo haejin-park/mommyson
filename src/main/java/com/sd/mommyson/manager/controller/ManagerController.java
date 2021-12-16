@@ -751,13 +751,152 @@ public class ManagerController {
 		
 	}
 	
-	/* 1:1문의 사업자*/
-	@GetMapping("businessInquiry")
-	public void businessInquiry() {}
 	
-	/* 1:1문의 소비자 */
+	/**
+	 * @author junheekim
+	 * @category 사업자 - 1:1 질문 조회
+	 */
+	@GetMapping("businessInquiry")
+	public String businessInquiry(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+			, @RequestParam(value = "searchCondition", required = false) String sc
+			, @RequestParam(value = "searchValue", required = false) String sv) {
+		System.out.println("조건a : " + sc);
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchCondition = sc;
+		String searchValue = sv;
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		
+		System.out.println("searchMap : " + searchMap);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.businessInquiryTotalCount(searchMap);
+		
+		System.out.println("OftenQuestionTotalCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		System.out.println("조건 : " + searchCondition);
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) { //검색할 때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else if(searchCondition != null && !"".equals(searchCondition)) {  // 조건변경할때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		} else { //둘 다null값으로 들어올 때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		}
+		
+//		System.out.println("pagination : " + pagination);
+		
+		/* 자주묻는질문 리스트 조회 */
+		List<PostDTO> businessInquiryList = managerService.selectBusinessInquiry(pagination);
+		
+
+		if(businessInquiryList != null) {
+			model.addAttribute("pagination",pagination);
+			model.addAttribute("businessInquiryList",businessInquiryList);
+		} else {
+			System.out.println("사업자 1:1 문의 리스트 조회 실패");
+		}
+		
+		return "manager/businessInquiry";
+	}
+
+	
+	
+	/**
+	 * @author junheekim
+	 * @category 소비자 - 1:1 질문 조회
+	 * @return
+	 */
 	@GetMapping("normalInquiry")
-	public void normalInquiry() {}
+	public String normalInquiry(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
+			, @RequestParam(value = "searchCondition", required = false) String sc
+			, @RequestParam(value = "searchValue", required = false) String sv) {
+		
+		System.out.println("조건b : " + sc);
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(pageNo);
+		
+		/* ==== 검색 처리 ==== */
+		String searchCondition = sc;
+		String searchValue = sv;
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		
+		System.out.println("searchMap : " + searchMap);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.normalInquiryTotalCount(searchMap);
+		
+		System.out.println("OftenQuestionTotalCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		System.out.println("조건 : " + searchCondition);
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) { //검색할 때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else if(searchCondition != null && !"".equals(searchCondition)) {  // 조건변경할때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		} else { //둘 다null값으로 들어올 때
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		}
+		
+//		System.out.println("pagination : " + pagination);
+		
+		/* 자주묻는질문 리스트 조회 */
+		List<PostDTO> normalInquiryList = managerService.selectNormalInquiry(pagination);
+		
+
+		if(normalInquiryList != null) {
+			model.addAttribute("pagination",pagination);
+			model.addAttribute("normalInquiryList",normalInquiryList);
+		} else {
+			System.out.println("소비자 1:1 문의 리스트 조회 실패");
+		}
+		
+		return "manager/normalInquiry";
+	}
 	
 	/* 리뷰 신고 현황 */
 	/**

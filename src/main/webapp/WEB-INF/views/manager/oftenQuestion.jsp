@@ -70,6 +70,7 @@
                         <th>제목</th>
                     </tr>
                 </thead>
+                
                 <tbody>
                 <c:forEach items="${ requestScope.OftenQuestionList }" var="ql" varStatus="status">
                 <c:set var="num" value="${(pagination.totalCount-status.index) - ((pagination.pageNo-1) * 10)}"/>
@@ -156,6 +157,9 @@
 		   	 }
 	  	 
 	   });
+	    
+	    $("#homeSubmenu2").addClass("show");
+        $("#homeSubmenu2 > li:nth-child(2) > a").attr("style","color: #F89E91 !important");
     
 	    /* 삭제 XXXX */
 	   /* $('#searchCondition').on('change',function() {
