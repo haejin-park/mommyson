@@ -40,8 +40,6 @@ import com.sd.mommyson.owner.service.OwnerService;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
-import oracle.jdbc.proxy.annotation.Post;
-
 @Controller
 @RequestMapping("/owner/*")
 @SessionAttributes({"loginMember","owner"})
@@ -550,7 +548,7 @@ public class OwnerController {
 		System.out.println("productList : " + productList);
 		
 		if(productList != null) {
-			model.addAttribute("pagenation",pagenation);
+			model.addAttribute("pagination",pagenation);
 			model.addAttribute("productList", productList);
 			model.addAttribute("searchMap",searchMap);
 		} else {
@@ -689,46 +687,57 @@ public class OwnerController {
 		List<ProductDTO> productList = ownerService.selectProdouct(memCode);
 		
 		System.out.println("productList : " + productList);
-		
-		if(DCList != null && !DCList.isEmpty()) {
 			
-			model.addAttribute("DCList",DCList);
-			model.addAttribute("pagenation", pagenation);
-			
-		} else {
-			model.addAttribute("fail","등록된 할인 상품이 없습니다.");
-		}
-		
-		if(productList != null && !productList.isEmpty()) {
-			
-			model.addAttribute("productList",productList);
-			
-		} else {
-			model.addAttribute("fail","조회된 결과값이 없습니다.");
-		}
-		
+		model.addAttribute("DCList",DCList);
+		model.addAttribute("pagination", pagenation);
+		model.addAttribute("productList",productList);
 		model.addAttribute("msg", model.getAttribute("msg"));
-		
+		model.addAttribute("message",model.getAttribute("message"));
 	}
 	
 	@PostMapping("todayDiscount")
-	public String dcProduct(@RequestParam(value="sdCode") int[] sdCode, @RequestParam(value="dcRate") int[] dcRate, RedirectAttributes rd) {
+	public String dcProduct(@RequestParam(value="sdCode", required = false) int[] sdCode, @RequestParam(value="dcRate" , required = false) int[] dcRate, @RequestParam(value="deleteCode" , required = false) int[] deleteCode, RedirectAttributes rd) {
 		
 		List<DCProduct> maps = new ArrayList<DCProduct>();
 		
-		for(int i = 0; i < sdCode.length; i++) {
-			maps.add(new DCProduct(dcRate[i],sdCode[i]));
+		if(sdCode != null  && dcRate!= null ) {
+			
+			for(int i = 0; i < sdCode.length; i++) {
+				maps.add(new DCProduct(dcRate[i],sdCode[i]));
+			}
+			
+			int insertDc = ownerService.registDc(maps);
+			
+			int updateDC = ownerService.modifyProduct(maps);
+			
+			System.out.println("insertDc : " + insertDc);
+			System.out.println("updateDC : " + updateDC);
+			
+			
+			if(insertDc > 0 && updateDC > 0) {
+				rd.addFlashAttribute("msg","등록에 성공하였습니다.");
+			} else {
+				rd.addFlashAttribute("msg","등록에 실패하였습니다.");
+			}
+			
 		}
 		
-		int insertDc = ownerService.registDc(maps);
-		
-		int updateDC = ownerService.modifyProduct(maps);
-		
-		
-		if(insertDc > 0 && updateDC > 0) {
-			rd.addFlashAttribute("msg","등록에 성공하였습니다.");
-		} else {
-			rd.addFlashAttribute("msg","등록에 실패하였습니다.");
+		if(deleteCode!= null ) {
+			
+			List<Integer> codeList = new ArrayList<Integer>();
+			for(int i : deleteCode) {
+				System.out.println("asdadsadsa : " + i);
+				codeList.add(i);
+			}
+			
+			int deleteDC = ownerService.removeDc(codeList);
+			int deletePro = ownerService.modifyDc(codeList);
+			
+			if(deleteDC > 0 && deletePro > 0) {
+				rd.addFlashAttribute("message","삭제되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","삭제에 실패하였습니다.");
+			}
 		}
 		
 		return "redirect:todayDiscount";
@@ -779,6 +788,27 @@ public class OwnerController {
 		model.addAttribute("membership",membership);
 		
 		return "owner/ownerPay2";
+	}
+	
+	
+	/* 판매 상품 변경 */
+	@GetMapping("modifyProduct")
+	public void productModify(@RequestParam int sdCode, Model model) {
+		
+		System.out.println("sdCode 들어왔는가 : " + sdCode);
+		
+		ProductDTO product = ownerService.selectPd(sdCode);
+		
+		List<Integer> tag = ownerService.seletTagList(sdCode);
+		
+		List<TagDTO> tagList = ownerService.selectTag();
+		
+		List<HashMap<String, String>> categoryList = memberService.selectCategoryList();
+		
+		model.addAttribute("product",product);
+		model.addAttribute("tagList",tagList);
+		model.addAttribute("tag",tag);
+		model.addAttribute("categoryList",categoryList);
 	}
 	
 	

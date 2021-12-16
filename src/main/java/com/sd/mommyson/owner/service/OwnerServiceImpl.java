@@ -263,4 +263,32 @@ public class OwnerServiceImpl implements OwnerService{
 		return null;
 	}
 
+	@Override
+	public int removeDc(List<Integer> codeList) {
+
+		int result = ownerDAO.removeDc(codeList);
+		
+		return result;
+	}
+
+	@Override
+	public int modifyDc(List<Integer> codeList) {
+
+		int result = ownerDAO.modifyDc(codeList);
+		
+		return result;
+	}
+
+	@Override
+	public ProductDTO selectPd(int sdCode) {
+		
+		return ownerDAO.selectPd(sdCode);
+	}
+
+	@Override
+	public List<Integer> seletTagList(int sdCode) {
+
+		return ownerDAO.seletTagList(sdCode);
+	}
+
 }

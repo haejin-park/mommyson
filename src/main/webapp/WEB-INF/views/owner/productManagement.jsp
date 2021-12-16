@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,10 +73,17 @@
             <tbody>
               <c:forEach var="list" items="${ productList }">
               <c:set var="i" value="${ i + 1 }"/>
+              <c:set var="j" value="${ (requestScope.pagination.pageNo / 2) * 10 }"/>
+              <fmt:parseNumber var="page" integerOnly="true" value="${ j }"/>
               <tr>
                 <th scope="col"><input type="checkbox" name="deleteCode" value="${ list.sdCode }" id="deleteCode"></th>
+                <c:if test="${ requestScope.pagination.pageNo > 1 }">
+                <th scope="row">${ i + page }</th>
+                </c:if>
+                <c:if test="${ requestScope.pagination.pageNo <= 1 }">
                 <th scope="row">${ i }</th>
-                <td>${ list.sdName }</td>
+                </c:if>
+                <td><a href="${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=${ list.sdCode }">${ list.sdName }</a></td>
                 <td>${ list.mDate }</td>
                 <td>${ list.eDate }</td>
                 <td>
@@ -137,7 +145,7 @@
 	        form.attr('method', 'post');
 	        form.appendTo('body');
 	        form.append($('<input type="hidden" value="' + arr + '" name=deleteCode>'));
-	        form.submit();
+	        form.submit(); 
 	    	
 	    });
 	

@@ -74,4 +74,13 @@ public interface OwnerService {
 	public MembershipDTO selectMembership(int msCode);
 
 	public int modifyProduct(List<DCProduct> maps);
+
+	public int removeDc(List<Integer> codeList);
+
+	public int modifyDc(List<Integer> codeList);
+
+	public ProductDTO selectPd(int sdCode);
+
+	public List<Integer> seletTagList(int sdCode);
+
 }
