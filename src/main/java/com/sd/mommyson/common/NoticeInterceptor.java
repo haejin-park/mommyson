@@ -16,6 +16,8 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 	
 	private MemberService memberService;
 	
+	public NoticeInterceptor() {}
+	
 	public NoticeInterceptor(MemberService memberService) {
 		this.memberService = memberService;
 	}
@@ -35,7 +37,7 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		
-		return noticeList != null || member == null? true : false;
+		return true;
 	}
 
 	
