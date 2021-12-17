@@ -315,9 +315,9 @@
 	<select id="selectHotKeywordList" resultMap="tagResultMap">
 		SELECT
 			   A.HOT_NO AS TAG_NO
-			 , A.HOT_TAG AS TAG
+			 , A.HOT_CONTENT AS TAG
 		  FROM HOT_TBL A
-	</select>
+	</select> 
 	
 	<select id="selectStoreList" resultMap="storeResultMap">
 		SELECT

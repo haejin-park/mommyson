@@ -812,8 +812,8 @@ public class OwnerController {
 	}
 	
 	@PostMapping("modifyProduct")
-	public String modifyProduct(@RequestParam MultipartFile productImg, @ModelAttribute ProductDTO product, 
-			HttpServletRequest request, RedirectAttributes rd, Model model) {
+	public String modifyProduct(@RequestParam(required = false)  MultipartFile productImg, @ModelAttribute ProductDTO product, 
+			HttpServletRequest request, RedirectAttributes rd, Model model, @RequestParam(required = false) String img) {
 		
 		int tag = Integer.parseInt(request.getParameter("tag1"));
 		int tag2 = Integer.parseInt(request.getParameter("tag2"));
@@ -829,48 +829,63 @@ public class OwnerController {
 		
 		System.out.println("파일이름 들어왔니? : " + productImg);
 		
-//		Map<String,Object> productInfo = new HashMap<String, Object>();
-//		productInfo.put("product",product);
-//		productInfo.put("tagList", tagList);
-//		
-//		String root = request.getSession().getServletContext().getRealPath("resources");
-//		
-//		String filePath = root + "/uploadFiles";
-//		
-//		File mkdir = new File(filePath);
-//		if(!mkdir.exists()) {
-//			mkdir.mkdirs();
-//		}
-//		
-//		
-//			String orginFileName = productImg.getOriginalFilename();
-//			String ext = orginFileName.substring(orginFileName.indexOf("."));
-//			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
-//			
-//			try {
-//				productImg.transferTo(new File(filePath + "/" + savedName));
-//				
-//				String fileName = "resources/uploadFiles/" + savedName;
-//				
-//				productInfo.put("fileName", fileName);
-//				
-//				
-//			} catch (IllegalStateException | IOException e) {
-//				new File(filePath + "/" + savedName).delete();	
-//				e.printStackTrace();
-//			}
-//			
-//			int result = ownerService.registProduct(productInfo);
-//			
-//			if(result > 0) {
-//				rd.addFlashAttribute("message","상품이 등록되었습니다.");
-//			} else {
-//				rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
-//				new File(filePath + "/" + savedName).delete();
-//			}
-//		
-//		return "redirect:productManagement";
-		return "";
+		Map<String,Object> productInfo = new HashMap<String, Object>();
+		productInfo.put("product",product);
+		productInfo.put("tagList", tagList);
+		
+		if(productImg != null && !productImg.isEmpty()) {
+			
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			
+			String filePath = root + "/uploadFiles";
+			
+			File mkdir = new File(filePath);
+			if(!mkdir.exists()) {
+				mkdir.mkdirs();
+			}
+				String orginFileName = productImg.getOriginalFilename();
+				String ext = orginFileName.substring(orginFileName.indexOf("."));
+				String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+				
+				try {
+					productImg.transferTo(new File(filePath + "/" + savedName));
+					
+					String fileName = "resources/uploadFiles/" + savedName;
+					
+					productInfo.put("fileName", fileName);
+					
+					
+				} catch (IllegalStateException | IOException e) {
+					new File(filePath + "/" + savedName).delete();	
+					e.printStackTrace();
+				}
+				
+				int result = ownerService.updateProduct(productInfo);
+				
+				if(result > 0) {
+					rd.addFlashAttribute("message","상품이 등록되었습니다.");
+				} else {
+					rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
+					new File(filePath + "/" + savedName).delete();
+				}
+			
+		} 
+		
+		if(img != null && img != "") {
+			
+			productInfo.put("fileName",img);
+			
+			int result = ownerService.updateProduct(productInfo);
+			
+			if(result > 0) {
+				rd.addFlashAttribute("message","변경되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","변경에 실패하였습니다.");
+			}
+			
+		}
+		
+		return "redirect:productManagement";
 	}
 	
 	

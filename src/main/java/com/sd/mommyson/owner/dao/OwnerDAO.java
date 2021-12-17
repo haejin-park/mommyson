@@ -76,7 +76,7 @@ public interface OwnerDAO {
 
 	public MembershipDTO selectMembership(int msCode);
 
-	public int modifyProduct(List<DCProduct> maps);
+	public int modifyProduct(DCProduct dc);
 
 	public int removeDc(List<Integer> codeList);
 
@@ -85,5 +85,11 @@ public interface OwnerDAO {
 	public ProductDTO selectPd(int sdCode);
 
 	public List<Integer> seletTagList(int sdCode);
+
+	public int updateProduct(Map<String, Object> productInfo);
+
+	public int insertTag(Map<String, Integer> map);
+
+	public int removeTag(int sdCode);
 
 }

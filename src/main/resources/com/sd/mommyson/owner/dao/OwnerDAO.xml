@@ -666,11 +666,9 @@
 	
 	<!-- 반찬 할인율 업데이트 쿼리문  -->
 	<update id="modifyProduct">
-		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE PRODUCT_TBL
-			   SET DISCOUNT_RATE = #{ item.discountRate }
-			 WHERE SD_CODE = #{ item.sdCode }
-		</foreach>
+			   SET DISCOUNT_RATE = #{ discountRate }
+			 WHERE SD_CODE = #{ sdCode }
 	</update>
 	
 	<!-- 할인 삭제 쿼리문 -->
@@ -719,7 +717,8 @@
 	<!-- 반찬 수정을 위한 반찬 정보를 가져오는 쿼리문 -->
 	<select id="selectPd" resultMap="productResultMap">
 		SELECT
-		       SD_NAME
+			   SD_CODE
+		     , SD_NAME
 		     , M_DATE
 		     , PRICE
 		     , INGREDIENT
@@ -742,5 +741,44 @@
 		  FROM PRODUCT_TAG_TBL
 		 WHERE SD_CODE = #{ sdCode }  		   
 	</select>
+	
+	<!-- 반찬 수정 쿼리문 -->
+	<update id="updateProduct">
+		UPDATE PRODUCT_TBL
+		   SET SD_NAME = #{ product.sdName },
+		       M_DATE  = #{ product.mDate },
+		       PRICE = #{ product.price },
+		       INGREDIENT = #{ product.ingredient },
+		       VOLUME = #{ product.volume },
+		       SD_IMG = #{ fileName },
+		       CATEGORY = #{ product.category },
+		       ORDERABLE_STATUS = #{ product.orderableStatus },
+		       EXPIRY_DATE = #{ product.eDate },
+		       CATEGORY_CODE =  #{ product.categoryCode },
+		       STORAGE_METHOD = #{ product.storageMethod },
+		       SD_DETAIL = #{ product.detail }
+		 WHERE SD_CODE = #{ product.sdCode }    
+	</update>
+	
+	<!-- 반찬 태그 삭제 쿼리문 -->
+	<delete id="removeTag">
+		DELETE
+		  FROM PRODUCT_TAG_TBL
+		 WHERE SD_CODE = #{ sdCode } 
+	</delete>
+	
+	<!-- 반찬 태그 업데이트 쿼리문 -->
+	<insert id="insertTag">
+		INSERT
+		  INTO PRODUCT_TAG_TBL
+	    ( SD_CODE
+		, TAG_NO
+		) 
+		VALUES
+		(
+		  #{ sdCode }
+		, #{ tag }  	
+		) 
+	</insert>
 	
 </mapper>

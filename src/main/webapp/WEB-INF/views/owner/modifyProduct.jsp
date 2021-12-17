@@ -123,7 +123,7 @@
                 <div class="modal-body">
                     <img src="" id="preview-image" style="width: 400px;">
                     <hr>
-                    <input type="file" name="productImg" id="input-image" value="${ product.sdImg }">
+                    <input type="file" name="productImg" id="input-image">
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="button1" data-dismiss="modal">취소</button>
@@ -181,8 +181,8 @@
 	            <th class="tg-p">판매상태</th>
 	            <td class="tg-pp">
 	                <select name="orderableStatus" id="status">
-	                   <option value="Y" seleted>판매</option>
-	                   <option value="N" seleted>판매불가</option>
+	                   <option value="Y">판매</option>
+	                   <option value="N">판매불가</option>
 	               </select>
 	            </td>
 	        </tr>
@@ -218,8 +218,10 @@
 	        </tr>
 	        </tbody>
 	    </table><br><br><br>
-	    <button id="subBtn" style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; height: 40px;">변경하기</button>
+	    <input type="hidden" name="sdCode" value="${ product.sdCode }">
+	    <input type="hidden" name="img">
 	    </form> 
+	    <button id="subBtn" style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; height: 40px;">변경하기</button>
 	   </div>  
 	 </div>
 	 
@@ -233,15 +235,30 @@
 			}
 		});
 		
-		if($('#status').val() == val){
-			$('#status option').attr('selected',true);
-		} else {
-			$('#status option').attr('selected',true);
-		}
-		
-		$('#subBtn').click(function(){
+		$('#method').find('option').map(function(){
 			
-			if($('input[name=sdName]').val() == '' &&  )
+			if($(this).val() == val){
+				$('#status option').attr('selected',true);
+			}
+		})
+		
+		$('#subBtn').on('click',function(){
+			
+			debugger;
+			
+			if($('#input-image').val() ==''){
+				$('input[name=img]').val("${ product.sdImg }");
+			}
+			
+			if($('input[name=sdName]').val() == '' || $('#detail').val() == '' || $('input[name=volume]').val() == '' ||
+				$('input[name=category]').val() == '' || $('input[name=price]').val() ==''){
+				
+				alert('작성되지 않은 부분이 있습니다. 다시 확인하여 작성해주세요.');
+				
+			} else{
+				
+				$('#frm').submit();
+			}
 			
 		});
 		

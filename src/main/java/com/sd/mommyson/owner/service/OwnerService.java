@@ -83,4 +83,6 @@ public interface OwnerService {
 
 	public List<Integer> seletTagList(int sdCode);
 
+	public int updateProduct(Map<String, Object> productInfo);
+
 }
