@@ -94,4 +94,12 @@ public interface ManagerDAO {
 
 	int OftenQuestionTotalCount(Map<String, String> searchMap);
 
+	int businessInquiryTotalCount(Map<String, String> searchMap);
+
+	List<PostDTO> selectBusinessInquiry(Pagination pagination);
+
+	int normalInquiryTotalCount(Map<String, String> searchMap);
+
+	List<PostDTO> selectNormalInquiry(Pagination pagination);
+
 }

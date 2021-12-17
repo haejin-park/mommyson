@@ -387,6 +387,46 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectOftenQuestionList(pagination);
 	}
 
+	/**
+	 * 사업자 - 1:1 문의 총 갯수
+	 * @author junheekim
+	 */
+	@Override
+	public int businessInquiryTotalCount(Map<String, String> searchMap) {
+	
+		return managerDAO.businessInquiryTotalCount(searchMap);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectBusinessInquiry(Pagination pagination) {
+		
+		return managerDAO.selectBusinessInquiry(pagination);
+	}
+
+	/**
+	 * 소비자 - 1:1 문의 총 갯수
+	 * @author junheekim
+	 */
+	@Override
+	public int normalInquiryTotalCount(Map<String, String> searchMap) {
+		
+		return managerDAO.normalInquiryTotalCount(searchMap);
+	}
+
+	/**
+	 * 소비자 - 1:1 문의 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectNormalInquiry(Pagination pagination) {
+		
+		return managerDAO.selectNormalInquiry(pagination);
+	}
+
 
 
 }

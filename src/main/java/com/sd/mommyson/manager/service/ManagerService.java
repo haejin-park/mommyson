@@ -110,4 +110,16 @@ public interface ManagerService {
 	/* 자주묻는질문 총 게시글 갯수 */
 	public int OftenQuestionTotalCount(Map<String, String> searchMap);
 
+	/* 사업자 - 1:1 문의 총 갯수 */
+	public int businessInquiryTotalCount(Map<String, String> searchMap);
+
+	/* 사업자 - 1:1 문의 리스트 */
+	public List<PostDTO> selectBusinessInquiry(Pagination pagination);
+
+	/* 소비자 - 1:1 문의 총 갯수 */
+	public int normalInquiryTotalCount(Map<String, String> searchMap);
+
+	/* 소비자 - 1:1 문의 리스트 */
+	public List<PostDTO> selectNormalInquiry(Pagination pagination);
+
 }
