@@ -38,7 +38,11 @@
 		<!-- sidebar  -->
 		<jsp:include page="../commons/ownerSidebar.jsp" />
 
-
+		<div>
+		<button type="button" onclick="location.href='${ pageContext.servletContext.contextPath }/owner/order'" id="completeBtn">주문 접수</button>
+		<button type="button" onclick="location.href='${ pageContext.servletContext.contextPath }/owner/order2'" id ="acceptBtn" >완료된 주문</button>
+		<hr style="position: relative; left: 647px; width: 850px; margin-top: 0px;">
+		</div>
 		
 		<div style="text-align: center">
 			<img
@@ -98,9 +102,10 @@
 				</table>
 				</div>
 			</div>
-				
+				<div style="position: relative; top: 300px;">
 				<!-- 페이지네이션 -->
 				<jsp:include page="../commons/ownerPaging.jsp"/>
+				</div>
 				
 				</div>
 			</div>
@@ -124,12 +129,19 @@
                 <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 번호</th>
                 <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">고객명</th>
                 <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 유형</th>
-                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 상품</th>
               </tr>
 	          </thead>
-            <tbody>
-               
-            </tbody>
+            <tbody></tbody>
+            
+          </table>
+          <table class="table table" id="orderProduct" style="width: 700px; text-align: center;">
+	          <thead>
+              <tr>
+                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 상품</th>
+               <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">수량</th>
+              </tr>
+	          </thead>
+            <tbody></tbody>
           </table>
 	          <br><br>
 	        </div>
@@ -162,7 +174,7 @@
     	$.ajax({
     		url : '${ pageContext.servletContext.contextPath }/owner/order',
     		type : 'post',
-    		data : { orderCode : orderCode},
+    		data : { orderCode : orderCode },
     		success : function(data){
     			console.log(data);
     			
@@ -175,18 +187,38 @@
 					$orderNum = $("<td>").text(data.orderInfoDTO.orderCode);
 					$customer = $("<td>").text(data.memberDTO.nickname);
 					$ordertype = $("<td>").text(data.orderType);
-					$product = $("<td>").text(data.product);
-					
-					console.log($customer);
 					
 					$tr.append($orderTime);
 					$tr.append($orderNum);
 					$tr.append($customer);
 					$tr.append($ordertype);
-					$tr.append($product);
 					$table.append($tr);
     			}
-      		}); 
+      		});
+    	
+    	$.ajax({
+    		url : '${ pageContext.servletContext.contextPath }/owner/order',
+    		type : 'post',
+    		data : { orderCode : orderCode },
+    		success : function(data){
+    			console.log(data);
+
+				const $table = $("#orderProduct tbody");
+				$table.html("");
+				
+				/* 변수 선언 부분 */
+				for(let index in data.productDTO){
+					$tr = $("<tr>");
+					$product = $("<td>").text(data.productDTO[index].sdName);
+					$amount = $("<td>").text(data.orderAmount[index].amount);
+					
+					$tr.append($product);
+					$tr.append($amount);
+					$table.append($tr);
+				}
+				
+    		}
+      		});
     	  });
         });
     

@@ -45,7 +45,7 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="allCheck"></th>
+                <th scope="col"><input type="checkbox" name="allCheck" id="allCheck"></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -54,7 +54,7 @@
             <tbody>
                 <c:forEach var="review" items="${ reviews }">
               <tr>
-                <th scope="row"><input type="checkbox" name="allCheck" class="test" value="${ review.rvCode }" ></th>
+                <th scope="row"><input type="checkbox" name="allCheck" id="allCheck" class="test" value="${ review.rvCode }" ></th>
                 <th>${ review.rvCode }</th>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
@@ -133,11 +133,11 @@
   </div>
   <script>
   	/* 체크박스 체크 */
-	  $("input[name=allCheck]").click(function(){
+	  $("#allCheck").click(function(){
 	      if($("input[name=allCheck]").prop("checked")){
-	        $("input[name=allCheck]").prop("checked",true);
+	        $("input[type=checkbox]").prop("checked",true);
 	      } else{
-	        $("input[name=allCheck]").prop("checked",false);
+	        $("input[type=checkbox]").prop("checked",false);
 	      }
 	    });
   	

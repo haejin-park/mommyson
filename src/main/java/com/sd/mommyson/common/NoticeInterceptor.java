@@ -13,7 +13,7 @@ import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.service.MemberService;
 
 public class NoticeInterceptor extends HandlerInterceptorAdapter {
-	
+
 	private MemberService memberService;
 	
 	public NoticeInterceptor(MemberService memberService) {

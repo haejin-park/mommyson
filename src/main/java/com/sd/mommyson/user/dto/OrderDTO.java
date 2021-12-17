@@ -25,6 +25,8 @@ public class OrderDTO {
 	private MemberDTO memberDTO;
 	private AcceptDTO acceptDTO;
 	private List<String> product; // 하나의 오더코드 안에 여러개의 반찬네임이 존재해서 리스트로
+	private List<ProductDTO> productDTO; // 따로따로 뽑아줄라고...
+	private List<OrderInfoDTO> orderAmount;
 
 	
 	public OrderDTO() {
@@ -35,8 +37,8 @@ public class OrderDTO {
 
 	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
 			String phone, String storeName, int code, String acceptTime, Date cancleTime, Date completeTime,
-			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO,
-			List<String> product) {
+			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO, List<String> product,
+			List<ProductDTO> productDTO, List<OrderInfoDTO> orderAmount) {
 		super();
 		this.memCode = memCode;
 		this.totalPrice = totalPrice;
@@ -55,6 +57,8 @@ public class OrderDTO {
 		this.memberDTO = memberDTO;
 		this.acceptDTO = acceptDTO;
 		this.product = product;
+		this.productDTO = productDTO;
+		this.orderAmount = orderAmount;
 	}
 
 
@@ -228,14 +232,34 @@ public class OrderDTO {
 	}
 
 
+	public List<ProductDTO> getProductDTO() {
+		return productDTO;
+	}
+
+
+	public void setProductDTO(List<ProductDTO> productDTO) {
+		this.productDTO = productDTO;
+	}
+
+
+	public List<OrderInfoDTO> getOrderAmount() {
+		return orderAmount;
+	}
+
+
+	public void setOrderAmount(List<OrderInfoDTO> orderAmount) {
+		this.orderAmount = orderAmount;
+	}
+
+
 	@Override
 	public String toString() {
 		return "OrderDTO [memCode=" + memCode + ", totalPrice=" + totalPrice + ", orderCode=" + orderCode
 				+ ", orderType=" + orderType + ", takeTime=" + takeTime + ", address=" + address + ", phone=" + phone
 				+ ", storeName=" + storeName + ", code=" + code + ", acceptTime=" + acceptTime + ", cancleTime="
 				+ cancleTime + ", completeTime=" + completeTime + ", requestTime=" + requestTime + ", orderInfoDTO="
-				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product + "]";
+				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product
+				+ ", productDTO=" + productDTO + ", orderAmount=" + orderAmount + "]";
 	}
 
- 
 }

@@ -91,8 +91,6 @@
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="orderType" column="ORDER_TYPE"/>
 		<result property="code" column="CODE"/>
@@ -104,6 +102,20 @@
 		<collection property="product" ofType="java.lang.String" javaType="list">
     		<result column="SD_NAME"/>
     	</collection>
+	</resultMap>
+	
+	<!-- 반찬 네임이랑 수량 따로 가져올것들 -->
+	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap2">
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="orderType" column="ORDER_TYPE"/>
+		<result property="code" column="CODE"/>
+		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
+		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
+		<association property="memberDTO" resultMap="memberResultMap"/>
+		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
+		<association property="acceptDTO" resultMap="acceptResultMap"/>
+		<collection property="productDTO" resultMap="productResultMap"/>
+		<collection property="orderAmount" resultMap="InfoResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.AcceptDTO" id="acceptResultMap">
@@ -204,14 +216,14 @@
            , C.DC_CONDITION
         FROM (SELECT
                     ROWNUM RNUM
-                  , D.CP_CODE
+                , D.CP_CODE
                 , D.CP_NAME 
                 , D.START_DATE
                 , D.DISCOUNT_WON
                 , D.END_DATE
                 , D.DC_CONDITION
                FROM (SELECT
-                             A.CP_CODE
+                        A.CP_CODE
                       , A.CP_NAME
                       , A.START_DATE
                       , A.DISCOUNT_WON
@@ -753,6 +765,7 @@
                , G.ORDER_TYPE 
                , G.ORDER_STATUS 
                , G.SD_NAME 
+               , G.AMONT
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_ACCEPT_TIME
@@ -763,6 +776,7 @@
 	                , F.ORDER_TYPE 
                     , F.ORDER_STATUS 
                     , F.SD_NAME 
+                    , F.AMONT
 	            FROM (SELECT
 						        A.ORDER_ACCEPT_TIME
 						      , A.ORDER_CODE
@@ -771,7 +785,8 @@
 						      , C.NICKNAME
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
-						      , E.SD_NAME        
+						      , E.SD_NAME 
+						      , B.AMONT       
 						  FROM ORDER_TBL A
 						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -792,7 +807,7 @@
        ]]>
 	</select>
 		
-	<select id="selectOrder" resultMap="orderResultMap">
+	<select id="selectOrder" resultMap="orderResultMap2">
 		SELECT
 		        A.ORDER_ACCEPT_TIME
 		      , A.ORDER_CODE
@@ -800,7 +815,8 @@
 		      , C.NICKNAME
 		      , A.ORDER_TYPE
 		      , D.ORDER_STATUS
-		      , E.SD_NAME        
+		      , E.SD_NAME   
+		      , B.AMONT     
 		  FROM ORDER_TBL A
 		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -865,7 +881,8 @@
                , G.NICKNAME
                , G.ORDER_TYPE 
                , G.ORDER_STATUS 
-               , G.SD_NAME 
+               , G.SD_NAME
+               , G.AMONT 
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_COMPLETE_TIME
@@ -875,6 +892,7 @@
 	                , F.ORDER_TYPE 
                     , F.ORDER_STATUS 
                     , F.SD_NAME 
+                    , F.AMONT
 	            FROM (SELECT
 						        A.ORDER_COMPLETE_TIME
 						      , A.ORDER_CODE
@@ -882,7 +900,8 @@
 						      , C.NICKNAME
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
-						      , E.SD_NAME        
+						      , E.SD_NAME 
+						      , B.AMONT       
 						  FROM ORDER_TBL A
 						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -892,7 +911,7 @@
 		                    	    A.STORE_NAME = #{ storeName }
 			 				    AND A.CODE = 3 OR A.CODE = 4
 			 			<if test="searchValue != null and searchValue != '' ">
-						  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+						  		AND A.ORDER_CODE LIKE '%' ||  #{ searchValue } || '%'
 						</if>
 						<if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
 							  	AND A.ORDER_COMPLETE_TIME IN (#{ mDate } , #{ mDate2 })
