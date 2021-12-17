@@ -60,4 +60,10 @@ public interface UserService {
 	List<PostDTO> selectOftenFqa();
 
 
+	Integer insertJJIMplus(Map<String, Integer> map);
+
+	List<String> selectJJIMList(String memCode);
+
+	Integer deleteJJIMplus(Map<String, Integer> map);
+
 }

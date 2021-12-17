@@ -467,6 +467,7 @@
 	                    <where>
 	                    	M.IS_DELETED = 'N'
 	                    	AND A.ORDERABLE_STATUS = 'Y'
+	                    	AND A.IS_DELETED = 'N'
 				         	<if test='searchValue != null'>
 				         	AND A.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 				         	</if>
@@ -496,7 +497,7 @@
     		 , B.STORE_IMG
     		 , B.STORE_NAME
     		 , B.GRADE
-    		 , (SELECT COUNT(*) FROM JJIM_TBL C WHERE C.MEM_CODE = #{ memCode }) AS JJIM
+    		 , (SELECT COUNT(*) FROM JJIM_TBL C WHERE C.CEO_CODE = #{ memCode }) AS JJIM
     	  FROM MEMBER_TBL A
     	  LEFT JOIN STORE_TBL B ON(A.MEM_CODE = B.MEM_CODE)
     	 WHERE A.MEM_CODE = #{ memCode }
@@ -668,4 +669,31 @@
 			</if>
          </where>
     </select>
+    
+    <insert id="insertJJIMplus">
+    	INSERT
+    	INTO JJIM_TBL
+    	(
+    	  MEM_CODE
+    	, CEO_CODE
+    	)
+    	VALUES
+    	(
+    	  #{ memCode }
+    	, #{ storeCode }
+    	)
+    </insert>
+    
+    <select id="selectJJIMList" resultType="string">
+    	SELECT
+    		   A.MEM_CODE
+    	  FROM JJIM_TBL A
+    	 WHERE A.CEO_CODE = #{ memCode }
+    </select>
+    
+    <delete id="deleteJJIMplus">
+    	DELETE FROM JJIM_TBL
+    	WHERE MEM_CODE = #{ memCode }
+    	  AND CEO_CODE = #{ storeCode }
+    </delete>
     </mapper>

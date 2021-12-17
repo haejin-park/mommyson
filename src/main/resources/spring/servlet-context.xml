@@ -50,5 +50,15 @@
 		<beans:property name="defaultErrorView" value="error/default"/>
 	</beans:bean> -->
 	
+	<!-- interceptor 등록 -->
+	<beans:bean id="NoticeInterceptor" class="com.sd.mommyson.common.NoticeInterceptor"></beans:bean> 
+	<interceptors> 
+		<interceptor> 
+			<mapping path="/*"/> 
+			<exclude-mapping path="/manager/**"/>
+			<beans:ref bean="NoticeInterceptor"/> 
+		</interceptor> 
+	</interceptors>
+
 	
 </beans:beans>

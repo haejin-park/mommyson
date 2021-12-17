@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
@@ -52,15 +53,8 @@ public interface MemberService  {
 
 	public List<StoreDTO> selectStoreList();
 
-	
+	public List<RTNoticeDTO> selectRTNotice(int memCode);
 
-
-
-
-
-
-
-
-
+	public int deleteNotice(int noticeCode);
 
 }
