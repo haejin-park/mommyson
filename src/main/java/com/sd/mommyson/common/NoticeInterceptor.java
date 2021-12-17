@@ -16,6 +16,10 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 	
 	private MemberService memberService;
 	
+	public NoticeInterceptor() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public NoticeInterceptor(MemberService memberService) {
 		this.memberService = memberService;
 	}
