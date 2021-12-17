@@ -95,7 +95,9 @@
 		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="orderType" column="ORDER_TYPE"/>
+		<result property="code" column="CODE"/>
 		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
+		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
 		<association property="memberDTO" resultMap="memberResultMap"/>
 		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
 		<association property="acceptDTO" resultMap="acceptResultMap"/>
@@ -730,8 +732,9 @@
 		 SELECT
 		         G.RNUM
 		       , G.ORDER_ACCEPT_TIME
-		       , G.TOTAL_PRICE
                , G.ORDER_CODE
+		       , G.TOTAL_PRICE
+		       , G.CODE
                , G.NICKNAME
                , G.ORDER_TYPE 
                , G.ORDER_STATUS 
@@ -739,8 +742,9 @@
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_ACCEPT_TIME
-		            , F.TOTAL_PRICE
 	                , F.ORDER_CODE
+		            , F.TOTAL_PRICE
+		            , F.CODE
 	                , F.NICKNAME
 	                , F.ORDER_TYPE 
                     , F.ORDER_STATUS 
@@ -749,6 +753,7 @@
 						        A.ORDER_ACCEPT_TIME
 						      , A.ORDER_CODE
 						      , A.TOTAL_PRICE
+						      , A.CODE
 						      , C.NICKNAME
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
@@ -805,25 +810,86 @@
 		   SET ORDER_CANCLE_TIME = SYSDATE
 		     , CODE = #{ orderType }
 		 WHERE ORDER_CODE = #{ orderCode }
-	
 	</update>
+	
+	<!-- 주문 완료 -->
+	<update id="completeModifyOrder">
+		UPDATE ORDER_TBL
+		   SET ORDER_COMPLETE_TIME = SYSDATE
+		     , CODE = #{ orderType }
+		 WHERE ORDER_CODE = #{ orderCode }
+	</update>
+	
+	<!-- 주문페이지  완료된 주문  토탈 카운트 -->
+	<select id="selectTotalCountOrder" resultType="_int">
+	 SELECT
+	 		COUNT(*)
+	   FROM ORDER_TBL A
+	 <where>
+			    A.STORE_NAME = #{ storeName }
+		    AND A.CODE = 3 OR A.CODE = 4
+	 <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+		  	AND A.ORDER_COMPLETE_TIME IN (#{ mDate } , #{ mDate2 })
+	</if>
+	<if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+		  	AND A.ORDER_COMPLETE_TIME <![CDATA[ <= ]]> #{ mDate }
+	</if>
+	<if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
+			AND A.ORDER_COMPLETE_TIME <![CDATA[ >= ]]> #{ mDate }
+	</if>
+	 </where>
+	
+	</select>
 	
 	<!-- 주문페이지  완료된 주문 -->
 	<select id="selectOrderList2" resultMap="orderResultMap">
 		SELECT
-		        TO_CHAR(A.ORDER_ACCEPT_TIME, 'YYYY-MM-DD HH24:MI:SS') AS ORDER_ACCEPT_TIME
-		      , A.ORDER_CODE
-		      , C.NICKNAME
-		      , A.ORDER_TYPE
-		      , E.SD_NAME        
-		      , D.ORDER_STATUS
-		  FROM ORDER_TBL A
-		  JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
-		  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
-		 WHERE A.STORE_NAME = #{ storeName }
-		   AND A.CODE = 3 OR A.CODE = 4
+		         G.RNUM
+		       , G.ORDER_COMPLETE_TIME
+               , G.ORDER_CODE
+		       , G.TOTAL_PRICE
+               , G.NICKNAME
+               , G.ORDER_TYPE 
+               , G.ORDER_STATUS 
+               , G.SD_NAME 
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , F.ORDER_COMPLETE_TIME
+	                , F.ORDER_CODE
+		            , F.TOTAL_PRICE
+	                , F.NICKNAME
+	                , F.ORDER_TYPE 
+                    , F.ORDER_STATUS 
+                    , F.SD_NAME 
+	            FROM (SELECT
+						        A.ORDER_COMPLETE_TIME
+						      , A.ORDER_CODE
+						      , A.TOTAL_PRICE
+						      , C.NICKNAME
+						      , A.ORDER_TYPE
+						      , D.ORDER_STATUS
+						      , E.SD_NAME        
+						  FROM ORDER_TBL A
+						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+						  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
+						  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+	                    <where>
+		                    	    A.STORE_NAME = #{ storeName }
+			 				    AND A.CODE = 3 OR A.CODE = 4
+			 			<if test="searchValue != null and searchValue != '' ">
+						  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+						</if>
+						<if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+							  	AND A.ORDER_COMPLETE_TIME IN (#{ mDate } , #{ mDate2 })
+						</if>
+						<if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
+							  	AND A.ORDER_COMPLETE_TIME <![CDATA[ <= ]]> #{ mDate }
+						</if>
+						</where>
+	                    ORDER BY A.ORDER_COMPLETE_TIME DESC ) F 
+						) G
+			WHERE G.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow }
 	</select>
 	
 	<!-- 영업상태 업데이트 쿼리문 -->

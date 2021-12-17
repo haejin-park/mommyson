@@ -59,7 +59,7 @@ public interface OwnerService {
 
 	public List<OrderDTO> selectOrderList(Pagination pagination);
 
-	public List<OrderDTO> selectOrderList2(String storeName);
+	public List<OrderDTO> selectOrderList2(Map<String, Object> searchMap);
 
 	public int selectOrderListTotalCount(String storeName);
 
@@ -80,4 +80,8 @@ public interface OwnerService {
 	public int acceptModifyOrder(Map<Object, Object> orderMap);
 
 	public int cancleModifyOrder(Map<Object, Object> orderMap);
+
+	public int completeModifyOrder(Map<Object, Object> orderMap);
+
+	public int selectTotalCountOrder(Map<String, Object> searchMap);
 }

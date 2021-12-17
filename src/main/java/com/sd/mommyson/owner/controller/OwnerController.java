@@ -41,6 +41,8 @@ import com.sd.mommyson.owner.service.OwnerService;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
+import oracle.jdbc.proxy.annotation.Methods;
+
 @Controller
 @RequestMapping("/owner/*")
 @SessionAttributes({"loginMember","owner"})
@@ -591,6 +593,81 @@ public class OwnerController {
 		return "redirect:productManagement";
 	}
 	
+	/* 오더페이지 완료된 주문 페이지네이션*/
+	@GetMapping("order2")
+	public String orderList2(@ModelAttribute("loginMember") MemberDTO member, @RequestParam( required = false) Map<String, String> param,Model model) {
+		
+		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
+				MemberDTO owner = ownerService.selectOwner(member);
+				String storeName = owner.getCeo().getStore().getStoreName();
+				System.out.println("스토어 이름 : " + storeName);
+				
+		// 현재 페이지 
+				int pageNo = 1;
+				// jsp에서 받아온 값들을 param에 담기면 get으로 꺼내쓴다
+				String currentPage = param.get("currentPage");
+				String searchValue = param.get("searchValue");
+				String mDate = param.get("mDate");
+				String mDate2 = param.get("mDate2");
+				
+				System.out.println("mDate : " + mDate);
+				System.out.println("mDate2 : " + mDate2);
+				
+				// 현재 페이지가 != null && !"" 않으면 pagNo는 현재 페이지로
+				if(currentPage != null && !"".equals(currentPage)) {
+					pageNo = Integer.parseInt(currentPage);
+				}
+				
+				// pageNo가 0보다 작으면 pageNo는 1로
+				if(pageNo <= 0) {
+					pageNo = 1;
+				}
+				
+				System.out.println(currentPage);
+				System.out.println(pageNo);
+				
+				System.out.println("searchValue : " + searchValue);
+				
+				/* searchValue 넘김 */
+				Map<String, Object> searchMap = new HashMap<>();
+				
+				searchMap.put("searchValue", searchValue);
+				searchMap.put("storeName",storeName);
+				searchMap.put("mDate",mDate);
+				searchMap.put("mDate2",mDate2);
+				
+				int totalCount = ownerService.selectTotalCountOrder(searchMap);
+				
+				System.out.println("totalCount : " + totalCount);
+				
+				int limit = 10;
+				int buttonAmount = 10;
+				
+				Pagination pagenation = null;
+				
+				if(searchValue != null && !"".equals(searchValue)) {
+					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
+					searchMap.put("pagenation", pagenation);
+				} else {
+					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+					searchMap.put("pagenation", pagenation);
+				}
+				
+				List<OrderDTO> orderList2 = ownerService.selectOrderList2(searchMap);
+				
+				System.out.println("orderList2 : " + orderList2);
+				
+				if(orderList2 != null) {
+					model.addAttribute("pagenation",pagenation);
+					model.addAttribute("orderList2", orderList2);
+					model.addAttribute("searchMap",searchMap);
+				} else {
+					System.out.println("조회실패");
+				}
+				
+		return "owner/order2";
+	}
+	
 	@GetMapping("order")
 	public String orderList(@ModelAttribute("loginMember") MemberDTO member, @RequestParam(value = "currentPage", required = false) String currentPage ,Model model) {
 		
@@ -666,6 +743,11 @@ public class OwnerController {
 
 		System.out.println("코드 잘 넘어오니!! : " + orderCode);
 		
+		OrderDTO orderDTO = new OrderDTO();
+		int code = orderDTO.getCode();
+		
+		System.out.println("코드코드코드 : " + code);
+		
 		if(orderType == 2) {
 			
 			Map<Object,Object> orderMap = new HashMap<>();
@@ -689,6 +771,16 @@ public class OwnerController {
 			System.out.println("취소하나요~~~~");
 		}
 		
+		if(orderType == 4) {
+			
+			Map<Object, Object> orderMap = new HashMap<>();
+			orderMap.put("orderCode", orderCode);
+			orderMap.put("orderType", orderType);
+			
+			int completeOrder = ownerService.completeModifyOrder(orderMap);
+			
+			System.out.println("주문 완료하나요우");
+		}
 		
 		return "redirect:order";
 	}

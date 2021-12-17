@@ -259,8 +259,11 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public List<OrderDTO> selectOrderList2(String storeName) {
-		return null;
+	public List<OrderDTO> selectOrderList2(Map<String, Object> searchMap) {
+		
+		List<OrderDTO> result = ownerDAO.selectOrderList2(searchMap);
+		
+		return result;
 	}
 
 	@Override
@@ -289,6 +292,26 @@ public class OwnerServiceImpl implements OwnerService{
 		if(result == 1) {
 			System.out.println("accepTime 업데이트 성공");
 		}
+		
+		return result;
+	}
+
+	@Override
+	public int completeModifyOrder(Map<Object, Object> orderMap) {
+		
+		int result = ownerDAO.completeModifyOrder(orderMap);
+		
+		if(result == 1) {
+			System.out.println("주문 complete 업데이트 성공~~~~~~~??");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int selectTotalCountOrder(Map<String, Object> searchMap) {
+		
+		int result = ownerDAO.selectTotalCountOrder(searchMap);
 		
 		return result;
 	}

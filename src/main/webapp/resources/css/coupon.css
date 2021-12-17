@@ -114,3 +114,29 @@
     border-radius: 5px; 
     color: white;
 }
+
+.acceptBtn{
+	height: 20px;
+	background: none;
+	border: none;
+	border-radius : 5px;
+	box-shadow : 3px 3px 3px #c0c0c0;
+}
+.acceptBtn:active{
+	margin-left: 5px;
+	margin-top : 5px;
+	box-shadow : none;
+}
+
+#completeBtn{
+	height: 20px;
+	background: none;
+	border: none;
+	border-radius : 5px;
+	box-shadow : 3px 3px 3px #c0c0c0;
+}
+#completeBtn:active{
+	margin-left: 5px;
+	margin-top : 5px;
+	box-shadow : none;
+}
