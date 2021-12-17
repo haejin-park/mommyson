@@ -227,20 +227,22 @@
 	    </div>
 
 		<script>
+		
      $(function() {
     	 
-        /* $('#btn1').click( function() {
-          if( $(this).html() == '접수' ) {
-            $(this).html('완료').css("background-color","#68BF6B")
-          }
-        }); */
+	        /* $('#btn1').click( function() {
+	          if( $(this).html() == '접수' ) {
+	            $(this).html('완료').css("background-color","#68BF6B")
+	          }
+	        }); */
         
         /* 접수 버튼 누르면 사라지고 -> 완료 버튼 띄워줘야지 */
         $( document ).ready( function() {
             $( 'button #btn1' ).click( function() {
               $( '#btn1' ).hide();
               $( '#btn2' ).html();
-            } );
+          });
+        }); 
      
         $('#can1').click( function() {
             $("#btn1").remove();
@@ -289,8 +291,9 @@
 					$table.append($tr);
     			}
       		}); 
-    	 });
-     });
+    	  });
+        });
+    
       
     </script>
 
