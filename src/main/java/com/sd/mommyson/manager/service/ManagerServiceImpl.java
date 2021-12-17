@@ -17,6 +17,7 @@ import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
 import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -395,6 +396,40 @@ public class ManagerServiceImpl implements ManagerService {
 	public int insertBannerAdd(Map<String, Object> bnMap) {
 		
 		return managerDAO.insertBannerAdd(bnMap);
+	}
+
+	/**
+	 * 사용중인 태그 조회
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<TagDTO> selectUseTag() {
+		
+		return managerDAO.selectUseTag();
+	}
+
+	/**
+	 * 태그 추가
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int insertTagAdd(String tag) {
+		
+		int result = managerDAO.insertTagAdd(tag);
+		
+		return result;
+	}
+
+	/**
+	 * 태그 삭제
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int deleteTag(int tagNo) {
+		
+		int result = managerDAO.deleteTag(tagNo);
+		
+		return result;
 	}
 
 

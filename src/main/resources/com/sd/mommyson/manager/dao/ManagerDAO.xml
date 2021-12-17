@@ -84,6 +84,19 @@
 		<result property="repType" column="REP_TYPE"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
+		<id property="tagNo" column="TAG_NO"/>
+		<result property="tagName" column="TAG"/>
+		<result property="status" column="STATUS"/>
+		<association property="hotKeyword" resultMap="hotResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.manager.dto.HotKeywordDTO" id="hotResultMap">
+		<id property="hotNo" column="HOT_NO"/>
+		<result property="hotContent" column="HOT_CONTENT"/>
+		<result property="tagNo" column="TAG_NO"/>
+	</resultMap>
+	
 	<select id="selectNormalMemberTotalCount" resultType="_int">
 	    SELECT
    	  	       COUNT(*)
@@ -555,6 +568,39 @@
 	    , #{ bnOrder }
 	    )
 	</insert>
+	
+	<!-- 사용태그조회 -->
+	<select id="selectUseTag" resultMap="tagResultMap">
+	    SELECT
+	           A.TAG_NO
+	         , A.TAG
+	         , A.STATUS
+	      FROM TAGS_TBL A
+	</select>
+	
+	<!-- 태그 추가 -->
+	<insert id="insertTagAdd">
+	    INSERT
+	      INTO TAGS_TBL
+	    (
+	      TAG_NO
+	    , TAG
+	    , STATUS
+	    )
+	    VALUES
+	    (
+	      SEQ_TAGS.NEXTVAL
+	    , #{ tag }
+	    , 'N'
+	    )
+	</insert>
+	
+	<!-- 태그 삭제 -->
+	<delete id="deleteTag">
+	    DELETE
+	      FROM TAGS_TBL
+	     WHERE TAG_NO = #{ tagNo }
+	</delete>
 	
 	<select id="selectAuth" resultMap="authResultMap">
 		SELECT

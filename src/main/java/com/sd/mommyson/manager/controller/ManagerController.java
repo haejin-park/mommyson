@@ -29,6 +29,7 @@ import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -384,12 +385,6 @@ public class ManagerController {
 		
 		System.out.println("리스트 : " + terminateBlackList);
 		
-//		for(int i = 0; i < blackMember.length; i++) {
-//			terminateBlackList.add(blackMember[i]);
-//		}
-		
-//		String[] rvCodeArr = blackRvCode.split(",");
-		
 		List<Object> terminateRvCodeList = new ArrayList<>();
 		
 		System.out.println(blackRvCode);
@@ -397,12 +392,6 @@ public class ManagerController {
 		for(String rc : sarr) {
 			terminateRvCodeList.add(rc);
 		}
-		
-		
-		
-//		for(int i = 0; i < blackRvCode.length; i++) {
-//			terminateRvCodeList.add(blackRvCode[i]);
-//		}
 		
 		Map<String, Object> terminateMap = new HashMap<>();
 		terminateMap.put("terminateBlackList", terminateBlackList);
@@ -1154,9 +1143,57 @@ public class ManagerController {
 		return "redirect:bannerManage";
 	}
 	
-	/* 태그설정 */
+	/**
+	 * 사용중인 태그 조회
+	 * @param model
+	 * @author leeseungwoo
+	 */
 	@GetMapping("tagManage")
-	public void tagManage() {}
+	public void tagManage(Model model) {
+		
+		List<TagDTO> useTagList = managerService.selectUseTag();
+		
+		System.out.println("useTagList : " + useTagList);
+		
+		model.addAttribute("useTagList", useTagList);
+	}
+	
+	/**
+	 * 태그 추가
+	 * @param tag
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping("tagAdd")
+	public String tagAdd(@RequestParam("tag") String tag) {
+		
+		System.out.println("태그추가 들어옴");
+		
+		int result = managerService.insertTagAdd(tag);
+		
+		if(result > 0) {
+			System.out.println("태그 추가 성공");
+		} else {
+			System.out.println("태그 추가 실패");
+		}
+		
+		return "redirect:tagManage";
+	}
+	
+	@PostMapping(value = "tagDelete", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String tagDelete(@RequestParam("tagNo") int tagNo) {
+		
+		int result = managerService.deleteTag(tagNo);
+		
+		if(result > 0) {
+			System.out.println("태그 삭제 성공");
+		} else {
+			System.out.println("태그 삭제 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
 	
 	/* 카테고리 설정 */
 	@GetMapping("categoryManage")

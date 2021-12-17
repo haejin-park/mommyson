@@ -9,6 +9,7 @@ import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -95,5 +96,11 @@ public interface ManagerDAO {
 	int OftenQuestionTotalCount(Map<String, String> searchMap);
 
 	int insertBannerAdd(Map<String, Object> bnMap);
+
+	List<TagDTO> selectUseTag();
+
+	int insertTagAdd(String tag);
+
+	int deleteTag(int tagNo);
 
 }
