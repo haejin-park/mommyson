@@ -1,5 +1,6 @@
 package com.sd.mommyson.member.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.member.service.MemberService;
@@ -307,46 +309,52 @@ public class MemberController {
 	
 	
 	
-//	@RequestMapping(value ="findPass2", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
-//	@ResponseBody
-//	public String findPass2(@RequestParam String emailCode, @RequestParam String inputEmailCode, @RequestParam String email, Model model) throws IOException{
-//		
-//		
-//		System.out.println("inputEmailCode : " + inputEmailCode);
-//		
-//		System.out.println("email : " + email);
-//		
-//		String result = "";
-//		
-//		if(emailCode.equals(inputEmailCode)) {	//인증번호가 일치할 경우 
-//			
-//			//이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
-//			
-//			result = email;
-//			
-//		} else if(emailCode != inputEmailCode) {
-//			
-//			result = "인증코드가 일치하지 않습니다.";
-//			
-//		}
-//		
-//		return result;
-//		
-//	}
+	@RequestMapping(value ="findPass2", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String findPass2(@RequestParam String inputEmailCode, @RequestParam String email, Model model) throws IOException{
+		
+		
+		System.out.println("inputEmailCode : " + inputEmailCode);
+		
+		System.out.println("email : " + email);
+		
+		String result = "";
+		
+		EmailCodeDTO dto = new EmailCodeDTO();
+		System.out.println(dto);
+		
+		EmailCodeDTO emailCode = memberService.selectEmailCode(dto);
+		
+		
+		if(emailCode.equals(inputEmailCode)) {	//인증번호가 일치할 경우 
+			
+			//이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
+			
+			result = email;
+			
+		} else {
+			
+			result = "인증코드가 일치하지 않습니다.";
+			
+		}
+		
+		return result;
+		
+	}
 	
 	
-//	/* 비밀번호 변경하기 화면 띄우기 */
-//	@GetMapping("modifyPwd")
-//	public void modifyPwd(@RequestParam String email, Model model) {
-//		
-//		model.addAttribute("email", email);
-//		
-//	}
+	/* 비밀번호 변경하기 화면 띄우기 */
+	@GetMapping("modifyPwd")
+	public void modifyPwd(@RequestParam String email, Model model) {
+		
+		model.addAttribute("email", email);
+		
+	}
 	
 	
 	/* 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러 */
-	@PostMapping(value ="modifyPwd2")
-	public String modifyPwd2(@RequestParam String email, @RequestParam String memPwd, Model model) throws Exception{
+	@PostMapping(value ="modifyPwd")
+	public String modifyPwd(@RequestParam String email, @RequestParam String memPwd, Model model) throws Exception{
 		
 		System.out.println("email : " + email);
 		

@@ -174,6 +174,19 @@ public class MemberServiceImpl implements MemberService {
 		
 		System.out.println("map : " + map);
 	}
+
+	
+	/* 비밀번호 변경 화면이동을 위해 이메일 인증번호 조회하기 */
+	@Override
+	public EmailCodeDTO selectEmailCode(EmailCodeDTO dto) {
+		
+		EmailCodeDTO emailCode = memberDAO.selectEmailCode(dto);
+		
+		System.out.println("dto : " + dto);
+		
+		return emailCode;
+	}
+
 	
 	/* 비밀번호 변경하기 */
 	@Override
@@ -183,7 +196,6 @@ public class MemberServiceImpl implements MemberService {
 		
 		System.out.println("map : " + map);
 	}
-
 
 
 	@Override

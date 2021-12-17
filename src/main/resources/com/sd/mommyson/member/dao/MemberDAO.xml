@@ -316,18 +316,24 @@
 	
 	<!--비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증-->
 	<update id ="updateEmailCode" parameterType="hashMap">
-		UPDATE EMAIL_CODE_TBL A
-		   SET A.EMAIL_CODE = #{ emailCode }
-	     WHERE A.EAMIL = #{ email }
+		UPDATE EMAIL_CODE_TBL
+		   SET EMAIL_CODE = #{ emailCode }
+	     WHERE EMAIL = #{ email }
 	</update> 
 	
+	
+	<select id="selectEmailCode" resultType="EmailCodeDTO">
+		SELECT EMAIL_CODE
+		  FROM EMAIL_CODE_TBL
+		 WHERE EMAIL = #{ email } 
+	</select>
 	
 	
  	<!-- 비밀번호 변경하기 -->
  	<update id="modifyPwd" parameterType="hashMap">
- 		UPDATE MEMBER_TBL A
- 		   SET A.MEM_PWD = #{ encode }
- 		 WHERE A.EMAIL = #{ email } 
+ 		UPDATE MEMBER_TBL
+ 		   SET MEM_PWD = #{ encode }
+ 		 WHERE EMAIL = #{ email } 
  	</update>
 	
 	<select id="selectTagList" resultMap="tagResultMap">

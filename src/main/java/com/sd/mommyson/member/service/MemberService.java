@@ -2,8 +2,8 @@ package com.sd.mommyson.member.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
@@ -51,6 +51,8 @@ public interface MemberService  {
 	public List<TagDTO> selectHotKeywordList();
 
 	public List<StoreDTO> selectStoreList();
+
+	public EmailCodeDTO selectEmailCode(EmailCodeDTO dto);
 
 	
 
