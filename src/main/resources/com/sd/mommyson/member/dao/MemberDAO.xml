@@ -62,8 +62,9 @@
 	
 	<resultMap type="com.sd.mommyson.member.dto.EmailCodeDTO" id="emailCodeResultMap">
 		<id property="code" column="CODE"/>
+		<result property="memCode" column="MEM_CODE"/>
 		<result property="emailCode" column="EMAIL_CODE"/>
-		<association property="memCode" resultMap="memberResultMap"/>
+		<result property="email" column="EMAIL"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.LocationDTO" id="locationResultMap" extends="memberResultMap">
@@ -77,9 +78,11 @@
 		<result property="status" column="STATUS"/>
 	</resultMap>
 
+
 	<select id="selectAll" resultType="_int">
 		SELECT * FROM TEST
 	</select>
+	
 	
 	<select id="selectEncPassword" resultType="String">
 		SELECT 
@@ -87,6 +90,7 @@
 		  FROM MEMBER_TBL A
 		 WHERE A.MEM_ID = #{ memId }
 	</select>
+	
 	
 	<select id="selectMember" resultMap="memberResultMap">
 		SELECT 
@@ -121,6 +125,7 @@
 		   AND A.MEM_ID = #{ memId }
 	</select>
 	
+	
 	<select id="selectLocation" resultType="hashmap">
 		SELECT 
 			   A.LOCATION_CODE
@@ -129,12 +134,14 @@
 		 WHERE A.LOCATION_CODE != 'L0'
 	</select>
 	
+	
 	<select id="selectCategoryList" resultType="hashmap">
 		SELECT 
 			   A.CATEGORY_CODE
 			 , A.CATEGORY_NAME
 		  FROM CATEGORY_TBL A
 	</select>
+	
 	
 	<select id="selectOwner" resultMap="memberResultMap">
 		SELECT
@@ -159,6 +166,7 @@
 		   AND  A.MEM_ID = #{ memId }
     </select>
     
+    
 	<select id="selectManagers" parameterType="string" resultMap="memberResultMap">
 		SELECT
 			   A.MEM_CODE
@@ -174,6 +182,7 @@
 		   AND A.IS_DELETED = 'N'
 	</select>
 	
+	
 	<!-- 아이디 중복 검사 -->
 	<select id="idChk" resultType="int">
 		SELECT COUNT(*) 
@@ -181,12 +190,14 @@
 	     WHERE MEM_ID = #{memId} 
 	</select>
 	
+	
 	<!-- 이메일 중복검사 -->
 	<select id="emailChk" resultType="int">
 		SELECT COUNT(*)
 		  FROM MEMBER_TBL
 		 WHERE EMAIL = #{ email } 
 	</select>
+	
 	
 	<!-- 지역코드 조회 -->
 	<select id="locationCode" resultType="String">
@@ -196,8 +207,30 @@
 		  
 	</select>
 	
+	
+	<!--회원가입시 이메일 인증 코드 인설트 -->
+	<insert id ="registEmailCode">
+		INSERT 
+		  INTO EMAIL_CODE_TBL
+		(
+		  CODE			
+		, MEM_CODE
+		, EMAIL
+		, EMAIL_CODE
+		)
+		VALUES
+		(
+		  SEQ_CODE.NEXTVAL
+		, null
+		, null
+		, #{ emailCode }
+		)
+	</insert>
+
+
 	<!-- 소비자 회원가입 -->
  	<insert id="customerJoin">
+ 	 
 		INSERT ALL
 		  INTO MEMBER_TBL
 		VALUES
@@ -225,38 +258,53 @@
 		)
 		SELECT * FROM DUAL
 	</insert>
+	
+	<!-- 사용자 회원가입 성공하면 MEMBER_TBL 의 code 조회 -->
+ 	<select id="selectCode" resultType="_int">
+		  SELECT CODE
+	      FROM (
+			    SELECT CODE 
+			      FROM EMAIL_CODE_TBL 
+			     ORDER BY CODE DESC
+			    )
+	     WHERE ROWNUM = 1
+	</select>
+	 
+	<!-- 회원가입 성공할 경우 멤버 테이블 memCode 조회-->
+	<select id="selectMemCode" resultType="_int">
+	    SELECT MEM_CODE 
+	      FROM (
+			    SELECT MEM_CODE 
+			      FROM MEMBER_TBL 
+			     ORDER BY ENROLL_DATE DESC
+			    )
+	     WHERE ROWNUM = 1
+	</select>
 
-	<!--회원가입시 이메일 인증 코드 인설트 -->
-	<insert id ="registEmailCode">
-		INSERT 
-		  INTO EMAIL_CODE_TBL
-		(
-		  CODE			
-		, MEM_CODE
-		, EMAIL_CODE
-		)
-		VALUES
-		(
-		  SEQ_CODE.NEXTVAL
-		, null
-		, #{ emailCode }
-		)
-	</insert>
+	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
+ 	<update id="updateMemCode" parameterType="EmailCodeDTO">
+ 		UPDATE EMAIL_CODE_TBL 
+		   SET MEM_CODE = #{ memCode }       
+		 WHERE CODE = #{ code }   
+	</update>  
 	
- 	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
-<!--	<update id="updateEmailVerificationMemCode" parameterType="int">
-		UPDATE EMAIL_CODE_TBL
-		   SET MEM_CODE = #{ memCode.memCode }
-		  
-	</update> -->
+	<!-- 회원가입 성공할 경우 멤버 테이블 email 조회-->
+	<select id="selectEmail" resultType="String">
+	    SELECT EMAIL
+	      FROM (
+			    SELECT EMAIL
+			      FROM MEMBER_TBL 
+			     ORDER BY ENROLL_DATE DESC
+			    )
+	     WHERE ROWNUM = 1
+	</select>
 	
-		<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
-	<update id="updateEmailVerificationMemCode">
- 		UPDATE EMAIL_CODE_TBL E
-		   SET MEM_CODE = #{ memCode }
-		 WHERE E.MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL M WHERE M.MEM_CODE = E.MEM_CODE)
-		   
-	</update>
+	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
+ 	<update id="updateEmail" parameterType="EmailCodeDTO">
+ 		UPDATE EMAIL_CODE_TBL 
+		   SET EMAIL = #{ email }
+		 WHERE CODE = #{ code }     
+	</update>  
 	
 	<!-- 아이디 찾기 -->
 	<select id="findIdCheck" resultType="String">
@@ -266,6 +314,22 @@
 		 WHERE A.EMAIL = #{ email }
 	</select>
 	
+	<!--비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증-->
+	<update id ="updateEmailCode" parameterType="hashMap">
+		UPDATE EMAIL_CODE_TBL A
+		   SET A.EMAIL_CODE = #{ emailCode }
+	     WHERE A.EAMIL = #{ email }
+	</update> 
+	
+	
+	
+ 	<!-- 비밀번호 변경하기 -->
+ 	<update id="modifyPwd" parameterType="hashMap">
+ 		UPDATE MEMBER_TBL A
+ 		   SET A.MEM_PWD = #{ encode }
+ 		 WHERE A.EMAIL = #{ email } 
+ 	</update>
+	
 	<select id="selectTagList" resultMap="tagResultMap">
 		SELECT
 			   A.TAG_NO
@@ -273,7 +337,7 @@
 			 , A.STATUS
 		  FROM TAGS_TBL A
 		 WHERE A.STATUS = 'Y'
-	</select>
+	</select> 
 	
 	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
 		<id property="sdCode" column="SD_CODE"/>
@@ -317,7 +381,7 @@
 			   A.HOT_NO AS TAG_NO
 			 , A.HOT_CONTENT AS TAG
 		  FROM HOT_TBL A
-	</select>
+	</select> 
 	
 	<select id="selectStoreList" resultMap="storeResultMap">
 		SELECT
@@ -331,30 +395,6 @@
 		 ORDER BY M.ENROLL_DATE DESC
 	</select>
 	
-	<!--비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증-->
-	<insert id ="findPwdEmailCode">
-		INSERT 
-		  INTO EMAIL_CODE_TBL
-		(
-		  CODE			
-		, MEM_CODE
-		, EMAIL_CODE
-		)
-		VALUES
-		(
-		  SEQ_CODE.NEXTVAL
-		, null
-		, #{ emailCode }
-		)
-	</insert> 
-	
- 	<!-- 비밀번호 변경하기 -->
- 	<update id="changePwd" parameterType="hashMap">
- 		UPDATE MEMBER_TBL A
- 		   SET A.MEM_PWD = #{ memPwd }
- 		 WHERE A.EMAIL = #{ email } 
- 	</update>
- 
 	<update id="updateLastLogin">
 		UPDATE MANAGER_TBL
 		   SET LAST_LOGIN = SYSTIMESTAMP
