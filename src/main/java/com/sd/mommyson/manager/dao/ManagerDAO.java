@@ -9,6 +9,7 @@ import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -50,11 +51,11 @@ public interface ManagerDAO {
 
 	MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
-	int updateTerminateBlack(List<Integer> blackMember);
+	int updateTerminateBlack(Map<String, Object> terminateMap);
 	
-	int updateBlackCountReset(List<Integer> blackMember);
+	int updateBlackCountReset(Map<String, Object> terminateMap);
 
-	int deleteRealReview(List<Integer> blackMember);
+	int updateRealReview(Map<String, Object> terminateMap);
 
 	int selectReportTotalCount(Map<String, Object> searchMap);
 
@@ -101,5 +102,13 @@ public interface ManagerDAO {
 	int normalInquiryTotalCount(Map<String, String> searchMap);
 
 	List<PostDTO> selectNormalInquiry(Pagination pagination);
+
+	int insertBannerAdd(Map<String, Object> bnMap);
+
+	List<TagDTO> selectUseTag();
+
+	int insertTagAdd(String tag);
+
+	int deleteTag(int tagNo);
 
 }

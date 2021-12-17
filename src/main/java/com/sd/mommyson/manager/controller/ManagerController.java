@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -218,6 +220,8 @@ public class ManagerController {
 		
 		List<MemberDTO> buisnessMemberList = managerService.selectMember(pagination);
 		
+		System.out.println("buisnessMemberList : " + buisnessMemberList);
+		
 		if(buisnessMemberList != null) {
 			model.addAttribute("pagination", pagination);
 			model.addAttribute("buisnessMemberList", buisnessMemberList);
@@ -340,6 +344,12 @@ public class ManagerController {
 		
 	}
 	
+	/**
+	 * 블랙회원 경고내역 상세보기
+	 * @param memCode
+	 * @return
+	 * @author leeseungwoo
+	 */
 	@PostMapping(value = "blackMemDetail", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public List<Map<String, Object>> blackMemDetail(@RequestParam("memCode") int memCode) {
@@ -355,24 +365,41 @@ public class ManagerController {
 		return blackMemDetailList;
 	}
 	
-	/* 블랙 해지 */
+	/* 블랙해지 */
 	/**
 	 * @param blackMember
 	 * @return
 	 * @author leeseungwoo
 	 */
-	@PostMapping("terminateBlack")
-	public String terminateBlack(@RequestParam("chkMember") int[] blackMember){
+	@PostMapping(value = "terminateBlack", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public boolean terminateBlack(@RequestParam(value = "chkMember[]",required = false) String[] blackMember, @RequestParam(value = "rvCodes", required = false) String  blackRvCode){
 		
-		List<Integer> terminateBlackList = new ArrayList<>();
+		System.out.println("들어옴");
 		
-		for(int i = 0; i < blackMember.length; i++) {
-			terminateBlackList.add(blackMember[i]);
+		List<Object> terminateBlackList = new ArrayList<>();
+		
+		for(String cm : blackMember) {
+			terminateBlackList.add(cm);
 		}
 		
-		managerService.updateTerminateBlack(terminateBlackList);
+		System.out.println("리스트 : " + terminateBlackList);
 		
-		return "redirect:blackMember";
+		List<Object> terminateRvCodeList = new ArrayList<>();
+		
+		System.out.println(blackRvCode);
+		String sarr[] = blackRvCode.split(",");
+		for(String rc : sarr) {
+			terminateRvCodeList.add(rc);
+		}
+		
+		Map<String, Object> terminateMap = new HashMap<>();
+		terminateMap.put("terminateBlackList", terminateBlackList);
+		terminateMap.put("terminateRvCodeList", terminateRvCodeList);
+		
+		boolean result = managerService.updateTerminateBlack(terminateMap);
+		
+		return result;
 	}
 	
 	/**
@@ -1243,9 +1270,73 @@ public class ManagerController {
 	@GetMapping("bannerManage")
 	public void bannerManage() {}
 	
-	/* 태그설정 */
+	/* 배너추가 */
+	@GetMapping("bannerAdd")
+	public String bannerAdd(@ModelAttribute BannerDTO banner, Model model) {
+		
+		Map<String, Object> bnMap = new HashMap<>();
+//		bnMap.put("bnCode", banner.getBnCode());
+		bnMap.put("bnName", banner.getBnName());
+		bnMap.put("bnImg", banner.getBnImg());
+		bnMap.put("bnStatus", banner.getBnStatus());
+		bnMap.put("bnOrder", banner.getBnOrder());
+		
+		int result = managerService.insertBannerAdd(bnMap);
+		
+		return "redirect:bannerManage";
+	}
+	
+	/**
+	 * 사용중인 태그 조회
+	 * @param model
+	 * @author leeseungwoo
+	 */
 	@GetMapping("tagManage")
-	public void tagManage() {}
+	public void tagManage(Model model) {
+		
+		List<TagDTO> useTagList = managerService.selectUseTag();
+		
+		System.out.println("useTagList : " + useTagList);
+		
+		model.addAttribute("useTagList", useTagList);
+	}
+	
+	/**
+	 * 태그 추가
+	 * @param tag
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping("tagAdd")
+	public String tagAdd(@RequestParam("tag") String tag) {
+		
+		System.out.println("태그추가 들어옴");
+		
+		int result = managerService.insertTagAdd(tag);
+		
+		if(result > 0) {
+			System.out.println("태그 추가 성공");
+		} else {
+			System.out.println("태그 추가 실패");
+		}
+		
+		return "redirect:tagManage";
+	}
+	
+	@PostMapping(value = "tagDelete", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String tagDelete(@RequestParam("tagNo") int tagNo) {
+		
+		int result = managerService.deleteTag(tagNo);
+		
+		if(result > 0) {
+			System.out.println("태그 삭제 성공");
+		} else {
+			System.out.println("태그 삭제 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
 	
 	/* 카테고리 설정 */
 	@GetMapping("categoryManage")
