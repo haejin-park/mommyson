@@ -823,6 +823,10 @@ public class ManagerController {
 		return "manager/businessInquiry";
 	}
 
+	@GetMapping("businessAnswer")
+	public void businessAnswer() {
+		
+	}
 	
 	
 	/**

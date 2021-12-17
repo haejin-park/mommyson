@@ -20,7 +20,7 @@
 	<div class="head_line"></div>
 	<div class="at-container total_container">
 
-		<jsp:include page="../commons/managerSidebar.jsp"></jsp:include>
+		<jsp:include page="../commons/managerSidebar.jsp"/>
 
 		<div class="board_container">
 			<div class="title_border">
