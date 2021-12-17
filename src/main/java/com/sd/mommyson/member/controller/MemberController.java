@@ -377,5 +377,12 @@ public class MemberController {
 //	}
 //	
 	
+	@PostMapping(value = "deleteNotice", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String deleteNotice(@RequestParam("noticeCode") int noticeCode) {
+		int result = memberService.deleteNotice(noticeCode);
+		return result > 0? "삭제 성공" : "삭제 실패";
+	}
+	
 }	
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
@@ -165,6 +166,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<StoreDTO> selectStoreList() {
 		return memberDAO.selectStoreList();
+	}
+
+	@Override
+	public List<RTNoticeDTO> selectRTNotice(int memCode) {
+		return memberDAO.selectRTNotice(memCode);
+	}
+
+	@Override
+	public int deleteNotice(int noticeCode) {
+		return memberDAO.deleteNotice(noticeCode);
 	}
 
 }

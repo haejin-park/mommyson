@@ -362,4 +362,18 @@
 		 WHERE MEM_CODE = (SELECT MEM_CODE FROM MEMBER_TBL WHERE MEM_ID = #{ memId })
 	</update>
 	
+	<resultMap type="com.sd.mommyson.member.dto.RTNoticeDTO" id="noticeResultMap">
+		<id property="noticeCode" column="NOTICE_CODE"/>
+		<result property="memCode" column="MEM_CODE"/>
+		<result property="noticeContent" column="NOTICE_CONTENTS"/>
+		<result property="noticeTime" column="NOTICE_TIME"/>
+	</resultMap>
+	
+	<select id="selectRTNotice" resultMap="noticeResultMap">
+		SELECT * FROM RT_NOTICE_TBL WHERE MEM_CODE = #{ memCode }
+	</select>
+	
+	<delete id="deleteNotice">
+		DELETE FROM RT_NOTICE_TBL WHERE NOTICE_CODE = #{ noticeCode }
+	</delete>
 </mapper>

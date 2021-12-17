@@ -429,6 +429,7 @@
 	                    <where>
 	                    	M.IS_DELETED = 'N'
 	                    	AND A.ORDERABLE_STATUS = 'Y'
+	                    	AND A.IS_DELETED = 'N'
 				         	<if test='searchValue != null'>
 				         	AND A.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 				         	</if>

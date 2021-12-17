@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,7 +12,7 @@
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-    </head>
+</head>
 <body>
     <header class="header at-container">
       <div class="headerTop">
@@ -24,28 +25,73 @@
                 <c:if test="${ sessionScope.loginMember != null }">
                    <!-- 소비자의 경우 -->
                 	<c:if test="${ sessionScope.loginMember.memType == 'user' }">
-                  		<li>
-                    		<a href=""><img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
-                  		</li>
                    		<li id="ca_lo">
-                    		<a href="#">장바구니</a>
+                    		<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
                   		</li>
                  		 <li>
                   			<a href=""><img style="height: 25px; margin-right: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  		</li>
+                  		<li>
+                    		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+							  <div class="btn-group" role="group">
+							    <button id="btnGroupDrop1" type="button" style="background: none; border: none; outline: none;" class="dropdown" data-toggle="dropdown" aria-expanded="false">
+							      <img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png">
+							    </button>
+							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px;">
+							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
+								      <div style="display: flex; justify-content: space-between; align-items: center;">
+									      <a class="dropdown-item" href="#">${ notice.noticeContent }</a>
+									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd hh:mm" value="${ notice.noticeTime }"/></p>
+									      <button value="${ notice.noticeCode }" style="background: none; border: none; outline: none; margin-right: 10px;" onclick="deleteNotice(this)">x</button>
+								      </div>
+							      </c:forEach>
+							    </div>
+							  </div>
+							</div>
                   		</li>
                    </c:if>
                    
                    <!-- 사업자인 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'ceo' }">
                     	<li>
-                    		<a href="${ pageContext.servletContext.contextPath }/owner/order"><img style="margin-bottom: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/bell.png"></a>
+                    		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+							  <div class="btn-group" role="group">
+							    <button id="btnGroupDrop1" type="button" style="background: none; border: none; outline: none;" class="dropdown" data-toggle="dropdown" aria-expanded="false">
+							      <img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png">
+							    </button>
+							    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="width: 450px;">
+							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
+								      <div style="display: flex; justify-content: space-between;">
+									      <a class="dropdown-item" href="${ pageContext.servletContext.contextPath }/owner/order">${ notice.noticeContent }</a>
+									      <button value="${ notice.noticeCode }" style="background: none; border: none; outline: none; margin-right: 10px;" onclick="deleteNotice(this)">x</button>
+								      </div>
+							      </c:forEach>
+							    </div>
+							  </div>
+							</div>
                   		</li>
                    		<li>
                     		<a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 25px; margin-right: 5px; margin-bottom: 10px;" 
                     		src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.ceo.store.storeName }</a>
                     	</li>
                     </c:if>
-                    
+                    <script>
+                    	// 알림 삭제
+                    	function deleteNotice(e) {
+                    		let noticeCode = e.value;
+                    		$.ajax({
+                    			url: '${ pageContext.servletContext.contextPath }/member/deleteNotice',
+                    			type: 'post',
+                    			data: {
+                    				noticeCode : noticeCode
+                    			},
+                    			success: function(data) {
+                    				e.parentNode.remove();
+                    				$('#btnGroupDrop1').dropdown('show')
+                    			}
+                    		})
+                    	}
+                    </script>
                     <!-- 관리자의 경우 -->
                     <c:if test="${ sessionScope.loginMember.memType == 'manager' }">
 	                  	<li>
@@ -132,7 +178,7 @@
             <li><a href="${ pageContext.servletContext.contextPath }/user/sale">오늘만 할인</a></li>
             <li><a href="${ pageContext.servletContext.contextPath }/user/famousStore?type=new">신규 반찬 가게</a></li>
           </ul>
-          <form action="${ pageContext.servletContext.contextPath }/user/searchResult" method="post" style="display: flex;">
+          <form action="${ pageContext.servletContext.contextPath }/user/searchResult" method="post" style="display: flex; width: 350px;">
 	          <input class="form-control mr-sm-2" id="search" name="searchValue" type="search" placeholder="# 혹은 이름으로 검색해주세요" aria-label="Search">
 	          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
