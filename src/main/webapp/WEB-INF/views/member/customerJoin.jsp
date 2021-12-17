@@ -560,7 +560,7 @@
      				email : email
      			},		
      			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
-     				console.log("data : " + data);  
+     				//console.log("data : " + data);  
      				code = data;
      				
      				$("#code").blur(function(){

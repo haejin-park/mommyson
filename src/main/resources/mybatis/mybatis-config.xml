@@ -10,6 +10,10 @@
   		</typeAliases> -->
   		<typeAliases>
   			<typeAlias type="com.sd.mommyson.member.dto.MemberDTO" alias="MemberDTO"/>
+  			<typeAlias type="com.sd.mommyson.member.dto.EmailCodeDTO" alias="EmailCodeDTO"/>
   		</typeAliases>
+  		
+  			
+  		
   		
   </configuration>

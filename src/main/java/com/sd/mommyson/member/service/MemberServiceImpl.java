@@ -2,7 +2,6 @@ package com.sd.mommyson.member.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -11,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.member.dao.MemberDAO;
+import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
@@ -113,21 +113,45 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int customerJoin(MemberDTO member) throws Exception{
 		
+		EmailCodeDTO dto = new EmailCodeDTO();
+		System.out.println(dto);
+		
 		int result1 = memberDAO.customerJoin(member);
 		System.out.println("result1 : " + result1);
-		int result2;
 		
+		int result2;
+		int result3;
 
-		/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
+		/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode와 email을 select */
 		if(result1 > 0) {
+
+			int code = memberDAO.selectCode(dto);
+			System.out.println("code : " + code);
+			
+			
 			int memCode =	memberDAO.selectMemCode(member);
 			System.out.println("memCode : " + memCode);
 			
-			/* 사용자 회원가입 성공하고 memCode가 조회가 되면 EMAIL_CODE_TBL의 memCode를 MEMBER_TBL 의 memCode로 업데이트 */
+			String email = memberDAO.selectEmail(member);
+			System.out.println("email : " + email);
+			
+			dto.setCode(code);
+			dto.setMemCode(memCode);
+			dto.setEmail(email);
+			System.out.println(dto);
+			
+			
+			/* 사용자 회원가입 성공하고 memCode가 조회가 되면 EMAIL_CODE_TBL의 memCode와 email을 MEMBER_TBL 의 memCode와 email로 업데이트 */
 			if(memCode > 0) {
-				result2 = memberDAO.updateMemCode(memCode);
-			  System.out.println("result2 : " + result2);
+				result2 = memberDAO.updateMemCode(dto);
+				System.out.println("result2 : " + result2);
+			 }
+			 
+			if(email != "") {
+				 result3 = memberDAO.updateEmail(dto);
+				 System.out.println("result3 : " + result3);
 			}
+			
 		}
 		return result1;
 	}
@@ -142,20 +166,22 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 	
-	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
+	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계로 이메일 인증 필요, 기존 인증번호 새걸로 업데이트 하기 위해 이메일 같이 넘겨줌)*/
 	@Override
 	public void updateEmailCode(HashMap<String, String> map) {
 		
 		memberDAO.updateEmailCode(map);
+		
 		System.out.println("map : " + map);
 	}
 	
 	/* 비밀번호 변경하기 */
-		
-		
 	@Override
 	public void modifyPwd(HashMap<String, String> map) {
-		memberDAO.modifyPwd(map);		
+		
+		memberDAO.modifyPwd(map);
+		
+		System.out.println("map : " + map);
 	}
 
 

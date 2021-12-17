@@ -1,8 +1,6 @@
 package com.sd.mommyson.member.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -251,61 +249,6 @@ public class MemberController {
 	@GetMapping("findPwd")
 	public void findPwd() {}
 	
-	
-	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
-//	@RequestMapping(value="find_pass.do", method=RequestMethod.POST)
-//	@ResponseBody
-//	public String find_pass(@RequestParam String email) throws Exception{
-//
-//		/* 뷰에서 넘어온 데이터 확인 */ 
-//		logger.info("이메일 데이터 전송 확인");
-//		logger.info("이메일 : " + email);
-//
-//
-//		/* 인증번호(난수) 생성 */
-//		Random random = new Random();
-//		int code = random.nextInt(888888) +111111;
-//		logger.info("인증번호" + code);
-//
-//		/* 이메일 보내기 */
-//		String setFrom = "sli9962@naver.com";
-//		String toMail = email;
-//		String title = "비밀번호 찾기 인증 이메일입니다.";
-//		String content = "마미손을 방문해주셔서 감사합니다." 
-//				+ "<br><br>" 
-//				+ "인증번호는 " + code +"입니다." 
-//				+ "<br><br>" 
-//				+ "해당 인증번호를 홈페이지의 인증번호 확인란에 기입하여 주세요."; 
-//
-//
-//
-//		try {
-//
-//			MimeMessage message = mailSender.createMimeMessage();
-//			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-//			helper.setFrom(setFrom);
-//			helper.setTo(toMail);
-//			helper.setSubject(title);
-//			helper.setText(content,true);
-//			mailSender.send(message);
-//
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		String emailCode = Integer.toString(code);
-//		
-//		HashMap<String, String> map = new HashMap<String, String>();
-//		
-//		map.put("emailCode", emailCode);
-//		map.put("email", email);
-//		System.out.println("emailCode: " + emailCode);
-//		System.out.println("toMail : " + toMail);
-//		memberService.updateEmailCode(map);
-//		
-//		return emailCode;
-//	}
-	
 	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
 	@RequestMapping(value="find_pass.do", method=RequestMethod.POST)
 	@ResponseBody
@@ -331,8 +274,6 @@ public class MemberController {
 				+ "<br><br>" 
 				+ "해당 인증번호를 홈페이지의 인증번호 확인란에 기입하여 주세요."; 
 
-
-
 		try {
 
 			MimeMessage message = mailSender.createMimeMessage();
@@ -353,8 +294,8 @@ public class MemberController {
 		
 		map.put("emailCode", emailCode);
 		map.put("email", email);
-		System.out.println("emailCode: " + emailCode);
-		System.out.println("toMail : " + toMail);
+		System.out.println("map : " + map);
+		
 		memberService.updateEmailCode(map);
 		
 		return emailCode;
@@ -394,25 +335,23 @@ public class MemberController {
 //	}
 	
 	
-	/* 비밀번호 변경하기 화면 띄우기 */
-	@GetMapping("modifyPwd")
-	public void modifyPwd(@RequestParam String email, Model model) {
-		
-		model.addAttribute("email", email);
-		
-	}
+//	/* 비밀번호 변경하기 화면 띄우기 */
+//	@GetMapping("modifyPwd")
+//	public void modifyPwd(@RequestParam String email, Model model) {
+//		
+//		model.addAttribute("email", email);
+//		
+//	}
 	
 	
 	/* 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러 */
-	@PostMapping(value ="modifyPwd")
-	public String modifyPwd(@RequestParam String email, @RequestParam String memPwd, Model model) throws Exception{
+	@PostMapping(value ="modifyPwd2")
+	public String modifyPwd2(@RequestParam String email, @RequestParam String memPwd, Model model) throws Exception{
 		
-		
+		System.out.println("email : " + email);
 		
 		String encode = passwordEncoder.encode(memPwd);
-		System.out.println("email : " + email);
 		System.out.println("encode : " + encode);
-		
 		
 		HashMap<String,String> map = new HashMap<String,String>();
 		map.put("email",email);

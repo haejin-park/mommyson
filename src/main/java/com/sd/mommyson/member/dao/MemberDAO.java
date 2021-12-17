@@ -44,11 +44,20 @@ public interface MemberDAO {
 	/* 사용자 회원가입 */
 	public int customerJoin(MemberDTO member);
 	
+	/* 이메일 인증번호 전송시 EmailCodeTBL의 code select */
+	public int selectCode(EmailCodeDTO dto);
+	
 	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
 	public int selectMemCode(MemberDTO memCode);
 	
+	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 email select */
+	public String selectEmail(MemberDTO member);
+	
 	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode MEMBER_TBL 의 memCode로 업데이트 */
-	public int updateMemCode(int memCode);
+	public int updateMemCode(EmailCodeDTO dto);
+	
+	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode MEMBER_TBL 의 email로 업데이트 */
+	public int updateEmail(EmailCodeDTO dto);
 
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO mdto);
@@ -66,6 +75,12 @@ public interface MemberDAO {
 	public List<TagDTO> selectHotKeywordList();
 
 	public List<StoreDTO> selectStoreList();
+
+
+
+
+
+	
 
 	
 
