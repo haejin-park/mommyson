@@ -99,16 +99,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	
-
-	/* 사용자 회원가입 */
-	@Override
-	public void customerJoin(MemberDTO member) throws Exception{
-		
-		memberDAO.customerJoin(member);
-		
-	}
-
-	
 	/* 회원가입시 이메일 인증 */ 
 	@Override
 	public int registEmailCode(String num) {
@@ -117,25 +107,31 @@ public class MemberServiceImpl implements MemberService {
 		
 		return emailNum;
 	}
+	
 
-
-	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
+	/* 사용자 회원가입 */
 	@Override
-	public int selectMemCode(int memCode) {
+	public int customerJoin(MemberDTO member) throws Exception{
 		
-		memberDAO.selectMemCode(memCode);
+		int result1 = memberDAO.customerJoin(member);
+		System.out.println("result1 : " + result1);
+		int result2;
 		
-		return memCode;
+
+		/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
+		if(result1 > 0) {
+			int memCode =	memberDAO.selectMemCode(member);
+			System.out.println("memCode : " + memCode);
+			
+			/* 사용자 회원가입 성공하고 memCode가 조회가 되면 EMAIL_CODE_TBL의 memCode를 MEMBER_TBL 의 memCode로 업데이트 */
+			if(memCode > 0) {
+				result2 = memberDAO.updateMemCode(memCode);
+			  System.out.println("result2 : " + result2);
+			}
+		}
+		return result1;
 	}
 	
-	
-	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode MEMBER_TBL 의 memCode로 업데이트 */
-	@Override
-	public void updateEmailVerificationMemCode(int memCode) {
-		
-		memberDAO.updateEmailVerificationMemCode(memCode);
-		
-	}
 
 	/* 아이디 찾기 */
 	@Override
@@ -145,6 +141,24 @@ public class MemberServiceImpl implements MemberService {
 	
 		return member;
 	}
+	
+	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
+	@Override
+	public void updateEmailCode(HashMap<String, String> map) {
+		
+		memberDAO.updateEmailCode(map);
+		System.out.println("map : " + map);
+	}
+	
+	/* 비밀번호 변경하기 */
+		
+		
+	@Override
+	public void modifyPwd(HashMap<String, String> map) {
+		memberDAO.modifyPwd(map);		
+	}
+
+
 
 	@Override
 	public List<TagDTO> selectTagList() {
@@ -161,21 +175,6 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.selectHotKeywordList();
 	}
 
-	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 */
-	@Override
-	public int findPwdEmailCode(String num) {
-		
-		int emailNum = memberDAO.findPwdEmailCode(num);
-		
-		return emailNum;
-	}
-	
-	/* 비밀번호 변경하기 */
-	@Override
-	public void changePwd(Map<String, Object> map, MemberDTO dto) throws Exception {
-		
-		memberDAO.changePwd(map, dto);
-	}
 
 	@Override
 	public List<StoreDTO> selectStoreList() {

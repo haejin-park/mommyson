@@ -8,4 +8,8 @@
   		<!-- <typeAliases>
   			<typeAlias type="com.greedy.spring.member.model.dto.MemberDTO" alias="MemberDTO"/>
   		</typeAliases> -->
+  		<typeAliases>
+  			<typeAlias type="com.sd.mommyson.member.dto.MemberDTO" alias="MemberDTO"/>
+  		</typeAliases>
+  		
   </configuration>

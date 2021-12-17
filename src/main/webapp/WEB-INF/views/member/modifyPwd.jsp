@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/changePwd.css">
+    <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/modifyPwd.css">
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"crossorigin="anonymous"></script>
@@ -32,7 +32,7 @@
         <h1>비밀번호 변경</h1>
         <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         <br>
-         <form action="pass_change.do${ email }" method="post" onsubmit="return validate();">
+         <form action="modifyPwd" method="post" onsubmit="return validate();">
         <input type="password" class="pwd1" id="pwd1" name="memPwd" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자"
         style=" border-radius: 9px; width: 440px; height: 40px;">
         <br><br>
@@ -127,8 +127,21 @@
       		 }	
       }); 
        
+       $("#changePwd").click(function(){
+    	  if($("#pwd1").val() == ""){
+    		  alert("비밀번호를 입력해주세요.")
+    		  $("#pwd1").focus(); 
+    		  return false;
+    	  } 
+       });
        
-       
+       $("#changePwd").click(function(){
+     	  if($("#pwd2").val() == ""){
+     		  alert("비밀번호를 확인해주세요.")
+     		  $("#pwd2").focus(); 
+     		  return false;
+     	  } 
+        });
        
 	    /* 로그인 화면 이동  */ 
 	    const $goLogin = document.getElementById("goLogin");

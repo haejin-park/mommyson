@@ -41,9 +41,9 @@
         <br>
         <span id="emailCheckResult"></span>
         <br>
-        <input type="number" class="pass_injeung" id="pass_injeung" name="pass_injeung" placeholder="인증번호(이메일 전송 버튼 클릭 후 수신된 인증번호 입력)"
+        <input type="number" class="emailCode" id="emailCode" name="emailCode" placeholder="인증번호(이메일 전송 버튼 클릭 후 수신된 인증번호 입력)"
         style=" border-radius: 9px; width: 440px; height: 40px;">
-        <input type="hidden" name="inputPass_injeung">
+        <input type="hidden" name="inputEmailCode">
         <br>
         <span id="codeCheckResult"></span>
         <br>
@@ -62,7 +62,7 @@
     <jsp:include page="../commons/footer.jsp"/>
     <script>
     
-      /*  	 $('#changePwdButton').click(function(){
+   		$('#changePwdButton').click(function(){
        		 if($('#email').val() == ""){
        			 alert("이메일을 입력해주세요.");
        			 $('#email').focus();
@@ -71,31 +71,16 @@
        	 });
         
        	$('#changePwdButton').click(function(){
-       		if($('#pass_injeung').val() == ""){
+       		if($('#emailCode').val() == ""){
                    alert("인증번호를 입력해주세요");
                	$("#codeCheckResult").html("이메일 전송 버튼을 클릭하여 수신된 인증 번호를 입력해주세요.");
                	$("#codeCheckResult").attr("class", "incorrect");
-               	$("#pass_injeung").focus();
+               	$("#emailCode").focus();
                	return false;
        		}
-       	});  */
+       	});  
       	
-       	
-   		 /* 비밀 번호 변경하기 화면으로 이동 */
-/*  	    const $changePwdButton = document.getElementById("changePwdButton");
-	    $changePwdButton.onclick = function() {
-        	var email = $("#email").val();
-	    	location.href = "${ pageContext.servletContext.contextPath }/member/pass_change.do{email}";
-	    }  
-    		 */    
-     		     
- 	    /* 비밀 번호 변경하기 화면으로 이동 */
-/* 	    const $changePwdButton = document.getElementById("changePwdButton");
-	    $changePwdButton.onclick = function() {
-        	var email = $("#email").val();
-	    	location.href = "${ pageContext.servletContext.contextPath }/member/changePwd";
-	    }  */
-     		    
+  
       
          
         /* 이메일 입력 여부 확인 & 정규식 확인 */
@@ -125,13 +110,13 @@
         
         });
         
-        
+	    
         
         /* 코드 전송 버튼 클릭 */
         /* 아이디, 이메일을 입력하지 않고 누르면 회원정보를 입력해주세요 라는 알럿이 나온다. */	
 	    /* 아이디, 이메일이 회원정보와 일치하지 않은 상태에서 누르면 "회원정보를 다시 확인해주세요." 라는 알럿이 나온다. */	
 	    
-	   var pass_injeung ="";
+	   var emailCode ="";
         
 	    $("#submit").click(function(){
 	    
@@ -144,17 +129,19 @@
         	} else {
          		$.ajax({
          			type:"post",
-         			url:"find_pass.do?email=" + email,
+         			url:"find_pass.do",
+         			data : { email : email },	
+         			async : false, 
          			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
          				console.log("data : " + data);  
-         				pass_injeung = data;
+         				emailCode = data;
          				
-         				$("#pass_injeung").blur(function(){
-    	     				var inputPass_injeung = $("#pass_injeung").val(); // 입력코드 
+         				$("#emailCode").blur(function(){
+    	     				var inputEmailCode = $("#emailCode").val(); // 입력코드 
     	     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
     	     				
-    	     				if(inputPass_injeung != pass_injeung){
-    	     					if(inputPass_injeung == ""){
+    	     				if(inputEmailCode != emailCode){
+    	     					if(inputEmailCode == ""){
     	     						codeCheckResult.html("인증번호를 입력해주세요.");
     	     						codeCheckResult.attr("class", "incorrect");
     	     						return false;
@@ -166,16 +153,25 @@
     	     					
     	     				} else {
     	     					
-    	     					if(inputPass_injeung == ""){
+    	     					if(inputEmailCode == ""){
     	     						codeCheckResult.html("인증번호를 입력해주세요.");
     	     						codeCheckResult.attr("class", "incorrect");
     	     						return false;
+    	     						
     	     					} else {
     	     						codeCheckResult.html("인증번호가 일치합니다.");
     	     						codeCheckResult.attr("class", "correct");
+   	     						 	
+    	     						 $('#changePwdButton').click(function(){
+    	     				        	var email = $("#email").val(); //이메일 
+	     				         		location.href = "${ pageContext.servletContext.contextPath }/member/modifyPwd?email=" + email; //겟방식  
+     				        		});	
+    	     				        			
     	     						return true;
+    	     						
     	     					}
     	     				}
+    	     				
          				});
          			},
         			error : function(error){
@@ -189,76 +185,48 @@
 	    //비밀번호 변경을 눌렀을 때 두개중하나라도 값이 비어있으면 필요 정보를 입력해주세요 
 	 	 $('changePwdButton').click(function(){
 	
-		 if($('#email').val() == "" || $('#pass_injeung').val() == ""); 
+		 if($('#email').val() == "" || $('#emailCode').val() == ""); 
 			 alert("필요정보를 입력해주세요.");
 			 return false;
 	 	 });
 	 	 
 	 	 
-	 	/* $('#changePwdButton').click(function(){
-		//둘다 잘 입력이 되어있고 이메일에 발송된 인증번호와 결과가 일치하면 비밀번호 변경 화면으로 넘어간다.
-		 var pass_injeung ="";
+	 	//비밀번호 변경 버튼 클릭시 이메일과 인증코드 모두 입력이 잘 되어있고 이메일에 발송된 인증번호가 일치하면 비밀번호 변경 화면으로 넘어간다.
+	 	  $('#changePwdButton').click(function(){
 		        
-			    $("#submit").click(function(){
-			    
-		        	var email = $("#email").val();
-		        	
-		        	if(email == ""){
-		        		alert("이메일을 입력해주세요.");
-		        		return false; 
-		        		
-		        	} else {
-		         		$.ajax({
-		         			type:"post",
-		         			url:"find_pass.do?email=" + email,
-		         			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
-		         				console.log("data : " + data);  
-		         				pass_injeung = data;
-		         				
-		         				$("#pass_injeung").blur(function(){
-		    	     				var inputPass_injeung = $("#pass_injeung").val(); // 입력코드 
-		    	     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
-		    	     				
-		    	     				if(inputPass_injeung != pass_injeung){
-		    	     					if(inputPass_injeung == ""){
-		    	     						codeCheckResult.html("인증번호를 입력해주세요.");
-		    	     						codeCheckResult.attr("class", "incorrect");
-		    	     						return false;
-		    	     					} else {
-		    	     						codeCheckResult.html("인증번호가 일치하지 않습니다. 인증번호를 다시 입력해주세요.");
-		    	     						codeCheckResult.attr("class", "incorrect");
-		    	     						return false;
-		    	     					}
-		    	     					
-		    	     				} else {
-		    	     					
-		    	     					if(inputPass_injeung == ""){
-		    	     						codeCheckResult.html("인증번호를 입력해주세요.");
-		    	     						codeCheckResult.attr("class", "incorrect");
-		    	     						return false;
-		    	     					} else {
-		    	     						codeCheckResult.html("인증번호가 일치합니다.");
-		    	     						codeCheckResult.attr("class", "correct");
-		    	     						return true;
-		    	     						location.href = "${ pageContext.servletContext.contextPath }/member/changePwd";	
-		    	     						
-		    	     					}
-		    	     				}
-		         				});
-		         			},
-		        			error : function(error){
-		        				alert(error);
-		        			}	
-		         		});
-		        	}
+        	var email = $("#email").val(); //이메일 
+        	var inputEmailCode = $("#emailCode").val(); // 입력코드 
+        	var emailCode =""; // 데이터 담는 용도 
+        	
+        	if(email !== "" || inputEmailCode!= ""){
+        	
+        		$.ajax({
+         			type:"post",
+         			url:"findPass2",
+         			data : { 
+         				email : email, 
+         				emailCode : emailCode,
+         				inputEmailCode : inputEmailCode
+         			},	
+         			async : false, 
+         			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
+         				console.log("data : " + data);  
+         				if(data == '인증코드가 일치하지 않습니다.') {
+         					alert(data);
+         				} else {
+         					location.href = "${ pageContext.servletContext.contextPath }/member/modifyPwd?email=" + data; //겟방식  
+         				}
+         			},
+         			
+         			error : function(error){
+        				alert(error);
+        			}	
+         		
 				}); 
-	
-			}
-	 */
-		
-	    
-        
+        			
+        	}
 
+		}); 
 	    
 	    /* 로그인 화면 이동  */ 
 	    const $goLogin = document.getElementById("goLogin");

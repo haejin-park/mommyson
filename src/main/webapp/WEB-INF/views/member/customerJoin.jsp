@@ -544,8 +544,8 @@
 	  			});
 	          }
 	      } 
-			
-
+		
+		
          
          /* 이메일 인증번호 전송 & 비교 */
          var code =""; // 이메일 인증번호 저장을 위한 코드
@@ -555,7 +555,10 @@
      		
      		$.ajax({
      			type:"POST",
-     			url:"mailCheck?email=" + email,
+     			url:"mailCheck",
+     			data : {
+     				email : email
+     			},		
      			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
      				console.log("data : " + data);  
      				code = data;
@@ -567,7 +570,7 @@
 	     				if(inputCode != code){
 	     					if(inputCode == ""){
 	     						codeCheckResult.html("인증번호를 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect")
+	     						codeCheckResult.attr("class", "incorrect");
 	     						return false;
 	     					} else {
 	     						codeCheckResult.html("인증번호가 일치하지 않습니다. 인증번호를 다시 입력해주세요.");
@@ -579,11 +582,11 @@
 	     					
 	     					if(inputCode == ""){
 	     						codeCheckResult.html("인증번호를 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect")
+	     						codeCheckResult.attr("class", "incorrect");
 	     						return false;
 	     					} else {
 	     						codeCheckResult.html("인증번호가 일치합니다.");
-	     						codeCheckResult.attr("class", "correct")
+	     						codeCheckResult.attr("class", "correct");
 	     						return true;
 	     					}
 	     				}
@@ -683,9 +686,9 @@
       	
 		/* 회원가입버튼 클릭시 폼태그, 회원가입 서블렛 요청 */
 		$(document).ready(function(){
+			
 			$("#joinButton").click(function(){
 				$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin2");
-				
 				$("#join_form").submit();
 				
 			});

@@ -1,6 +1,8 @@
 package com.sd.mommyson.member.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -22,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.member.service.MemberService;
@@ -217,9 +217,6 @@ public class MemberController {
 		memberService.customerJoin(member);
 		logger.info("customerJoin Service 성공");
 		
-//		member.getMemCode();
-//		memberService.updateEmailVerificationMemCode(member);
-		
 		return "/member/login";
 		
 		
@@ -255,7 +252,61 @@ public class MemberController {
 	public void findPwd() {}
 	
 	
-	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 */
+	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
+//	@RequestMapping(value="find_pass.do", method=RequestMethod.POST)
+//	@ResponseBody
+//	public String find_pass(@RequestParam String email) throws Exception{
+//
+//		/* 뷰에서 넘어온 데이터 확인 */ 
+//		logger.info("이메일 데이터 전송 확인");
+//		logger.info("이메일 : " + email);
+//
+//
+//		/* 인증번호(난수) 생성 */
+//		Random random = new Random();
+//		int code = random.nextInt(888888) +111111;
+//		logger.info("인증번호" + code);
+//
+//		/* 이메일 보내기 */
+//		String setFrom = "sli9962@naver.com";
+//		String toMail = email;
+//		String title = "비밀번호 찾기 인증 이메일입니다.";
+//		String content = "마미손을 방문해주셔서 감사합니다." 
+//				+ "<br><br>" 
+//				+ "인증번호는 " + code +"입니다." 
+//				+ "<br><br>" 
+//				+ "해당 인증번호를 홈페이지의 인증번호 확인란에 기입하여 주세요."; 
+//
+//
+//
+//		try {
+//
+//			MimeMessage message = mailSender.createMimeMessage();
+//			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+//			helper.setFrom(setFrom);
+//			helper.setTo(toMail);
+//			helper.setSubject(title);
+//			helper.setText(content,true);
+//			mailSender.send(message);
+//
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		String emailCode = Integer.toString(code);
+//		
+//		HashMap<String, String> map = new HashMap<String, String>();
+//		
+//		map.put("emailCode", emailCode);
+//		map.put("email", email);
+//		System.out.println("emailCode: " + emailCode);
+//		System.out.println("toMail : " + toMail);
+//		memberService.updateEmailCode(map);
+//		
+//		return emailCode;
+//	}
+	
+	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
 	@RequestMapping(value="find_pass.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String find_pass(@RequestParam String email) throws Exception{
@@ -296,86 +347,83 @@ public class MemberController {
 			e.printStackTrace();
 		}
 
-		String num = Integer.toString(code);
-		memberService.findPwdEmailCode(num);
-//		ModelAndView mv = new ModelAndView();
-//		mv.setViewName("/member/findPwd");
-//		mv.addObject("pass_injeung", num);
-//		mv.addObject("email", email);
-//
-//		System.out.println("mv : " + mv);
+		String emailCode = Integer.toString(code);
 		
-		return num;
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		map.put("emailCode", emailCode);
+		map.put("email", email);
+		System.out.println("emailCode: " + emailCode);
+		System.out.println("toMail : " + toMail);
+		memberService.updateEmailCode(map);
+		
+		return emailCode;
+		
 	}
 	
 	
-	/* 인증번호를 입력한 후 확인 버튼 누르면 자료가 넘어오는 컨트롤러 */
-  //문제 pass_injeung은 값이 들어오는데 inputPass_injeung은 값이 안들어옴,,
-	@RequestMapping(value ="pass_injeung.do{code},{email}", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
-	@ResponseBody
-	public ModelAndView pass_injeung(String pass_injeung, String inputPass_injeung, @RequestParam String email) throws IOException{
-		
-		System.out.println("pass_injeung : " + pass_injeung);
-		
-		System.out.println("inputPass_injeung : " + inputPass_injeung);
-		
-		System.out.println("email : " + email);
-		
-		ModelAndView mv = new ModelAndView();
-		
-		if(pass_injeung.equals(inputPass_injeung)) {	//인증번호가 일치할 경우 
-			
-			mv.setViewName("/member/changePwd"); // 비밀번호 변경 화면으로 이동시켜 
-			
-			mv.addObject("email", email);  //이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
-			
-			return mv;
-			
-		} else if(pass_injeung != inputPass_injeung) {
-			
-			ModelAndView mv2 = new ModelAndView();
-			
-			mv2.setViewName("/member/findPwd");
-			
-			return mv2;
-		}
-		
-		return mv;
-		
-	}
+	/* 인증번호를 입력한 후 비밀번호 변경 버튼을 누르면 변경화면으로 이메일값과 함 이동 */
+	
+	
+	
+//	@RequestMapping(value ="findPass2", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
+//	@ResponseBody
+//	public String findPass2(@RequestParam String emailCode, @RequestParam String inputEmailCode, @RequestParam String email, Model model) throws IOException{
+//		
+//		
+//		System.out.println("inputEmailCode : " + inputEmailCode);
+//		
+//		System.out.println("email : " + email);
+//		
+//		String result = "";
+//		
+//		if(emailCode.equals(inputEmailCode)) {	//인증번호가 일치할 경우 
+//			
+//			//이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
+//			
+//			result = email;
+//			
+//		} else if(emailCode != inputEmailCode) {
+//			
+//			result = "인증코드가 일치하지 않습니다.";
+//			
+//		}
+//		
+//		return result;
+//		
+//	}
 	
 	
 	/* 비밀번호 변경하기 화면 띄우기 */
-	@GetMapping("changePwd")
-	public void changePwd() {}
+	@GetMapping("modifyPwd")
+	public void modifyPwd(@RequestParam String email, Model model) {
+		
+		model.addAttribute("email", email);
+		
+	}
 	
 	
 	/* 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러 */
-//	@PostMapping(value ="pass_change.do{email}")
-//	@ResponseBody
-//	public ModelAndView pass_change(@RequestParam String email, @RequestParam String memPwd, MemberDTO dto) throws Exception{
-//		
-//		System.out.println("email : " + email);
-//		System.out.println("memPwd : " + memPwd);
-//		
-////		memPwd = "memPwd";
-//		
-//		dto.setEmail(email);
-//		dto.setMemPwd(memPwd);
-//		
-//		//값을 여러개 담아야하므로 해쉬맵을 사용하여 값을 저장함.
-//		Map<String, Object> map = new HashMap<>();
-//		
-//		map.put("email", dto.getEmail());
-//		map.put("memPwd", dto.getMemPwd());
-//		
-//		memberService.changePwd(map, dto);
-//		ModelAndView mv = new ModelAndView();
-//		mv.setViewName("/member/changePwd");
-//		return mv;
-//		
-//	}
-//	
+	@PostMapping(value ="modifyPwd")
+	public String modifyPwd(@RequestParam String email, @RequestParam String memPwd, Model model) throws Exception{
+		
+		
+		
+		String encode = passwordEncoder.encode(memPwd);
+		System.out.println("email : " + email);
+		System.out.println("encode : " + encode);
+		
+		
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("email",email);
+		map.put("encode", encode);
+		
+		memberService.modifyPwd(map);
+		
+		return "/member/login" ;
+		
+	}
+	
 	
 }	
 

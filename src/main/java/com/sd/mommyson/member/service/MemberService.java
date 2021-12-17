@@ -29,26 +29,20 @@ public interface MemberService  {
 	/* 회원가입시 지역코드 조회 */
 	public String locationCode(String locationName);
 	
-	/* 사용자 회원가입 */
-	public void customerJoin(MemberDTO member) throws Exception;
-	
 	/* 회원가입 이메일 인증 */ 
 	public int registEmailCode(String num);
 	
-	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
-	public int selectMemCode(int memCode);
-	
-	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode MEMBER_TBL 의 memCode로 업데이트 */
-	public void updateEmailVerificationMemCode(int memCode);
+	/* 사용자 회원가입 */
+	public int customerJoin(MemberDTO member) throws Exception;
 	
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO mdto);
 
-	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 */
-	public int findPwdEmailCode(String num);
+	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
+	public void updateEmailCode(HashMap<String, String> map);
 	
 	/* 비밀번호 변경하기 */
-	public void changePwd(Map<String, Object> map, MemberDTO dto) throws Exception;
+	public void modifyPwd(HashMap<String, String> map);
 
 	public List<TagDTO> selectTagList();
 
@@ -57,6 +51,12 @@ public interface MemberService  {
 	public List<TagDTO> selectHotKeywordList();
 
 	public List<StoreDTO> selectStoreList();
+
+	
+
+
+
+
 
 
 
