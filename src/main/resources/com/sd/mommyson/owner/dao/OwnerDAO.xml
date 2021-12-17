@@ -77,7 +77,17 @@
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
-		<collection property="orderDTO" resultMap="orderResultMap"></collection>
+		<collection property="orderDTO" resultMap="orderResultMap"/>
+	</resultMap>
+	
+	<!-- 리뷰가져오는 맵 -->
+	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap1">
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="img" column="RV_IMG"/>
+		<result property="content" column="RV_CONTENT"/>
+		<result property="grade" column="RV_GRADE"/>
+		<result property="rvCode" column="RV_CODE"/>
+		<collection property="memberDTO" resultMap="memberResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
@@ -110,7 +120,6 @@
 		<result property="address" column="ADDRESS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="storeName" column="STORE_NAME"/>
-		<result property="code" column="CODE"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -270,18 +279,49 @@
 		
 	</insert>
 	
-	<!-- 리뷰 목록 가져오기 -->
-	<select id="selectReview" resultMap="reviewResultMap">
+	<select id="selectReviewListTotalCount" resultType="_int">
 		SELECT
-				A.RV_CODE
-			  , A.MEM_CODE
-			  , A.RV_CONTENT
-			  , B.NICKNAME 
+			    COUNT(*)
 		  FROM REVIEW_TBL A
 		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
 		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
-		 WHERE C.STORE_NAME = #{storeName}
+		 WHERE C.STORE_NAME = #{ storeName }
 		   AND A.IS_DELETED = 'N'
+	</select>
+	
+	<!-- 리뷰 목록 가져오기 -->
+	<select id="selectReview" resultMap="reviewResultMap1">
+		SELECT
+		        E.RNUM
+		      ,	E.RV_CODE
+			  , E.MEM_CODE
+			  , E.RV_CONTENT
+			  , E.NICKNAME 
+	     FROM (SELECT
+		                ROWNUM RNUM
+		              ,	D.RV_CODE
+					  , D.MEM_CODE
+					  , D.RV_CONTENT
+					  , D.NICKNAME 
+	            FROM (SELECT
+								A.RV_CODE
+							  , A.MEM_CODE
+							  , A.RV_CONTENT
+							  , B.NICKNAME 
+						  FROM REVIEW_TBL A
+						  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
+						  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
+					   <where>
+					 		  C.STORE_NAME = #{ searchCondition }
+		   				  AND A.IS_DELETED = 'N'
+					   </where>
+		  			   )D
+		  			   <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)E
+	   <![CDATA[
+	  WHERE E.RNUM >= #{ startRow } 
+       ]]>
 	</select>
 	
 	<!-- 사업자 가게정보 변경 쿼리문 -->
@@ -691,6 +731,15 @@
 			   SET DISCOUNT_RATE = #{ discountRate }
 			 WHERE SD_CODE = #{ sdCode }
 	</update>
+	
+	<!-- 주문페이지 주문 접수 토탈타운트  -->
+	<select id="selectOrderListTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM ORDER_TBL A
+		 WHERE A.STORE_NAME = #{ storeName }
+		   AND A.CODE = 1 OR A.CODE = 2
+	</select>
 	
 	<!-- 주문페이지 주문 접수  -->
 	<select id="selectOrderList" resultMap="orderResultMap">
