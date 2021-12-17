@@ -222,7 +222,7 @@ public class OwnerController {
 			try {
 				img.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				modifyInfo.put("fileName", fileName);
 				
@@ -335,7 +335,7 @@ public class OwnerController {
 			try {
 				productImg.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				productInfo.put("fileName", fileName);
 				
@@ -809,6 +809,68 @@ public class OwnerController {
 		model.addAttribute("tagList",tagList);
 		model.addAttribute("tag",tag);
 		model.addAttribute("categoryList",categoryList);
+	}
+	
+	@PostMapping("modifyProduct")
+	public String modifyProduct(@RequestParam MultipartFile productImg, @ModelAttribute ProductDTO product, 
+			HttpServletRequest request, RedirectAttributes rd, Model model) {
+		
+		int tag = Integer.parseInt(request.getParameter("tag1"));
+		int tag2 = Integer.parseInt(request.getParameter("tag2"));
+		int tag3 = Integer.parseInt(request.getParameter("tag3"));
+		
+		List<Integer> tagList = new ArrayList<Integer>();
+		tagList.add(tag);
+		tagList.add(tag2);
+		tagList.add(tag3);
+		
+		System.out.println("tagList : " + tagList);
+		System.out.println("product 변경된값 들어왔니? : " + product);
+		
+		System.out.println("파일이름 들어왔니? : " + productImg);
+		
+//		Map<String,Object> productInfo = new HashMap<String, Object>();
+//		productInfo.put("product",product);
+//		productInfo.put("tagList", tagList);
+//		
+//		String root = request.getSession().getServletContext().getRealPath("resources");
+//		
+//		String filePath = root + "/uploadFiles";
+//		
+//		File mkdir = new File(filePath);
+//		if(!mkdir.exists()) {
+//			mkdir.mkdirs();
+//		}
+//		
+//		
+//			String orginFileName = productImg.getOriginalFilename();
+//			String ext = orginFileName.substring(orginFileName.indexOf("."));
+//			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+//			
+//			try {
+//				productImg.transferTo(new File(filePath + "/" + savedName));
+//				
+//				String fileName = "resources/uploadFiles/" + savedName;
+//				
+//				productInfo.put("fileName", fileName);
+//				
+//				
+//			} catch (IllegalStateException | IOException e) {
+//				new File(filePath + "/" + savedName).delete();	
+//				e.printStackTrace();
+//			}
+//			
+//			int result = ownerService.registProduct(productInfo);
+//			
+//			if(result > 0) {
+//				rd.addFlashAttribute("message","상품이 등록되었습니다.");
+//			} else {
+//				rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
+//				new File(filePath + "/" + savedName).delete();
+//			}
+//		
+//		return "redirect:productManagement";
+		return "";
 	}
 	
 	

@@ -30,7 +30,7 @@
         
 	    <div class="body-center" style="text-align: center;">
 	    <form action="${ pageContext.servletContext.contextPath }/owner/modifyProduct" method="post" id="frm" enctype="multipart/form-data">
-	        <input type="text" placeholder="${ product.sdName }" value="${ product.sdName }" name="sdName" style="height: 60px; font-size: large;">
+	        <input type="text" value="${ product.sdName }" name="sdName" style="height: 60px; font-size: large;">
 	        <br><br>
 	        <select name="categoryCode" id="category">
             <option>반찬 카테고리</option>
@@ -123,7 +123,7 @@
                 <div class="modal-body">
                     <img src="" id="preview-image" style="width: 400px;">
                     <hr>
-                    <input type="file" name="productImg" id="input-image">
+                    <input type="file" name="productImg" id="input-image" value="${ product.sdImg }">
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="button1" data-dismiss="modal">취소</button>
@@ -163,7 +163,7 @@
         </div>
     </div>
 	       <br><br>
-	       <textarea placeholder="${ product.detail }" name="detail" id="detail" style="width: 400px; height: 100px;"></textarea>
+	       <textarea name="detail" id="detail" style="width: 400px; height: 100px;">${ product.detail }</textarea>
 	       <br> <br>
 	       <table class="tg-product">
 	        <tbody>
@@ -181,34 +181,30 @@
 	            <th class="tg-p">판매상태</th>
 	            <td class="tg-pp">
 	                <select name="orderableStatus" id="status">
-	            <c:set var="st" value="$('#status option:selected').val()"/>
-	            <c:if test="${ product.orderableStatus eq st }">
 	                   <option value="Y" seleted>판매</option>
 	                   <option value="N" seleted>판매불가</option>
-	             </c:if>
 	               </select>
 	            </td>
 	        </tr>
 	        <tr>
 	            <th class="tg-p">용량</th>
-	            <td class="tg-pp"><input type="text" name="volume" placeholder="${ product.volume }" style="width: 80px;">  g</td>
+	            <td class="tg-pp"><input type="text" name="volume" value="${ product.volume }" style="width: 80px;">  g</td>
 	        </tr>
 	        <tr>
 	            <th class="tg-p">식품유형</th>
 	            <td class="tg-pp">
-	                <input type="text" name="category" placeholder="${ product.category }">
+	                <input type="text" name="category" value="${ product.category }">
 	            </td>
 	        </tr>
 	        <tr>
 	            <th class="tg-p">원재료명</th>
 	            <td class="tg-pp">
-	                <input type="text" name="ingredient" placeholder="${ product.ingredient }" style="width: 500px;">
+	                <input type="text" name="ingredient" value="${ product.ingredient }" style="width: 500px;">
 	            </td>
 	        </tr>
 	        <tr>
 	            <th class="tg-p">보관법</th>
 	            <td class="tg-pp">
-	            
 	                <select name="storageMethod" id="method">
 	                    <option value="0~10º 냉장보관">0~10º 냉장보관</option>
 	                    <option value="상온보관">상온보관</option>
@@ -218,15 +214,38 @@
 	        </tr>
 	        <tr>
 	            <th class="tg-p">가격</th>
-	            <td class="tg-pp"><input type="text" name="price" placeholder="${ product.price }" style="width: 100px;">   원</td>
+	            <td class="tg-pp"><input type="text" name="price" value="${ product.price }" style="width: 100px;">   원</td>
 	        </tr>
 	        </tbody>
 	    </table><br><br><br>
+	    <button id="subBtn" style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; height: 40px;">변경하기</button>
 	    </form> 
-	    <button id="subBtn"style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; height: 40px;">등록하기</button>
 	   </div>  
 	 </div>
 	 
+	<script>
+		let value = '${ product.storageMethod }';
+		let val = '${ product.orderableStatus }'
+		
+		$('#method').find('option').map(function(){
+			if($(this).val() == value ) {
+				$('#method option').attr('selected',true);
+			}
+		});
+		
+		if($('#status').val() == val){
+			$('#status option').attr('selected',true);
+		} else {
+			$('#status option').attr('selected',true);
+		}
+		
+		$('#subBtn').click(function(){
+			
+			if($('input[name=sdName]').val() == '' &&  )
+			
+		});
+		
+	</script>	 
 	<!-- footer -->
 	 <jsp:include page="../commons/footer.jsp"/>
 	

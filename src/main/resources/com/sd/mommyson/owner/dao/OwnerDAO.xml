@@ -408,7 +408,8 @@
 		  default,
 		  #{ product.categoryCode },
 		  #{ product.storageMethod },
-		  #{ product.detail }
+		  #{ product.detail },
+		  null
 	    )
 	    <foreach collection="tagList" item="item">
 	    INTO PRODUCT_TAG_TBL 
@@ -729,6 +730,7 @@
 		     , EXPIRY_DATE
 		     , CATEGORY_CODE
 		     , SD_DETAIL
+		     , STORAGE_METHOD
 		  FROM PRODUCT_TBL 
 		 WHERE SD_CODE = #{ sdCode }
 	</select>
