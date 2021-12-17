@@ -66,7 +66,7 @@
           <br><br><br>
           <button type="button" id="couponBtn" class="btn btn-primary" data-toggle="modal" 
           data-target="#staticBackdrop" data-memCode ="${ review.memCode }" >쿠폰 주기</button>
-          <button class="couponBtn">삭제</button>
+          <button id="couponBtn2">삭제</button>
         	</form>
         </div>
         

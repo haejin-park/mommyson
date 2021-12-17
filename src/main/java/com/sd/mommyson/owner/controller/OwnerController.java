@@ -11,7 +11,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.tribes.membership.Membership;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
@@ -39,8 +40,6 @@ import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.owner.service.OwnerService;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
-
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/owner/*")
@@ -224,7 +223,7 @@ public class OwnerController {
 			try {
 				img.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				modifyInfo.put("fileName", fileName);
 				
@@ -337,7 +336,7 @@ public class OwnerController {
 			try {
 				productImg.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				productInfo.put("fileName", fileName);
 				
@@ -550,7 +549,7 @@ public class OwnerController {
 		System.out.println("productList : " + productList);
 		
 		if(productList != null) {
-			model.addAttribute("pagenation",pagenation);
+			model.addAttribute("pagination",pagenation);
 			model.addAttribute("productList", productList);
 			model.addAttribute("searchMap",searchMap);
 		} else {
@@ -590,6 +589,81 @@ public class OwnerController {
 		}
 
 		return "redirect:productManagement";
+	}
+	
+	/* 오더페이지 완료된 주문 페이지네이션*/
+	@GetMapping("order2")
+	public String orderList2(@ModelAttribute("loginMember") MemberDTO member, @RequestParam( required = false) Map<String, String> param,Model model) {
+		
+		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
+				MemberDTO owner = ownerService.selectOwner(member);
+				String storeName = owner.getCeo().getStore().getStoreName();
+				System.out.println("스토어 이름 : " + storeName);
+				
+		// 현재 페이지 
+				int pageNo = 1;
+				// jsp에서 받아온 값들을 param에 담기면 get으로 꺼내쓴다
+				String currentPage = param.get("currentPage");
+				String searchValue = param.get("searchValue");
+				String mDate = param.get("mDate");
+				String mDate2 = param.get("mDate2");
+				
+				System.out.println("mDate : " + mDate);
+				System.out.println("mDate2 : " + mDate2);
+				
+				// 현재 페이지가 != null && !"" 않으면 pagNo는 현재 페이지로
+				if(currentPage != null && !"".equals(currentPage)) {
+					pageNo = Integer.parseInt(currentPage);
+				}
+				
+				// pageNo가 0보다 작으면 pageNo는 1로
+				if(pageNo <= 0) {
+					pageNo = 1;
+				}
+				
+				System.out.println(currentPage);
+				System.out.println(pageNo);
+				
+				System.out.println("searchValue : " + searchValue);
+				
+				/* searchValue 넘김 */
+				Map<String, Object> searchMap = new HashMap<>();
+				
+				searchMap.put("searchValue", searchValue);
+				searchMap.put("storeName",storeName);
+				searchMap.put("mDate",mDate);
+				searchMap.put("mDate2",mDate2);
+				
+				int totalCount = ownerService.selectTotalCountOrder(searchMap);
+				
+				System.out.println("totalCount : " + totalCount);
+				
+				int limit = 10;
+				int buttonAmount = 10;
+				
+				Pagination pagenation = null;
+				
+				if(searchValue != null && !"".equals(searchValue)) {
+					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
+					searchMap.put("pagenation", pagenation);
+				} else {
+					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+					searchMap.put("pagenation", pagenation);
+				}
+				
+				List<OrderDTO> orderList2 = ownerService.selectOrderList2(searchMap);
+				
+				System.out.println("orderList2 : " + orderList2);
+				
+				if(orderList2 != null) {
+					model.addAttribute("pagenation",pagenation);
+					model.addAttribute("orderList2", orderList2);
+					model.addAttribute("searchMap",searchMap);
+				} else {
+					System.out.println("조회실패");
+				}
+				
+		return "owner/order2";
 	}
 	
 	@GetMapping("order")
@@ -644,6 +718,70 @@ public class OwnerController {
 //		model.addAttribute("orderList2",orderList2);
 		return "owner/order";
 	}
+
+	@PostMapping(value="order",produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String orderList2(@RequestParam(value="orderCode") int orderCode) throws JsonProcessingException {
+		
+		System.out.println("asdasdsadsads : " + orderCode);
+		
+		// 값 가져오기
+		OrderDTO orderOne = ownerService.selectOrder(orderCode);
+		
+		System.out.println(orderOne);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		return mapper.writeValueAsString(orderOne);
+		
+	}
+	
+	@PostMapping("orderUpdateAndDelete")
+	public String orderUpdate(@RequestParam("orderType") int orderType,@RequestParam("orderCode") int orderCode, Model model) {
+
+		System.out.println("코드 잘 넘어오니!! : " + orderCode);
+		
+		OrderDTO orderDTO = new OrderDTO();
+		int code = orderDTO.getCode();
+		
+		System.out.println("코드코드코드 : " + code);
+		
+		if(orderType == 2) {
+			
+			Map<Object,Object> orderMap = new HashMap<>();
+			orderMap.put("orderCode", orderCode);
+			orderMap.put("orderType", orderType);
+			
+ 			int acceptOrder = ownerService.acceptModifyOrder(orderMap);
+ 			
+ 			System.out.println("수락하나요~~~~");
+ 			
+		}
+		
+		if(orderType == 3) {
+			
+			Map<Object,Object> orderMap = new HashMap<>();
+			orderMap.put("orderCode", orderCode);
+			orderMap.put("orderType", orderType);
+			
+			int cancleOrder = ownerService.cancleModifyOrder(orderMap);
+			
+			System.out.println("취소하나요~~~~");
+		}
+		
+		if(orderType == 4) {
+			
+			Map<Object, Object> orderMap = new HashMap<>();
+			orderMap.put("orderCode", orderCode);
+			orderMap.put("orderType", orderType);
+			
+			int completeOrder = ownerService.completeModifyOrder(orderMap);
+			
+			System.out.println("주문 완료하나요우");
+		}
+		
+		return "redirect:order";
+	}
 	
 	/* 오늘의 할인 */
 	@GetMapping("todayDiscount")
@@ -689,46 +827,57 @@ public class OwnerController {
 		List<ProductDTO> productList = ownerService.selectProdouct(memCode);
 		
 		System.out.println("productList : " + productList);
-		
-		if(DCList != null && !DCList.isEmpty()) {
 			
-			model.addAttribute("DCList",DCList);
-			model.addAttribute("pagenation", pagenation);
-			
-		} else {
-			model.addAttribute("fail","등록된 할인 상품이 없습니다.");
-		}
-		
-		if(productList != null && !productList.isEmpty()) {
-			
-			model.addAttribute("productList",productList);
-			
-		} else {
-			model.addAttribute("fail","조회된 결과값이 없습니다.");
-		}
-		
+		model.addAttribute("DCList",DCList);
+		model.addAttribute("pagination", pagenation);
+		model.addAttribute("productList",productList);
 		model.addAttribute("msg", model.getAttribute("msg"));
-		
+		model.addAttribute("message",model.getAttribute("message"));
 	}
 	
 	@PostMapping("todayDiscount")
-	public String dcProduct(@RequestParam(value="sdCode") int[] sdCode, @RequestParam(value="dcRate") int[] dcRate, RedirectAttributes rd) {
+	public String dcProduct(@RequestParam(value="sdCode", required = false) int[] sdCode, @RequestParam(value="dcRate" , required = false) int[] dcRate, @RequestParam(value="deleteCode" , required = false) int[] deleteCode, RedirectAttributes rd) {
 		
 		List<DCProduct> maps = new ArrayList<DCProduct>();
 		
-		for(int i = 0; i < sdCode.length; i++) {
-			maps.add(new DCProduct(dcRate[i],sdCode[i]));
+		if(sdCode != null  && dcRate!= null ) {
+			
+			for(int i = 0; i < sdCode.length; i++) {
+				maps.add(new DCProduct(dcRate[i],sdCode[i]));
+			}
+			
+			int insertDc = ownerService.registDc(maps);
+			
+			int updateDC = ownerService.modifyProduct(maps);
+			
+			System.out.println("insertDc : " + insertDc);
+			System.out.println("updateDC : " + updateDC);
+			
+			
+			if(insertDc > 0 && updateDC > 0) {
+				rd.addFlashAttribute("msg","등록에 성공하였습니다.");
+			} else {
+				rd.addFlashAttribute("msg","등록에 실패하였습니다.");
+			}
+			
 		}
 		
-		int insertDc = ownerService.registDc(maps);
-		
-		int updateDC = ownerService.modifyProduct(maps);
-		
-		
-		if(insertDc > 0 && updateDC > 0) {
-			rd.addFlashAttribute("msg","등록에 성공하였습니다.");
-		} else {
-			rd.addFlashAttribute("msg","등록에 실패하였습니다.");
+		if(deleteCode!= null ) {
+			
+			List<Integer> codeList = new ArrayList<Integer>();
+			for(int i : deleteCode) {
+				System.out.println("asdadsadsa : " + i);
+				codeList.add(i);
+			}
+			
+			int deleteDC = ownerService.removeDc(codeList);
+			int deletePro = ownerService.modifyDc(codeList);
+			
+			if(deleteDC > 0 && deletePro > 0) {
+				rd.addFlashAttribute("message","삭제되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","삭제에 실패하였습니다.");
+			}
 		}
 		
 		return "redirect:todayDiscount";
@@ -779,6 +928,104 @@ public class OwnerController {
 		model.addAttribute("membership",membership);
 		
 		return "owner/ownerPay2";
+	}
+	
+	
+	/* 판매 상품 변경 */
+	@GetMapping("modifyProduct")
+	public void productModify(@RequestParam int sdCode, Model model) {
+		
+		System.out.println("sdCode 들어왔는가 : " + sdCode);
+		
+		ProductDTO product = ownerService.selectPd(sdCode);
+		
+		List<Integer> tag = ownerService.seletTagList(sdCode);
+		
+		List<TagDTO> tagList = ownerService.selectTag();
+		
+		List<HashMap<String, String>> categoryList = memberService.selectCategoryList();
+		
+		model.addAttribute("product",product);
+		model.addAttribute("tagList",tagList);
+		model.addAttribute("tag",tag);
+		model.addAttribute("categoryList",categoryList);
+	}
+	
+	@PostMapping("modifyProduct")
+	public String modifyProduct(@RequestParam(required = false)  MultipartFile productImg, @ModelAttribute ProductDTO product, 
+			HttpServletRequest request, RedirectAttributes rd, Model model, @RequestParam(required = false) String img) {
+		
+		int tag = Integer.parseInt(request.getParameter("tag1"));
+		int tag2 = Integer.parseInt(request.getParameter("tag2"));
+		int tag3 = Integer.parseInt(request.getParameter("tag3"));
+		
+		List<Integer> tagList = new ArrayList<Integer>();
+		tagList.add(tag);
+		tagList.add(tag2);
+		tagList.add(tag3);
+		
+		System.out.println("tagList : " + tagList);
+		System.out.println("product 변경된값 들어왔니? : " + product);
+		
+		System.out.println("파일이름 들어왔니? : " + productImg);
+		
+		Map<String,Object> productInfo = new HashMap<String, Object>();
+		productInfo.put("product",product);
+		productInfo.put("tagList", tagList);
+		
+		if(productImg != null && !productImg.isEmpty()) {
+			
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			
+			String filePath = root + "/uploadFiles";
+			
+			File mkdir = new File(filePath);
+			if(!mkdir.exists()) {
+				mkdir.mkdirs();
+			}
+				String orginFileName = productImg.getOriginalFilename();
+				String ext = orginFileName.substring(orginFileName.indexOf("."));
+				String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+				
+				try {
+					productImg.transferTo(new File(filePath + "/" + savedName));
+					
+					String fileName = "resources/uploadFiles/" + savedName;
+					
+					productInfo.put("fileName", fileName);
+					
+					
+				} catch (IllegalStateException | IOException e) {
+					new File(filePath + "/" + savedName).delete();	
+					e.printStackTrace();
+				}
+				
+				int result = ownerService.updateProduct(productInfo);
+				
+				if(result > 0) {
+					rd.addFlashAttribute("message","상품이 등록되었습니다.");
+				} else {
+					rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
+					new File(filePath + "/" + savedName).delete();
+				}
+			
+		} 
+		
+		if(img != null && img != "") {
+			
+			productInfo.put("fileName",img);
+			
+			int result = ownerService.updateProduct(productInfo);
+			
+			if(result > 0) {
+				rd.addFlashAttribute("message","변경되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","변경에 실패하였습니다.");
+			}
+			
+		}
+		
+		return "redirect:productManagement";
 	}
 	
 	

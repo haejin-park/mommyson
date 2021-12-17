@@ -96,10 +96,10 @@
                             <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">주문관리</a><hr>
                             <ul class="collapse list-unstyled" id="pageSubmenu">
                                 <li>
-                                    <a href="${ pageContext.servletContext.contextPath }/owner/productRegist">주문접수</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/order">주문접수</a>
                                 </li>
                                 <li>
-                                    <a href="#">완료된 주문</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/order2">완료된 주문</a>
                                 </li>
                             
                             </ul>

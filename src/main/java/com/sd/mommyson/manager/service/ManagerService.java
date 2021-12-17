@@ -9,6 +9,7 @@ import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -51,7 +52,7 @@ public interface ManagerService {
 	public MemberDTO selectCeoDetailInfo(Map<String, Object> ceoDetailInfo);
 
 	/* 블랙해지 */
-	public boolean updateTerminateBlack(List<Integer> blackMember);
+	public boolean updateTerminateBlack(Map<String, Object> terminateMap);
 
 	/* 신고된 리뷰 총 갯수 */
 	public int selectReportTotalCount(Map<String, Object> searchMap);
@@ -109,5 +110,29 @@ public interface ManagerService {
 
 	/* 자주묻는질문 총 게시글 갯수 */
 	public int OftenQuestionTotalCount(Map<String, String> searchMap);
+
+	/* 사업자 - 1:1 문의 총 갯수 */
+	public int businessInquiryTotalCount(Map<String, String> searchMap);
+
+	/* 사업자 - 1:1 문의 리스트 */
+	public List<PostDTO> selectBusinessInquiry(Pagination pagination);
+
+	/* 소비자 - 1:1 문의 총 갯수 */
+	public int normalInquiryTotalCount(Map<String, String> searchMap);
+
+	/* 소비자 - 1:1 문의 리스트 */
+	public List<PostDTO> selectNormalInquiry(Pagination pagination);
+
+	/* 배너추가 */
+	public int insertBannerAdd(Map<String, Object> bnMap);
+
+	/* 사용중인 태그 조회 */
+	public List<TagDTO> selectUseTag();
+
+	/* 태그 추가 */
+	public int insertTagAdd(String tag);
+
+	/* 태그 삭제 */
+	public int deleteTag(int tagNo);
 
 }

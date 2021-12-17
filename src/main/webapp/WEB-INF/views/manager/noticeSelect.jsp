@@ -132,6 +132,10 @@
 	<jsp:include page="../commons/footer.jsp" />
 
 	<script>
+	
+	    $("#homeSubmenu2").addClass("show");
+        $("#homeSubmenu2 > li:first-child > a").attr("style","color: #F89E91 !important");
+        
    	    $("#chk_all").click(function(){
    	    	
 		   	 let chk = $(this).is(":checked");

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,44 +21,25 @@
         
         <div class="board_container">
             <h2>태그 설정</h2>
-            <form action="">
+            <!-- <form action=""> -->
                 <div class="tag_container">
                     <div class="unused_tag">
                         <strong class="tag_title">미사용 태그</strong>
                         <button type="button" data-toggle="modal" data-target="#exampleModal">추가</button>
                         <ul class="df_ul tag_list">
-                            <li>
-                                <input type="checkbox" name="" id="cheked">
-                                <label for="cheked"></label>
-                                <span>#바삭</span>
-                                <button>
-                                    <img src="${ pageContext.servletContext.contextPath }/resources/images/delete_btn.png" alt="태그삭제">
-                                </button>
-                            </li>
-                            <li>
-                                <input type="checkbox" name="" id="cheked2">
-                                <label for="cheked2"></label>
-                                <span>#말랑</span>
-                                <button>
-                                    <img src="${ pageContext.servletContext.contextPath }/resources/images/delete_btn.png" alt="태그삭제">
-                                </button>
-                            </li>
-                            <li>
-                                <input type="checkbox" name="" id="cheked3">
-                                <label for="cheked3"></label>
-                                <span>#시원</span>
-                                <button>
-                                    <img src="${ pageContext.servletContext.contextPath }/resources/images/delete_btn.png" alt="태그삭제">
-                                </button>
-                            </li>
-                            <li>
-                                <input type="checkbox" name="" id="cheked4">
-                                <label for="cheked4"></label>
-                                <span>#달달한</span>
-                                <button>
-                                    <img src="${ pageContext.servletContext.contextPath }/resources/images/delete_btn.png" alt="태그삭제">
-                                </button>
-                            </li>
+                        	<c:forEach items="${ requestScope.useTagList }" var="ut" varStatus="vst">
+                        		<c:if test='${ ut.status == "N" }'>
+		                            <li>
+		                                <input type="checkbox" name="" id="cheked<c:out value="${ vst.index }"/>">
+		                                <label for="cheked<c:out value="${ vst.index }"/>"></label>
+		                                <span>#${ ut.tagName }</span>
+		                                <input type="hidden" value="${ ut.tagNo }" class="tagNum">
+		                                <button type="button" onclick="tagDelete(this);">
+		                                    <img src="${ pageContext.servletContext.contextPath }/resources/images/delete_btn.png" alt="태그삭제">
+		                                </button>
+		                            </li>
+	                            </c:if>
+                            </c:forEach>
                         </ul>
                     </div>
                     <div class="choice_use">
@@ -71,21 +53,15 @@
                     <div class="used_tag">
                         <strong class="tag_title">사용 태그</strong>
                         <ul class="df_ul tag_list">
-                            <li>
-                                <input type="checkbox" name="" id="uncheked">
-                                <label for="uncheked"></label>
-                                <span>#오징어</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" name="" id="uncheked2">
-                                <label for="uncheked2"></label>
-                                <span>#생선</span>
-                            </li>
-                            <li>
-                                <input type="checkbox" name="" id="uncheked3">
-                                <label for="uncheked3"></label>
-                                <span>#과자</span>
-                            </li>
+                        	<c:forEach items="${ requestScope.useTagList }" var="ut" varStatus="vst">
+                        		<c:if test='${ ut.status == "Y" }'>
+		                            <li>
+		                                <input type="checkbox" name="" id="uncheked<c:out value="${ vst.index }"/>">
+		                                <label for="uncheked<c:out value="${ vst.index }"/>"></label>
+		                                <span>#${ ut.tagName }</span>
+		                            </li>
+	                            </c:if>
+                            </c:forEach>
                         </ul>
                         <p>최대 15개</p>
                         <div class="hot_keword">
@@ -126,12 +102,14 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <p>키워드 추가</p>
-                                <input type="text" name="" id="">
-                                <div class="btn_box">
-                                    <button style="background-color: #F89E91; margin-right: 5px;">확인</button>
-                                    <button data-dismiss="modal" aria-label="Close" style="background-color: #D7D4D4;">취소</button>
-                                </div>
+                                <p>태그 추가</p>
+                                <form action="${ pageContext.servletContext.contextPath }/manager/tagAdd" method="POST" id="tagAddForm">
+                                	<input type="text" name="tag" id="">
+	                                <div class="btn_box">
+	                                    <input type="submit" style="background-color: #F89E91; margin-right: 5px;" value="확인">
+	                                    <button data-dismiss="modal" aria-label="Close" style="background-color: #D7D4D4;">취소</button>
+	                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -179,36 +157,52 @@
                     </div>
                 </div>
                 <input type="submit" value="저장" class="save_btn">
-            </form>
+            <!-- </form> -->
         </div>
     </div>
-
-    <script>
-        let hotkeyword1 =  $("#txt1").text();
-        $("#num1").val(hotkeyword1);
-
-        let hotkeyword2 =  $("#txt2").text();
-        $("#num2").val(hotkeyword2);
-
-        let hotkeyword3 =  $("#txt3").text();
-        $("#num3").val(hotkeyword1);
-
-        let hotkeyword4 =  $("#txt4").text();
-        $("#num4").val(hotkeyword4);
-
-        let hotkeyword5 =  $("#txt5").text();
-        $("#num5").val(hotkeyword5);
-
-        let hotkeyword6 =  $("#txt6").text();
-        $("#num6").val(hotkeyword6);
-
-    </script>
 
     <jsp:include page="../commons/footer.jsp"></jsp:include>
 
     <script>
          $("#homeSubmenu5").addClass("show");
          $("#homeSubmenu5 > li:nth-child(2) > a").attr("style","color: #F89E91 !important");
+         
+         let hotkeyword1 =  $("#txt1").text();
+         $("#num1").val(hotkeyword1);
+
+         let hotkeyword2 =  $("#txt2").text();
+         $("#num2").val(hotkeyword2);
+
+         let hotkeyword3 =  $("#txt3").text();
+         $("#num3").val(hotkeyword1);
+
+         let hotkeyword4 =  $("#txt4").text();
+         $("#num4").val(hotkeyword4);
+
+         let hotkeyword5 =  $("#txt5").text();
+         $("#num5").val(hotkeyword5);
+
+         let hotkeyword6 =  $("#txt6").text();
+         $("#num6").val(hotkeyword6);
+         
+         function tagDelete(e){
+        	 const tagNo = e.previousElementSibling.value;
+        	 
+        	 $.ajax({
+        		 url : '${ pageContext.servletContext.contextPath }/manager/tagDelete',
+        		 type : 'POST',
+        		 data : {
+        			tagNo : tagNo 
+        		 },
+        		 success : function(data){
+        			 console.log(data);
+        			 location.reload();
+        		 },
+        		 error : function(error){
+        			 console.log(error);
+        		 }
+        	 });
+         }
      </script>
 </body>
 </html>

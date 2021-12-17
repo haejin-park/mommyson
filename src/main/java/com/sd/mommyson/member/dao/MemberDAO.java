@@ -2,11 +2,10 @@ package com.sd.mommyson.member.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
@@ -79,22 +78,13 @@ public interface MemberDAO {
 
 	public List<StoreDTO> selectStoreList();
 
+<<<<<<< HEAD
 	
 
+=======
+	public List<RTNoticeDTO> selectRTNotice(int memCode);
+>>>>>>> c11c3f6b61b5bb2aaaa873249de72b68fc2507d3
 
+	public int deleteNotice(int noticeCode);
 
-
-
-	
-
-	
-
-	
-
-
-
-
-	
-
-	
 }

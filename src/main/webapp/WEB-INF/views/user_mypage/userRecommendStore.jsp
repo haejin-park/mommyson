@@ -42,8 +42,8 @@
               </thead>
               <tbody>
                 <c:forEach var="recommend" items="${ requestScope.storeReconmendList }">
-                <tr>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }+'/'+${ recommend.storeImg }"></td>
+                <tr>          
+                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ recommend.storeImg }"></td>
                   <td style="padding-top: 20px;">
                   <p><strong><c:out value="${ recommend.storeName }"/></strong><br></p>
                   <p style="text-decoration: gray;">
@@ -53,27 +53,73 @@
 
 
                   </td>
+              
                   <td style="padding-top: 40px;">
                     <button class="urBtn">삭제</button>
+                    <input type="hidden" name=storeCode value="${ recommend.memCode }">
                   </td>
                 </tr>
                 </c:forEach>
               </tbody>
             </table>
+              <script>
+              	if(document.getElementsByTagName('td')) {
+              		const $tds = $('td');
+              		for(let i = 0; i < $tds.length; i++) {
+              			$tds[i].onclick = function() {
+							let StoreAddress = this.parentNode.children[2].children[1].value;
+							location.href = "${ pageContext.servletContext.contextPath }/user/storepage?memCode=" + StoreAddress;
+							console.log(StoreAddress);
+              				
+						}
+              		}
+              		
+              		
+              	}
+	             
+              	if(document.getElementsByTagName('button')) {
+              		const $delbutton =$('button');
+        			for(let i = 0; i < $delbutton.length; i++) {
+        				$delbutton[i].onclick = function() {
+        				 	let	earseButton = this.nextSibling.nextSibling.value;
+        				 	console.log(earseButton);
+        				 	$.ajax({
+        				 		url : "${ pageContext.servletContext.contextPath }/userMyPage/delRecommend",
+        				 		method : "post",
+        				 		data :{
+        				 			storeCode : earseButton
+        				 		},
+        				 		success : function(data, textStatus,xhr) {
+        				 			alert(data);
+        				 			location.reload();
+								},
+								error : function(xhr, status, error) {
+									alert(error);
+									location.reload();
+								}
+        				 	});
+        				 	
+        				 	
+        				 }
+        			}
+              	}
+              
+              </script>
 
              <!-- 페이징 -->
-             <nav class="page_box" aria-label="Page navigation example">
-              <ul class="pagination">
+             <ul>
                  <jsp:include page="../commons/userMyPagePagination.jsp"/>
-              </ul>
-              <ul>
+             </ul>
+             <!-- <nav class="page_box" aria-label="Page navigation example">
+              <ul class="pagination">
+              </ul> -->
+               <ul style="display: flex; flex-direction: row; justify-content: center; align-items: baseline;">
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                   <form action="${ pageContext.servletContext.contextPath }/userMyPage/userRecommendStore" method="get">
                   <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 가게 이름을 입력해주세요">
                   <button type="submit" class="searchbutton">검색하기</button>
                   </form>
                </ul>
-            </nav>
             
           </div>
         </div>

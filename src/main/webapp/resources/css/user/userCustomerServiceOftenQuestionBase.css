@@ -44,6 +44,7 @@ table a:hover {
 }
 table a:active { color:#F89E91; }
 
+
 /* 자주하는 질문 */
 .question_category { border: 2px solid #ddd; padding: 23px 0; margin-bottom: 30px; }
 .question_category li { float: left; width: 16.66666%; text-align: center; padding: 18px; border-right: 1px solid #ddd; }

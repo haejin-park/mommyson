@@ -23,15 +23,15 @@
             <form action="">
                 <table class="table board_table">
                     <colgroup>
+                        <col width="5%"/>
+                        <col width="10%"/>
                         <col width=""/>
-                        <col width=""/>
-                        <col width=""/>
-                        <col width=""/>
-                        <col width=""/>
+                        <col width="10%"/>
+                        <col width="10%"/>
                     </colgroup>
                     <thead style="background-color: #EDEDED;">
                         <tr>
-                            <th><input type="checkbox" name="ch1"></th>
+                            <th><input type="checkbox" name="ch1" id="chk_all"></th>
                             <th>번호(순서)</th>
                             <th>제목</th>
                             <th>사용여부</th>
@@ -48,19 +48,10 @@
                                 <button value="" class="cor_btn">수정</button>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row"><input type="checkbox" name="ch1"></th>
-                            <td>2</td>
-                            <td class="tal">달콤한 딸기잼</td>
-                            <td>사용안함</td>
-                            <td>
-                                <button value="" class="cor_btn">수정</button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
                 <input type="submit" value="삭제하기" class="black_btn delete_btn">
-                <a href="bannerAdd.html" class="black_btn write_btn" style="background-color: #F89E91;">추가하기</a>
+                <a href="${ pageContext.servletContext.contextPath }/manager/bannerAdd" class="black_btn write_btn" style="background-color: #F89E91;">추가하기</a>
             </form>
         </div>
     </div>
@@ -70,6 +61,15 @@
     <script>
          $("#homeSubmenu5").addClass("show");
          $("#homeSubmenu5 > li:first-child > a").attr("style","color: #F89E91 !important");
+         
+         $("#chk_all").click(function(){
+     	   	let chk = $(this).is(":checked");
+     	   	if(chk){
+     	   		$(".board_table > tbody > tr th input").prop('checked', true);
+     	   	} else{
+     	   		$(".board_table > tbody > tr th input").prop('checked', false);
+     	   	}
+   	     });
     </script>
 </body>
 </html>

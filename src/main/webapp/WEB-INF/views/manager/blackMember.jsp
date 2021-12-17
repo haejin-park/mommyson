@@ -24,7 +24,7 @@
             <form action="${ pageContext.servletContext.contextPath }/manager/terminateBlack" method="POST">
 	            <div class="top_box">
 	                <p>블랙 회원 조회</p>
-	                <input  value="블랙해지" onclick="terminateFinish(this);">
+	                <input type="button" value="블랙해지" onclick="terminateFinish(this);">
 	            </div>
 	            <table class="table board_table">
 	                <colgroup>
@@ -55,11 +55,7 @@
 	                	<c:forEach items="${ requestScope.blackMemberList }" var="nm">
 			                <tr>
 		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
-		                        <td style="display: none;">
-			                        <c:forEach items="${ nm.user.review }" varStatus="status" var="rv">
-			                        	${ rv.rvCode }<c:if test="${ !status.last }">,</c:if>
-			                        </c:forEach>
-		                        </td>
+		                        <td style="display: none;" id="rvCodeId"><c:forEach items="${ nm.user.review }" varStatus="status" var="rv"><c:forEach items="${ rv.report }" var="rp" varStatus="status2">${ rp.rvCode }<c:if test="${ !status.last || !status2.last }">,</c:if></c:forEach></c:forEach></td>
 		                        <td>${ nm.memId }</td>
 		                        <td>${ nm.nickname }</td>
 		                        <td>${ nm.email }</td>
@@ -184,6 +180,38 @@
          }
          
          function terminateFinish(e){
+        	 
+        	 if($("input:checkbox[name='chkMember']:checked") != null){
+        		 const rvCodes = e.parentElement.parentElement.lastElementChild.lastElementChild.firstElementChild.firstElementChild.nextElementSibling.textContent;
+            	 let chkMember = [];
+         		
+         		 $("input:checkbox[name='chkMember']:checked").each(function(i, ival) {
+         			 chkMember.push($(this).val());
+         			 console.log(chkMember);
+                 });
+         		 
+         		 console.log(rvCodes);
+         		 console.log(chkMember);
+         		 
+         		$.ajax({
+         			url : '${ pageContext.servletContext.contextPath }/manager/terminateBlack',
+         			type : 'POST',
+         			data : {
+         				chkMember : chkMember,
+         				rvCodes : rvCodes
+         			},
+         			success : function(data){
+         				console.log(data);
+         				location.reload();
+         			},
+         			error : function(error){
+         				console.log(error);
+         			}
+         		 });
+         		
+        	 } else {
+        		 alert("체크해주세요.");
+        	 }
         	 
          }
      </script>

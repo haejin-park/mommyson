@@ -55,36 +55,15 @@
                     <col width=""/>
                 </colgroup>
                 <tbody>
+                	<c:forEach var="oftenFqaTop5" items="${ requestScope.oftenFqa }" begin="0" end="4">
+                	<c:set var="i" value="${ i + 1 }" />
                     <tr class="click_qa">
-                        <td class="tal">1. 회원가입은 어떻게 하나요?</td>
+                        <td class="tal"><c:out value="${ i } . ${ oftenFqaTop5.postTitle }"/></td>
                     </tr>
                     <tr class="answer tal">
-                        <td>회원가입은 홈페이지 상단 오른쪽에 회원가입 버튼을 누르고 하시면 됩니다.</td>
+                        <td><c:out value="${ oftenFqaTop5.postContent }"/> </td>
                     </tr>
-                    <tr class="click_qa">
-                        <td class="tal">2.음식을 주문하려면 어떻게 결제해야 하나요?</td>
-                    </tr>
-                    <tr class="answer tal">
-                        <td>카카오페이로 결제하면 됩니다.</td>
-                    </tr>
-                    <tr class="click_qa">
-                      <td class="tal">3.음식을 주문하려면 어떻게 결제해야 하나요?</td>
-                  </tr>
-                  <tr class="answer tal">
-                      <td>카카오페이로 결제하면 됩니다.</td>
-                  </tr>
-                  <tr class="click_qa">
-                    <td class="tal">4.음식을 주문하려면 어떻게 결제해야 하나요?</td>
-                  </tr>
-                  <tr class="answer tal">
-                      <td>카카오페이로 결제하면 됩니다.</td>
-                  </tr>
-                  <tr class="click_qa">
-                    <td class="tal">5.음식을 주문하려면 어떻게 결제해야 하나요?</td>
-                  </tr>
-                  <tr class="answer tal">
-                      <td>카카오페이로 결제하면 됩니다.</td>
-                  </tr>
+                	</c:forEach>
                 </tbody>
             </table>
 
@@ -110,16 +89,48 @@
             </div>
             <div class="row" id="notice">
               <ul>
-              <c:forEach var = "importantNotice" items="${ requestScope.importantNotice }">
-                <li><c:out value="${ importantNotice.postTitle }"/> </li>
+              <c:forEach var = "importantNotice" items="${ requestScope.importantNotice }" begin="0" end="1">
+                <br><li class="importantNotice2"><b><중요></b> <c:out value="${ importantNotice.postTitle }"/><input type="hidden" value="${ importantNotice.postNo }"></li>
               </c:forEach>
-              <c:forEach var = "noticeBoard" items="${ requestScope.noticeList }">
-              	<li><c:out value="${ importantNotice.postTitle }"/></li>
+              <c:forEach var = "noticeBoard" items="${ requestScope.noticeMainCon }" begin="0" end="2">
+              	<br><li class="recentNotice"><c:out value="${ noticeBoard.postTitle }"/><input type="hidden" value="${ noticeBoard.postNo }"></li>
               </c:forEach>
               </ul>
             </div>
         </div>
+       <script>
+       $('.searchbutton').click(function() {
+    	   
+    	   location.href = "${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeSelect"
+    			
+		});
        
+       if(document.getElementsByClassName('importantNotice2')) {
+    	   const $importantlis = $('.importantNotice2');
+    	   for(let i = 0; i <  $importantlis.length; i++) {
+    		   $importantlis[i].onclick = function() {
+				
+	    		  let noticeAddress = this.lastChild.value;
+	    		  location.href = "${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeDetail?postNo=" + noticeAddress;
+	    		  console.log(noticeAddress);
+			   }
+    		   
+    	   }
+       }
+       
+       if(document.getElementsByClassName('.recentNotice')) {
+    	   const $recentlis = $('.recentNotice');
+    	   for(let i = 0; i <  $recentlis.length; i++) {
+    		   $recentlis[i].onclick = function() {
+				
+	    		  let noticeAddress = this.lastChild.value;
+	    		  location.href = "${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeDetail?postNo=" + noticeAddress;
+	    		  console.log(noticeAddress);
+			   }
+    		   
+    	   }
+       }
+       </script>
         
          
           </div>

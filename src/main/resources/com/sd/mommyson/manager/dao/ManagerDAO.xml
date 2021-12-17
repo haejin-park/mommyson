@@ -84,6 +84,19 @@
 		<result property="repType" column="REP_TYPE"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
+		<id property="tagNo" column="TAG_NO"/>
+		<result property="tagName" column="TAG"/>
+		<result property="status" column="STATUS"/>
+		<association property="hotKeyword" resultMap="hotResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.manager.dto.HotKeywordDTO" id="hotResultMap">
+		<id property="hotNo" column="HOT_NO"/>
+		<result property="hotContent" column="HOT_CONTENT"/>
+		<result property="tagNo" column="TAG_NO"/>
+	</resultMap>
+	
 	<select id="selectNormalMemberTotalCount" resultType="_int">
 	    SELECT
    	  	       COUNT(*)
@@ -129,7 +142,6 @@
 		        C.MEM_CODE
 			  , C.EMAIL
 			  , C.ADDRESS
-			  , C.POST_CODE
 			  , C.D_ADDRESS
 			  , C.PHONE
 			  , C.MEM_TYPE
@@ -138,24 +150,17 @@
 			  , C.MEM_ID
 			  , C.ENROLL_DATE
 			  , C.IS_DELETED
-			  , C.NAME
 			  , C.REP_COUNT
 			  , C.ACCOUNT
 			  , C.STORE_NO
 			  , C.CEO_NAME
 			  , C.STORE_NAME
-			  , C.STORE_IMG
-			  , C.STORE_INFO
-			  , C.GRADE
-			  , C.DEL_COST
-			  , C.WORK_TIME
 			  , C.RV_CODE
 		   FROM (SELECT 
 		                ROWNUM RNUM
 					  , B.MEM_CODE
 					  , B.EMAIL
 					  , B.ADDRESS
-					  , B.POST_CODE
 					  , B.D_ADDRESS
 					  , B.PHONE
 					  , B.MEM_TYPE
@@ -164,23 +169,16 @@
 					  , B.MEM_ID
 					  , B.ENROLL_DATE
 					  , B.IS_DELETED
-					  , B.NAME
 					  , B.REP_COUNT
 					  , B.ACCOUNT
 					  , B.STORE_NO
 					  , B.CEO_NAME
 					  , B.STORE_NAME
-					  , B.STORE_IMG
-					  , B.STORE_INFO
-					  , B.GRADE
-					  , B.DEL_COST
-					  , B.WORK_TIME
 					  , B.RV_CODE
 				   FROM (SELECT 
 							   A.MEM_CODE
 							 , A.EMAIL
 							 , A.ADDRESS
-							 , A.POST_CODE
 							 , A.D_ADDRESS
 							 , A.PHONE
 							 , A.MEM_TYPE
@@ -189,17 +187,11 @@
 							 , A.MEM_ID
 							 , A.ENROLL_DATE
 							 , A.IS_DELETED
-							 , U.NAME
 							 , U.REP_COUNT
 						     , F.ACCOUNT
 							 , F.STORE_NO
 							 , F.CEO_NAME
 							 , D.STORE_NAME
-							 , D.STORE_IMG
-							 , D.STORE_INFO
-							 , D.GRADE
-							 , D.DEL_COST
-							 , D.WORK_TIME
 							 , R.RV_CODE
 						  FROM MEMBER_TBL A
 						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
@@ -238,6 +230,13 @@
 						  	<if test='searchCondition == "black"'>
 						  		A.IS_DELETED = 'B' AND
 						  		A.MEM_TYPE = 'user'
+						  		AND
+						  		R.RV_CODE IN
+						  		(
+						  		SELECT
+						  		       RV_CODE
+						  		  FROM REPORT_TBL
+						  		)
 						  	</if>
 						  </where>
 						 ORDER BY A.MEM_CODE DESC)B
@@ -312,40 +311,41 @@
 	   	 </where>
 	</update>
 	
-	<update id="updateTerminateBlack" parameterType="list">
+	<update id="updateTerminateBlack" parameterType="hashmap">
 		UPDATE
 		       MEMBER_TBL A
 		   SET A.IS_DELETED = 'N'
 		 <where>
 	     	A.MEM_CODE IN
-	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     	<foreach collection="terminateBlackList" item="item" index="index" separator="," open="(" close=")">
 	     		#{ item }
 	     	</foreach>
 	   	 </where>
 	</update>
 	
-	<update id="updateBlackCountReset" parameterType="list">
+	<update id="updateBlackCountReset" parameterType="hashmap">
 		UPDATE
 		       USER_TBL A
 		   SET A.REP_COUNT = 0
 		<where>
 	     	A.MEM_CODE IN
-     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+     		<foreach collection="terminateBlackList" item="item" index="index" separator="," open="(" close=")">
 	     		#{ item }
 	     	</foreach>
  	 	</where>
 	</update>
 	
-	<delete id="deleteRealReview" parameterType="list">
-	    DELETE
-	      FROM REVIEW_TBL A
+	<update id="updateRealReview" parameterType="hashmap">
+	    UPDATE
+	           REPORT_TBL A
+	       SET A.STATUS = 'B'
     	<where>
-	     	A.MEM_CODE IN
-     		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     	A.RV_CODE IN
+	     	<foreach collection="terminateRvCodeList" item="item" index="index" separator="," open="(" close=")">
 	     		#{ item }
 	     	</foreach>
  		</where> 
-	</delete>
+	</update>
 	
 	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
 	    SELECT
@@ -382,9 +382,12 @@
 	      FROM REPORT_TBL A
 	      LEFT JOIN REVIEW_TBL B ON (A.RV_CODE = B.RV_CODE)
 	     <where>
+	     	<if test="all">
+	     		A.STATUS IN('W','Y','N')
+	     	</if>
 	     	<if test="searchValue != null and all">
-	     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
-	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+	     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+	     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
 	     	</if>
 	     	<if test="condition1">
 	     		A.STATUS = 'W'
@@ -445,9 +448,12 @@
 					      LEFT JOIN REPORT_TYPE_TBL C ON (A.REP_TYPE_CODE = C.REP_TYPE_CODE)
 					      LEFT JOIN USER_TBL D ON (B.MEM_CODE = D.MEM_CODE)
 					     <where>
+					     	<if test='searchCondition == "all"'>
+					     		A.STATUS IN('W','Y','N') 
+					     	</if>
 					     	<if test='searchValue != null and searchCondition == "all"'>
-					     		B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
-					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%'
+					     		AND (B.RV_CONTENT LIKE '%' || #{ searchValue } || '%' OR
+					     		B.MEM_ID LIKE '%' || #{ searchValue } || '%')
 					     	</if>
 					     	<if test='searchCondition == "W"'>
 					     		A.STATUS = 'W'
@@ -543,6 +549,59 @@
 	     WHERE A.RV_CODE = #{ repRvCode }
 	</update>
 	
+	<insert id="insertBannerAdd">
+	    INSERT
+	      INTO BANER_TBL
+	    (
+	      BANER_CODE
+	    , BANER_NAME
+	    , BANER_IMG
+	    , STATUS
+	    , BANER_ORDER
+	    )
+	    VALUES
+	    (
+	      SEQ_BANNER.NEXTVAL
+	    , #{ bnName }
+	    , 'test'
+	    , #{ bnStatus }
+	    , #{ bnOrder }
+	    )
+	</insert>
+	
+	<!-- 사용태그조회 -->
+	<select id="selectUseTag" resultMap="tagResultMap">
+	    SELECT
+	           A.TAG_NO
+	         , A.TAG
+	         , A.STATUS
+	      FROM TAGS_TBL A
+	</select>
+	
+	<!-- 태그 추가 -->
+	<insert id="insertTagAdd">
+	    INSERT
+	      INTO TAGS_TBL
+	    (
+	      TAG_NO
+	    , TAG
+	    , STATUS
+	    )
+	    VALUES
+	    (
+	      SEQ_TAGS.NEXTVAL
+	    , #{ tag }
+	    , 'N'
+	    )
+	</insert>
+	
+	<!-- 태그 삭제 -->
+	<delete id="deleteTag">
+	    DELETE
+	      FROM TAGS_TBL
+	     WHERE TAG_NO = #{ tagNo }
+	</delete>
+	
 	<select id="selectAuth" resultMap="authResultMap">
 		SELECT
 			   A.CODE
@@ -594,6 +653,8 @@
    	  <result property="queNo" column="QUE_NO"/>
    	  <result property="status" column="STATUS"/>
    	  <result property="viewCnt" column="VIEW_CNT"/>
+   	  <result property="ansContent" column="ANS_CONTENT"/>
+   	  <association property="member" resultMap="memberResultMap"/>
    </resultMap>
 
   
@@ -642,6 +703,7 @@
 	   ,C.QUE_NO
 	   ,C.STATUS
 	   ,C.VIEW_CNT
+	   ,C.ANS_CONTENT
 	   FROM (SELECT
 	            ROWNUM RNUM
 	           ,B.POST_NO
@@ -654,6 +716,7 @@
 	           ,B.QUE_NO
 	           ,B.STATUS
 	           ,B.VIEW_CNT
+	           ,B.ANS_CONTENT
 	         FROM (SELECT
 	                    A.POST_NO
 	                   ,A.BOARD_CODE
@@ -665,6 +728,7 @@
 	                   ,A.QUE_NO
 	                   ,A.STATUS
 	                   ,A.VIEW_CNT
+	                   ,A.ANS_CONTENT
 	                   FROM POST_TBL A
 	                  <where>
 	                  A.STATUS = 'N'
@@ -704,7 +768,7 @@
  	INSERT ALL
  		INTO POST_TBL
  	VALUES
- 	(SEQ_POST.nextval, #{ boardCode }, #{ postTitle }, 2, #{ postContent }, SYSDATE, 'N', NULL, 'N', 0)
+ 	(SEQ_POST.nextval, #{ boardCode }, #{ postTitle }, 2, #{ postContent }, SYSDATE, 'N', NULL, 'N', 0, NULL)
  	SELECT * FROM DUAL
    </insert>
 
@@ -820,6 +884,7 @@
 	   ,C.QUE_NO
 	   ,C.STATUS
 	   ,C.VIEW_CNT
+	   ,C.ANS_CONTENT
 	   FROM (SELECT
 	            ROWNUM RNUM
 	           ,B.POST_NO
@@ -832,6 +897,7 @@
 	           ,B.QUE_NO
 	           ,B.STATUS
 	           ,B.VIEW_CNT
+	           ,B.ANS_CONTENT
 	         FROM (SELECT
 	                    A.POST_NO
 	                   ,A.BOARD_CODE
@@ -843,6 +909,7 @@
 	                   ,A.QUE_NO
 	                   ,A.STATUS
 	                   ,A.VIEW_CNT
+	                   ,A.ANS_CONTENT
 	                   FROM POST_TBL A
 	                  <where>
 	                  A.STATUS = 'N'
@@ -879,6 +946,205 @@
 	  WHERE C.RNUM >= #{ startRow } 
        ]]>
    </select>
+
+   <!-- 사업자 - 1:1문의 갯수 -->
+   <select id="businessInquiryTotalCount" resultType="int">
+     SELECT
+   	  	  COUNT(*)
+   	   FROM POST_TBL A
+   	   JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+   	   <where>
+   	    A.STATUS = 'N'
+   	    <if test='searchValue != null'>
+   	      AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	    </if>
+   	    <if test='searchCondition == "N"'>
+   	      AND A.ANS_STATUS = 'W'
+   	    </if>
+   	    <if test='searchCondition == "Y"'>
+   	      AND A.ANS_STATUS = 'Y'
+   	    </if>
+   	    <if test="searchCondition == null || searchCondition == ''">
+   	      AND A.ANS_STATUS IN ('W','Y')
+   	    </if>
+   	    AND B.MEM_TYPE = 'ceo'
+   	    AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	   </where>
+   </select>
+   
+   <!-- 사업자 - 1:1문의 리스트 -->
+   <select id="selectBusinessInquiry" resultMap="PostResultMap">
+   	SELECT
+	    D.RNUM
+       ,D.POST_NO
+       ,D.BOARD_CODE
+       ,D.POST_TITLE
+       ,D.MEM_CODE
+       ,D.POST_CONTENT
+       ,D.POST_DATE
+       ,D.ANS_STATUS
+       ,D.QUE_NO
+       ,D.STATUS
+       ,D.VIEW_CNT
+       ,D.ANS_CONTENT
+       ,D.MEM_TYPE
+       ,D.MEM_ID
+	  FROM (SELECT
+				ROWNUM RNUM
+		       ,C.POST_NO
+		       ,C.BOARD_CODE
+		       ,C.POST_TITLE
+		       ,C.MEM_CODE
+		       ,C.POST_CONTENT
+		       ,C.POST_DATE
+		       ,C.ANS_STATUS
+		       ,C.QUE_NO
+		       ,C.STATUS
+		       ,C.VIEW_CNT
+		       ,C.ANS_CONTENT
+		       ,C.MEM_TYPE 
+		       ,C.MEM_ID
+		       FROM (SELECT
+				        A.POST_NO
+				       ,A.BOARD_CODE
+				       ,A.POST_TITLE
+				       ,A.MEM_CODE
+				       ,A.POST_CONTENT
+				       ,A.POST_DATE
+				       ,A.ANS_STATUS
+				       ,A.QUE_NO
+				       ,A.STATUS
+				       ,A.VIEW_CNT
+				       ,A.ANS_CONTENT
+				       ,B.MEM_TYPE 
+				       ,B.MEM_ID
+				       FROM POST_TBL A
+				       JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE) 
+				      <where>
+				        A.STATUS = 'N'
+				      <if test='searchValue != null'>
+			   	        AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	      </if>
+			   	      <if test='searchCondition == "N"'>
+			   	        AND A.ANS_STATUS = 'W'
+			   	      </if>
+			   	      <if test='searchCondition == "Y"'>
+			   	        AND A.ANS_STATUS = 'Y'
+			   	      </if>
+			   	      <if test='searchCondition == null || searchCondition == ""'>
+			   	        AND A.ANS_STATUS IN('W','Y')
+			   	      </if>
+				        AND B.MEM_TYPE = 'ceo'
+				        AND A.BOARD_CODE IN('6','7','8','9','10','11')
+				      </where>
+				      ORDER BY A.POST_DATE ASC)C
+		      <![CDATA[        
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>
+		      )D
+	      <![CDATA[
+		  WHERE D.RNUM >= #{ startRow } 
+    	  ]]>
+   </select>	
+
+   <!-- 소비자 - 1:1문의 갯수 -->
+   <select id="normalInquiryTotalCount" resultType="int">
+     SELECT
+   	  	  COUNT(*)
+   	   FROM POST_TBL A
+   	   JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+   	   <where>
+   	    A.STATUS = 'N'
+   	    <if test='searchValue != null'>
+   	      AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	    </if>
+   	    <if test='searchCondition == "N"'>
+   	      AND A.ANS_STATUS = 'W'
+   	    </if>
+   	    <if test='searchCondition == "Y"'>
+   	      AND A.ANS_STATUS = 'Y'
+   	    </if>
+   	    <if test="searchCondition == null || searchCondition == ''">
+   	      AND A.ANS_STATUS IN ('W','Y')
+   	    </if>
+   	      AND B.MEM_TYPE = 'user'
+   	      AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	   </where>
+   </select>
+
+   <select id="selectNormalInquiry" resultMap="PostResultMap">
+   	SELECT
+	    D.RNUM
+       ,D.POST_NO
+       ,D.BOARD_CODE
+       ,D.POST_TITLE
+       ,D.MEM_CODE
+       ,D.POST_CONTENT
+       ,D.POST_DATE
+       ,D.ANS_STATUS
+       ,D.QUE_NO
+       ,D.STATUS
+       ,D.VIEW_CNT
+       ,D.ANS_CONTENT
+       ,D.MEM_TYPE
+       ,D.MEM_ID
+	  FROM (SELECT
+				ROWNUM RNUM
+		       ,C.POST_NO
+		       ,C.BOARD_CODE
+		       ,C.POST_TITLE
+		       ,C.MEM_CODE
+		       ,C.POST_CONTENT
+		       ,C.POST_DATE
+		       ,C.ANS_STATUS
+		       ,C.QUE_NO
+		       ,C.STATUS
+		       ,C.VIEW_CNT
+		       ,C.ANS_CONTENT
+		       ,C.MEM_TYPE
+		       ,C.MEM_ID 
+		       FROM (SELECT
+				        A.POST_NO
+				       ,A.BOARD_CODE
+				       ,A.POST_TITLE
+				       ,A.MEM_CODE
+				       ,A.POST_CONTENT
+				       ,A.POST_DATE
+				       ,A.ANS_STATUS
+				       ,A.QUE_NO
+				       ,A.STATUS
+				       ,A.VIEW_CNT
+				       ,A.ANS_CONTENT
+				       ,B.MEM_TYPE 
+				       ,B.MEM_ID
+				       FROM POST_TBL A
+				       JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+				      <where>
+				        A.STATUS = 'N'
+				      <if test='searchValue != null'>
+			   	        AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	      </if>
+			   	      <if test='searchCondition == "N"'>
+			   	        AND A.ANS_STATUS = 'W'
+			   	      </if>
+			   	      <if test='searchCondition == "Y"'>
+			   	        AND A.ANS_STATUS = 'Y'
+			   	      </if>
+			   	      <if test='searchCondition == null || searchCondition == ""'>
+			   	        AND A.ANS_STATUS IN('W','Y')
+			   	      </if>
+				        AND B.MEM_TYPE = 'user'
+				        AND A.BOARD_CODE IN('6','7','8','9','10','11')
+				      </where>
+				      ORDER BY A.POST_DATE ASC)C
+		      <![CDATA[        
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>
+		      )D
+	      <![CDATA[
+		  WHERE D.RNUM >= #{ startRow } 
+    	  ]]>
+   </select>		
 	
    <select id="idDupCheck" parameterType="string" resultType="int">
        SELECT 

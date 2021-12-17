@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
 </head>
 <body>
    <nav class="page_box" aria-label="Page navigation example">
@@ -41,7 +41,7 @@
     
     <script>
    
-        let link = "";
+        var link = "";
         link = document.location.href;
         if(!(document.location.href).includes("?memCode") && !(document.location.href).includes("?type")) {
             link = document.location.pathname;
@@ -51,7 +51,7 @@
         	link = document.location.pathname + '?type=${ requestScope.realType }';
         }
 
-      let searchText = "";
+      var searchText = "";
       
       if(${ !empty requestScope.pagination.searchCondition? true : false }) {
          searchText += "&searchCondition=${ requestScope.pagination.searchCondition }";

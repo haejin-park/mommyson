@@ -22,6 +22,7 @@
 				<c:if test="${ requestScope.pagination.pageNo eq page }">
 					<li class="page-item"><a class="page-link-num pageNo" href="#"><c:out value="${ page }"/></a></li>
 				</c:if>
+			
 			<!-- 현재 페이지 -->
 				<c:if test="${ requestScope.pagination.pageNo ne page }">
 					<li class="page-item"><a class="page-link-num pageNo" href="#"><c:out value="${ page }"/></a></li>

@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
@@ -59,7 +61,20 @@ public class UserController {
 	 * @category 고객센터 메인
 	 */
 	@GetMapping("ucc")
-	public String userCustomerServiceMain() {
+	public String userCustomerServiceMain(HttpSession session, Model mv, @RequestParam(value = "fqabatch", required = false) String pr) {
+		
+		List<PostDTO> noticeMainCon = userService.selectRecentNotice();
+		System.out.println("고객 메인 공지사항" + noticeMainCon);
+		
+		List<PostDTO> importantNotice = userService.selectImportantNotice();
+		System.out.println("고객 메인 중요 공지사항" + importantNotice);
+		
+		List<PostDTO> oftenFqa = userService.selectOftenFqa();
+		System.out.println("고객센터 자주묻는 질문" + oftenFqa);
+		
+		mv.addAttribute("noticeMainCon", noticeMainCon);
+		mv.addAttribute("importantNotice", importantNotice);
+		mv.addAttribute("oftenFqa", oftenFqa);
 		
 		return "user/userCustomerServiceMain";
 	}
@@ -171,7 +186,7 @@ public class UserController {
 		
 		/*중요공지 출력*/
 		
-		List<ProductDTO> importantNotice = userService.selectImportantNotice();
+		List<PostDTO> importantNotice = userService.selectImportantNotice();
 		System.out.println("중요 공지 사항 리스트 : " + importantNotice);
 		
 		mv.addAttribute("noticeList", noticeList);
@@ -189,9 +204,10 @@ public class UserController {
 		
 		System.out.println("공지사항 내용 출력 콘트롤러 진입");
 		int postNo = Integer.parseInt(postInfo);
+		System.out.println("PostNo : " + postNo);
 		
 		/*조회수 수정*/
-		int result = userService.updateincrementNoticeBoardCount(postNo);
+		int result = userService.updateIncrementBoardCount(postNo);
 		if( result > 0) {
 			System.out.println("조회수 증가 성공");
 		} else {
@@ -1053,7 +1069,9 @@ public class UserController {
 		
 		Map<String, String> store = userService.selectStoreByMemCode(memCode);
 		List<ProductDTO> products = userService.selectProducts(memCode);
-		
+		List<String> jjimList = userService.selectJJIMList(memCode);
+		System.out.println(store);
+		model.addAttribute("jjimList", jjimList);
 		/* ==== 현재 페이지 처리 ==== */
 		int pageNo = 1;
 		
@@ -1213,11 +1231,39 @@ public class UserController {
 		return "user/cart";
 	}
 	
-	@PostMapping("jjimplus")
-	public int jjimplus() {
+	/**@author ShinHyungi
+	 * @param storeCode
+	 * @param memCode
+	 * @return
+	 */
+	@PostMapping(value = "jjimplus", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String jjimplus(@RequestParam("storeCode") int storeCode, @RequestParam("memCode") int memCode) {
 		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("storeCode",storeCode);
+		map.put("memCode",memCode);
 		
-//		int result = userService.insertJJIMplus();
-		return 1;
+		Integer result = userService.insertJJIMplus(map);
+		
+		return result > 0? "삭제 완료" : "삭제 실패";
+	}
+	
+	/**@author ShinHyungi
+	 * @param storeCode
+	 * @param memCode
+	 * @return
+	 */
+	@PostMapping(value = "jjimdelete", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String jjimdelete(@RequestParam("storeCode") int storeCode, @RequestParam("memCode") int memCode) {
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("storeCode",storeCode);
+		map.put("memCode",memCode);
+		
+		Integer result = userService.deleteJJIMplus(map);
+		
+		return result > 0? "삭제 완료" : "삭제 실패";
 	}
 }

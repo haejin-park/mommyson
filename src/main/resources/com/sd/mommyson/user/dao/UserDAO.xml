@@ -119,6 +119,43 @@
     
     </select>
     
+    <!--고객센터 메인 공지사항 -->
+    <select id="selectRecentNotice" resultMap="postResultMap">
+	    SELECT
+				   A.POST_NO
+				 , A.BOARD_CODE
+				 , A.POST_TITLE
+				 , A.MEM_CODE
+				 , A.POST_CONTENT
+				 , A.POST_DATE
+				 , A.ANS_STATUS
+				 , A.QUE_NO
+				 , A.STATUS
+				 , A.VIEW_CNT
+			 FROM POST_TBL A
+			 JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+			WHERE B.TYPE = 'notice'	 
+			 ORDER BY A.POST_NO DESC	
+    </select>
+    <!-- 고객센터 메인 자주묻는 질문 FQA -->
+    <select id="selectOftenFqa" resultMap="postResultMap">
+    	SELECT
+    	       A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS	
+		 FROM POST_TBL A
+		 JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+		WHERE B.TYPE = 'fqa'
+		<!-- 뷰카운트 만들어야함 -->	 
+    </select>
+    
+    
     <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
     	<id property="sdCode" column="SD_CODE"/>
     	<result property="sdName" column="SD_NAME"/>
@@ -230,8 +267,8 @@
 		WHERE A.POST_NO = #{ postNo }			 
 	</select>
 	
-	<!--공지사항 조회수  증가 -->
-	<update id="updateincrementNoticeBoardCount">
+	<!--공지사항 및 자주묻는 질문 조회수  증가 -->
+	<update id="updateIncrementBoardCount" parameterType="_int">
         UPDATE 
                POST_TBL A
            SET A.VIEW_CNT = (SELECT B.VIEW_CNT
@@ -257,6 +294,7 @@
 	  FROM POST_TBL A
 	  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
 	 WHERE A.STATUS LIKE 'U'
+	   AND B.TYPE ='notice' 
 	</select>
 	
 	<!-- 자주하는 질문 -->
@@ -429,6 +467,7 @@
 	                    <where>
 	                    	M.IS_DELETED = 'N'
 	                    	AND A.ORDERABLE_STATUS = 'Y'
+	                    	AND A.IS_DELETED = 'N'
 				         	<if test='searchValue != null'>
 				         	AND A.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 				         	</if>
@@ -458,7 +497,7 @@
     		 , B.STORE_IMG
     		 , B.STORE_NAME
     		 , B.GRADE
-    		 , (SELECT COUNT(*) FROM JJIM_TBL C WHERE C.MEM_CODE = #{ memCode }) AS JJIM
+    		 , (SELECT COUNT(*) FROM JJIM_TBL C WHERE C.CEO_CODE = #{ memCode }) AS JJIM
     	  FROM MEMBER_TBL A
     	  LEFT JOIN STORE_TBL B ON(A.MEM_CODE = B.MEM_CODE)
     	 WHERE A.MEM_CODE = #{ memCode }
@@ -630,4 +669,31 @@
 			</if>
          </where>
     </select>
+    
+    <insert id="insertJJIMplus">
+    	INSERT
+    	INTO JJIM_TBL
+    	(
+    	  MEM_CODE
+    	, CEO_CODE
+    	)
+    	VALUES
+    	(
+    	  #{ memCode }
+    	, #{ storeCode }
+    	)
+    </insert>
+    
+    <select id="selectJJIMList" resultType="string">
+    	SELECT
+    		   A.MEM_CODE
+    	  FROM JJIM_TBL A
+    	 WHERE A.CEO_CODE = #{ memCode }
+    </select>
+    
+    <delete id="deleteJJIMplus">
+    	DELETE FROM JJIM_TBL
+    	WHERE MEM_CODE = #{ memCode }
+    	  AND CEO_CODE = #{ storeCode }
+    </delete>
     </mapper>

@@ -21,10 +21,10 @@
         <p style="float: right; font-size: 20px; font-weight: 700; margin-top: 30px; margin-right: 30px;">결제완료</p.>
         <p style="float: right; font-size: 20px; font-weight: 700; color: #346aff; margin-top: 30px;">이용권 결제></p>
         <br><br><br><br><br><br>
-        <hr>
+        <hr style="width: 1550px;">
     </div>
     
-    <div style="margin: 80px 0 50px 850px;">
+    <div class="pay">
     <h2>구매자 정보</h2>
     </div>
     <table class="tg" style="text-align: center;">
@@ -56,7 +56,7 @@
         </tbody>
     </table>
     <br><br>
-    <div style="margin: 80px 0 50px 850px;" >
+    <div class="pay">
         <h2>결제 정보</h2>
     </div>
         <table class="tg" style="text-align: center;">
@@ -76,7 +76,7 @@
             </tbody>
         </table>
     <br><br>
-    <div style="margin: 80px 0 50px 750px;">
+    <div class="pay">
         <p style="margin-left: 20px; font-weight: 700;">구매조건 확인 및 결제대행 서비스 약관 동의 &nbsp;&nbsp;<button style="border: none; background: 0;" id="btn1">보기</button></p>
         <div class="terms" id="div1">
             <span>
@@ -161,7 +161,7 @@
                 회사와 이용자간에 발생한 분쟁에 관한 관할은 민사소송법에서 정한 바에 따릅니다.</span>
                 
         </div>
-        <p style="margin: 50px 0 0 70px; font-weight: 700;">개인정보 수집 및 이용 동의 &nbsp;&nbsp;<button style="border: none; background: 0;" id="btn2">보기</button></p>
+        <p  class="pay" style="margin: 50px 0 0 70px; font-weight: 700;">개인정보 수집 및 이용 동의 &nbsp;&nbsp;<button style="border: none; background: 0;" id="btn2">보기</button></p>
         <div class="terms" id="div2">
             <span>
                 [개인정보 수집 및 이용 동의]

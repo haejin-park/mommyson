@@ -17,6 +17,7 @@ import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 
 import com.sd.mommyson.member.dto.UserDTO;
+import com.sd.mommyson.owner.dto.TagDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -147,14 +148,14 @@ public class ManagerServiceImpl implements ManagerService {
 	 * @author leeseungwoo
 	 */
 	@Override
-	public boolean updateTerminateBlack(List<Integer> blackMember) {
+	public boolean updateTerminateBlack(Map<String, Object> terminateMap) {
 		
 		/* 회원 상태값 변경 */
-		int result = managerDAO.updateTerminateBlack(blackMember);
+		int result = managerDAO.updateTerminateBlack(terminateMap);
 		/* 경고 초기화 */
-		int result2 = managerDAO.updateBlackCountReset(blackMember);
+		int result2 = managerDAO.updateBlackCountReset(terminateMap);
 		/* 회원이 작성했던 리뷰 완전 삭제 */
-		int result3 = managerDAO.deleteRealReview(blackMember);
+		int result3 = managerDAO.updateRealReview(terminateMap);
 		
 		return result + result2 + result3 > 2? true : false;
 	}
@@ -385,6 +386,90 @@ public class ManagerServiceImpl implements ManagerService {
 	public List<PostDTO> selectOftenQuestionList(Pagination pagination) {
 		
 		return managerDAO.selectOftenQuestionList(pagination);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 총 갯수
+	 * @author junheekim
+	 */
+	@Override
+	public int businessInquiryTotalCount(Map<String, String> searchMap) {
+	
+		return managerDAO.businessInquiryTotalCount(searchMap);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectBusinessInquiry(Pagination pagination) {
+		
+		return managerDAO.selectBusinessInquiry(pagination);
+	}
+
+	/**
+	 * 소비자 - 1:1 문의 총 갯수
+	 * @author junheekim
+	 */
+	@Override
+	public int normalInquiryTotalCount(Map<String, String> searchMap) {
+		
+		return managerDAO.normalInquiryTotalCount(searchMap);
+	}
+
+	/**
+	 * 소비자 - 1:1 문의 리스트
+	 * @author junheekim
+	 */
+	@Override
+	public List<PostDTO> selectNormalInquiry(Pagination pagination) {
+		
+		return managerDAO.selectNormalInquiry(pagination);
+	}
+	
+	 /** 
+	 * 배너추가
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int insertBannerAdd(Map<String, Object> bnMap) {
+		
+		return managerDAO.insertBannerAdd(bnMap);
+	}
+
+	/**
+	 * 사용중인 태그 조회
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<TagDTO> selectUseTag() {
+		
+		return managerDAO.selectUseTag();
+	}
+
+	/**
+	 * 태그 추가
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int insertTagAdd(String tag) {
+		
+		int result = managerDAO.insertTagAdd(tag);
+		
+		return result;
+	}
+
+	/**
+	 * 태그 삭제
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int deleteTag(int tagNo) {
+		
+		int result = managerDAO.deleteTag(tagNo);
+		
+		return result;
 	}
 
 
