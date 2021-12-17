@@ -76,8 +76,6 @@ public interface OwnerDAO {
 
 	public MembershipDTO selectMembership(int msCode);
 
-	public int modifyProduct(List<DCProduct> maps);
-
 	public OrderDTO selectOrder(int orderCode);
 
 	public int acceptModifyOrder(Map<Object, Object> orderMap);
@@ -87,6 +85,21 @@ public interface OwnerDAO {
 	public int completeModifyOrder(Map<Object, Object> orderMap);
 
 	public int selectTotalCountOrder(Map<String, Object> searchMap);
-
 	
+	public int modifyProduct(DCProduct dc);
+
+	public int removeDc(List<Integer> codeList);
+
+	public int modifyDc(List<Integer> codeList);
+
+	public ProductDTO selectPd(int sdCode);
+
+	public List<Integer> seletTagList(int sdCode);
+
+	public int updateProduct(Map<String, Object> productInfo);
+
+	public int insertTag(Map<String, Integer> map);
+
+	public int removeTag(int sdCode);
+
 }

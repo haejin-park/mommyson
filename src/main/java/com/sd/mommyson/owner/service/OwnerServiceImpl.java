@@ -1,8 +1,10 @@
 package com.sd.mommyson.owner.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -252,8 +254,20 @@ public class OwnerServiceImpl implements OwnerService{
 
 	@Override
 	public int modifyProduct(List<DCProduct> maps) {
-
-		int result = ownerDAO.modifyProduct(maps);
+		// 결과값에 대한 내용을 서비스에서 처리 해야한다.
+		// 프로시져에 대한 내용을 사용하게 되면 성공에 대한 값을 일반 업데이트와 다른 기준으로 넘겨준다.
+		int result = 0;
+		int checkValue = 0;
+		for(int i = 0; i < maps.size(); i++) {
+			
+			DCProduct dc = maps.get(i);
+			
+			checkValue += ownerDAO.modifyProduct(dc);
+		} 
+		
+		if(checkValue == maps.size()) {
+			result = checkValue;
+		}
 		
 		return result;
 	}
@@ -312,6 +326,79 @@ public class OwnerServiceImpl implements OwnerService{
 	public int selectTotalCountOrder(Map<String, Object> searchMap) {
 		
 		int result = ownerDAO.selectTotalCountOrder(searchMap);
+		
+		return result;
+	}
+
+	@Override
+	public int removeDc(List<Integer> codeList) {
+
+		int result = ownerDAO.removeDc(codeList);
+		
+		return result;
+	}
+
+	@Override
+	public int modifyDc(List<Integer> codeList) {
+
+		int result = ownerDAO.modifyDc(codeList);
+		
+		return result;
+	}
+
+	@Override
+	public ProductDTO selectPd(int sdCode) {
+		
+		return ownerDAO.selectPd(sdCode);
+	}
+
+	@Override
+	public List<Integer> seletTagList(int sdCode) {
+
+		return ownerDAO.seletTagList(sdCode);
+	}
+
+	@Override
+	public int updateProduct(Map<String, Object> productInfo) {
+
+		int result = 0;
+		
+		int updateProduct = ownerDAO.updateProduct(productInfo);
+		
+		if(updateProduct > 0) {
+			
+			@SuppressWarnings("unchecked")
+			List<Integer> tagList = (List<Integer>)productInfo.get("tagList");
+			
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			
+			ProductDTO pr = (ProductDTO)productInfo.get("product");
+			
+			int sdCode = pr.getSdCode();
+			
+			map.put("sdCode",sdCode);
+
+			int removeTag = ownerDAO.removeTag(sdCode);
+			
+			if(removeTag > 0) {
+				
+				int updateTag = 0;
+				
+				for(int i = 0; i < tagList.size(); i++) {
+					
+					int tag = tagList.get(i);
+					
+					map.put("tag", tag);
+					
+					updateTag += ownerDAO.insertTag(map);
+				}
+				
+				if(updateTag == tagList.size()) {
+					result = 1;
+				}
+			}
+			
+		}
 		
 		return result;
 	}

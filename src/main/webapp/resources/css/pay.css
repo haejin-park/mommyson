@@ -106,3 +106,9 @@ box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
       overflow: scroll;
       display: none;
   }
+  
+.pay{
+	text-align: center;
+	margin-top: 80px;
+	margin-bottom: 40px;
+}  

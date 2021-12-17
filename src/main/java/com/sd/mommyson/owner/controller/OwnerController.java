@@ -41,8 +41,6 @@ import com.sd.mommyson.owner.service.OwnerService;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
-import oracle.jdbc.proxy.annotation.Methods;
-
 @Controller
 @RequestMapping("/owner/*")
 @SessionAttributes({"loginMember","owner"})
@@ -225,7 +223,7 @@ public class OwnerController {
 			try {
 				img.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				modifyInfo.put("fileName", fileName);
 				
@@ -338,7 +336,7 @@ public class OwnerController {
 			try {
 				productImg.transferTo(new File(filePath + "/" + savedName));
 				
-				String fileName = "../resources/uploadFiles/" + savedName;
+				String fileName = "resources/uploadFiles/" + savedName;
 				
 				productInfo.put("fileName", fileName);
 				
@@ -551,7 +549,7 @@ public class OwnerController {
 		System.out.println("productList : " + productList);
 		
 		if(productList != null) {
-			model.addAttribute("pagenation",pagenation);
+			model.addAttribute("pagination",pagenation);
 			model.addAttribute("productList", productList);
 			model.addAttribute("searchMap",searchMap);
 		} else {
@@ -829,46 +827,57 @@ public class OwnerController {
 		List<ProductDTO> productList = ownerService.selectProdouct(memCode);
 		
 		System.out.println("productList : " + productList);
-		
-		if(DCList != null && !DCList.isEmpty()) {
 			
-			model.addAttribute("DCList",DCList);
-			model.addAttribute("pagenation", pagenation);
-			
-		} else {
-			model.addAttribute("fail","등록된 할인 상품이 없습니다.");
-		}
-		
-		if(productList != null && !productList.isEmpty()) {
-			
-			model.addAttribute("productList",productList);
-			
-		} else {
-			model.addAttribute("fail","조회된 결과값이 없습니다.");
-		}
-		
+		model.addAttribute("DCList",DCList);
+		model.addAttribute("pagination", pagenation);
+		model.addAttribute("productList",productList);
 		model.addAttribute("msg", model.getAttribute("msg"));
-		
+		model.addAttribute("message",model.getAttribute("message"));
 	}
 	
 	@PostMapping("todayDiscount")
-	public String dcProduct(@RequestParam(value="sdCode") int[] sdCode, @RequestParam(value="dcRate") int[] dcRate, RedirectAttributes rd) {
+	public String dcProduct(@RequestParam(value="sdCode", required = false) int[] sdCode, @RequestParam(value="dcRate" , required = false) int[] dcRate, @RequestParam(value="deleteCode" , required = false) int[] deleteCode, RedirectAttributes rd) {
 		
 		List<DCProduct> maps = new ArrayList<DCProduct>();
 		
-		for(int i = 0; i < sdCode.length; i++) {
-			maps.add(new DCProduct(dcRate[i],sdCode[i]));
+		if(sdCode != null  && dcRate!= null ) {
+			
+			for(int i = 0; i < sdCode.length; i++) {
+				maps.add(new DCProduct(dcRate[i],sdCode[i]));
+			}
+			
+			int insertDc = ownerService.registDc(maps);
+			
+			int updateDC = ownerService.modifyProduct(maps);
+			
+			System.out.println("insertDc : " + insertDc);
+			System.out.println("updateDC : " + updateDC);
+			
+			
+			if(insertDc > 0 && updateDC > 0) {
+				rd.addFlashAttribute("msg","등록에 성공하였습니다.");
+			} else {
+				rd.addFlashAttribute("msg","등록에 실패하였습니다.");
+			}
+			
 		}
 		
-		int insertDc = ownerService.registDc(maps);
-		
-		int updateDC = ownerService.modifyProduct(maps);
-		
-		
-		if(insertDc > 0 && updateDC > 0) {
-			rd.addFlashAttribute("msg","등록에 성공하였습니다.");
-		} else {
-			rd.addFlashAttribute("msg","등록에 실패하였습니다.");
+		if(deleteCode!= null ) {
+			
+			List<Integer> codeList = new ArrayList<Integer>();
+			for(int i : deleteCode) {
+				System.out.println("asdadsadsa : " + i);
+				codeList.add(i);
+			}
+			
+			int deleteDC = ownerService.removeDc(codeList);
+			int deletePro = ownerService.modifyDc(codeList);
+			
+			if(deleteDC > 0 && deletePro > 0) {
+				rd.addFlashAttribute("message","삭제되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","삭제에 실패하였습니다.");
+			}
 		}
 		
 		return "redirect:todayDiscount";
@@ -919,6 +928,104 @@ public class OwnerController {
 		model.addAttribute("membership",membership);
 		
 		return "owner/ownerPay2";
+	}
+	
+	
+	/* 판매 상품 변경 */
+	@GetMapping("modifyProduct")
+	public void productModify(@RequestParam int sdCode, Model model) {
+		
+		System.out.println("sdCode 들어왔는가 : " + sdCode);
+		
+		ProductDTO product = ownerService.selectPd(sdCode);
+		
+		List<Integer> tag = ownerService.seletTagList(sdCode);
+		
+		List<TagDTO> tagList = ownerService.selectTag();
+		
+		List<HashMap<String, String>> categoryList = memberService.selectCategoryList();
+		
+		model.addAttribute("product",product);
+		model.addAttribute("tagList",tagList);
+		model.addAttribute("tag",tag);
+		model.addAttribute("categoryList",categoryList);
+	}
+	
+	@PostMapping("modifyProduct")
+	public String modifyProduct(@RequestParam(required = false)  MultipartFile productImg, @ModelAttribute ProductDTO product, 
+			HttpServletRequest request, RedirectAttributes rd, Model model, @RequestParam(required = false) String img) {
+		
+		int tag = Integer.parseInt(request.getParameter("tag1"));
+		int tag2 = Integer.parseInt(request.getParameter("tag2"));
+		int tag3 = Integer.parseInt(request.getParameter("tag3"));
+		
+		List<Integer> tagList = new ArrayList<Integer>();
+		tagList.add(tag);
+		tagList.add(tag2);
+		tagList.add(tag3);
+		
+		System.out.println("tagList : " + tagList);
+		System.out.println("product 변경된값 들어왔니? : " + product);
+		
+		System.out.println("파일이름 들어왔니? : " + productImg);
+		
+		Map<String,Object> productInfo = new HashMap<String, Object>();
+		productInfo.put("product",product);
+		productInfo.put("tagList", tagList);
+		
+		if(productImg != null && !productImg.isEmpty()) {
+			
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			
+			String filePath = root + "/uploadFiles";
+			
+			File mkdir = new File(filePath);
+			if(!mkdir.exists()) {
+				mkdir.mkdirs();
+			}
+				String orginFileName = productImg.getOriginalFilename();
+				String ext = orginFileName.substring(orginFileName.indexOf("."));
+				String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+				
+				try {
+					productImg.transferTo(new File(filePath + "/" + savedName));
+					
+					String fileName = "resources/uploadFiles/" + savedName;
+					
+					productInfo.put("fileName", fileName);
+					
+					
+				} catch (IllegalStateException | IOException e) {
+					new File(filePath + "/" + savedName).delete();	
+					e.printStackTrace();
+				}
+				
+				int result = ownerService.updateProduct(productInfo);
+				
+				if(result > 0) {
+					rd.addFlashAttribute("message","상품이 등록되었습니다.");
+				} else {
+					rd.addFlashAttribute("message","상품 등록에 실패하였습니다.");
+					new File(filePath + "/" + savedName).delete();
+				}
+			
+		} 
+		
+		if(img != null && img != "") {
+			
+			productInfo.put("fileName",img);
+			
+			int result = ownerService.updateProduct(productInfo);
+			
+			if(result > 0) {
+				rd.addFlashAttribute("message","변경되었습니다.");
+			} else {
+				rd.addFlashAttribute("message","변경에 실패하였습니다.");
+			}
+			
+		}
+		
+		return "redirect:productManagement";
 	}
 	
 	

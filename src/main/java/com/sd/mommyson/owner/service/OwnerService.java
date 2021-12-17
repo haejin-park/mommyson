@@ -84,4 +84,15 @@ public interface OwnerService {
 	public int completeModifyOrder(Map<Object, Object> orderMap);
 
 	public int selectTotalCountOrder(Map<String, Object> searchMap);
+	
+	public int removeDc(List<Integer> codeList);
+
+	public int modifyDc(List<Integer> codeList);
+
+	public ProductDTO selectPd(int sdCode);
+
+	public List<Integer> seletTagList(int sdCode);
+
+	public int updateProduct(Map<String, Object> productInfo);
+
 }

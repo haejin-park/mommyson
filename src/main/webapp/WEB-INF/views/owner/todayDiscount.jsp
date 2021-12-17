@@ -18,6 +18,10 @@
 	if(${ requestScope.msg != null && requestScope.msg != ''}){
 		alert('${ requestScope.msg }');
 	}
+
+	if(${ requestScope.message != null && requestScope.message != ''}){
+		alert('${ requestScope.message }');
+	}
 </script>
 
 	<!-- header -->
@@ -40,35 +44,45 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
             <tr>
-                <th scope="col"><input type="checkbox" name="ch1" id="ch1"></th>
+                <th scope="col"><input type="checkbox" id="ch1"></th>
                 <th scope="col">번호</th>
                 <th scope="col">상품</th>
                 <th scope="col">할인율</th>
                 <th scope="col">등록일</th>
+                <th scope="col">원가</th>
                 <th scope="col">할인가</th>
             </tr>
             </thead>
             <tbody>
+			<c:if test="${ DCList.size() ne 0 }">     
             <c:forEach var="list" items="${ DCList }">
             <c:set var="i" value="${ i + 1 }"/>
             <c:set var="price" value="${ list.price }"/>
-            <c:set var="value" value="${ pagenation.pageNo * 10}"></c:set>
             <c:set var="dcRate" value="${ list.discountRate }"/>
             <c:set var="dcPrice" value="${ price * ((100 - dcRate) / 100) }"/>
+            <c:set var="j" value="${ (requestScope.pagination.pageNo / 2) * 10 }"/>
+            <fmt:parseNumber var="page" integerOnly="true" value="${ j }"/>
             <tr>
                 <th scope="row"><input type="checkbox" name="ch1" value="${ list.sdCode }"></th>
-                <c:if test="${ pagenation.pageNo > 1 }">
-                	<td>${ i + value }</td>
+                <c:if test="${ requestScope.pagination.pageNo > 1 }">
+                	<td>${ i + j }</td>
                 </c:if>
-                <c:if test="${ pagenation.pageNo <= 1 }">
+                <c:if test="${ requestScope.pagination.pageNo <= 1 }">
                 	<td>${ i }</td>
                 </c:if>
                 <td>${ list.sdName }</td>
                 <td>${ list.discountRate }%</td>
                 <td>${ list.insertDate }</td>
+                <td><fmt:formatNumber value="${ list.price }" type="number"/>원</td>
                 <td><fmt:formatNumber value="${ dcPrice }" type="number"/>원</td>
             </tr>
             </c:forEach>
+            </c:if> 
+            <c:if test="${ DCList.size() eq 0 }">  
+            	<tr>
+            		<td colspan="7" style="font-weight: 700; font-size: 20px; padding-top : 70px;">등록된 상품이 없습니다.</td>
+            	</tr>
+            </c:if>        
             </tbody>
         </table>
         
@@ -85,15 +99,37 @@
      <script>
 	        $("#ch1").click(function(){
 	  	      if($("#ch1").prop("checked")){
-	  	        $("input[type=checkbox]").prop("checked",true);
+	  	        $("input[name=ch1]").prop("checked",true);
 	  	      } else{
-	  	        $("input[type=checkbox]").prop("checked",false);
+	  	        $("input[name=ch1]").prop("checked",false);
 	  	      }
 	  	    });
+	        
+	        $("#button2").click(function(){
+		    	
+		    	let arr = [];
+		    	$('input:checkbox[name=ch1]:checked').each(function(){
+		    		let value = $(this).val();
+		    		arr.push(value);
+		    	})
+		    	
+		    	console.log(arr);
+		    	
+		    	let form = $('<form></form>');
+		        form.attr('action', '${pageContext.servletContext.contextPath}/owner/todayDiscount');
+		        form.attr('method', 'post');
+		        form.appendTo('body');
+		        form.append($('<input type="hidden" value="' + arr + '" name=deleteCode>'));
+		        form.submit();
+		    	
+		    });
+	        
         </script>
-    
+	
+	 <c:if test="${ DCList ne null and !empty DCList }">
     <jsp:include page="../commons/ownerPaging.jsp"/>
-
+	</c:if>
+	
 	<!-- 모오오오달 -->
 	<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="padding-right: 544px;">
 	    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
@@ -118,10 +154,10 @@
 	                </thead>
 	                <tbody>
 	            	<c:forEach var="product" varStatus="index" items="${ productList }">
-	            	<c:set var="j" value="${ j + 1 }"/>
+	            	<c:set var="k" value="${ k + 1 }"/>
 	                <tr>
 	                    <td scope="row"><input type="checkbox" name="checkCode" value="${ product.sdCode }"></td>
-	                    <td>${ j }</td>
+	                    <td>${ k }</td>
 	                    <td>${ product.sdName }</td>
 	                    <td>${ product.mDate }</td>
 	                    <td>
@@ -174,8 +210,6 @@
 		    		
 		    		dcRate.push(result);
 		    	});
-		    	
-		    	
 		    	
 				console.log(arr); 
 				console.log(dcRate);
