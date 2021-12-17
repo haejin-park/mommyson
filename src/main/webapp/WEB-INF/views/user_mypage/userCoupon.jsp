@@ -44,19 +44,38 @@
               <tbody>
               	<c:forEach var="myCoupon" items="${ requestScope.myCouponList }">
 	                <tr>
-	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath } +'/' + ${ myCoupon.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
+	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myCoupon.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.cpName }"/></td>
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.disWon }"/></td>
+	                  <input type="hidden" value = "${ myCoupon.store.memCode }">
+	     
 	                </tr>
               	</c:forEach>
               </tbody>
+
             </table>
+            <script>
+            
+            if(document.getElementsByTagName('td')) {
+          		const $tds = $('td');
+          		for(let i = 0; i < $tds.length; i++) {
+          			$tds[i].onclick = function() {
+						let StoreAddress = this.parentNode.children[3].value;
+						location.href = "${ pageContext.servletContext.contextPath }/user/storepage?memCode=" + StoreAddress;
+						console.log(StoreAddress);
+          				
+					}
+          		}
+            }	
+            </script>
+            
+           
             <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
-              <ul class="pagination">
-                 <jsp:include page="../commons/userMyPagePagination.jsp"/>
-              </ul>
-              <ul>
+            <ul>
+               <jsp:include page="../commons/userMyPagePagination.jsp"/>
+            </ul>
+
+              <ul style="display: flex; flex-direction: row; justify-content: center; align-items: baseline;">
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                   <form action="${ pageContext.servletContext.contextPath }/userMyPage/userCoupon" method="get">
                 	<input type="hidden" name="currentPage" value="1">
@@ -64,7 +83,6 @@
                   	<button type="submit" class="searchbutton">검색하기</button>
                   </form>
                </ul>
-            </nav>
             
           </div>
         </div>

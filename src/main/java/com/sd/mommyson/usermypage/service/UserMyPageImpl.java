@@ -68,4 +68,18 @@ public class UserMyPageImpl implements UserMyPageService {
 		return storeReconmendList;
 	}
 
+	@Override
+	public int deleteRecommendStore(int storeNo) {
+
+		int result = userMyPageDAO.deleteRecommendStore(storeNo);
+		
+		return result;
+	}
+
+	@Override
+	public int selectTotalReviewCount(Map<String,String> searchMap) {
+		int totalCount = userMyPageDAO.selectTotalReviewCount(searchMap);
+		return totalCount;
+	}
+
 }

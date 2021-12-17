@@ -91,12 +91,9 @@
               <button class="urBtn" style="margin-left: 970px;">주문취소</button>
             </div>
               <div>
-                <!-- 페이징 -->
-                <nav class="page_box" aria-label="Page navigation example">
-                  <ul class="pagination">
                     <jsp:include page="../commons/userMyPagePagination.jsp"/>
-                  </ul>
-                  <ul>
+                <!-- 페이징 -->
+                   <ul style="display: flex; flex-direction: row; justify-content: center; align-items: baseline;">
                       <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                       <form action="${ pageContext.servletContext.contextPath }/userMyPage/myOrderList" method="get">
                       <input type="hidden" name="currentPage" value="1">

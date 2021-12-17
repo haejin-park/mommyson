@@ -31,7 +31,7 @@ public interface UserService {
 
 	List<PostDTO> selectNoticeContents(int postNo);
 
-	int updateincrementNoticeBoardCount(int postNo);
+	int updateIncrementBoardCount(int postNo);
 	
 	List<ReviewDTO> selectReviewList(Pagination pagination);
 
@@ -53,6 +53,11 @@ public interface UserService {
 
 	List<ProductDTO> selectSearchList(Map<String, Object> searchMap);
 	
-	List<ProductDTO> selectImportantNotice();
+	List<PostDTO> selectImportantNotice();
+
+	List<PostDTO> selectRecentNotice();
+
+	List<PostDTO> selectOftenFqa();
+
 
 }

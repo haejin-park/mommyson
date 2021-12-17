@@ -6,41 +6,38 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/manager.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<div class="pagingArea" align="center">
-		<!-- 맨 앞으로 이동 버튼 -->
-	    <button id="startPage"><<</button>
-		
-		<!-- 이전 페이지 버튼 -->
-		<c:if test="${ requestScope.selectCriteria.pageNo <= 1 }">
-			<button disabled><</button>
-		</c:if>
-		<c:if test="${ requestScope.selectCriteria.pageNo > 1 }">
-			<button id="prevPage"><</button>
-		</c:if>
-		
-		<!-- 숫자 버튼 -->
-		<c:forEach var="p" begin="${ requestScope.selectCriteria.startPage }" end="${ requestScope.selectCriteria.endPage }" step="1">
-			<c:if test="${ requestScope.selectCriteria.pageNo eq p }">
-				<button disabled><c:out value="${ p }"/></button>
-			</c:if>
-			<c:if test="${ requestScope.selectCriteria.pageNo ne p }">
-				<button onclick="pageButtonAction(this.innerText);"><c:out value="${ p }"/></button>
-			</c:if>
-		</c:forEach>
-		
-		<!-- 다음 페이지 버튼 -->
-		<c:if test="${ requestScope.selectCriteria.pageNo >= requestScope.selectCriteria.maxPage }">
-			<button disabled>></button>
-		</c:if>
-		<c:if test="${ requestScope.selectCriteria.pageNo < requestScope.selectCriteria.maxPage }">
-			<button id="nextPage">></button>
-		</c:if>
-		
-		<!-- 마지막 페이지로 이동 버튼 -->
-		<button id="maxPage">>></button> 
-	</div>
+	<nav class="page_box" aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- 맨 앞으로 이동 버튼 -->
+           <li class="page-item"><a class="page-link-num" id="startPage" href="#">&laquo;</a></li>
+         <!-- 이전 페이지 버튼 -->
+         <c:if test="${ requestScope.selectCriteria.pageNo > 1 }">
+            <li class="page-item"><a class="page-link-num" id="prevPage" href="#">&lt;</a></li>
+         </c:if>
+         
+         <!-- 숫자 버튼 -->
+         <c:forEach var="page" begin="${ requestScope.selectCriteria.startPage }" end="${ requestScope.selectCriteria.endPage }" step="1">
+            <c:if test="${ requestScope.selectCriteria.pageNo eq page }">
+               <li class="page-item"><a class="page-link-num pageNo" href="#"><c:out value="${ page }"/></a></li>
+            </c:if>
+         <!-- 현재 페이지 -->
+            <c:if test="${ requestScope.selectCriteria.pageNo ne page }">
+               <li class="page-item"><a class="page-link-num pageNo" href="#"><c:out value="${ page }"/></a></li>
+            </c:if>
+         </c:forEach>
+           
+          <!-- 다음 페이지 버튼 -->
+         <c:if test="${ requestScope.selectCriteria.pageNo < requestScope.selectCriteria.maxPage }">
+            <li class="page-item"><a class="page-link-num" id="nextPage" href="#">&gt;</a></li>
+         </c:if>
+         <!-- 마지막 페이지로 이동 버튼 -->
+             <li class="page-item"><a class="page-link-num" id="maxPage" href="#">&raquo;</a></li> 
+        </ul>
+    </nav>
 	
 	<script>
 	
@@ -85,9 +82,11 @@
 			}
 		}
 		
-		function pageButtonAction(text) {
-			location.href = link + "?currentPage=" + text + searchText;
-		}
+		$(".pageNo").click(function(){
+			let pageNo = $(this).text();
+			console.log(link);
+			location.href = link + "?currentPage=" + pageNo + searchText;
+		});
 	</script>
 
 </body>
