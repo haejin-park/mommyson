@@ -25,4 +25,6 @@ public interface UserMyPageService {
 
 	int deleteRecommendStore(int storeNo);
 
+	int selectTotalReviewCount(Map<String,String> searchMap);
+
 }

@@ -25,4 +25,6 @@ public interface UserMyPageDAO {
 
 	int deleteRecommendStore(int storeNo);
 
+	int selectTotalReviewCount(Map<String, String> searchMap);
+
 }

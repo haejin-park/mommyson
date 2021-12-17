@@ -73,8 +73,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int updateincrementNoticeBoardCount(int postNo) {
-		int result = userDAO.updateincrementNoticeBoardCount(postNo);
+	public int updateIncrementBoardCount(int postNo) {
+		int result = userDAO.updateIncrementBoardCount(postNo);
 		return result;
 	}
 

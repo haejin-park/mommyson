@@ -76,4 +76,10 @@ public class UserMyPageImpl implements UserMyPageService {
 		return result;
 	}
 
+	@Override
+	public int selectTotalReviewCount(Map<String,String> searchMap) {
+		int totalCount = userMyPageDAO.selectTotalReviewCount(searchMap);
+		return totalCount;
+	}
+
 }

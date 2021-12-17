@@ -31,7 +31,7 @@ public interface UserDAO {
 
 	List<PostDTO> selectNoticeContents(int postNo);
 
-	int updateincrementNoticeBoardCount(int postNo);
+	int updateIncrementBoardCount(int postNo);
 
 	List<ReviewDTO> selectReviewList(Pagination pagination);
 

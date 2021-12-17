@@ -267,8 +267,8 @@
 		WHERE A.POST_NO = #{ postNo }			 
 	</select>
 	
-	<!--공지사항 조회수  증가 -->
-	<update id="updateincrementNoticeBoardCount">
+	<!--공지사항 및 자주묻는 질문 조회수  증가 -->
+	<update id="updateIncrementBoardCount" parameterType="_int">
         UPDATE 
                POST_TBL A
            SET A.VIEW_CNT = (SELECT B.VIEW_CNT

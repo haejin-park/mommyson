@@ -204,9 +204,10 @@ public class UserController {
 		
 		System.out.println("공지사항 내용 출력 콘트롤러 진입");
 		int postNo = Integer.parseInt(postInfo);
+		System.out.println("PostNo : " + postNo);
 		
 		/*조회수 수정*/
-		int result = userService.updateincrementNoticeBoardCount(postNo);
+		int result = userService.updateIncrementBoardCount(postNo);
 		if( result > 0) {
 			System.out.println("조회수 증가 성공");
 		} else {

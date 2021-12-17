@@ -100,7 +100,7 @@ public class UserMyPageController {
 		
 		List<MyOrderDTO> myOrderList = userMyPageService.selectMyOrderList(selectCriteria);
 		
-		
+		System.out.println("주문내역 리스트 : " +myOrderList);
 		
 		//반찬코드를 담는다.
 		List<Object> sdCode = new ArrayList<>();
@@ -140,7 +140,7 @@ public class UserMyPageController {
 	@GetMapping("userCoupon")
 	public String userCoupon(HttpSession session, Model mv, @RequestParam(required = false) Map<String,String> parameters) {
 		
-		System.out.println("내가 쓴 리뷰 콘트롤러 진입");
+		System.out.println("내가 쓴 쿠폰함 콘트롤러 진입");
 		
 		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
 		System.out.println("로그인 멤버: " + memberInfo);
@@ -206,14 +206,6 @@ public class UserMyPageController {
 		return "user_mypage/userCoupon";
 	}
 	
-	/*내가 쓴 리뷰*/
-	@GetMapping("userReview")
-	public String userReview(HttpSession session, Model model, @RequestParam(required = false) Map<String,String> parameters) {
-		
-		
-		
-		return "user_mypage/userReview";
-	}
 	
 	/*자주찾는가게*/
 	@GetMapping("userRecommendStore")
@@ -316,7 +308,51 @@ public class UserMyPageController {
 		return "user_mypage/userReport";
 	}
 	
-	/*리뷰 화면*/
+	/*내가 쓴 리뷰*/
+	@GetMapping("userReview")
+	public String userReview(HttpSession session, Model model, @RequestParam(required = false) Map<String,String> parameters) {
+		
+		System.out.println("내가 리뷰 콘트롤러 진입");
+		
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println("로그인 멤버: " + memberInfo);
+		System.out.println("로그인한 멤버의 멤버 코드: " + memberInfo.getMemCode());
+		int userCode = memberInfo.getMemCode();
+		
+		String currentPage = parameters.get("currentPage");
+		
+		int pageNo = 1;
+		System.out.println("currnetPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		//searchCondition에 유저 코드를 넣어줌
+		String searchCondition = "" + userCode;
+		String searchValue = parameters.get("searchValue");
+		
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchValue : " + searchValue);
+		System.out.println("pageNo : " + pageNo);
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		System.out.println("searchMap : " + searchMap);
+		
+		int totalCount = userMyPageService.selectTotalReviewCount(searchMap);
+		System.out.println("totalCount : " + totalCount);
+		
+		
+		return "user_mypage/userReview";
+	}
+
 	/*리뷰 수정*/
 	/*리뷰 삭제*/
 	

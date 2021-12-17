@@ -2,21 +2,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    <mapper namespace="com.sd.mommyson.usermypage.dao.UserMyPageDAO">
-    
-<!-- 	<resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="MyOrderResultMap">
-		<id property="" column=""/>
-		<result property="memCode" column=""/>
-		<result property="sdCode" column=""/>
-		<result property="amount" column=""/>
-		<result property="orderCode" column=""/>
-		<result property="orderCompleteTime" column=""/>
-		<result property="orderAcceptTime" column=""/>
-		<result property="orderRequestTime" column=""/>
-		<result property="sdName" column=""/>
-		<result property="sdImg" column=""/>
-		<result property="ownerCode" column=""/>
-	</resultMap>  -->    
+    <mapper namespace="com.sd.mommyson.usermypage.dao.UserMyPageDAO">  
 	
 	<resultMap type="com.sd.mommyson.usermypage.dto.CouponDTO" id="couponResultMap">
 		<id property="cpCode" column="CP_CODE"/>
@@ -161,6 +147,16 @@
     	<association property="storeInfo" resultMap="storeResultMap"/>
     </resultMap>
     
+    <resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="ReviewResultMap">
+    	<id property="rvCode" column="RV_CODE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderCode" column="ORDER_CODE"/>
+    	<result property="img" column="RV_IMG"/>
+    	<result property="content" column="RV_CONTENT"/>
+    	<result property="grade" column="RV_GRADE"/>
+    	<result property="memId" column="MEM_ID"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    </resultMap>
  
     <!-- 나의 주문내역 총 갯수 확인 -->
     <select id="selectMyOrderNum" resultType="_int" parameterType="hashmap">
@@ -253,7 +249,9 @@
 					 	 )A
 			 <![CDATA[
 			 WHERE A.RNUM >= #{ startRow }
-			 ]]>	   
+			 ]]>
+			 
+			 	   
 	</select>
 	
 	    <!-- 내가 자주 찾는 가게 총 갯수 확인 -->
@@ -322,5 +320,17 @@
 	  FROM JJIM_TBL A
 	WHERE A.CEO_CODE = #{ storeNo }  	
 	</delete>
+	
+	<!-- 내가 작성한 리뷰 총 숫자 -->
+	<select id="selectTotalReviewCount" parameterType="hashmap" resultType="_int">
+		SELECT
+			  COUNT(*)
+		 FROM REVIEW_TBL A
+		 JOIN ORDER_TBL B ON(B.ORDER_CODE = A.ORDER_CODE)
+		WHERE A.MEM_CODE = #{ searchCondition }
+		  <if test="searchValue != null">
+		  AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
+		  </if>
+	</select>
     </mapper>
     
