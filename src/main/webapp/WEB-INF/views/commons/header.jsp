@@ -37,7 +37,7 @@
 							    <button id="btnGroupDrop1" type="button" style="background: none; border: none; outline: none;" class="dropdown" data-toggle="dropdown" aria-expanded="false">
 							      <img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png">
 							    </button>
-							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px;">
+							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 70px;">
 							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
 								      <div style="display: flex; justify-content: space-between; align-items: center;">
 									      <a class="dropdown-item" href="#">${ notice.noticeContent }</a>
@@ -59,7 +59,7 @@
 							    <button id="btnGroupDrop1" type="button" style="background: none; border: none; outline: none;" class="dropdown" data-toggle="dropdown" aria-expanded="false">
 							      <img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png">
 							    </button>
-							    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="width: 450px;">
+							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 70px;">
 							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
 								      <div style="display: flex; justify-content: space-between;">
 									      <a class="dropdown-item" href="${ pageContext.servletContext.contextPath }/owner/order">${ notice.noticeContent }</a>
