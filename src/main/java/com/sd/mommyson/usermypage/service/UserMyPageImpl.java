@@ -1,5 +1,6 @@
 package com.sd.mommyson.usermypage.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Service;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dao.UserMyPageDAO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
+import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 
 @Service
 public class UserMyPageImpl implements UserMyPageService {
@@ -80,6 +83,19 @@ public class UserMyPageImpl implements UserMyPageService {
 	public int selectTotalReviewCount(Map<String,String> searchMap) {
 		int totalCount = userMyPageDAO.selectTotalReviewCount(searchMap);
 		return totalCount;
+	}
+
+	@Override
+	public List<ReviewDTO> selectReviewContentList(SelectCriteria selectCriteria) {
+		
+		List<ReviewDTO> reviewContentList = userMyPageDAO.selectReviewContentList(selectCriteria);
+		return reviewContentList;
+	}
+
+	@Override
+	public List<HashMap<String, String>> selectMySdInfo(int userCode) {
+		List<HashMap<String, String>> productInfo = userMyPageDAO.selectMySdInfo(userCode);
+		return productInfo;
 	}
 
 }

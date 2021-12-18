@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -24,8 +25,10 @@ import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
+import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 import com.sd.mommyson.usermypage.service.UserMyPageService;
 
 @Controller
@@ -310,7 +313,7 @@ public class UserMyPageController {
 	
 	/*내가 쓴 리뷰*/
 	@GetMapping("userReview")
-	public String userReview(HttpSession session, Model model, @RequestParam(required = false) Map<String,String> parameters) {
+	public String userReview(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(required = false) Map<String,String> parameters) throws IOException {
 		
 		System.out.println("내가 리뷰 콘트롤러 진입");
 		
@@ -348,6 +351,80 @@ public class UserMyPageController {
 		
 		int totalCount = userMyPageService.selectTotalReviewCount(searchMap);
 		System.out.println("totalCount : " + totalCount);
+
+		System.out.println("totalPostCount : " + totalCount);
+		
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 5;		//얘도 파라미터로 전달받아도 된다.
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+		
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+			System.out.println("들어왔음");
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("selectCriteria : " + selectCriteria);
+		
+		List<ReviewDTO> reviewContentList = userMyPageService.selectReviewContentList(selectCriteria);
+		System.out.println("리뷰 페이지네이션 및 검색 : " + reviewContentList);
+		
+		int productInfoCode;
+//		List<OrderInfoDTO>	productInfo = new ArrayList<>();
+		List<HashMap<String, String>>productInfo = userMyPageService.selectMySdInfo(userCode);
+		System.out.println(productInfo);
+//		for(int i = 0; i < reviewContentList.size(); i++) {
+//			productInfoCode = reviewContentList.get(i).getOrderCode();
+//				System.out.println(productInfoCode);
+//				productInfo=userMyPageService.selectMySdInfo(productInfoCode);
+//				System.out.println(productInfo);
+//		}
+//		System.out.println("반찬 정보 : " + productInfo);
+//		List<Integer> sdCodeList = new ArrayList<>();
+//		for(int i = 0; i < reviewContentList.size(); i++) {
+//			productOrderCode = reviewContentList.get(i).getOrderCode();
+//			sdCodeList.add(userMyPageService.selectMySdInfo(productOrderCode));
+//			
+//		}
+		
+		
+		
+	
+		
+//		System.out.println(request.getParameter("orderNo"));
+//		String productNo = request.getParameter("orderNo");
+//		System.out.println(productNo);
+//		
+//		String num = request.getParameter("orderNo");
+//		System.out.println("Num값을 찾아라  : " + num);
+//		int productInfoCode = Integer.parseInt(num);
+		
+		
+		
+//		List<OrderInfoDTO>	productInfo = userMyPageService.selectMySdInfo(productInfoCode);	
+//		System.out.println(request.getParameter("orderNo"));
+//		response.setContentType("text/plain; charset=UTF-8");
+//		PrintWriter out = response.getWriter();
+//		out.print(Num);
+//		
+//		out.flush();
+//		out.close();
+		
+		
+		
+		
+//		System.out.println("넘어온 주문번호" + orderNo);
+		
+		model.addAttribute("selectCriteria", selectCriteria);
+		model.addAttribute("reviewContentList", reviewContentList);
+		model.addAttribute("productInfo", productInfo);
+		
+		model.addAttribute("Paging", "myReview");
 		
 		
 		return "user_mypage/userReview";
