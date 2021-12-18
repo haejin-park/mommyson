@@ -179,11 +179,11 @@ public class MemberServiceImpl implements MemberService {
 	
 	/* 비밀번호 변경 화면이동을 위해 이메일 인증번호 조회하기 */
 	@Override
-	public EmailCodeDTO selectEmailCode(EmailCodeDTO dto) {
+	public int selectEmailCode(String email) {
 		
-		EmailCodeDTO emailCode = memberDAO.selectEmailCode(dto);
+		int emailCode = memberDAO.selectEmailCode(email);
 		
-		System.out.println("dto : " + dto);
+		System.out.println("emailCode : " + emailCode);
 		
 		return emailCode;
 	}

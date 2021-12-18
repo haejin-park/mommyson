@@ -127,7 +127,7 @@
       		 }	
       }); 
        
-       $("#changePwd").click(function(){
+/*        $("#changePwd").click(function(){
     	  if($("#pwd1").val() == ""){
     		  alert("비밀번호를 입력해주세요.")
     		  $("#pwd1").focus(); 
@@ -141,9 +141,41 @@
      		  $("#pwd2").focus(); 
      		  return false;
      	  } 
-        });
+        }); */
        
-	    /* 로그인 화면 이동  */ 
+        $('#changePwd').click(function(){
+        
+        	var email;
+        	console.log(email);
+        	
+        	var pwd1 = $("#pwd1").val();
+        	var pwd2 = $("#pwd2").val();
+        	
+        	if(pwd1 == pwd2 && pwd1 != "" || pwd2 != ""){
+        		$.ajax({
+        			type : "post",
+        			url : "modifyPwd",
+        			data : {
+        				pwd1 : pwd1,
+        				email : email
+        			},
+        			async : false,
+        			success : function(data){
+        				console.log("data  : " + data);
+        				alert("비밀번호 변경에 성공했습니다.");
+        			},
+        			error : function(error){
+	       				alert(error);
+        			}		
+        			
+        		});
+        	}
+        	
+        });
+        
+        
+        
+	    /* 로그인 화면 이동 */ 
 	    const $goLogin = document.getElementById("goLogin");
 	    $goLogin.onclick = function() {
 	    	location.href = "${ pageContext.servletContext.contextPath }/member/login";

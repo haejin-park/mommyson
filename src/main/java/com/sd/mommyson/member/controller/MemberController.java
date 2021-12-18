@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.member.service.MemberService;
@@ -313,22 +312,17 @@ public class MemberController {
 	@ResponseBody
 	public String findPass2(@RequestParam String inputEmailCode, @RequestParam String email, Model model) throws IOException{
 		
-		
 		System.out.println("inputEmailCode : " + inputEmailCode);
 		
 		System.out.println("email : " + email);
 		
 		String result = "";
 		
-		EmailCodeDTO dto = new EmailCodeDTO();
-		System.out.println(dto);
+		int emailCode = memberService.selectEmailCode(email); //비밀번호 변경 화면 이동을 위해 이메일 인증번호 조회하기 
 		
-		EmailCodeDTO emailCode = memberService.selectEmailCode(dto);
+		String emailCode2 = Integer.toString(emailCode);
 		
-		
-		if(emailCode.equals(inputEmailCode)) {	//인증번호가 일치할 경우 
-			
-			//이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
+		if(emailCode2.equals(inputEmailCode)) {	//인증번호가 일치할 경우 이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
 			
 			result = email;
 			
@@ -367,7 +361,7 @@ public class MemberController {
 		
 		memberService.modifyPwd(map);
 		
-		return "/member/login" ;
+		return "/member/login";
 		
 	}
 	

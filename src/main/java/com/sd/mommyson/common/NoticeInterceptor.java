@@ -13,11 +13,13 @@ import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.service.MemberService;
 
 public class NoticeInterceptor extends HandlerInterceptorAdapter {
-	
+
+	public NoticeInterceptor() {
+		super();
+	}
+
 	private MemberService memberService;
-	
-	public NoticeInterceptor() {}
-	
+
 	public NoticeInterceptor(MemberService memberService) {
 		this.memberService = memberService;
 	}
@@ -36,9 +38,9 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 				session.setAttribute("noticeList", noticeList);
 			}
 		}
-		
-		return true;
+
+		return noticeList != null || member == null? true : false;
 	}
 
-	
+
 }

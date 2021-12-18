@@ -321,8 +321,8 @@
 	     WHERE EMAIL = #{ email }
 	</update> 
 	
-	
-	<select id="selectEmailCode" resultType="EmailCodeDTO">
+	<!--이메일 인증 번호 조회 -->
+	<select id="selectEmailCode" resultType="_int">
 		SELECT EMAIL_CODE
 		  FROM EMAIL_CODE_TBL
 		 WHERE EMAIL = #{ email } 

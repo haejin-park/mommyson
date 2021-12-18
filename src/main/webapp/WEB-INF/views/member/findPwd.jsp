@@ -49,9 +49,6 @@
         <br>
     </div>    
     <div class="button" style="text-align: center;">
-<!--         <button type="submit" id="findPwdButton" onclick="findPwdButton1()"
-        style="width:100px; height:40px; border-radius: 9px; background-color:rgb(247, 170, 145); text-align : center;">비밀번호 찾기</button>
-        &nbsp; &nbsp;  -->
         <button type="submit" id="changePwdButton"
         style="width:100px; height:40px; border-radius: 9px; background-color:rgb(247, 170, 145); text-align : center;">비밀번호 변경</button>
         &nbsp; &nbsp;
@@ -163,10 +160,10 @@
     	     						codeCheckResult.attr("class", "correct");
     	     						return true;
     	     						
-    	     					} */
+    	     					} 
     	     				}
     	     				
-         				});
+         				});*/
          			},
         			error : function(error){
         				alert(error);
@@ -206,6 +203,7 @@
 	        				if(data == '인증코드가 일치하지 않습니다.') {
 	        					alert(data);
 	        				} else {
+	        					alert("비밀번호 변경 화면으로 이동합니다.");
 	        					location.href = "${ pageContext.servletContext.contextPath }/member/modifyPwd?email=" + data; //겟방식  
 	        				}
 	        			},

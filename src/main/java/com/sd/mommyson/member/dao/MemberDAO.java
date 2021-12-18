@@ -64,8 +64,8 @@ public interface MemberDAO {
 	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
 	public void updateEmailCode(HashMap<String, String> map);
 	
-	/* 비밀번호 변경 화면이동을 위해 이메일 인증번호 조회하기 */
-	public EmailCodeDTO selectEmailCode(EmailCodeDTO dto);
+	/* 비밀번호 변경 화면 이동을 위해 이메일 인증번호 조회하기 */
+	public int selectEmailCode(String dto);
 	
 	/* 비밀번호 변경하기 */
 	public void modifyPwd(HashMap<String, String> map);
@@ -77,13 +77,8 @@ public interface MemberDAO {
 	public List<TagDTO> selectHotKeywordList();
 
 	public List<StoreDTO> selectStoreList();
-
-<<<<<<< HEAD
 	
-
-=======
 	public List<RTNoticeDTO> selectRTNotice(int memCode);
->>>>>>> c11c3f6b61b5bb2aaaa873249de72b68fc2507d3
 
 	public int deleteNotice(int noticeCode);
 
