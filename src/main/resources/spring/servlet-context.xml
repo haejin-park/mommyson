@@ -56,7 +56,7 @@
 		<interceptor> 
 			<mapping path="/*"/> 
 			<exclude-mapping path="/manager/**"/>
-			<exclude-mapping path="/member/*"/>
+			<exclude-mapping path="/member/**"/>
 			<beans:ref bean="NoticeInterceptor"/> 
 		</interceptor> 
 	</interceptors>
