@@ -218,4 +218,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.deleteNotice(noticeCode);
 	}
 
+	@Override
+	public int selectCartCount(int memCode) {
+		return memberDAO.selectCartCount(memCode);
+	}
+
 }

@@ -34,6 +34,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
@@ -1189,19 +1190,24 @@ public class UserController {
 		
 		List<String> list = new ArrayList<String>();
 		Map<String, Object> searchMap = new HashMap<>();
-		
 		if(searchValue.contains(",")) {
 			String[] words = searchValue.split(",");
 			for(String a : words) {
 				String word = a.replace("#", "");
+				System.out.println("searchValue : " + searchValue);
 				if(!word.equals("")) {
 					list.add(word);
 				}
 			}
 			searchMap.put("searchValue", list);
 		} else {
-			searchMap.put("searchValue", searchValue);
-			searchMap.put("searchCondition", "title");
+			if(searchValue.contains("#")) {
+				list.add(searchValue.replace("#", ""));
+				searchMap.put("searchValue", list);
+			} else {
+				searchMap.put("searchValue", searchValue);
+				searchMap.put("searchCondition", "title");
+			}
 		}
 		
 		List<ProductDTO> productList = userService.selectSearchList(searchMap);

@@ -57,4 +57,6 @@ public interface MemberService  {
 
 	public int deleteNotice(int noticeCode);
 
+	public int selectCartCount(int memCode);
+
 }
