@@ -232,13 +232,11 @@
 		SELECT A.LOCATION_CODE
 		  FROM LOCATION A
 		 WHERE A.LOCATION_NAME = #{ locationName }
-		  
 	</select>
 	
 
 	<!-- 소비자 회원가입 -->
  	<insert id="customerJoin">
- 	 
 		INSERT ALL
 		  INTO MEMBER_TBL
 		VALUES
@@ -267,6 +265,7 @@
 		SELECT * FROM DUAL
 	</insert>
 	
+	
 	<!-- 사용자 회원가입 성공하면 MEMBER_TBL 에서 가장 최근에 저장된 code 조회 -->
  	<select id="selectCode" resultType="_int">
 		  SELECT CODE
@@ -276,27 +275,10 @@
 			     ORDER BY CODE DESC
 			    )
 	     WHERE ROWNUM = 1
-	</select>
-
-	<!-- 회원가입 성공할 경우 멤버 테이블에서 가장 최근에 가입한 사용자의 memCode 조회-->
-	<select id="selectMemCode" resultType="_int">
-	    SELECT MEM_CODE 
-	      FROM (
-			    SELECT MEM_CODE 
-			      FROM MEMBER_TBL 
-			     ORDER BY ENROLL_DATE DESC
-			    )
-	     WHERE ROWNUM = 1
-	</select>
-
-	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
- 	<update id="updateMemCode" parameterType="EmailCodeDTO">
- 		UPDATE EMAIL_CODE_TBL 
-		   SET MEM_CODE = #{ memCode }       
-		 WHERE CODE = #{ code }   
-	</update>  
+	</select> 
 	
-	<!-- 회원가입 성공할 경우 멤버 테이블에서 가장 최근에 가입한 사용자의 email 조회-->
+
+	<!-- 회원가입 성공할 경우 멤버 테이블에서 가장 최근에 가입한 사용자의 email 조회 -->
 	<select id="selectEmail" resultType="String">
 	    SELECT EMAIL
 	      FROM (
@@ -307,13 +289,35 @@
 	     WHERE ROWNUM = 1
 	</select>
 	
-	<!-- 회원가입 성공할 경우 이메일 인증 테이블 email 맞춰주기 -->
+
+	<!-- 회원가입 성공할 경우 이메일 인증 테이블에서 가장 최근에 만들어진 code를 조회해서 일치하는 email을 업데이트 -->
  	<update id="updateEmail" parameterType="EmailCodeDTO">
  		UPDATE EMAIL_CODE_TBL 
 		   SET EMAIL = #{ email }
 		 WHERE CODE = #{ code }     
-	</update>  
+	</update>   
 	
+
+	<!-- 회원가입 성공할 경우 멤버 테이블에서 가장 최근에 가입한 사용자의 memCode 조회 -->
+	<select id="selectMemCode" resultType="_int">
+	    SELECT MEM_CODE 
+	      FROM (
+			    SELECT MEM_CODE 
+			      FROM MEMBER_TBL 
+			     ORDER BY ENROLL_DATE DESC
+			    )
+	     WHERE ROWNUM = 1
+	</select>
+
+
+	<!-- 회원가입 성공할 경우 이메일 인증 테이블에서 가장 최근에 만들어진 code를 조회해서 이메일 인증 테이블 memCode 업데이트 -->
+ 	<update id="updateMemCode" parameterType="EmailCodeDTO">
+ 		UPDATE EMAIL_CODE_TBL 
+		   SET MEM_CODE = #{ memCode }       
+		 WHERE CODE = #{ code }   
+	</update>   
+	
+
 	<!-- 아이디 찾기 -->
 	<select id="findIdCheck" resultType="String">
 		SELECT MEM_ID
@@ -322,12 +326,14 @@
 		 WHERE A.EMAIL = #{ email }
 	</select>
 	
+	
 	<!--비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증-->
 	<update id ="updateEmailCode" parameterType="hashMap">
 		UPDATE EMAIL_CODE_TBL
 		   SET EMAIL_CODE = #{ emailCode }
 	     WHERE EMAIL = #{ email }
 	</update> 
+	
 	
 	<!--이메일 인증 번호 조회 -->
 	<select id="selectEmailCode" resultType="_int">

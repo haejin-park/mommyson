@@ -89,39 +89,39 @@
             <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">이용 약관 </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                        <div class="modal-body">    
-                        <p>
-                            Mommysonmat 서비스는 개인정보를 다음의 목적을 위해 처리합니다. <br>
-                            처리한 개인정보는 다음의 목적 이외의 용도로는 사용되지 않으며 이용 목적이 변경될 시에는 사전동의를 구할 예정입니다.<br><br>
-                            
-                            ①Mommysonmat 서비스는 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 <br>
-                            개인정보를 수집시에 동의 받은 개인정보 보유, 이용기간 내에서 개인정보를 처리, 보유합니다.<br><br>
-                            ②Mommysonmat 서비스는 회원가입, 회원 식별, 서비스 이용 등을 위해 아래와 같이 개인정보를 수집ᆞ이용합니다.<br><br>
-                            
-                             수집 목적: 회원 식별 및 Mommysonmat 서비스 이용 <br>
-                             수집 항목:아이디, 비밀번호, 전화번호, 이메일, 우편번호, 주소, 상호, 상호 이미지, 사업자등록증 <br>
-                             수집 근거 : 정보주체의 동의 <br>
-                             수집 기간 : 회원탈퇴 시 까지<br><br>
-                            
-                            ③ 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지체 없이 파기합니다. <br>
-                            단, 법령에서 일정기간 의무를 부과하는 경우에는 해당 기간 동안 보관할 수 있습니다.<br><br>
-                            ④ Mommysonmat  서비스를 이용할 때 자동적으로 여러분이 사용하는 장치의 유형, 운영체제 버전, 장치 고유 식별번호를 수집합니다. <br>
-                            그 외에도 Mommysonmat 서비스를 이용하는데 필요한 다른 정보를 수집할 수 있으나 회원의 잔디 서비스를 이용하는 목적 용도로만 이용되며 그 외의 목적으로는 이용되지 않습니다.<br><br>
-                       
-                            귀하께서는 본 안내에 따른 개인정보 수집에 대하여 거부를 하실 수 있는 권리가 있습니다. <br>
-                            본 개인정보 수집에 대하여 거부하시는 경우, 본인확인 등 신원확인이 되지 않음에 따라 Mommysonmat 서비스를 사용 하실 수 없습니다.
-                        </p>
-                        <br>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="ok">확인</button>
-                        </div>
+                      <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">이용 약관 </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      </div>
+                      <div class="modal-body">    
+                       <p>
+                           Mommysonmat 서비스는 개인정보를 다음의 목적을 위해 처리합니다. <br>
+                           처리한 개인정보는 다음의 목적 이외의 용도로는 사용되지 않으며 이용 목적이 변경될 시에는 사전동의를 구할 예정입니다.<br><br>
+                           
+                           ①Mommysonmat 서비스는 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 <br>
+                           개인정보를 수집시에 동의 받은 개인정보 보유, 이용기간 내에서 개인정보를 처리, 보유합니다.<br><br>
+                           ②Mommysonmat 서비스는 회원가입, 회원 식별, 서비스 이용 등을 위해 아래와 같이 개인정보를 수집ᆞ이용합니다.<br><br>
+                           
+                            수집 목적: 회원 식별 및 Mommysonmat 서비스 이용 <br>
+                            수집 항목:아이디, 비밀번호, 전화번호, 이메일, 우편번호, 주소, 상호, 상호 이미지, 사업자등록증 <br>
+                            수집 근거 : 정보주체의 동의 <br>
+                            수집 기간 : 회원탈퇴 시 까지<br><br>
+                           
+                           ③ 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지체 없이 파기합니다. <br>
+                           단, 법령에서 일정기간 의무를 부과하는 경우에는 해당 기간 동안 보관할 수 있습니다.<br><br>
+                           ④ Mommysonmat  서비스를 이용할 때 자동적으로 여러분이 사용하는 장치의 유형, 운영체제 버전, 장치 고유 식별번호를 수집합니다. <br>
+                           그 외에도 Mommysonmat 서비스를 이용하는데 필요한 다른 정보를 수집할 수 있으나 회원의 잔디 서비스를 이용하는 목적 용도로만 이용되며 그 외의 목적으로는 이용되지 않습니다.<br><br>
+                      
+                           귀하께서는 본 안내에 따른 개인정보 수집에 대하여 거부를 하실 수 있는 권리가 있습니다. <br>
+                           본 개인정보 수집에 대하여 거부하시는 경우, 본인확인 등 신원확인이 되지 않음에 따라 Mommysonmat 서비스를 사용 하실 수 없습니다.
+                       </p>
+                    	  	<br>
+                      </div>
+                      <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" id="ok">확인</button>
+                      </div>
                   </div>
                 </div>
             </div> 
@@ -142,11 +142,11 @@
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             <button type="submit" id="joinButton" style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
-
    		    </form>
         </div>
     </div>

@@ -87,6 +87,11 @@ public class MemberController {
 	@GetMapping("customerJoin")
 	public void customerJoin() {}
 
+	
+	/* 사용자 회원가입 페이지 이동 */
+	@GetMapping("businessJoin")
+	public void businessJoin() {}
+
 
 
 	/*  아이디 중복 검사 */

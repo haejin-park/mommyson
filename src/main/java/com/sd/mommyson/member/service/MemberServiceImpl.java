@@ -144,29 +144,29 @@ public class MemberServiceImpl implements MemberService {
 			int code = memberDAO.selectCode(dto);
 			System.out.println("code : " + code);
 			
+			String email = memberDAO.selectEmail(member);
+			System.out.println("email : " + email);
 			
 			int memCode =	memberDAO.selectMemCode(member);
 			System.out.println("memCode : " + memCode);
 			
-			String email = memberDAO.selectEmail(member);
-			System.out.println("email : " + email);
-			
-			dto.setCode(code);
-			dto.setMemCode(memCode);
+ 			dto.setCode(code);
 			dto.setEmail(email);
+			dto.setMemCode(memCode);
 			System.out.println(dto);
 			
 			
 			/* 사용자 회원가입 성공하고 memCode가 조회가 되면 EMAIL_CODE_TBL의 memCode와 email을 MEMBER_TBL 의 memCode와 email로 업데이트 */
-			if(memCode > 0) {
-				result2 = memberDAO.updateMemCode(dto);
-				System.out.println("result2 : " + result2);
-			 }
 			 
 			if(email != "") {
-				 result3 = memberDAO.updateEmail(dto);
-				 System.out.println("result3 : " + result3);
+				 result2 = memberDAO.updateEmail(dto);
+				 System.out.println("result2 : " + result2);
 			}
+			
+			if(memCode > 0) {
+				result3 = memberDAO.updateMemCode(dto);
+				System.out.println("result3 : " + result3);
+			 }
 			
 		}
 		return result1;
