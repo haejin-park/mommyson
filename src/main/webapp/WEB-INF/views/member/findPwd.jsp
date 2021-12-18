@@ -128,46 +128,8 @@
          			type:"post",
          			url:"find_pass.do",
          			data : { email : email },	
-         			async : false, 
-         			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
-         				console.log("data : " + data);  
-         				emailCode = data;
-         				/* 
-         				$("#emailCode").blur(function(){
-    	     				var inputEmailCode = $("#emailCode").val(); // 입력코드 
-    	     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
-    	     				
-    	     				if(inputEmailCode != emailCode){
-    	     					if(inputEmailCode == ""){
-    	     						codeCheckResult.html("인증번호를 입력해주세요.");
-    	     						codeCheckResult.attr("class", "incorrect");
-    	     						return false;
-    	     					} else {
-    	     						codeCheckResult.html("인증번호가 일치하지 않습니다. 인증번호를 다시 입력해주세요.");
-    	     						codeCheckResult.attr("class", "incorrect");
-    	     						return false;
-    	     					}
-    	     					
-    	     				} else {
-    	     					
-    	     					if(inputEmailCode == ""){
-    	     						codeCheckResult.html("인증번호를 입력해주세요.");
-    	     						codeCheckResult.attr("class", "incorrect");
-    	     						return false;
-    	     						
-    	     					} else {
-    	     						codeCheckResult.html("인증번호가 일치합니다.");
-    	     						codeCheckResult.attr("class", "correct");
-    	     						return true;
-    	     						
-    	     					} 
-    	     				}
-    	     				
-         				});*/
-         			},
-        			error : function(error){
-        				alert(error);
-        			}	
+         			async : false
+         			
          		});
         	}
 		}); 
@@ -203,7 +165,7 @@
 	        				if(data == '인증코드가 일치하지 않습니다.') {
 	        					alert(data);
 	        				} else {
-	        					alert("비밀번호 변경 화면으로 이동합니다.");
+	        					alert("인증번호가 일치합니다. 비밀번호 변경 화면으로 이동합니다.");
 	        					location.href = "${ pageContext.servletContext.contextPath }/member/modifyPwd?email=" + data; //겟방식  
 	        				}
 	        			},

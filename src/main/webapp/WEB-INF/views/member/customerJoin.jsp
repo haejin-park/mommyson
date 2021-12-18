@@ -62,8 +62,9 @@
             <br>
            	<span id = "emailCheckResult"></span>
             <br>
-            <input type="number" class="code" name="code" id="code" placeholder=" 인증번호(이메일 전송 버튼 클릭 후 수신된 인증번호 입력)" value="N"
+            <input type="number" class="code" name="inputCode" id="code" placeholder=" 인증번호(이메일 전송 버튼 클릭 후 수신된 인증번호 입력)" value="N"
             style=" height:40px;width:440px;border-radius: 9px;">
+            <button  type="button" id="check" onclick="codeChk1()" style=" height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">확인</button>
             <br>
             <span id="codeCheckResult"></span>
             <br>
@@ -548,8 +549,6 @@
 		
          
          /* 이메일 인증번호 전송 & 비교 */
-         var code =""; // 이메일 인증번호 저장을 위한 코드
-         
          $("#submit").click(function(){
      		var email = $("#email").val(); 
      		
@@ -558,46 +557,61 @@
      			url:"mailCheck",
      			data : {
      				email : email
-     			},		
-     			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
-     				//console.log("data : " + data);  
-     				code = data;
-     				
-     				$("#code").blur(function(){
-	     				var inputCode = $("#code").val(); // 입력코드 
-	     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
-	     				
-	     				if(inputCode != code){
-	     					if(inputCode == ""){
-	     						codeCheckResult.html("인증번호를 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect");
-	     						return false;
-	     					} else {
-	     						codeCheckResult.html("인증번호가 일치하지 않습니다. 인증번호를 다시 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect");
-	     						return false;
-	     					}
-	     					
-	     				} else {
-	     					
-	     					if(inputCode == ""){
-	     						codeCheckResult.html("인증번호를 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect");
-	     						return false;
-	     					} else {
-	     						codeCheckResult.html("인증번호가 일치합니다.");
-	     						codeCheckResult.attr("class", "correct");
-	     						return true;
-	     					}
-	     				}
-     				});
-     			},
-    			error : function(error){
-    				alert(error);
-    			}	
+     			}, 
+	    		async: false
      		});
      	});
+         
+         
       
+         /* 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 인증번호와 일치하는 이메일 조회해서 인증번호 일치 여부 안내 */
+      
+      	 function codeChk1(){
+     		var email = ""; // 이메일 인증번호 저장을 위한 코드
+     		var inputCode = $("#code").val(); // 입력코드	
+     		
+			$.ajax({
+				type : "post",
+				url : "codeCheck",
+				data : {
+					inputCode : inputCode	
+				},
+				async : false,
+				success:function(data){ //조회한 이메일 
+					console.log("data : " + data); 
+					email = data;
+						
+     				var inputEmail = $("#email").val(); // 입력코드 
+     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
+     				
+     				if(inputEmail != email){
+     					if(inputCode == ""){
+	   						codeCheckResult.html("이메일과 인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
+	   						codeCheckResult.attr("class", "incorrect");
+	   						return false;
+	   						
+     					} else{
+     						codeCheckResult.html("이메일과 인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
+	   						codeCheckResult.attr("class", "incorrect");
+	   						return false;
+     					}
+     					
+     				} else {
+     					
+     					if(inputCode != ""){
+     						codeCheckResult.html("이메일과 인증번호가 일치합니다.");
+     						codeCheckResult.attr("class", "correct");
+   							return true;
+     					}
+     				}
+					
+				},
+				error : function(error){
+    				alert(error);
+    			}
+			});
+    		
+     	};
 
         /* 우편번호 검색 */
 		const $searchZipCode = document.getElementById("searchZipCode");

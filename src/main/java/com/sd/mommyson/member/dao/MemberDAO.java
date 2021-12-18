@@ -34,11 +34,14 @@ public interface MemberDAO {
 	/* 이메일 중복 검사 */
 	public  int emailChk(String email);
 	
+	/* 회원가입 이메일 인증 번호 전송 버튼을 눌러 이메일 주소와 인증번호와 저장 */
+	public int registEmailCode(HashMap<String, String> map);
+	
+	/* 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 이메일 인증번호 조회해서 일치 여부 확인 */
+	public String codeCheck(String inputCode);
+	
 	/* 회원가입시 지역코드 조회 */
 	public String locationCode(String locationName);
-	
-	/* 회원가입시 이메일 인증 */ 
-	public int registEmailCode(String num);
 
 	/* 사용자 회원가입 */
 	public int customerJoin(MemberDTO member);
@@ -81,5 +84,7 @@ public interface MemberDAO {
 	public List<RTNoticeDTO> selectRTNotice(int memCode);
 
 	public int deleteNotice(int noticeCode);
+
+
 
 }

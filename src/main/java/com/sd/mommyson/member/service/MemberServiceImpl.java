@@ -90,6 +90,30 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 	
+
+	
+	/* 회원가입 이메일 인증 번호 전송 버튼을 눌러 이메일 주소와 인증번호와 저장 */
+	@Override
+	public int registEmailCode(HashMap<String, String> map) {
+		
+		int emailNum = memberDAO.registEmailCode(map);
+		
+		return emailNum;
+	}
+	
+	
+
+	/* 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 이메일 인증번호 조회해서 일치 여부 확인 */
+	@Override
+	public String codeCheck(String inputCode) {
+
+		String email = memberDAO.codeCheck(inputCode);
+		
+		return email;
+	}
+	
+	
+
 	/* 회원가입시 지역코드 조회 */
 	@Override
 	public String locationCode(String locationName) {
@@ -100,16 +124,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	
-	/* 회원가입시 이메일 인증 */ 
-	@Override
-	public int registEmailCode(String num) {
-		
-		int emailNum = memberDAO.registEmailCode(num);
-		
-		return emailNum;
-	}
 	
-
 	/* 사용자 회원가입 */
 	@Override
 	public int customerJoin(MemberDTO member) throws Exception{

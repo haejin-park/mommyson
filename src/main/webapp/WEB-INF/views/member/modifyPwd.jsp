@@ -32,7 +32,8 @@
         <h1>비밀번호 변경</h1>
         <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         <br>
-         <form action="modifyPwd" method="post" onsubmit="return validate();">
+       <!--  <form action="modifyPwd" method="post" onsubmit="return validate();">  -->
+        <input type="hidden" name="email" id="email">
         <input type="password" class="pwd1" id="pwd1" name="memPwd" placeholder="비밀번호는 [영문,숫자,특수기호] 4~12글자"
         style=" border-radius: 9px; width: 440px; height: 40px;">
         <br><br>
@@ -41,41 +42,22 @@
         <br>
         <span id="pwdCheckResult"></span>
         <br><br>
-        <!-- 비밀번호가 일치하지 않을 경우 비밀번호가 존재하지않습니다. 비밀번호를 다시 입력해주세요.  -->
-        <!-- 비밀번호 변경하기 누르면 알럿이나 모달창으로 비밀번호가 변경되었습니다 나오고 로그인 페이지로 이동 -->
         <button type="submit" id="changePwd"
          style="width:100px; height:40px; border-radius: 9px; background-color:rgb(247, 170, 145); text-align : center;">변경</button>
         &nbsp; &nbsp; &nbsp; &nbsp;
         <button type="reset" id="goLogin"
          style="width:100px; height:40px; border-radius: 9px; background-color:rgb(247, 170, 145); text-align : center;">취소</button>
-        </form>
+      <!--  </form> -->
     </div>
 
     <br><br>
     
     <jsp:include page="../commons/footer.jsp"/>
     <script>
-        function validate(){
-            var pwd1=document.getElementById("pwd1");
-            var pwd2=document.getElementById("pwd2");
-
-            if(pwd1.value==""){
-                alert("비밀번호를 입력해주세요.");
-                pwd1.focus();
-                return false;  
-            }   
-
-
-            if(pwd1.value != pwd2.value){
-                alert("비밀번호를 확인해주세요.")
-                pwd2.focus()
-                return false;
-            }
-            
-        }
         
         
-        /* 비밀번호 입력 여부 확인 알럿 & 정규식 확인 */
+    
+        /* 비밀번호1 클릭시 입력 여부 확인 알럿 & 정규식 확인 */
         $("#pwd1").blur(function(){
        	var inputPwd = $("#pwd1").val();
       		var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/;
@@ -101,7 +83,7 @@
        
        
        
-       /* 비밀번호 입력 여부 확인 알럿 & 일치 여부 확인 */
+       /* 비밀번호2 클릭시 입력 여부 확인 알럿 & 일치 여부 확인 */
        $("#pwd2").blur(function(){
       	 
       	 var inputPwd1 = $("#pwd1").val();
@@ -127,52 +109,74 @@
       		 }	
       }); 
        
-/*        $("#changePwd").click(function(){
+       
+       
+       /* 비밀번호 변경 버튼 클릭시 비밀번호1 입력 여부 확인 알럿 */
+         $("#changePwd").click(function(){
     	  if($("#pwd1").val() == ""){
-    		  alert("비밀번호를 입력해주세요.")
+    		  alert("비밀번호를 입력해주세요.");
     		  $("#pwd1").focus(); 
     		  return false;
     	  } 
        });
        
+       
+       
+      /* 비밀번호 변경 버튼 클릭시 비밀번호2 입력 여부 확인 알럿 */
        $("#changePwd").click(function(){
      	  if($("#pwd2").val() == ""){
-     		  alert("비밀번호를 확인해주세요.")
+     		  alert("비밀번호를 확인해주세요.");
      		  $("#pwd2").focus(); 
      		  return false;
      	  } 
-        }); */
+        });  
        
-        $('#changePwd').click(function(){
-        
-        	var email;
-        	console.log(email);
-        	
-        	var pwd1 = $("#pwd1").val();
-        	var pwd2 = $("#pwd2").val();
-        	
-        	if(pwd1 == pwd2 && pwd1 != "" || pwd2 != ""){
-        		$.ajax({
-        			type : "post",
-        			url : "modifyPwd",
-        			data : {
-        				pwd1 : pwd1,
-        				email : email
-        			},
-        			async : false,
-        			success : function(data){
-        				console.log("data  : " + data);
-        				alert("비밀번호 변경에 성공했습니다.");
-        			},
-        			error : function(error){
-	       				alert(error);
-        			}		
-        			
-        		});
-        	}
-        	
-        });
-        
+      
+      
+  	  /* 비밀번호 변경버튼 클릭시 동일여부에 따라 변경 */
+       $('#changePwd').click(function(){
+           
+       	var email = '${email}';
+       	console.log("email(jsp) : " + email);
+       	
+       	var pwd1 = $("#pwd1").val();
+       	console.log("pwd1(jsp) : " + pwd1);
+       	
+       	var pwd2 = $("#pwd2").val();
+       	console.log("pwd2(jsp) : " + pwd2);
+       	
+       	if(pwd1 != "" && pwd2 != "" && pwd1 != null && pwd2 != null){
+       		
+       		if(pwd1 == pwd2) {
+       			
+	        		$.ajax({
+	        			type : "post",
+	        			url : "modifyPwd",
+	        			data : {
+	        				pwd1 : pwd1,
+	        				email : email
+	        			},
+	        			async : false,
+	        			success : function(data){
+	        				console.log("data  : " + data);
+	        			},
+	        			error : function(error){
+		       				alert(error);
+	        			}		
+	        			
+	        		});
+	        		
+	        		alert("비밀번호 변경에 성공했습니다.");
+	        		location.href = "${ pageContext.servletContext.contextPath }/member/login";
+	        		
+       		} else {
+       			alert("비밀번호를 다시 확인해 주세요.");
+       			
+       		}
+       	}
+       	
+       });
+       
         
         
 	    /* 로그인 화면 이동 */ 

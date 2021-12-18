@@ -199,6 +199,34 @@
 	</select>
 	
 	
+	<!--  회원가입 이메일 인증 번호 전송 버튼을 눌러 이메일 주소와 인증번호와 저장 -->
+	<insert id ="registEmailCode" parameterType="hashMap">
+		INSERT 
+		  INTO EMAIL_CODE_TBL
+		(
+		  CODE			
+		, MEM_CODE
+		, EMAIL_CODE
+		, EMAIL
+		)
+		VALUES
+		(
+		  SEQ_CODE.NEXTVAL
+		, null
+		, #{ num }
+		, #{ toMail }
+		)
+	</insert>
+
+
+	<!-- 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 이메일 인증번호 조회해서 일치 여부 확인 -->
+	<select id="codeCheck" resultType="String">
+		SELECT EMAIL
+		  FROM EMAIL_CODE_TBL
+		 WHERE EMAIL_CODE = #{ inputCode } 
+	</select>
+
+
 	<!-- 지역코드 조회 -->
 	<select id="locationCode" resultType="String">
 		SELECT A.LOCATION_CODE
@@ -207,26 +235,6 @@
 		  
 	</select>
 	
-	
-	<!--회원가입시 이메일 인증 코드 인설트 -->
-	<insert id ="registEmailCode">
-		INSERT 
-		  INTO EMAIL_CODE_TBL
-		(
-		  CODE			
-		, MEM_CODE
-		, EMAIL
-		, EMAIL_CODE
-		)
-		VALUES
-		(
-		  SEQ_CODE.NEXTVAL
-		, null
-		, null
-		, #{ emailCode }
-		)
-	</insert>
-
 
 	<!-- 소비자 회원가입 -->
  	<insert id="customerJoin">
@@ -259,7 +267,7 @@
 		SELECT * FROM DUAL
 	</insert>
 	
-	<!-- 사용자 회원가입 성공하면 MEMBER_TBL 의 code 조회 -->
+	<!-- 사용자 회원가입 성공하면 MEMBER_TBL 에서 가장 최근에 저장된 code 조회 -->
  	<select id="selectCode" resultType="_int">
 		  SELECT CODE
 	      FROM (
@@ -269,8 +277,8 @@
 			    )
 	     WHERE ROWNUM = 1
 	</select>
-	 
-	<!-- 회원가입 성공할 경우 멤버 테이블 memCode 조회-->
+
+	<!-- 회원가입 성공할 경우 멤버 테이블에서 가장 최근에 가입한 사용자의 memCode 조회-->
 	<select id="selectMemCode" resultType="_int">
 	    SELECT MEM_CODE 
 	      FROM (
@@ -288,7 +296,7 @@
 		 WHERE CODE = #{ code }   
 	</update>  
 	
-	<!-- 회원가입 성공할 경우 멤버 테이블 email 조회-->
+	<!-- 회원가입 성공할 경우 멤버 테이블에서 가장 최근에 가입한 사용자의 email 조회-->
 	<select id="selectEmail" resultType="String">
 	    SELECT EMAIL
 	      FROM (
@@ -299,7 +307,7 @@
 	     WHERE ROWNUM = 1
 	</select>
 	
-	<!-- 회원가입 성공할 경우 이메일 인증 테이블 memCode 맞춰주기 -->
+	<!-- 회원가입 성공할 경우 이메일 인증 테이블 email 맞춰주기 -->
  	<update id="updateEmail" parameterType="EmailCodeDTO">
  		UPDATE EMAIL_CODE_TBL 
 		   SET EMAIL = #{ email }
