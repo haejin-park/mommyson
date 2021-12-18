@@ -68,6 +68,7 @@
                 <th scope="col">제조일</th>
                 <th scope="col">유통기한</th>
                 <th scope="col">판매여부</th>
+                <th scope="col">상세보기</th>
               </tr>
             </thead>
             <tbody>
@@ -88,13 +89,14 @@
                 <td>${ list.eDate }</td>
                 <td>
 	               	<c:if test="${ list.orderableStatus eq 'N' }">
-	                <button class="couponBtn btn1" id="btn1" name="sdCode" value="${ list.sdCode }">판매</button>
+	                <button class="couponBtn btn1" id="btn1" name="sdCode" value="${ list.sdCode }">판매하기</button>
 	                </c:if>
 	                
 	                <c:if test="${ list.orderableStatus eq 'Y' }">
-	                <button class="couponBtn btn1" id="btn1" name="sdCode" value="${ list.sdCode }" style="background-color : #777777;">판매중단</button>
+	                <button class="couponBtn btn1" id="btn1" name="sdCode" value="${ list.sdCode }" style="background-color : #777777;">판매중</button>
 	                </c:if>
                 </td>
+                <td><a href="${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=${ list.sdCode }">상세보기</a></td>
               </tr>
               </c:forEach>
             </tbody>
