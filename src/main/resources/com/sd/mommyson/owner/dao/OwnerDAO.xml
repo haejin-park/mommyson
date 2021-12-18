@@ -891,7 +891,8 @@
 	<!-- 멤버십 정보 select 쿼리문 -->
 	<select id="selectMembership" resultMap="membershipResultMap">
 		SELECT
-			   MS_TYPE
+			   MS_CODE
+			 , MS_TYPE
 			 , MS_DATE
 			 , MS_PRICE
 	 	  FROM MEMBERSHIP_TBL

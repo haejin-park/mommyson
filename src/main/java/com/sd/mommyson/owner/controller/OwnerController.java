@@ -930,6 +930,22 @@ public class OwnerController {
 		return "owner/ownerPay2";
 	}
 	
+	@GetMapping("kakaoPay")
+	public String kakaoPay(Model model, @RequestParam int msCode, @RequestParam int msDate) {
+		
+		
+		System.out.println("카카오 페이로 넘겨받은 msCode : " + msCode);
+		System.out.println("카카오 페이로 넘겨받은 msDate : " + msDate);
+		
+		return "";
+		
+	}
+	
+	@GetMapping("paySuccess")
+	public void paySuccess(Model model) {
+		
+	}
+	
 	
 	/* 판매 상품 변경 */
 	@GetMapping("modifyProduct")
