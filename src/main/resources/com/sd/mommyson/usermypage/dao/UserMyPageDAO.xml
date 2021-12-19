@@ -172,27 +172,9 @@
     	<result property="completeTime" column="ORDER_COMPLETE_TIME"/>
     	<result property="acceptTime" column="ORDER_ACCEPT_TIME"/>
     	<result property="requestTime" column="ORDER_RUQEUST_TIME"/>
+    	<association property="storeInfo" resultMap="storeResultMap"/>
     </resultMap>
-    
-    <resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="hashmap">
-    	<id property="orderCode" column="ORDER_CODE"/>
-    	<result property="memCode" column="MEM_CODE"/>
-    	<result property="totalPrice" column="TOTAL_PRICE"/>
-    	<result property="orderType" column="ORDER_TYPE"/>
-    	<result property="takeTime" column="TAKE_TIME"/>
-    	<result property="address" column="ADDRESS"/>
-    	<result property="phone" column="PHONE"/>
-    	<result property="storeName" column="STORE_NAME"/>
-    	<result property="code" column="CODE"/>
-    	<result property="orderCancleTime" column="ORDER_CANCLE_TIME"/>
-    	<result property="orderCompleteTime" column="ORDER_COMPLETE_TIME"/>
-    	<result property="orderAcceptTime" column="ORDER_ACCEPT_TIME"/>
-    	<result property="orderRequestTime" column="ORDER_RUQEUST_TIME"/>
-    	<collection property="orderInfo" resultMap="orderInfoResultMap"/> 
-    </resultMap>
-    
-     
- 
+
     <!-- 나의 주문내역 총 갯수 확인 -->
     <select id="selectMyOrderNum" resultType="_int" parameterType="hashmap">
 	SELECT
@@ -205,89 +187,80 @@
 	</select>
 	
 	<!-- 나의 주문목록 출력 및 페이지 네이션  -->
-	<select id="selectMyOrderList" resultMap="myOrderResultMap">
+	<select id="selectMyOrderList" resultMap="orderResultMap">
 		SELECT
-		        A.RNUM
-			  ,	A.MEM_CODE
-			  , A.TOTAL_PRICE
-			  ,	A.ORDER_CODE
-			  ,	A.ORDER_TYPE
-			  ,	A.TAKE_TIME
-			  ,	A.ADDRESS
-			  ,	A.PHONE
-		   	  ,	A.STORE_NAME
-		      ,	A.CODE
-			  ,	A.ORDER_CANCLE_TIME
-			  ,	A.ORDER_COMPLETE_TIME
-			  ,	A.ORDER_ACCEPT_TIME
-			  ,	A.ORDER_RUQEUST_TIME
-			  , A.SD_CODE
-			  , A.AMONT
-			  ,	A.SD_NAME
-			  , A.SD_IMG
-			  , A.PRICE
-			  , A.STORE_IMG
-		   FROM	(SELECT ROWNUM RNUM
-					  ,	B.MEM_CODE
-					  , B.TOTAL_PRICE
-					  ,	B.ORDER_CODE
-					  ,	B.ORDER_TYPE
-					  ,	B.TAKE_TIME
-					  ,	B.ADDRESS
-					  ,	B.PHONE
-				   	  ,	B.STORE_NAME
-				      ,	B.CODE
-					  ,	B.ORDER_CANCLE_TIME
-					  ,	B.ORDER_COMPLETE_TIME
-					  ,	B.ORDER_ACCEPT_TIME
-					  ,	B.ORDER_RUQEUST_TIME
-					  , B.SD_CODE
-					  , B.AMONT
-					  ,	B.SD_NAME
-					  , B.SD_IMG
-					  , B.PRICE
-					  , B.STORE_IMG
-				   FROM (SELECT C.MEM_CODE
-							  , C.TOTAL_PRICE
-							  ,	C.ORDER_CODE
-							  ,	C.ORDER_TYPE
-							  ,	C.TAKE_TIME
-							  ,	C.ADDRESS
-							  ,	C.PHONE
-						   	  ,	C.STORE_NAME
-						      ,	C.CODE
-							  ,	C.ORDER_CANCLE_TIME
-							  ,	C.ORDER_COMPLETE_TIME
-							  ,	C.ORDER_ACCEPT_TIME
-							  ,	C.ORDER_RUQEUST_TIME
-							  , D.SD_CODE
-							  , D.AMONT
-							  ,	E.SD_NAME
-							  , E.SD_IMG
-							  , E.PRICE
-							  , F.STORE_IMG
-						   FROM ORDER_TBL C
-						   JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE=C.ORDER_CODE)
-						   JOIN PRODUCT_TBL E ON(E.SD_CODE = D.SD_CODE)
-						   JOIN STORE_TBL F ON(F.MEM_CODE=E.MEM_CODE)
-						   <where>
-						   		C.MEM_CODE = #{ searchCondition }
-						   		<if test="searchValue != null">
-						   		AND F.STORE_NAME LIKE '%' || #{ searchValue } || '%'
-						   		</if>
-						   </where>
-						   ORDER BY C.ORDER_RUQEUST_TIME DESC
-						   )B
-					 <![CDATA[
-					 	 WHERE ROWNUM <= #{ endRow }
-					 	 ]]>
-					 	 )A
-			 <![CDATA[
-			 WHERE A.RNUM >= #{ startRow }
-			 ]]>
-			 
-			 	   
+			   A.RNUM
+			 , A.MEM_CODE
+			 , A.TOTAL_PRICE
+			 , A.ORDER_CODE
+			 , A.ORDER_TYPE
+			 , A.TAKE_TIME
+			 , A.ADDRESS
+			 , A.PHONE
+			 , A.STORE_NAME
+			 , A.CODE
+			 , A.ORDER_CANCLE_TIME
+			 , A.ORDER_COMPLETE_TIME
+			 , A.STORE_IMG
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.MEM_CODE
+					 , B.TOTAL_PRICE
+					 , B.ORDER_CODE
+					 , B.ORDER_TYPE
+					 , B.TAKE_TIME
+					 , B.ADDRESS
+					 , B.PHONE
+					 , B.STORE_NAME
+					 , B.CODE
+					 , B.ORDER_CANCLE_TIME
+					 , B.ORDER_COMPLETE_TIME
+					 , B.STORE_IMG		 
+				  FROM (SELECT C.MEM_CODE
+							 , C.TOTAL_PRICE
+							 , C.ORDER_CODE
+							 , C.ORDER_TYPE
+							 , C.TAKE_TIME
+							 , C.ADDRESS
+							 , C.PHONE
+							 , C.STORE_NAME
+							 , C.CODE
+							 , C.ORDER_CANCLE_TIME
+							 , C.ORDER_COMPLETE_TIME
+							 , F.STORE_IMG
+				  		  FROM ORDER_TBL C
+				  		  JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE = C.ORDER_CODE)
+				  		  JOIN PRODUCT_TBL E ON(E.SD_CODE=D.SD_CODE)
+				  		  JOIN STORE_TBL F ON(E.MEM_CODE=F.MEM_CODE)		  		  
+				  		 WHERE C.MEM_CODE = #{ searchCondition } 		
+				  		 <if test="searchValue != null">
+				  		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'		
+				  		 </if>
+				  		 ORDER BY C.ORDER_CODE DESC
+				  )B	 
+		  <![CDATA[
+			 	 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+			 	 )A
+	 <![CDATA[
+	 WHERE A.RNUM >= #{ startRow }
+	 ]]>	    
 	</select>
+	<!-- 나의 주문 목록 중 반찬정보  -->
+	<select id="selectMyOrderSd" resultType="hashmap">
+	 SELECT
+	 		A.ORDER_CODE
+	 	  , B.SD_CODE
+	 	  , B.AMONT
+	 	  , C.SD_IMG
+	 	  , C.SD_NAME
+	 	  ,	C.PRICE
+	 	  , D.STORE_IMG	
+	   FROM	ORDER_TBL A
+	   JOIN ORDER_INFO_TBL B ON(B.ORDER_CODE = A.ORDER_CODE)
+	   JOIN PRODUCT_TBL C ON(C.SD_CODE = B.SD_CODE)
+	   JOIN STORE_TBL D ON(D.MEM_CODE = C.MEM_CODE)
+	  WHERE A.MEM_CODE = #{ userCode }	 
+	 </select>
 	
 	    <!-- 내가 자주 찾는 가게 총 갯수 확인 -->
     <select id="selectMyRecommendStore" resultType="_int" parameterType="hashmap">
@@ -419,7 +392,7 @@
 	 ]]>
 	</select>
 	 <!-- 리뷰관련 가게 제품정보 출력 (작업중)-->
-	<select id="selectMySdInfo" resultType="hashmap">
+<!-- 	<select id="selectMySdInfo" resultType="hashmap">
 	 SELECT
 	 		A.ORDER_CODE
 	 	  , B.SD_CODE
@@ -430,6 +403,8 @@
 	   JOIN PRODUCT_TBL C ON(C.SD_CODE = B.SD_CODE)
 	  WHERE A.MEM_CODE = #{ userCode }
 	   
-	 </select>
+	 </select> -->
+	 
+	 
     </mapper>
     

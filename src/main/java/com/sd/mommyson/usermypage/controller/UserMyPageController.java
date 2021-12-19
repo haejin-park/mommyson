@@ -105,20 +105,15 @@ public class UserMyPageController {
 		
 		System.out.println("주문내역 리스트 : " +myOrderList);
 		
-		//반찬코드를 담는다.
-		List<Object> sdCode = new ArrayList<>();
+		//반찬 정보 가져오기 
+		List<HashMap<String, String>> mySdInfo = userMyPageService.selectMyOrderSd(userCode);
+		System.out.println(mySdInfo);
 		
-		for(int i =0; i < myOrderList.size(); i++) {
-			for(int j =0; j< myOrderList.get(i).getOrderInfo().size(); j++) {
-				sdCode.add(myOrderList.get(i).getOrderInfo().get(j).getSdCode());
-				
-			}
-		}
-		System.out.println(sdCode);
-		
+			
 		mv.addAttribute("myOrderList", myOrderList);
 		mv.addAttribute("selectCriteria", selectCriteria);
-		mv.addAttribute("myOrderBoard", "myOrderBoard");
+		mv.addAttribute("mySdInfo", mySdInfo);
+		mv.addAttribute("Paging", "myOrderBoard");
 		
 		return "user_mypage/userTotalOrderList";
 	}
@@ -374,10 +369,10 @@ public class UserMyPageController {
 		List<ReviewDTO> reviewContentList = userMyPageService.selectReviewContentList(selectCriteria);
 		System.out.println("리뷰 페이지네이션 및 검색 : " + reviewContentList);
 		
-		int productInfoCode;
-//		List<OrderInfoDTO>	productInfo = new ArrayList<>();
-		List<HashMap<String, String>>productInfo = userMyPageService.selectMySdInfo(userCode);
-		System.out.println(productInfo);
+//		int productInfoCode;
+////		List<OrderInfoDTO>	productInfo = new ArrayList<>();
+//		List<HashMap<String, String>>productInfo = userMyPageService.selectMySdInfo(userCode);
+//		System.out.println(productInfo);
 //		for(int i = 0; i < reviewContentList.size(); i++) {
 //			productInfoCode = reviewContentList.get(i).getOrderCode();
 //				System.out.println(productInfoCode);
@@ -422,7 +417,7 @@ public class UserMyPageController {
 		
 		model.addAttribute("selectCriteria", selectCriteria);
 		model.addAttribute("reviewContentList", reviewContentList);
-		model.addAttribute("productInfo", productInfo);
+//		model.addAttribute("productInfo", productInfo);
 		
 		model.addAttribute("Paging", "myReview");
 		

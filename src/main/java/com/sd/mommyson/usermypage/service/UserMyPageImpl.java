@@ -93,9 +93,15 @@ public class UserMyPageImpl implements UserMyPageService {
 	}
 
 	@Override
-	public List<HashMap<String, String>> selectMySdInfo(int userCode) {
-		List<HashMap<String, String>> productInfo = userMyPageDAO.selectMySdInfo(userCode);
-		return productInfo;
+	public List<HashMap<String, String>> selectMyOrderSd(int userCode) {
+		List<HashMap<String, String>> mySdInfo = userMyPageDAO.selectMyOrderSd(userCode);
+		return mySdInfo;
 	}
+
+//	@Override
+//	public List<HashMap<String, String>> selectMySdInfo(int userCode) {
+//		List<HashMap<String, String>> productInfo = userMyPageDAO.selectMySdInfo(userCode);
+//		return productInfo;
+//	}
 
 }

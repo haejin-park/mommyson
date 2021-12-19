@@ -49,20 +49,14 @@
                 <tr>
                   <td><input type="hidden" value="${ reviewInfo.orderCode }"><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ reviewInfo.img }"></td>
                   <td>
-                  <c:forEach var="RelativeSdIfo" items="${ requestScope.productInfo }">
+              <%--     <c:forEach var="RelativeSdIfo" items="${ requestScope.productInfo }">
                   <c:if test="${ RelativeSdIfo.ORDER_CODE eq reviewInfo.orderCode }">
                 	 <div><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ RelativeSdIfo.SD_IMG }"><br><c:out value="${ RelativeSdIfo.SD_NAME }"/></div>
                   </c:if>
-                  </c:forEach>
+                  </c:forEach> --%>
+                  	<img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ reviewInfo.img }">
                 	  </td><!-- 크앙 -->
-                 <%--  <td style="padding-top: 40px;">
-                  <c:forEach var="RelativeSdIfo2" items="${ requestScope.productInfo }">
-                    <c:if test="${ RelativeSdIfo2.ORDER_CODE eq reviewInfo.orderCode }">                 
-                  		<c:out value="${ RelativeSdIfo2.SD_NAME }"/>
-                  	</c:if>
-                  </c:forEach>
-                  </td> --%>
-                  <td style="padding-top: 40px;"><c:out value="${ reviewInfo.content }"/></td>
+                                  <td style="padding-top: 40px;"><c:out value="${ reviewInfo.content }"/></td>
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.grade }"/>개</td><!--추후 별 이미지 처리-->
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.orderDTO.requestTime }"/></td><!-- 주문일자 -->
                   <td style="padding-top: 40px;"><button class="urBtn">삭제</button><button class="urBtn">수정</button></td>

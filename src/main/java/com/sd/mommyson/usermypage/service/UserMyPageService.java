@@ -32,7 +32,9 @@ public interface UserMyPageService {
 
 	List<ReviewDTO> selectReviewContentList(SelectCriteria selectCriteria);
 
-	List<HashMap<String, String>> selectMySdInfo(int userCode);
+	List<HashMap<String, String>> selectMyOrderSd(int userCode);
+
+//	List<HashMap<String, String>> selectMySdInfo(int userCode);
 
 	
 

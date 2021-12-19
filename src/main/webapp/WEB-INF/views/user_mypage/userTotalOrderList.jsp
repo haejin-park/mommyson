@@ -47,36 +47,40 @@
               </thead>
               <tbody>
               <c:forEach var="myOrder"  items="${ requestScope.myOrderList }">
+              	<tr>
                   <td style="padding-top: 40px;">
-                  	<c:if test="${ myOrder.orderAcceptTime eq null }">
+                  	<c:if test="${ myOrder.acceptTime eq null }">
              	     <input type="checkbox" name="choose" style="width: 20px; height: 20px;">
            		    </c:if>
              	     <input type="hidden" name="orderCode" value="${ myOrder.orderCode }">
              	     <c:out value="${ myOrder.orderCode }"/>
                   </td>
-                  <td rowspan="i"><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${myOrder.orderInfo[0].sdInfo.storeInfo.storeImg}"></td>
-	         	  <td colspan="4" style="padding-top: 40px; padding-left: 0px; padding-right: 0px;">
-	         	      <ul style="list-style: none">
-                  <c:forEach var="productInfo" items="${ myOrder.orderInfo }">
-	         	      <c:set var="i" value="${ i+1 }"/>
+                  <td rowspan ="i">
+                  <img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myOrder.storeInfo.storeImg }">
+                  </td>
+                  <td colspan="4" style="padding-top: 40px; padding-left: 0px; padding-right: 0px;">
+                  	<ul style="list-style: none">
+                  
+                  <c:forEach var="sdInfo" items="${ requestScope.mySdInfo }">
+	                  <c:if test="${ myOrder.orderCode eq sdInfo.ORDER_CODE }">
+		         	  <c:set var="i" value="${ i+1 }"/>
 	         	      	<li style="display: flex;">	         	      	
-	         	      	<img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ productInfo.sdInfo.sdImg }">
-	         	      	<p style="width: 220px"><c:out value="${ productInfo.sdInfo.sdName }"/></p>
-	         	      	<p style="width: 100px"><c:out value="${ productInfo.sdInfo.price }"/></p>
-	         	      	<p style="width: 100px"><c:out value="${ productInfo.amount }"/></p>
+	         	      	<img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ sdInfo.SD_IMG }">
+	         	      	<p style="width: 220px"><c:out value="${ sdInfo.SD_NAME }"/></p>
+	         	      	<p style="width: 100px"><c:out value="${ sdInfo.PRICE }"/></p>
+	         	      	<p style="width: 100px"><c:out value="${ sdInfo.AMONT }"/></p>
 	         	      	</li>
 	         	      <br>
+	                  </c:if>
                   </c:forEach>
-	         	      </ul>
-	         	  </td>
-	         	  
-	         	  
-                  <td rowspan="i" style="padding-top: 40px;"><c:out value="${ myOrder.orderCompleteTime }"/></td>
+                  	</ul>
+                  </td>
                   
-                 
+                  
+                  <td rowspan="i" style="padding-top: 40px;"><c:out value="${ myOrder.completeTime }"/></td>
                   <td rowspan="i" style="padding-top: 40px;"><c:out value="${ myOrder.totalPrice }"/></td>
                   <td rowspan="i" style="padding-top: 40px;">
-                  <c:if test="${ myOrder.orderCompleteTime ne null || myOrder.takeTime ne null }">
+                  <c:if test="${ myOrder.completeTime ne null || myOrder.takeTime ne null }">
                   <button class="urBtn">리뷰쓰기</button>                             
                   </c:if>
                   </td>
