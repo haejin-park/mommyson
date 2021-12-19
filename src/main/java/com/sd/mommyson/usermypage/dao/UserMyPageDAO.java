@@ -40,6 +40,8 @@ public interface UserMyPageDAO {
 
 	double selectStoreGrade(int orderCode);
 
-//	List<HashMap<String, String>> selectMySdInfo(int userCode);
+	List<HashMap<String, String>> selectMySdInfo(int userCode);
+
+	int updateOrderCancel(int orderNo);
 
 }

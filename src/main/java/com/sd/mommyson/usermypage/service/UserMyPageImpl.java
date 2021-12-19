@@ -113,10 +113,16 @@ public class UserMyPageImpl implements UserMyPageService {
 		return userMyPageDAO.selectStoreGrade(orderCode);
 	}
 
-//	@Override
-//	public List<HashMap<String, String>> selectMySdInfo(int userCode) {
-//		List<HashMap<String, String>> productInfo = userMyPageDAO.selectMySdInfo(userCode);
-//		return productInfo;
-//	}
+	@Override
+	public List<HashMap<String, String>> selectMySdInfo(int userCode) {
+		List<HashMap<String, String>> productInfo = userMyPageDAO.selectMySdInfo(userCode);
+		return productInfo;
+	}
+
+	@Override
+	public int updateOrderCancel(int orderNo) {
+		int result = userMyPageDAO.updateOrderCancel(orderNo);
+		return result;
+	}
 
 }

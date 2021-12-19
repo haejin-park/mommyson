@@ -201,6 +201,7 @@
 			 , A.CODE
 			 , A.ORDER_CANCLE_TIME
 			 , A.ORDER_COMPLETE_TIME
+			 , A.ORDER_ACCEPT_TIME
 			 , A.STORE_IMG
 		  FROM (SELECT ROWNUM RNUM
 		  			 , B.MEM_CODE
@@ -214,6 +215,7 @@
 					 , B.CODE
 					 , B.ORDER_CANCLE_TIME
 					 , B.ORDER_COMPLETE_TIME
+					 , B.ORDER_ACCEPT_TIME
 					 , B.STORE_IMG		 
 				  FROM (SELECT C.MEM_CODE
 							 , C.TOTAL_PRICE
@@ -226,6 +228,7 @@
 							 , C.CODE
 							 , C.ORDER_CANCLE_TIME
 							 , C.ORDER_COMPLETE_TIME
+							 , C.ORDER_ACCEPT_TIME
 							 , F.STORE_IMG
 				  		  FROM ORDER_TBL C
 				  		  JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE = C.ORDER_CODE)
@@ -261,6 +264,17 @@
 	   JOIN STORE_TBL D ON(D.MEM_CODE = C.MEM_CODE)
 	  WHERE A.MEM_CODE = #{ userCode }	 
 	 </select>
+	 
+	  <!-- 주문취소 -->
+	  <update id="updateOrderCancel">
+	   UPDATE
+		      ORDER_TBL A
+		  SET ORDER_CANCLE_TIME = SYSDATE 
+		 WHERE A.ORDER_CODE = #{ orderNo }
+	  </update>
+	  
+	  
+	  
 	
 	    <!-- 내가 자주 찾는 가게 총 갯수 확인 -->
     <select id="selectMyRecommendStore" resultType="_int" parameterType="hashmap">
@@ -392,18 +406,16 @@
 	 ]]>
 	</select>
 	 <!-- 리뷰관련 가게 제품정보 출력 (작업중)-->
-<!-- 	<select id="selectMySdInfo" resultType="hashmap">
+ 	<select id="selectMySdInfo" resultType="hashmap">
 	 SELECT
 	 		A.ORDER_CODE
-	 	  , B.SD_CODE
-	 	  , C.SD_IMG
-	 	  , SD_NAME 	
+	 	  , A.STORE_CODE
+	 	  , B.STORE_IMG 	
 	   FROM	ORDER_TBL A
 	   JOIN ORDER_INFO_TBL B ON(B.ORDER_CODE = A.ORDER_CODE)
 	   JOIN PRODUCT_TBL C ON(C.SD_CODE = B.SD_CODE)
 	  WHERE A.MEM_CODE = #{ userCode }
-	   
-	 </select> -->
+	 </select>
 	
 	<insert id="insertReview">
 		INSERT
@@ -440,13 +452,16 @@
 		 WHERE MEM_CODE = #{ memCode }
 	</update>
 	 
-	 <select id="selectStoreGrade" resultType="double">
+	<select id="selectStoreGrade" resultType="double">
 	 	SELECT
 	 		   ROUND(AVG(A.RV_GRADE),1)
 	 	  FROM REVIEW_TBL A
 	 	  JOIN ORDER_TBL B ON(A.ORDER_CODE = B.ORDER_CODE)
 	 	 WHERE B.STORE_CODE = (SELECT C.STORE_CODE FROM ORDER_TBL C WHERE C.ORDER_CODE = #{ orderCode })
-	 </select>
+	</select>
+	 <!-- 리뷰삭제  -->
+	 <update id="">
+	 </update>
 	 
-    </mapper>
+</mapper>
     
