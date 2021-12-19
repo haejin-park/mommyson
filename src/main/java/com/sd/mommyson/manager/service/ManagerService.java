@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.CategoryDTO;
+import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
@@ -134,5 +136,36 @@ public interface ManagerService {
 
 	/* 태그 삭제 */
 	public int deleteTag(int tagNo);
+
+	/* 사용 태그로 등록하기 */
+	public int updateUseTag(List<Integer> useTagNoList);
+
+	/* 미사용 태그로 등록하기 */
+	public int updateUnUseTag(List<Integer> unUseTagNoList);
+
+	/* 핫 키워드 조회 */
+	public List<HotKeywordDTO> selectHotkeword();
+
+	/* 핫 키워드 등록 */
+	public int updateHotkewordAdd(List<Map<String, Object>> hotkewordList);
+
+	/* 핫 키워드 수정 */
+	public int updateHotkewordEdit(List<Map<String, Object>> hotkewordEditList);
+
+	/* 카테고리 조회 */
+	public List<CategoryDTO> selectCategoryList();
+
+	/* 카테고리 추가 */
+	public int insertCategory(String category);
+
+	/* 카테고리 삭제 */
+	public int deleteCategory(int categoryCode);
+
+	/* 사용 카테고리로 등록 */
+	public int updateUseCategory(List<String> useCategoryCodeList);
+
+	/* 미사용 카테고리로 등록 */
+	public int updateUnUseCategory(List<String> unUseCategoryCodeList);
+
 
 }

@@ -114,6 +114,8 @@
 				location.href = document.location.href + "&searchValue=" + searchValue;
 	 		} else if((document.location.href).includes("?searchValue") || (document.location.href).includes("&searchValue")){
 				location.href = document.location.pathname + "?searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("?currentPage")){
+	 			location.href = document.location.pathname + "?searchValue=" + searchValue;
 	 		} else {
 	 			location.href = document.location.href + "?searchValue=" + searchValue;
 	 		}

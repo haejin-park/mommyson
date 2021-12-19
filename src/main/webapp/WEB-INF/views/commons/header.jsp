@@ -183,9 +183,8 @@
 	          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
-      </nav>
-    <!-- 태그 div -->
-    <div id="tags" style="display: none;">
+        <!-- 태그 div -->
+    	<div id="tags" style="display: none;">
 	    	<div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
 	    	<c:forEach items="${ sessionScope.tagList }" var="tag" end="4">
 		       <button type="button" class="tag" name="searchValue" value="${ tag.tagNo }">#${ tag.tagName }</button>
@@ -201,7 +200,9 @@
 		       <button type="button" class="tag" name="searchValue" value="${ tag.tagNo }">#${ tag.tagName }</button>
 	    	</c:forEach>
 	        </div>
-	</div>    	
+		</div>    
+      </nav>
+    	
       <script>
         // 태그 div 출력 이벤트
         $('#search').on('keyup', function() {
