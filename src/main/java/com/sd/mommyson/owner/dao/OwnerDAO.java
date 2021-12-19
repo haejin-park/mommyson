@@ -8,6 +8,7 @@ import com.sd.mommyson.member.dto.CeoDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
@@ -101,5 +102,7 @@ public interface OwnerDAO {
 	public int insertTag(Map<String, Integer> map);
 
 	public int removeTag(int sdCode);
+
+	public MembershipAndStoreDTO selectMembershipAndStore(int msCode);
 
 }

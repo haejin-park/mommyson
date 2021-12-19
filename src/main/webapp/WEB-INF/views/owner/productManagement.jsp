@@ -150,18 +150,8 @@
 	        form.submit(); 
 	    	
 	    });
-	
-	    $(".searchbutton").on('click',function(){
-	    	let searchValue = $('input[name=searchValue]').val();
-							// 현재 페이지 주소
-	    	location.href = "${ location.href }?searchValue=" + searchValue;
-	    }); 
 	    
 	    $(".searchtext").attr("placeholder","검색할 상품명을 입력해주세요");
-	    
-	    if(${ requestScope.pagination.searchValue != null && requestScope.pagination.searchValue != ''}){
-	    	 $(".searchtext").attr("placeholder", "검색어 : " + "${ requestScope.pagination.searchValue }");
-	    }
 	    
 	    $("#status").change(function(){
 	    	$("#frm").submit();

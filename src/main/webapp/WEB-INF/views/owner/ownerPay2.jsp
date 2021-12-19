@@ -297,7 +297,7 @@
 	      	    IMP.request_pay({
 	      	    	pg : 'kakaopay',
 	      	        pay_method : 'card', //생략 가능
-	      	        merchant_uid: "${ requestScope.orderCode }", // 상점에서 관리하는 주문 번호 db에서 가져와야함
+	      	        merchant_uid: "${ requestScope.orderCode }" + 4, // 상점에서 관리하는 주문 번호 db에서 가져와야함
 	      	        name : "${ requestScope.membership.msType }", // 상품명
 	      	        amount : totalPrice, 
 	      	        buyer_email : "${ requestScope.ownerInfo.email }",
@@ -305,11 +305,15 @@
 	      	        buyer_tel : phone,
 	      	        buyer_addr : "${ requestScope.ownerInfo.address }",
 	      	        buyer_postcode : "${ requestScope.ownerInfo.postCode }",
-	      	        m_redirect_url : '${ pageContext.servletContext.contextPath }/owner/kakaoPay?msCode=' + msCode + '&msDate=' + msDate
-	      	    },  function(rsp) {
-
-	      	    	if( !rsp.success ){
-	      	    	//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
+	      	       /*  m_redirect_url : '{ ${ pageContext.servletContext.contextPath }/owner/kakaoPay?msCode=${ requestScope.membership.msCode }&msDate=${ requestScope.membership.msDate } }' */
+	      	    },  function(rsp) { 
+	      	    	
+	      	    	if( rsp.success ){
+		      	    	
+	      	    		location.href = ' ${ pageContext.servletContext.contextPath }/owner/kakaoPay?msCode=${ requestScope.membership.msCode }&msDate=${ requestScope.membership.msDate } ';
+	      	    		
+		      	    	} else {
+	      	    		//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
 		      	        var msg = '오류로 인하여 결제가 시작되지 못하였습니다.';
 		      	        msg += '에러내용 : ' + rsp.error_msg;
 
