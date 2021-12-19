@@ -594,7 +594,7 @@ public class OwnerController {
 	
 	/* 오더페이지 완료된 주문 페이지네이션*/
 	@GetMapping("order2")
-	public String orderList2(@ModelAttribute("loginMember") MemberDTO member, @RequestParam( required = false) Map<String, String> param,Model model) {
+	public String orderList2(@ModelAttribute("loginMember") MemberDTO member, @RequestParam( required = false) Map<String, String> param, Model model) {
 		
 		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
 				MemberDTO owner = ownerService.selectOwner(member);
@@ -646,10 +646,10 @@ public class OwnerController {
 				
 				if(searchValue != null && !"".equals(searchValue)) {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
-					searchMap.put("pagenation", pagenation);
+					searchMap.put("pagination", pagenation);
 				} else {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
-					searchMap.put("pagenation", pagenation);
+					searchMap.put("pagination", pagenation);
 				}
 				
 				List<OrderDTO> orderList2 = ownerService.selectOrderList2(searchMap);
@@ -657,7 +657,7 @@ public class OwnerController {
 				System.out.println("orderList2 : " + orderList2);
 				
 				if(orderList2 != null) {
-					model.addAttribute("pagenation",pagenation);
+					model.addAttribute("pagination",pagenation);
 					model.addAttribute("orderList2", orderList2);
 					model.addAttribute("searchMap",searchMap);
 				} else {
@@ -674,10 +674,6 @@ public class OwnerController {
 		MemberDTO owner = ownerService.selectOwner(member);
 		String storeName = owner.getCeo().getStore().getStoreName();
 		System.out.println("스토어 이름 : " + storeName);
-		
-		// 주문 접수 가져오기
-		
-//		List<OrderDTO> orderList2 = ownerService.selectOrderList2(storeName);
 		
 		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
 		// 현재 페이지
@@ -699,8 +695,8 @@ public class OwnerController {
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = ownerService.selectOrderListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
 		
-		int limit = 15; //페이지당 글 갯수
-		int buttonAmount =  15;//페이징 버튼의 갯수
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
 		
 		Pagination pagination = null;
 		String searchCondition = storeName;
@@ -720,6 +716,7 @@ public class OwnerController {
 		return "owner/order";
 	}
 
+	// 모달 ajax
 	@PostMapping(value="order",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderList2(@RequestParam(value="orderCode") int orderCode) throws JsonProcessingException {
@@ -737,6 +734,7 @@ public class OwnerController {
 		
 	}
 	
+	// order 상태 변경
 	@PostMapping("orderUpdateAndDelete")
 	public String orderUpdate(@RequestParam("orderType") int orderType,@RequestParam("orderCode") int orderCode, Model model) {
 

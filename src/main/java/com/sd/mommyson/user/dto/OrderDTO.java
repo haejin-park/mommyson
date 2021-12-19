@@ -20,7 +20,7 @@ public class OrderDTO {
 	private int code;			// 상태코드 (1 : 주문접수중  2: 주문수락  3: 주문취소  4: 주문완료  )
 	private String acceptTime;
 	private Date cancleTime;
-	private Date completeTime;
+	private String completeTime;
 	private Date requestTime;
 	private OrderInfoDTO orderInfoDTO;
 	private MemberDTO memberDTO;
@@ -38,7 +38,7 @@ public class OrderDTO {
 
 
 	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
-			String phone, String storeName, int code, String acceptTime, Date cancleTime, Date completeTime,
+			String phone, String storeName, int code, String acceptTime, Date cancleTime, String completeTime,
 			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO, List<String> product,
 			List<ProductDTO> productDTO, List<OrderInfoDTO> orderAmount, StoreDTO storeInfo) {
 		super();
@@ -175,12 +175,12 @@ public class OrderDTO {
 	}
 
 
-	public Date getCompleteTime() {
+	public String getCompleteTime() {
 		return completeTime;
 	}
 
 
-	public void setCompleteTime(Date completeTime) {
+	public void setCompleteTime(String completeTime) {
 		this.completeTime = completeTime;
 	}
 
@@ -274,7 +274,7 @@ public class OrderDTO {
 				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product
 				+ ", productDTO=" + productDTO + ", orderAmount=" + orderAmount + ", storeInfo=" + storeInfo + "]";
 	}
-
-
 	
+	
+
 }
