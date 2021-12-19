@@ -153,7 +153,7 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
 #tags {
   position: absolute;
   right: 0;
-  top: 340px;
+  top: 100%;
   z-index: 2;
   background: white;
   width: 500px;
@@ -161,7 +161,7 @@ footer .manager_center p { font-size: 16px; line-height: 18px; color: #777; marg
   float: right;
   border: 1px solid black;
   border-radius: 10px;
-  margin-right: 20px;
+  margin-right: 0;
   margin-bottom: 20px;
   box-shadow: 4px 2px 4px 0px;
 }

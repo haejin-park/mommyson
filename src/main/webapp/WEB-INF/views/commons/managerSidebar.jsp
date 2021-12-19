@@ -31,7 +31,7 @@
 		                    <a href="${ pageContext.servletContext.contextPath }/manager/normalMember">일반 회원 조회</a>
 		                </li>
 		                <li>
-		                    <a href="${ pageContext.servletContext.contextPath }/manager/buisnessMember">사업자 회원 조회</a>
+		                    <a href="${ pageContext.servletContext.contextPath }/manager/businessMember">사업자 회원 조회</a>
 		                </li>
 		                <li>
 		                    <a href="${ pageContext.servletContext.contextPath }/manager/blackMember">블랙 회원 조회</a>
