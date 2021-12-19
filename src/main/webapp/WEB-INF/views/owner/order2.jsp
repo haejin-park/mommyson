@@ -102,7 +102,7 @@
 				</table>
 				</div>
 			</div>
-				<div style="position: relative; top: 300px;">
+				<div style="position: relative; top: 200px;">
 				<!-- 페이지네이션 -->
 				<jsp:include page="../commons/ownerPaging.jsp"/>
 				</div>
