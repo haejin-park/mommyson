@@ -29,7 +29,7 @@
                     		<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
                   		</li>
                  		 <li>
-                  			<a href=""><img style="height: 25px; margin-right: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  			<a href="${ pageContext.servletContext.contextPath }/userMyPage/"><img style="height: 25px; margin-right: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   		</li>
                   		<li>
                     		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">

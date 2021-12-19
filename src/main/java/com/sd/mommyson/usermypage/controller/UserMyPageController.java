@@ -1,12 +1,15 @@
 package com.sd.mommyson.usermypage.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -14,18 +17,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
+import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 import com.sd.mommyson.usermypage.service.UserMyPageService;
 
 @Controller
@@ -102,20 +110,15 @@ public class UserMyPageController {
 		
 		System.out.println("주문내역 리스트 : " +myOrderList);
 		
-		//반찬코드를 담는다.
-		List<Object> sdCode = new ArrayList<>();
+		//반찬 정보 가져오기 
+		List<HashMap<String, String>> mySdInfo = userMyPageService.selectMyOrderSd(userCode);
+		System.out.println(mySdInfo);
 		
-		for(int i =0; i < myOrderList.size(); i++) {
-			for(int j =0; j< myOrderList.get(i).getOrderInfo().size(); j++) {
-				sdCode.add(myOrderList.get(i).getOrderInfo().get(j).getSdCode());
-				
-			}
-		}
-		System.out.println(sdCode);
-		
+			
 		mv.addAttribute("myOrderList", myOrderList);
 		mv.addAttribute("selectCriteria", selectCriteria);
-		mv.addAttribute("myOrderBoard", "myOrderBoard");
+		mv.addAttribute("mySdInfo", mySdInfo);
+		mv.addAttribute("Paging", "myOrderBoard");
 		
 		return "user_mypage/userTotalOrderList";
 	}
@@ -310,7 +313,7 @@ public class UserMyPageController {
 	
 	/*내가 쓴 리뷰*/
 	@GetMapping("userReview")
-	public String userReview(HttpSession session, Model model, @RequestParam(required = false) Map<String,String> parameters) {
+	public String userReview(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(required = false) Map<String,String> parameters) throws IOException {
 		
 		System.out.println("내가 리뷰 콘트롤러 진입");
 		
@@ -348,6 +351,80 @@ public class UserMyPageController {
 		
 		int totalCount = userMyPageService.selectTotalReviewCount(searchMap);
 		System.out.println("totalCount : " + totalCount);
+
+		System.out.println("totalPostCount : " + totalCount);
+		
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 5;		//얘도 파라미터로 전달받아도 된다.
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+		
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+			System.out.println("들어왔음");
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("selectCriteria : " + selectCriteria);
+		
+		List<ReviewDTO> reviewContentList = userMyPageService.selectReviewContentList(selectCriteria);
+		System.out.println("리뷰 페이지네이션 및 검색 : " + reviewContentList);
+		
+//		int productInfoCode;
+////		List<OrderInfoDTO>	productInfo = new ArrayList<>();
+//		List<HashMap<String, String>>productInfo = userMyPageService.selectMySdInfo(userCode);
+//		System.out.println(productInfo);
+//		for(int i = 0; i < reviewContentList.size(); i++) {
+//			productInfoCode = reviewContentList.get(i).getOrderCode();
+//				System.out.println(productInfoCode);
+//				productInfo=userMyPageService.selectMySdInfo(productInfoCode);
+//				System.out.println(productInfo);
+//		}
+//		System.out.println("반찬 정보 : " + productInfo);
+//		List<Integer> sdCodeList = new ArrayList<>();
+//		for(int i = 0; i < reviewContentList.size(); i++) {
+//			productOrderCode = reviewContentList.get(i).getOrderCode();
+//			sdCodeList.add(userMyPageService.selectMySdInfo(productOrderCode));
+//			
+//		}
+		
+		
+		
+	
+		
+//		System.out.println(request.getParameter("orderNo"));
+//		String productNo = request.getParameter("orderNo");
+//		System.out.println(productNo);
+//		
+//		String num = request.getParameter("orderNo");
+//		System.out.println("Num값을 찾아라  : " + num);
+//		int productInfoCode = Integer.parseInt(num);
+		
+		
+		
+//		List<OrderInfoDTO>	productInfo = userMyPageService.selectMySdInfo(productInfoCode);	
+//		System.out.println(request.getParameter("orderNo"));
+//		response.setContentType("text/plain; charset=UTF-8");
+//		PrintWriter out = response.getWriter();
+//		out.print(Num);
+//		
+//		out.flush();
+//		out.close();
+		
+		
+		
+		
+//		System.out.println("넘어온 주문번호" + orderNo);
+		
+		model.addAttribute("selectCriteria", selectCriteria);
+		model.addAttribute("reviewContentList", reviewContentList);
+//		model.addAttribute("productInfo", productInfo);
+		
+		model.addAttribute("Paging", "myReview");
 		
 		
 		return "user_mypage/userReview";
@@ -356,6 +433,91 @@ public class UserMyPageController {
 	/*리뷰 수정*/
 	/*리뷰 삭제*/
 	
+	/**@author ShinHyungi
+	 * @param orderCode
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("postReview")
+	public String postReview(@RequestParam String orderCode, Model model) {
+		
+		model.addAttribute("orderCode", orderCode);
+		
+		return "user_mypage/review_page";
+	}
+	
+	/**@author ShinHyungi
+	 * @param img
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("postReview") 
+	public String postReview(@RequestParam MultipartFile img, HttpServletRequest request, HttpSession session, RedirectAttributes ra) {
+		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
+		ReviewDTO review = new ReviewDTO();
+		
+		int grade = Integer.parseInt(request.getParameter("star"));
+		int orderCode = Integer.parseInt(request.getParameter("orderCode"));
+		review.setOrderCode(orderCode);
+		review.setGrade(grade);
+		review.setMemCode(member.getMemCode());
+		review.setContent((String) request.getParameter("contents"));
+		review.setMemId(member.getMemId());
+		System.out.println("img : " + img);
+		System.out.println("review : " + review);
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		
+		String filePath = root + "/uploadFiles";
+		
+		File mkdir = new File(filePath);
+		if(!mkdir.exists()) {
+			mkdir.mkdirs();
+		}
+		
+		if(!img.isEmpty()) {
+			
+			String orginFileName = img.getOriginalFilename();
+			String ext = orginFileName.substring(orginFileName.indexOf("."));
+			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+			
+			try {
+				img.transferTo(new File(filePath + "/" + savedName));
+				
+				String fileName = "resources/uploadFiles/" + savedName;
+				
+				review.setImg(fileName);
+				
+				
+			} catch (IllegalStateException | IOException e) {
+				new File(filePath + "/" + savedName).delete();
+					
+				e.printStackTrace();
+			}
+		
+		}
+		
+		// 리뷰 등록
+		int result = userMyPageService.insertReview(review);
+		
+		// 가게 평점 업데이트
+		double storeGrade = userMyPageService.selectStoreGrade(orderCode);
+		Map<String, Object> map = new HashMap<>();
+		map.put("orderCode", orderCode);
+		map.put("grade", storeGrade);
+		int result2 = userMyPageService.updateStoreGrade(map);
+		String url = "";
+		if(result > 0 && result2 > 0) {
+			url = "redirect:userReview";
+			ra.addFlashAttribute("message", "리뷰 등록 완료");
+		} else {
+			url = "redirect:myOrderList";
+			ra.addFlashAttribute("message", "리뷰 등록 실패");
+		}
+//		return "redirect:userMypage/userReview";
+		return url;
+	}
 	
 	
 	

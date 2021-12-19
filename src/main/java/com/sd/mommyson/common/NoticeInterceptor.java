@@ -17,8 +17,9 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 	
 	private MemberService memberService;
 	
+
 	public NoticeInterceptor() {}
-	
+
 	@Autowired
 	public NoticeInterceptor(MemberService memberService) {
 		this.memberService = memberService;

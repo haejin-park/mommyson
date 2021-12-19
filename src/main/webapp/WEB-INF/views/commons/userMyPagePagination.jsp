@@ -52,6 +52,9 @@
 		if("${ requestScope.Paging }" === "myOrderBoard") {
 			link = "${ pageContext.servletContext.contextPath }/userMyPage/myOrderList";
 		}
+		if("${ requestScope.Paging }" === "myReview") {
+			link = "${ pageContext.servletContext.contextPath }/userMyPage/userReview";
+		}
 		
 		
 		

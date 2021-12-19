@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 
 public class OrderDTO {
@@ -25,6 +26,7 @@ public class OrderDTO {
 	private MemberDTO memberDTO;
 	private AcceptDTO acceptDTO;
 	private List<String> product; // 하나의 오더코드 안에 여러개의 반찬네임이 존재해서 리스트로
+	private StoreDTO storeInfo;
 
 	
 	public OrderDTO() {
@@ -35,8 +37,8 @@ public class OrderDTO {
 
 	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
 			String phone, String storeName, int code, String acceptTime, Date cancleTime, Date completeTime,
-			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO,
-			List<String> product) {
+			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO, List<String> product,
+			StoreDTO storeInfo) {
 		super();
 		this.memCode = memCode;
 		this.totalPrice = totalPrice;
@@ -55,6 +57,7 @@ public class OrderDTO {
 		this.memberDTO = memberDTO;
 		this.acceptDTO = acceptDTO;
 		this.product = product;
+		this.storeInfo = storeInfo;
 	}
 
 
@@ -228,14 +231,27 @@ public class OrderDTO {
 	}
 
 
+	public StoreDTO getStoreInfo() {
+		return storeInfo;
+	}
+
+
+	public void setStoreInfo(StoreDTO storeInfo) {
+		this.storeInfo = storeInfo;
+	}
+
+
 	@Override
 	public String toString() {
 		return "OrderDTO [memCode=" + memCode + ", totalPrice=" + totalPrice + ", orderCode=" + orderCode
 				+ ", orderType=" + orderType + ", takeTime=" + takeTime + ", address=" + address + ", phone=" + phone
 				+ ", storeName=" + storeName + ", code=" + code + ", acceptTime=" + acceptTime + ", cancleTime="
 				+ cancleTime + ", completeTime=" + completeTime + ", requestTime=" + requestTime + ", orderInfoDTO="
-				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product + "]";
+				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product
+				+ ", storeInfo=" + storeInfo + "]";
 	}
+
+
 
  
 }
