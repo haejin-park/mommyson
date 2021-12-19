@@ -408,13 +408,12 @@
 	 <!-- 리뷰관련 가게 제품정보 출력 (작업중)-->
  	<select id="selectMySdInfo" resultType="hashmap">
 	 SELECT
-	 		A.ORDER_CODE
-	 	  , A.STORE_CODE
-	 	  , B.STORE_IMG 	
-	   FROM	ORDER_TBL A
-	   JOIN ORDER_INFO_TBL B ON(B.ORDER_CODE = A.ORDER_CODE)
-	   JOIN PRODUCT_TBL C ON(C.SD_CODE = B.SD_CODE)
-	  WHERE A.MEM_CODE = #{ userCode }
+             A.ORDER_CODE
+           , A.STORE_CODE
+           , B.STORE_IMG
+       FROM  ORDER_TBL A
+       JOIN STORE_TBL B ON(A.STORE_CODE=B.MEM_CODE) 
+      WHERE A.MEM_CODE = #{ userCode }
 	 </select>
 	
 	<insert id="insertReview">
