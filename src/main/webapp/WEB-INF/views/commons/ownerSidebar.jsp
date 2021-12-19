@@ -13,26 +13,36 @@
 		<div class="side-all">
             <div class="side-1">
                 <br>
-                <form action="" method="post" id="ownerFrm">
                     <img src="${ pageContext.servletContext.contextPath }/${ sessionScope.owner.ceo.store.storeImg }" width="150px;"><br> <hr>
                     <h3>${ sessionScope.owner.ceo.name }사장님</h3>
                     <br>
-                    <h5>21-11-22 ~</h5>
-                    <h6>정액제 사용중</h6>
-                    <h6>만료일 : 22-2-22</h6>
+                    
+                    <c:if test="${ sessionScope.membership != null && !empty sessionScope.membership }">
+                    <h5>시작일 : ${ sessionScope.membership.startDate }</h5><br>
+                    <h5>만료일 : ${ sessionScope.membership.endDate }</h5><br>
+                    <h5>${ sessionScope.membership.MS_TYPE } 사용중</h5>
                     <input type="hidden" name="statusYN">
-                </form><br>
-
-                <a href="${ pageContext.servletContext.contextPath }/owner/ownerPay">
-                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; margin-bottom: 10px;" id="pay">연장하기</button>
-                </a>
-                <hr>
-               	<c:if test="${ sessionScope.loginMember.ceo.store.statusYN == 'Y' }">
-                	<button id="button3" style="margin-top: 10px; margin-bottom: 30px;">영업중</button> 
-                </c:if>
-                <c:if test="${ sessionScope.loginMember.ceo.store.statusYN == 'N' }">
-                	<button id="button3" style="margin-top: 10px; margin-bottom: 30px; background-color: #777777">영업시작</button> 
-                </c:if>
+                    <br>
+	                <a href="${ pageContext.servletContext.contextPath }/owner/ownerPay">
+	                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 100px; margin-bottom: 10px;" id="pay">연장하기</button>
+	                </a>
+	                <hr>
+	               	<c:if test="${ sessionScope.loginMember.ceo.store.statusYN == 'Y' }">
+	                	<button id="button3" style="margin-top: 10px; margin-bottom: 30px;">영업중</button> 
+	                </c:if>
+	                <c:if test="${ sessionScope.loginMember.ceo.store.statusYN == 'N' }">
+	                	<button id="button3" style="margin-top: 10px; margin-bottom: 30px; background-color: #777777">영업시작</button> 
+	                </c:if>
+                    </c:if>
+                    
+                    <c:if test="${ sessionScope.membership == null && empty sessionScope.membership }">
+                    <h5>이용중인 이용권이 없습니다.</h5>
+                    <input type="hidden" name="statusYN">
+                    <br>
+	                <a href="${ pageContext.servletContext.contextPath }/owner/ownerPay">
+	                <button style="background-color: rgba(248, 158, 145, 1); border: none; border-radius: 5px; color: white; width: 120px; margin-bottom: 10px;" id="pay">이용권 결제하기</button>
+	                </a>
+                    </c:if>
                 </div>
             <script>
             $(function(){

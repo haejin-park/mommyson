@@ -1,10 +1,11 @@
 package com.sd.mommyson.owner.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -405,11 +406,44 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public MembershipAndStoreDTO selectMembershipAndStore(int msCode) {
+	public MembershipAndStoreDTO selectMembershipAndStore(int memCode) {
 
-		MembershipAndStoreDTO membership = ownerDAO.selectMembershipAndStore(msCode);
+		MembershipAndStoreDTO membership = ownerDAO.selectMembershipAndStore(memCode);
 		
 		return membership;
+	}
+
+	@Override
+	public int registMembership(Map<String, Object> info) {
+
+		// 오늘 날짜 구하기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		
+		Calendar c1 = Calendar.getInstance(); 
+		
+		String today = sdf.format(c1.getTime());
+		
+		// 오늘날짜 + 이용권 일 수 
+		
+		int msDate = (Integer)info.get("msDate");
+		
+		c1.add(c1.DATE, msDate);
+		
+		String endDate = sdf.format(c1.getTime());
+		
+		System.out.println(endDate);
+		
+		info.put("endDate", endDate);
+		info.put("startDate", today);
+		
+		return ownerDAO.registMembership(info);
+	}
+
+	@Override
+	public Map<String, Object> selectMembershipInfo(int memCode) {
+
+		
+		return ownerDAO.selectMembershipInfo(memCode);
 	}
 
 }

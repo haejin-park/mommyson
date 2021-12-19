@@ -102,7 +102,7 @@
             </tbody>
           </table>
         </div>
-        <div style="float: right; margin: 20px 69px 0 0;">
+        <div style="float: right; margin: 20px 30px 0 0;">
           <button class="couponBtn" id="delete" style="background-color: #777777; height: 30px;">삭제</button>
         </div>
         </div>
