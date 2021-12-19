@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -16,6 +17,9 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 
 	private MemberService memberService;
 	
+	public NoticeInterceptor() {}
+
+	@Autowired
 	public NoticeInterceptor(MemberService memberService) {
 		this.memberService = memberService;
 	}
@@ -27,13 +31,20 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession();
 		MemberDTO member = null;
 		List<RTNoticeDTO> noticeList = null;
+		int cartCount = 0;
 		if((MemberDTO) session.getAttribute("loginMember") != null) {
 			member = (MemberDTO) session.getAttribute("loginMember");
+			int memCode = member.getMemCode();
 			if(!member.getMemType().equals("manager")) {
-				noticeList = memberService.selectRTNotice(member.getMemCode());
-				session.setAttribute("noticeList", noticeList);
+				noticeList = memberService.selectRTNotice(memCode);
+			}
+			
+			if(member.getMemType().equals("user")) {
+				cartCount = memberService.selectCartCount(memCode);
+				session.setAttribute("cartCount", cartCount);
 			}
 		}
+		session.setAttribute("noticeList", noticeList);
 		
 		return noticeList != null || member == null? true : false;
 	}

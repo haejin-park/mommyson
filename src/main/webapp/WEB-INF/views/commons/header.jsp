@@ -29,19 +29,24 @@
                     		<a href="${ pageContext.servletContext.contextPath }/user/cart">장바구니</a>
                   		</li>
                  		 <li>
-                  			<a href=""><img style="height: 25px; margin-right: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
+                  			<a href="${ pageContext.servletContext.contextPath }/userMyPage/"><img style="height: 25px; margin-right: 10px;" src="${ pageContext.servletContext.contextPath }/resources/images/profile.png">${ sessionScope.loginMember.nickname}</a>
                   		</li>
                   		<li>
                     		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 							  <div class="btn-group" role="group">
 							    <button id="btnGroupDrop1" type="button" style="background: none; border: none; outline: none;" class="dropdown" data-toggle="dropdown" aria-expanded="false">
-							      <img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png">
+							      <c:if test="${ empty sessionScope.noticeList }">
+								      <img style="width: 28px;" id="bell" src="${ pageContext.servletContext.contextPath }/resources/images/bella.png">
+							      </c:if>
+							      <c:if test="${ !empty sessionScope.noticeList }">
+								      <img style="width: 28px;" id="bell" src="${ pageContext.servletContext.contextPath }/resources/images/inkedbell.png">
+							      </c:if>
 							    </button>
-							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px;">
+							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 60px;">
 							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
 								      <div style="display: flex; justify-content: space-between; align-items: center;">
 									      <a class="dropdown-item" href="#">${ notice.noticeContent }</a>
-									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd hh:mm" value="${ notice.noticeTime }"/></p>
+									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd HH:mm" value="${ notice.noticeTime }"/></p>
 									      <button value="${ notice.noticeCode }" style="background: none; border: none; outline: none; margin-right: 10px;" onclick="deleteNotice(this)">x</button>
 								      </div>
 							      </c:forEach>
@@ -57,12 +62,18 @@
                     		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 							  <div class="btn-group" role="group">
 							    <button id="btnGroupDrop1" type="button" style="background: none; border: none; outline: none;" class="dropdown" data-toggle="dropdown" aria-expanded="false">
-							      <img src="${ pageContext.servletContext.contextPath }/resources/images/bell.png">
+							      <c:if test="${ empty sessionScope.noticeList }">
+								      <img style="width: 28px;" src="${ pageContext.servletContext.contextPath }/resources/images/bell.png">
+							      </c:if>
+							      <c:if test="${ !empty sessionScope.noticeList }">
+								      <img style="width: 28px;" src="${ pageContext.servletContext.contextPath }/resources/images/inkedbell.png">
+							      </c:if>
 							    </button>
-							    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="width: 450px;">
+							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 60px;">
 							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
-								      <div style="display: flex; justify-content: space-between;">
+								      <div style="display: flex; justify-content: space-between; align-items: center;">
 									      <a class="dropdown-item" href="${ pageContext.servletContext.contextPath }/owner/order">${ notice.noticeContent }</a>
+									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd HH:mm" value="${ notice.noticeTime }"/></p>
 									      <button value="${ notice.noticeCode }" style="background: none; border: none; outline: none; margin-right: 10px;" onclick="deleteNotice(this)">x</button>
 								      </div>
 							      </c:forEach>
@@ -86,8 +97,7 @@
                     				noticeCode : noticeCode
                     			},
                     			success: function(data) {
-                    				e.parentNode.remove();
-                    				$('#btnGroupDrop1').dropdown('show')
+                    				location.reload();
                     			}
                     		})
                     	}

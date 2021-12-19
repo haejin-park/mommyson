@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,7 @@
               <thead>
                 <tr>
                   <th id="tablecol1" scope="col">가게 정보</th>
-                  <th id="tablecol2" scope="col"></th><!-- 제품 이미지 -->        
+                  <!-- <th id="tablecol2" scope="col"></th>제품 이미지  -->       
                   <th id="tablecol3" scope="col">제품정보</th>        
                   <th id="tablecol4" scope="col">리뷰</th>        
                   <th id="tablecol5" scope="col">별점</th>        
@@ -44,45 +45,93 @@
                 </tr>
               </thead>
               <tbody>
+				<c:forEach var="reviewInfo" items="${ requestScope.reviewContentList }">
                 <tr>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/1 2.png"></td>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/8 (1).png"></td>
-                  <td style="padding-top: 40px;">새 물고기 구이</td>
-                  <td style="padding-top: 40px;">베어그릴스가 떠오릅니다.</td>
-                  <td style="padding-top: 40px;">5개</td><!--추후 별 이미지 처리-->
-                  <td style="padding-top: 40px;">2021-11-24</td>
+                  <td><input type="hidden" value="${ reviewInfo.orderCode }"><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ reviewInfo.img }"></td>
+                  <td>
+              <%--     <c:forEach var="RelativeSdIfo" items="${ requestScope.productInfo }">
+                  <c:if test="${ RelativeSdIfo.ORDER_CODE eq reviewInfo.orderCode }">
+                	 <div><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ RelativeSdIfo.SD_IMG }"><br><c:out value="${ RelativeSdIfo.SD_NAME }"/></div>
+                  </c:if>
+                  </c:forEach> --%>
+                  	<img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ reviewInfo.img }">
+                	  </td><!-- 크앙 -->
+                                  <td style="padding-top: 40px;"><c:out value="${ reviewInfo.content }"/></td>
+                  <td style="padding-top: 40px;"><c:out value="${ reviewInfo.grade }"/>개</td><!--추후 별 이미지 처리-->
+                  <td style="padding-top: 40px;"><c:out value="${ reviewInfo.orderDTO.requestTime }"/></td><!-- 주문일자 -->
                   <td style="padding-top: 40px;"><button class="urBtn">삭제</button><button class="urBtn">수정</button></td>
                 </tr>
-                <tr>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/1 2.png"></td>
-                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/resources/images/8 (1).png"></td>
-                  <td style="padding-top: 40px;">새 물고기 구이</td>
-                  <td style="padding-top: 40px;">베어그릴스가 떠오릅니다.</td>
-                  <td style="padding-top: 40px;">5개</td><!--추후 별 이미지 처리-->
-                  <td style="padding-top: 40px;">2021-11-24</td>
-                  <td style="padding-top: 40px;"><button class="urBtn">삭제</button><button class="urBtn">수정</button></td>
-                </tr>
+				</c:forEach>
               </tbody>
             </table>
+            <c:out value="${ requestScope.productInfo[0].ORDER_CODE }"/>
+            <script>
+            	if(document.getElementsByTagName('td')){
+            		const $tds = $('td');           
+            			let orderInfo = $tds.find('input:hidden');
+            			console.log(orderInfo);
+            			
+            			//productInfo 반찬 
+            			let productInfo = ${ requestScope.productInfo };
+            			for(let i =0; productInfo.size(); i++) {
+            				console.log(JSON.stringfy(productInfo[i]));
+            			}
+            			
+            			/* consol.log(${ requestScope.productInfo}); */
+            			
+            			
+            			
+            			/* for(let orderA of orderInfo) {
+            				
+            				console.log(orderA.value);
+            				
+            				$.ajax({
+            					url : "${ pageContext.servletContext.contextPath }/userMyPage/userReview",
+            					method : "get",
+            					traditional : true,
+            					data : {
+            						orderNo : JSON.stringify(orderA.value)
+            					},
+            					dataType : "json",
+            					success : function(data, textStatus, xhr) {
+									alert("성공");
+								},
+								error : function(xhr, status, error) {
+									
+								}
+            					
+            				});
+            			} */  
+						/* console.log(type of(orderA));
+						for(let orderA of orderInfo) {
+            				
+            				console.log(orderA.value);
+            				
+            				$.ajax({
+            					url : "${ pageContext.servletContext.contextPath }/userMyPage/userReview",
+            					method : "get",
+            					data : {
+            						orderNo : orderA.value
+            					},
+            					success : function(data, textStatus, xhr) {
+									alert("성공");
+								},
+								error : function(xhr, status, error) {
+									
+								}
+            					
+            				});
+            			}  */
+           
+            	}
+            </script>
 
+			<ul>
+                 <jsp:include page="../commons/userMyPagePagination.jsp"/>
+             </ul>
             <!-- 페이징 -->
             <nav class="page_box" aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-              </ul>
+              	
               <ul>
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                   <input type="text" class="searchtext" placeholder="찾고싶은 리뷰를 입력해주세요"></li>

@@ -79,4 +79,6 @@ public interface MemberDAO {
 
 	public int deleteNotice(int noticeCode);
 
+	public int selectCartCount(int memCode);
+
 }
