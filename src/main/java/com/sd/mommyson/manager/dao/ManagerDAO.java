@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
@@ -132,5 +133,7 @@ public interface ManagerDAO {
 	int updateUseCategory(List<String> useCategoryCodeList);
 
 	int updateUnUseCategory(List<String> unUseCategoryCodeList);
+
+	List<BannerDTO> selectBanner();
 
 }

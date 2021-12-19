@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
@@ -125,6 +126,9 @@ public interface ManagerService {
 	/* 소비자 - 1:1 문의 리스트 */
 	public List<PostDTO> selectNormalInquiry(Pagination pagination);
 
+	/* 배너조회 */
+	public List<BannerDTO> selectBanner();
+	
 	/* 배너추가 */
 	public int insertBannerAdd(Map<String, Object> bnMap);
 

@@ -4,7 +4,6 @@ public class BannerDTO {
 
 	private int bnCode;
 	private String bnName;
-	private String bnImg;
 	private String bnStatus;
 	private int bnOrder;
 	
@@ -12,11 +11,10 @@ public class BannerDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BannerDTO(int bnCode, String bnName, String bnImg, String bnStatus, int bnOrder) {
+	public BannerDTO(int bnCode, String bnName, String bnStatus, int bnOrder) {
 		super();
 		this.bnCode = bnCode;
 		this.bnName = bnName;
-		this.bnImg = bnImg;
 		this.bnStatus = bnStatus;
 		this.bnOrder = bnOrder;
 	}
@@ -37,14 +35,6 @@ public class BannerDTO {
 		this.bnName = bnName;
 	}
 
-	public String getBnImg() {
-		return bnImg;
-	}
-
-	public void setBnImg(String bnImg) {
-		this.bnImg = bnImg;
-	}
-
 	public String getBnStatus() {
 		return bnStatus;
 	}
@@ -63,9 +53,9 @@ public class BannerDTO {
 
 	@Override
 	public String toString() {
-		return "BannerDTO [bnCode=" + bnCode + ", bnName=" + bnName + ", bnImg=" + bnImg + ", bnStatus=" + bnStatus
-				+ ", bnOrder=" + bnOrder + "]";
+		return "BannerDTO [bnCode=" + bnCode + ", bnName=" + bnName + ", bnStatus=" + bnStatus + ", bnOrder=" + bnOrder
+				+ "]";
 	}
-	
+
 	
 }

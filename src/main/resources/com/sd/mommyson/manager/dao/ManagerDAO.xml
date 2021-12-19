@@ -84,6 +84,14 @@
 		<result property="repType" column="REP_TYPE"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.manager.dto.BannerDTO" id="bannerResultMap">
+		<id property="bnCode" column="BANER_CODE"/>
+		<result property="bnName" column="BANER_NAME"/>
+		<result property="bnImg" column="BANER_IMG"/>
+		<result property="bnStatus" column="STATUS"/>
+		<result property="bnOrder" column="BANER_ORDER"/>
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
 		<id property="tagNo" column="TAG_NO"/>
 		<result property="tagName" column="TAG"/>
@@ -555,7 +563,19 @@
 	     WHERE A.RV_CODE = #{ repRvCode }
 	</update>
 	
-	<insert id="insertBannerAdd">
+	<!-- 배너조회 -->
+	<select id="selectBanner" resultMap="bannerResultMap">
+		SELECT
+		       A.BANER_CODE
+		     , A.BANER_NAME
+		     , A.STATUS
+		     , A.BANER_ORDER
+		 FROM BANER_TBL A
+		ORDER BY A.BANER_ORDER ASC
+	</select>
+	
+	<!-- 배너추가 -->
+	<insert id="insertBannerAdd" parameterType="hashmap">
 	    INSERT
 	      INTO BANER_TBL
 	    (
@@ -568,10 +588,10 @@
 	    VALUES
 	    (
 	      SEQ_BANNER.NEXTVAL
-	    , #{ bnName }
-	    , 'test'
-	    , #{ bnStatus }
-	    , #{ bnOrder }
+	    , #{ banner.bnName }
+	    , #{ bnImg }
+	    , #{ banner.bnStatus }
+	    , #{ banner.bnOrder }
 	    )
 	</insert>
 	

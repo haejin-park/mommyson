@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
@@ -428,6 +429,16 @@ public class ManagerServiceImpl implements ManagerService {
 	public List<PostDTO> selectNormalInquiry(Pagination pagination) {
 		
 		return managerDAO.selectNormalInquiry(pagination);
+	}
+	
+	/**
+	 * 배너조회
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<BannerDTO> selectBanner() {
+		
+		return managerDAO.selectBanner();
 	}
 	
 	/** 

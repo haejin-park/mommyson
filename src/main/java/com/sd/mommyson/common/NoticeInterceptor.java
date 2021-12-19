@@ -49,7 +49,7 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 
 		session.setAttribute("noticeList", noticeList);
 		
-		return noticeList != null || member == null? true : false;
+		return true;
 	}
 
 

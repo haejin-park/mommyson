@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -39,15 +40,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row"><input type="checkbox" name="ch1"></th>
-                            <td>1</td>
-                            <td class="tal">풍미가 깊은 청국장 찌개</td>
-                            <td>사용함</td>
-                            <td>
-                                <button value="" class="cor_btn">수정</button>
-                            </td>
-                        </tr>
+                    	<c:forEach items="${ requestScope.bannerList }" var="bn" varStatus="vst">
+	                        <tr>
+	                            <th scope="row"><input type="checkbox" name="ch1"></th>
+	                            <td>${ bn.bnOrder }</td>
+	                            <td class="tal">${ bn.bnName }</td>
+	                            <td>${ bn.bnStatus }</td>
+	                            <td>
+	                                <button value="" class="cor_btn">수정</button>
+	                            </td>
+	                        </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
                 <input type="submit" value="삭제하기" class="black_btn delete_btn">
@@ -59,6 +62,7 @@
     <jsp:include page="../commons/footer.jsp"></jsp:include>
 
     <script>
+    
          $("#homeSubmenu5").addClass("show");
          $("#homeSubmenu5 > li:first-child > a").attr("style","color: #F89E91 !important");
          
@@ -70,6 +74,7 @@
      	   		$(".board_table > tbody > tr th input").prop('checked', false);
      	   	}
    	     });
+         
     </script>
 </body>
 </html>
