@@ -140,6 +140,7 @@
 			   A.CATEGORY_CODE
 			 , A.CATEGORY_NAME
 		  FROM CATEGORY_TBL A
+		 WHERE A.STATUS = 'Y'
 	</select>
 	
 	

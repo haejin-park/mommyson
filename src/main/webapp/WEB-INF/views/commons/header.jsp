@@ -42,11 +42,11 @@
 								      <img style="width: 28px;" id="bell" src="${ pageContext.servletContext.contextPath }/resources/images/inkedbell.png">
 							      </c:if>
 							    </button>
-							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 70px;">
+							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 60px;">
 							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
 								      <div style="display: flex; justify-content: space-between; align-items: center;">
 									      <a class="dropdown-item" href="#">${ notice.noticeContent }</a>
-									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd hh:mm" value="${ notice.noticeTime }"/></p>
+									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd HH:mm" value="${ notice.noticeTime }"/></p>
 									      <button value="${ notice.noticeCode }" style="background: none; border: none; outline: none; margin-right: 10px;" onclick="deleteNotice(this)">x</button>
 								      </div>
 							      </c:forEach>
@@ -69,11 +69,11 @@
 								      <img style="width: 28px;" src="${ pageContext.servletContext.contextPath }/resources/images/inkedbell.png">
 							      </c:if>
 							    </button>
-							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 70px;">
+							    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="width: 450px; min-height: 60px;">
 							      <c:forEach items="${ sessionScope.noticeList }" var="notice">
 								      <div style="display: flex; justify-content: space-between; align-items: center;">
 									      <a class="dropdown-item" href="${ pageContext.servletContext.contextPath }/owner/order">${ notice.noticeContent }</a>
-									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd hh:mm" value="${ notice.noticeTime }"/></p>
+									      <p style="width: 150px;"><fmt:formatDate pattern="MM/dd HH:mm" value="${ notice.noticeTime }"/></p>
 									      <button value="${ notice.noticeCode }" style="background: none; border: none; outline: none; margin-right: 10px;" onclick="deleteNotice(this)">x</button>
 								      </div>
 							      </c:forEach>
