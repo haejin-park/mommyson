@@ -1,5 +1,6 @@
 package com.sd.mommyson.member.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -86,11 +87,11 @@ public class MemberController {
 	@GetMapping("customerJoin")
 	public void customerJoin() {}
 
-
-
-	/* 사업자 회원가입 페이지 이동 */
+	
+	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("businessJoin")
 	public void businessJoin() {}
+
 
 
 	/*  아이디 중복 검사 */
@@ -130,27 +131,12 @@ public class MemberController {
 		}
 		return re;
 	}
+
 	
-	
-	/* 주소에서 구 가져오기 */
-	@PostMapping(value="locationCode", produces="text/plain; charset=UTF-8;")
-	@ResponseBody
-	public String locationCode(@RequestParam("address1")String address) throws Exception {
-		
-			System.out.println("address : " + address);
-			String locationName = address.split(" ")[1];
-			System.out.println(locationName);
-			String result = memberService.locationCode(locationName);
-			
-			return result;
-		
-	}
-	
-	
-	/* 이메일 인증 */ 
+	/* 회원가입 이메일 인증 번호 전송 버튼을 눌러 이메일 주소와 인증번호와 저장 */
 	@RequestMapping(value="mailCheck", method=RequestMethod.POST)
 	@ResponseBody
-	public String mailCheck(String email) throws Exception{
+	public String mailCheck(String email, Model model) throws Exception{
 
 		/* 뷰에서 넘어온 데이터 확인 */ 
 		logger.info("이메일 데이터 전송 확인");
@@ -190,12 +176,46 @@ public class MemberController {
 
 		
 		String num = Integer.toString(checkNum);
+
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("num", num);
+		map.put("toMail", toMail);
 		
-		memberService.registEmailCode(num);
+		System.out.println("map : " + map);
+		memberService.registEmailCode(map);
+
 		return num;
 	}
 	
 
+	/* 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 이메일 인증번호 조회해서 일치 여부 확인 */
+	@PostMapping(value="codeCheck",  produces="text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String codeCheck(@RequestParam String inputCode) {
+		
+		System.out.println("inputCode");
+		
+		String email= memberService.codeCheck(inputCode);
+		
+		return email;
+	}
+	
+	
+	
+	/* 주소에서 구 가져오기 */
+	@PostMapping(value="locationCode", produces="text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String locationCode(@RequestParam("address1")String address) throws Exception {
+		
+			System.out.println("address : " + address);
+			String locationName = address.split(" ")[1];
+			System.out.println(locationName);
+			String result = memberService.locationCode(locationName);
+			
+			return result;
+		
+	}
+	
 	
 	/* 회원가입 */
 	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
@@ -303,52 +323,56 @@ public class MemberController {
 	}
 	
 	
-	/* 인증번호를 입력한 후 비밀번호 변경 버튼을 누르면 변경화면으로 이메일값과 함 이동 */
+	/* 인증번호를 입력한 후 비밀번호 변경 버튼을 누르면 변경화면으로 이메일값과 이동 */
 	
 	
 	
-//	@RequestMapping(value ="findPass2", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
-//	@ResponseBody
-//	public String findPass2(@RequestParam String emailCode, @RequestParam String inputEmailCode, @RequestParam String email, Model model) throws IOException{
-//		
-//		
-//		System.out.println("inputEmailCode : " + inputEmailCode);
-//		
-//		System.out.println("email : " + email);
-//		
-//		String result = "";
-//		
-//		if(emailCode.equals(inputEmailCode)) {	//인증번호가 일치할 경우 
-//			
-//			//이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
-//			
-//			result = email;
-//			
-//		} else if(emailCode != inputEmailCode) {
-//			
-//			result = "인증코드가 일치하지 않습니다.";
-//			
-//		}
-//		
-//		return result;
-//		
-//	}
+	@RequestMapping(value ="findPass2", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String findPass2(@RequestParam String inputEmailCode, @RequestParam String email, Model model) throws IOException{
+		
+		System.out.println("inputEmailCode : " + inputEmailCode);
+		
+		System.out.println("email : " + email);
+		
+		String result = "";
+		
+		int emailCode = memberService.selectEmailCode(email); //비밀번호 변경 화면 이동을 위해 이메일 인증번호 조회하기 
+		
+		String emailCode2 = Integer.toString(emailCode);
+		
+		if(emailCode2.equals(inputEmailCode)) {	//인증번호가 일치할 경우 이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
+			
+			result = email;
+			
+		} else {
+			
+			result = "인증코드가 일치하지 않습니다.";
+			
+		}
+		
+		return result;
+		
+	}
 	
 	
-//	/* 비밀번호 변경하기 화면 띄우기 */
-//	@GetMapping("modifyPwd")
-//	public void modifyPwd(@RequestParam String email, Model model) {
-//		
-//		model.addAttribute("email", email);
-//		
-//	}
+	/* 비밀번호 변경하기 화면 띄우기 */
+	@GetMapping("modifyPwd")
+	public void modifyPwd(@RequestParam String email, Model model) {
+		
+		model.addAttribute("email", email);
+		System.out.println("findPwd.jsp에서 받아온 email : " + email); //modifyPwd로 email 보내기
+		
+		
+	}
 	
 	
 	/* 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러 */
-	@PostMapping(value ="modifyPwd2")
-	public String modifyPwd2(@RequestParam String email, @RequestParam String memPwd, Model model) throws Exception{
+	@PostMapping(value ="modifyPwd")
+	@ResponseBody
+	public String modifyPwd(@RequestParam String email, @RequestParam("pwd1") String memPwd, Model model) throws Exception{
 		
-		System.out.println("email : " + email);
+		System.out.println("변경할 비밀번호 입력 후 같이 보낼 email : " + email);
 		
 		String encode = passwordEncoder.encode(memPwd);
 		System.out.println("encode : " + encode);
@@ -359,7 +383,7 @@ public class MemberController {
 		
 		memberService.modifyPwd(map);
 		
-		return "/member/login" ;
+		return "/member/login";
 		
 	}
 	

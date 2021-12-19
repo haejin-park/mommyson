@@ -62,8 +62,9 @@
             <br>
            	<span id = "emailCheckResult"></span>
             <br>
-            <input type="number" class="code" name="code" id="code" placeholder=" 인증번호(이메일 전송 버튼 클릭 후 수신된 인증번호 입력)" value="N"
+            <input type="number" class="code" name="inputCode" id="code" placeholder=" 인증번호(이메일 전송 버튼 클릭 후 수신된 인증번호 입력)" value="N"
             style=" height:40px;width:440px;border-radius: 9px;">
+            <button  type="button" id="check" onclick="codeChk1()" style=" height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">확인</button>
             <br>
             <span id="codeCheckResult"></span>
             <br>
@@ -88,39 +89,39 @@
             <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">이용 약관 </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                        <div class="modal-body">    
-                        <p>
-                            Mommysonmat 서비스는 개인정보를 다음의 목적을 위해 처리합니다. <br>
-                            처리한 개인정보는 다음의 목적 이외의 용도로는 사용되지 않으며 이용 목적이 변경될 시에는 사전동의를 구할 예정입니다.<br><br>
-                            
-                            ①Mommysonmat 서비스는 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 <br>
-                            개인정보를 수집시에 동의 받은 개인정보 보유, 이용기간 내에서 개인정보를 처리, 보유합니다.<br><br>
-                            ②Mommysonmat 서비스는 회원가입, 회원 식별, 서비스 이용 등을 위해 아래와 같이 개인정보를 수집ᆞ이용합니다.<br><br>
-                            
-                             수집 목적: 회원 식별 및 Mommysonmat 서비스 이용 <br>
-                             수집 항목:아이디, 비밀번호, 전화번호, 이메일, 우편번호, 주소, 상호, 상호 이미지, 사업자등록증 <br>
-                             수집 근거 : 정보주체의 동의 <br>
-                             수집 기간 : 회원탈퇴 시 까지<br><br>
-                            
-                            ③ 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지체 없이 파기합니다. <br>
-                            단, 법령에서 일정기간 의무를 부과하는 경우에는 해당 기간 동안 보관할 수 있습니다.<br><br>
-                            ④ Mommysonmat  서비스를 이용할 때 자동적으로 여러분이 사용하는 장치의 유형, 운영체제 버전, 장치 고유 식별번호를 수집합니다. <br>
-                            그 외에도 Mommysonmat 서비스를 이용하는데 필요한 다른 정보를 수집할 수 있으나 회원의 잔디 서비스를 이용하는 목적 용도로만 이용되며 그 외의 목적으로는 이용되지 않습니다.<br><br>
-                       
-                            귀하께서는 본 안내에 따른 개인정보 수집에 대하여 거부를 하실 수 있는 권리가 있습니다. <br>
-                            본 개인정보 수집에 대하여 거부하시는 경우, 본인확인 등 신원확인이 되지 않음에 따라 Mommysonmat 서비스를 사용 하실 수 없습니다.
-                        </p>
-                        <br>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="ok">확인</button>
-                        </div>
+                      <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">이용 약관 </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      </div>
+                      <div class="modal-body">    
+                       <p>
+                           Mommysonmat 서비스는 개인정보를 다음의 목적을 위해 처리합니다. <br>
+                           처리한 개인정보는 다음의 목적 이외의 용도로는 사용되지 않으며 이용 목적이 변경될 시에는 사전동의를 구할 예정입니다.<br><br>
+                           
+                           ①Mommysonmat 서비스는 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 <br>
+                           개인정보를 수집시에 동의 받은 개인정보 보유, 이용기간 내에서 개인정보를 처리, 보유합니다.<br><br>
+                           ②Mommysonmat 서비스는 회원가입, 회원 식별, 서비스 이용 등을 위해 아래와 같이 개인정보를 수집ᆞ이용합니다.<br><br>
+                           
+                            수집 목적: 회원 식별 및 Mommysonmat 서비스 이용 <br>
+                            수집 항목:아이디, 비밀번호, 전화번호, 이메일, 우편번호, 주소, 상호, 상호 이미지, 사업자등록증 <br>
+                            수집 근거 : 정보주체의 동의 <br>
+                            수집 기간 : 회원탈퇴 시 까지<br><br>
+                           
+                           ③ 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지체 없이 파기합니다. <br>
+                           단, 법령에서 일정기간 의무를 부과하는 경우에는 해당 기간 동안 보관할 수 있습니다.<br><br>
+                           ④ Mommysonmat  서비스를 이용할 때 자동적으로 여러분이 사용하는 장치의 유형, 운영체제 버전, 장치 고유 식별번호를 수집합니다. <br>
+                           그 외에도 Mommysonmat 서비스를 이용하는데 필요한 다른 정보를 수집할 수 있으나 회원의 잔디 서비스를 이용하는 목적 용도로만 이용되며 그 외의 목적으로는 이용되지 않습니다.<br><br>
+                      
+                           귀하께서는 본 안내에 따른 개인정보 수집에 대하여 거부를 하실 수 있는 권리가 있습니다. <br>
+                           본 개인정보 수집에 대하여 거부하시는 경우, 본인확인 등 신원확인이 되지 않음에 따라 Mommysonmat 서비스를 사용 하실 수 없습니다.
+                       </p>
+                    	  	<br>
+                      </div>
+                      <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" id="ok">확인</button>
+                      </div>
                   </div>
                 </div>
             </div> 
@@ -141,11 +142,11 @@
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             <button type="submit" id="joinButton" style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
-
    		    </form>
         </div>
     </div>
@@ -548,8 +549,6 @@
 		
          
          /* 이메일 인증번호 전송 & 비교 */
-         var code =""; // 이메일 인증번호 저장을 위한 코드
-         
          $("#submit").click(function(){
      		var email = $("#email").val(); 
      		
@@ -558,46 +557,61 @@
      			url:"mailCheck",
      			data : {
      				email : email
-     			},		
-     			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
-     				//console.log("data : " + data);  
-     				code = data;
-     				
-     				$("#code").blur(function(){
-	     				var inputCode = $("#code").val(); // 입력코드 
-	     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
-	     				
-	     				if(inputCode != code){
-	     					if(inputCode == ""){
-	     						codeCheckResult.html("인증번호를 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect");
-	     						return false;
-	     					} else {
-	     						codeCheckResult.html("인증번호가 일치하지 않습니다. 인증번호를 다시 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect");
-	     						return false;
-	     					}
-	     					
-	     				} else {
-	     					
-	     					if(inputCode == ""){
-	     						codeCheckResult.html("인증번호를 입력해주세요.");
-	     						codeCheckResult.attr("class", "incorrect");
-	     						return false;
-	     					} else {
-	     						codeCheckResult.html("인증번호가 일치합니다.");
-	     						codeCheckResult.attr("class", "correct");
-	     						return true;
-	     					}
-	     				}
-     				});
-     			},
-    			error : function(error){
-    				alert(error);
-    			}	
+     			}, 
+	    		async: false
      		});
      	});
+         
+         
       
+         /* 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 인증번호와 일치하는 이메일 조회해서 인증번호 일치 여부 안내 */
+      
+      	 function codeChk1(){
+     		var email = ""; // 이메일 인증번호 저장을 위한 코드
+     		var inputCode = $("#code").val(); // 입력코드	
+     		
+			$.ajax({
+				type : "post",
+				url : "codeCheck",
+				data : {
+					inputCode : inputCode	
+				},
+				async : false,
+				success:function(data){ //조회한 이메일 
+					console.log("data : " + data); 
+					email = data;
+						
+     				var inputEmail = $("#email").val(); // 입력코드 
+     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
+     				
+     				if(inputEmail != email){
+     					if(inputCode == ""){
+	   						codeCheckResult.html("이메일과 인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
+	   						codeCheckResult.attr("class", "incorrect");
+	   						return false;
+	   						
+     					} else{
+     						codeCheckResult.html("이메일과 인증번호가 일치하지 않습니다. 인증번호를 다시 확인해주세요.");
+	   						codeCheckResult.attr("class", "incorrect");
+	   						return false;
+     					}
+     					
+     				} else {
+     					
+     					if(inputCode != ""){
+     						codeCheckResult.html("이메일과 인증번호가 일치합니다.");
+     						codeCheckResult.attr("class", "correct");
+   							return true;
+     					}
+     				}
+					
+				},
+				error : function(error){
+    				alert(error);
+    			}
+			});
+    		
+     	};
 
         /* 우편번호 검색 */
 		const $searchZipCode = document.getElementById("searchZipCode");

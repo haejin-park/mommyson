@@ -44,10 +44,11 @@ public class NoticeInterceptor extends HandlerInterceptorAdapter {
 				session.setAttribute("cartCount", cartCount);
 			}
 		}
+
 		session.setAttribute("noticeList", noticeList);
 		
 		return noticeList != null || member == null? true : false;
 	}
 
-	
+
 }
