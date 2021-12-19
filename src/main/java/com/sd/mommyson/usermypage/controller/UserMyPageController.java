@@ -118,6 +118,39 @@ public class UserMyPageController {
 		return "user_mypage/userTotalOrderList";
 	}
 	
+	/*주문취소*/
+	@PostMapping("orderCancel")
+	public void orderCancel(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		String cancelInfo = request.getParameter("result");
+		System.out.println("취소정보 : " + cancelInfo);
+		
+		String[] arrInfo = cancelInfo.split(" ");
+		int result=0;
+		for(int i = 0; i < arrInfo.length; i ++) {
+			
+			System.out.println("배열화된 주문번호 정보 : " + arrInfo[i]);
+			
+			 result += userMyPageService.updateOrderCancel(Integer.parseInt(arrInfo[i]));
+			
+		}
+		
+			response.setContentType("text/plain; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			if(result >= arrInfo.length ) {
+				String message = "주문이 취소되었습니다.";
+				out.print(message);
+			} else {
+				String message = "관리자에게 문의 바랍니다.";
+				out.print(message);
+			}
+			
+			out.flush();
+			out.close();
+		
+		
+	}
+	
 	/*개인정보변경*/
 	@GetMapping("userInfoChange")
 	public String userInfoChange( ) {
@@ -371,7 +404,7 @@ public class UserMyPageController {
 		
 //		int productInfoCode;
 ////		List<OrderInfoDTO>	productInfo = new ArrayList<>();
-//		List<HashMap<String, String>>productInfo = userMyPageService.selectMySdInfo(userCode);
+		List<HashMap<String, String>>productInfo = userMyPageService.selectMySdInfo(userCode);
 //		System.out.println(productInfo);
 //		for(int i = 0; i < reviewContentList.size(); i++) {
 //			productInfoCode = reviewContentList.get(i).getOrderCode();
@@ -417,7 +450,7 @@ public class UserMyPageController {
 		
 		model.addAttribute("selectCriteria", selectCriteria);
 		model.addAttribute("reviewContentList", reviewContentList);
-//		model.addAttribute("productInfo", productInfo);
+		model.addAttribute("productInfo", productInfo);
 		
 		model.addAttribute("Paging", "myReview");
 		
@@ -427,6 +460,11 @@ public class UserMyPageController {
 
 	/*리뷰 수정*/
 	/*리뷰 삭제*/
+	@PostMapping("delReview")
+	public int deleteReview() {
+		
+		return 0;
+	}
 	
 	
 	

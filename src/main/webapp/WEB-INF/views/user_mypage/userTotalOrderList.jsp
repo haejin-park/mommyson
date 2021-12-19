@@ -34,7 +34,7 @@
             <table class="table table" style="width: 1050px;">
               <thead style="background-color: #EDEDED;">
                 <tr>
-                  <th id="tablecol0"></th><!-- 체크 박스 -->
+                  <th id="tablecol0"><input type="checkbox" onclick="selectAll(this)"></th><!-- 체크 박스 -->
                   <th id="tablecol1" scope="col">가게 정보</th>
                   <th id="tablecol2" scope="col"></th><!-- 제품 이미지 -->        
                   <th id="tablecol3" scope="col">제품정보</th>        
@@ -49,13 +49,13 @@
               <c:forEach var="myOrder"  items="${ requestScope.myOrderList }">
               	<tr>
                   <td style="padding-top: 40px;">
-                  	<c:if test="${ myOrder.acceptTime eq null }">
-             	     <input type="checkbox" name="choose" style="width: 20px; height: 20px;">
+                  	<c:if test="${ (myOrder.acceptTime eq null) && (myOrder.cancleTime eq null) }">
+             	     <input type="checkbox" name="choose" value="${ myOrder.orderCode }" style="width: 20px; height: 20px;">
            		    </c:if>
              	     <input type="hidden" name="orderCode" value="${ myOrder.orderCode }">
              	     <c:out value="${ myOrder.orderCode }"/>
                   </td>
-                  <td rowspan ="i">
+                  <td>
                   <img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myOrder.storeInfo.storeImg }">
                   </td>
                   <td colspan="4" style="padding-top: 40px; padding-left: 0px; padding-right: 0px;">
@@ -63,7 +63,7 @@
                   
                   <c:forEach var="sdInfo" items="${ requestScope.mySdInfo }">
 	                  <c:if test="${ myOrder.orderCode eq sdInfo.ORDER_CODE }">
-		         	  <c:set var="i" value="${ i+1 }"/>
+		         	  <%-- <c:set var="i" value="${ i+1 }"/> --%>
 	         	      	<li style="display: flex;">	         	      	
 	         	      	<img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ sdInfo.SD_IMG }">
 	         	      	<p style="width: 220px"><c:out value="${ sdInfo.SD_NAME }"/></p>
@@ -76,12 +76,32 @@
                   	</ul>
                   </td>
                   
-                  
-                  <td rowspan="i" style="padding-top: 40px;"><c:out value="${ myOrder.completeTime }"/></td>
-                  <td rowspan="i" style="padding-top: 40px;"><c:out value="${ myOrder.totalPrice }"/></td>
-                  <td rowspan="i" style="padding-top: 40px;">
+                  <td style="padding-top: 40px;">
+                  <if test="${ myOrder.completeTime ne null}">
+                  <c:out value="${ myOrder.completeTime }"/>
+                  </if>
+                  <if test="${ myOrder.takeTime ne null}">
+                  <c:out value="${ myOrder.takeTime }"/>
+                  </if>
+                  </td>
+                  <td style="padding-top: 40px;"><c:out value="${ myOrder.totalPrice }"/></td>
+                  <td style="padding-top: 40px;">
+<!--                   <td rowspan="i" style="padding-top: 40px;"> -->
                   <c:if test="${ myOrder.completeTime ne null || myOrder.takeTime ne null }">
-                  <button class="urBtn">리뷰쓰기</button>                             
+                  <!-- 수령이 완료된상태 -->
+                  <button id="cancel" class="urBtn">리뷰쓰기</button>                             
+                  </c:if>
+                  <c:if test="${ (myOrder.acceptTime eq null) && (myOrder.cancleTime eq null) }">
+                  <!-- 아직 접수 되지 않은 상태 -->             
+                  <h6>주문접수 대기 중</h6>           
+                  </c:if>
+                  <c:if test="${ (myOrder.completeTime eq null && myOrder.takeTime eq null) && myOrder.acceptTime ne null }">
+                  <!-- 아직 소비자가 물건을 받지 못한 상태  -->
+                  <h6>수령 대기중</h6>
+                  </c:if>
+                  <c:if test="${ (myOrder.completeTime eq null && myOrder.takeTime eq null) && myOrder.cancleTime ne null }">
+                  <!-- 아직 소비자가 물건을 받지 못한 상태  -->
+                  <h6>주문취소</h6>
                   </c:if>
                   </td>
                   <!-- <td style="padding-top: 40px;"></td> -->
@@ -92,8 +112,58 @@
               </tbody>
             </table>
             <div>
-              <button class="urBtn" style="margin-left: 970px;">주문취소</button>
+              <button class="urBtn" style="margin-left: 970px;" onclick="getCheckboxValue()">주문취소</button>
             </div>
+            <script>
+            	/* if(document.getElementsByTagName('td')) {
+            		let cancleBtn = $('#cancle');
+            		const query = 'input[name='choose']:checked';
+
+            		console.log(query);
+            		console.log(cancleBtn);
+            		
+            	} */
+            	
+            	//작성중
+            	function getCheckboxValue() {
+            		const query = 'input[name="choose"]:checked';
+            		  const selectedEls = 
+            		      document.querySelectorAll(query);
+            		  
+            		  let result = '';
+            		  selectedEls.forEach((el) => {
+            		    result += el.value + ' ';
+            		  });
+            	console.log(result);
+            	
+            	$.ajax({
+            		url:"${ pageContext.servletContext.contextPath }/userMyPage/orderCancel",
+            		method: "post",
+            		data :{
+            			result : result
+            		},
+            		success : function(data, textStatus, xhr) {
+						alert(data);
+						location.replace(location.href);
+
+					},
+					error : function(xhr, status, error) {
+						alert("문제가 발생했습니다.");
+						location.replace(location.href);
+					}
+            	});
+				}
+            	
+            	function selectAll(selectAll)  {
+            		  const checkboxes 
+            		       = document.getElementsByName('choose');
+            		  
+            		  checkboxes.forEach((checkbox) => {
+            		    checkbox.checked = selectAll.checked;
+            		  })
+            		}
+            	
+            </script>
               <div>
                     <jsp:include page="../commons/userMyPagePagination.jsp"/>
                 <!-- 페이징 -->
@@ -101,14 +171,11 @@
                       <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                       <form action="${ pageContext.servletContext.contextPath }/userMyPage/myOrderList" method="get">
                       <input type="hidden" name="currentPage" value="1">
-                      <input type="text" class="searchtext" placeholder="찾고싶은 품목의 이름을 입력해주세요." name="searchValue">
+                      <input type="text" class="searchtext" placeholder="주문한 가게의 이름을 입력해주세요." name="searchValue">
                       <button type="submit" class="searchbutton">검색하기</button>
                       </form>
                    </ul>
-                </nav>
-
               </div>
-
             
             
           </div>

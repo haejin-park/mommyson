@@ -34,7 +34,9 @@ public interface UserMyPageService {
 
 	List<HashMap<String, String>> selectMyOrderSd(int userCode);
 
-//	List<HashMap<String, String>> selectMySdInfo(int userCode);
+	List<HashMap<String, String>> selectMySdInfo(int userCode);
+
+	int updateOrderCancel(int orderNo);
 
 	
 
