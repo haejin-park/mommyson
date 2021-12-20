@@ -945,6 +945,11 @@ public class ManagerController {
 		return "manager/normalInquiry";
 	}
 	
+	@GetMapping("normalAnswer")
+	public void normalAnswer() {
+		
+	}
+	
 	/* 리뷰 신고 현황 */
 	/**
 	 * @param model

@@ -956,7 +956,7 @@
    	   <where>
    	    A.STATUS = 'N'
    	    <if test='searchValue != null'>
-   	      AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	      AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
    	    </if>
    	    <if test='searchCondition == "N"'>
    	      AND A.ANS_STATUS = 'W'
@@ -1023,7 +1023,7 @@
 				      <where>
 				        A.STATUS = 'N'
 				      <if test='searchValue != null'>
-			   	        AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	        AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
 			   	      </if>
 			   	      <if test='searchCondition == "N"'>
 			   	        AND A.ANS_STATUS = 'W'
@@ -1056,7 +1056,7 @@
    	   <where>
    	    A.STATUS = 'N'
    	    <if test='searchValue != null'>
-   	      AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	      AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
    	    </if>
    	    <if test='searchCondition == "N"'>
    	      AND A.ANS_STATUS = 'W'
@@ -1072,6 +1072,7 @@
    	   </where>
    </select>
 
+   <!-- 소비자 - 1:1문의 리스트 -->
    <select id="selectNormalInquiry" resultMap="PostResultMap">
    	SELECT
 	    D.RNUM
@@ -1122,7 +1123,7 @@
 				      <where>
 				        A.STATUS = 'N'
 				      <if test='searchValue != null'>
-			   	        AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	        AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
 			   	      </if>
 			   	      <if test='searchCondition == "N"'>
 			   	        AND A.ANS_STATUS = 'W'

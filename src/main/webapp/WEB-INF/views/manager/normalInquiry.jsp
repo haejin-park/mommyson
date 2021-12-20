@@ -68,12 +68,12 @@
 							<c:if test="${ ni.boardCode eq '10' }">불편관리</c:if>
 							<c:if test="${ ni.boardCode eq '11' }">기타</c:if>
 							</td>
-							<td>${ ni.postTitle }</td>
+							<td><a href="${ pageContext.servletContext.contextPath }/manager/normalAnswer?queNo=${ ni.queNo }">${ ni.postTitle }</a></td>
 							<td>${ ni.member.memId }</td>
 							<td>${ ni.postDate }</td>
 							<td>
 							<c:if test="${ ni.ansStatus eq 'W'}"><img src="${ pageContext.servletContext.contextPath }/resources/images/pink_btn.png"></c:if>
-							<c:if test="${ ni.ansStatus eq 'Y'}"><img src="${ pageContext.servletContext.contextPath }/resources/images/gray_btn.png"><</c:if>							
+							<c:if test="${ ni.ansStatus eq 'Y'}"><img src="${ pageContext.servletContext.contextPath }/resources/images/gray_btn.png"></c:if>							
 							</td>
 						</tr>
 					</c:forEach>
