@@ -86,7 +86,7 @@ public class MemberController {
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("customerJoin")
 	public void customerJoin() {}
-
+	
 	
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("businessJoin")
