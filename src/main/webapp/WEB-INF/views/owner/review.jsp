@@ -45,7 +45,7 @@
         <table class="table table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="allCheck"></th>
+                <th scope="col"><input type="checkbox" name="selectAll" id="selectAll" onclick='selectAll(this)'></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -54,7 +54,7 @@
             <tbody>
                 <c:forEach var="review" items="${ reviews }">
               <tr>
-                <th scope="row"><input type="checkbox" name="allCheck" class="test" value="${ review.rvCode }" ></th>
+                <th scope="row"><input type="checkbox" name="reviews" value="${ review.rvCode }" onclick='selectAll(this)'></th>
                 <th>${ review.rvCode }</th>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
@@ -132,24 +132,35 @@
    </div>  
   </div>
   <script>
-  	/* 체크박스 체크 */
-	  $("input[name=allCheck]").click(function(){
-	      if($("input[name=allCheck]").prop("checked")){
-	        $("input[name=allCheck]").prop("checked",true);
-	      } else{
-	        $("input[name=allCheck]").prop("checked",false);
-	      }
-	    });
-  	
-	  /* 모달로 */
-	  $("input[name=allCheck2]").click(function(){
-	      if($("input[name=allCheck2]").prop("checked")){
-	        $("input[name=allCheck2]").prop("checked",true);
-	      } else{
-	        $("input[name=allCheck2]").prop("checked",false);
-	      }
-	    });
+  
+  function checkSelectAll()  {
+	  // 전체 체크박스
+	  const checkboxes 
+	    = document.querySelectorAll('input[name="reviews"]');
+	  // 선택된 체크박스
+	  const checked 
+	    = document.querySelectorAll('input[name="reviews"]:checked');
+	  // select all 체크박스
+	  const selectAll 
+	    = document.querySelector('input[name="selectall"]');
 	  
+	  if(checkboxes.length === checked.length)  {
+	    selectAll.checked = true;
+	  }else {
+	    selectAll.checked = false;
+	  }
+
+	}
+
+	function selectAll(selectAll)  {
+	  const checkboxes 
+	     = document.getElementsByName('reviews');
+	  
+	  checkboxes.forEach((checkbox) => {
+	    checkbox.checked = selectAll.checked
+	  })
+	}
+	
   </script>
   
   <!-- footer -->

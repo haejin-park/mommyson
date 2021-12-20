@@ -181,8 +181,8 @@
 	            <th class="tg-p">판매상태</th>
 	            <td class="tg-pp">
 	                <select name="orderableStatus" id="status">
-	                   <option value="Y">판매</option>
-	                   <option value="N">판매불가</option>
+	                   <option value="Y">판매중</option>
+	                   <option value="N">판매전</option>
 	               </select>
 	            </td>
 	        </tr>
@@ -231,20 +231,20 @@
 		
 		$('#method').find('option').map(function(){
 			if($(this).val() == value ) {
-				$('#method option').attr('selected',true);
+				$(this).attr('selected',true);
 			}
 		});
 		
-		$('#method').find('option').map(function(){
+		$('#status').find('option').map(function(){
 			
 			if($(this).val() == val){
-				$('#status option').attr('selected',true);
+				$(this).attr('selected',true);
 			}
 		})
 		
 		$('#subBtn').on('click',function(){
 			
-			debugger;
+			
 			
 			if($('#input-image').val() ==''){
 				$('input[name=img]').val("${ product.sdImg }");

@@ -69,10 +69,15 @@
       </div>
 
       <c:if test="${ sessionScope.loginMember != null }">
-       	<div id="cart_logo">
-       		<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
-       	</div>
-      </c:if>
+        	<div id="cart_logo">
+        		<c:if test="${ sessionScope.cartCount != 0 }">
+        			<div style="background: #FFF9C2; width: 23px; height: 23px; border-radius: 50%; position: relative; top: 26px; color: black; display: flex; align-items: center; justify-content: center;">
+        				${ sessionScope.cartCount }
+        			</div>
+        		</c:if>
+        		<button onclick="location.href='${ pageContext.servletContext.contextPath }/user/cart'"><img class="store_logo" src="${ pageContext.servletContext.contextPath }/resources/images/cart_logo.png"></button>
+        	</div>
+        </c:if>
     </section>
 
     <jsp:include page="../commons/footer.jsp"/>

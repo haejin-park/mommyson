@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.CategoryDTO;
+import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
@@ -110,5 +112,25 @@ public interface ManagerDAO {
 	int insertTagAdd(String tag);
 
 	int deleteTag(int tagNo);
+
+	int updateUseTag(List<Integer> useTagNoList);
+
+	int updateUnUseTag(List<Integer> unUseTagNoList);
+
+	List<HotKeywordDTO> selectHotkeword();
+
+	int updateHotkewordAdd(Map<String, Object> map);
+
+	int updateHotkewordEdit(Map<String, Object> map);
+
+	List<CategoryDTO> selectCategoryList();
+
+	int insertCategory(String category);
+
+	int deleteCategory(int categoryCode);
+
+	int updateUseCategory(List<String> useCategoryCodeList);
+
+	int updateUnUseCategory(List<String> unUseCategoryCodeList);
 
 }

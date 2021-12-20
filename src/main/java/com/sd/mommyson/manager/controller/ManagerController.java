@@ -23,6 +23,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
 import com.sd.mommyson.manager.dto.BannerDTO;
+import com.sd.mommyson.manager.dto.CategoryDTO;
+import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
@@ -167,7 +169,7 @@ public class ManagerController {
 	 * @param currentPage
 	 * @author leeseungwoo
 	 */
-	@GetMapping("buisnessMember")
+	@GetMapping("businessMember")
 	public void buisnessMember(Model model, @RequestParam(value = "currentPage", required = false) String currentPage
 							  , @RequestParam(value="searchValue", required = false) String sv) {
 		
@@ -1293,6 +1295,7 @@ public class ManagerController {
 	
 	/**
 	 * 사용중인 태그 조회
+	 * 핫 키워드 조회
 	 * @param model
 	 * @author leeseungwoo
 	 */
@@ -1300,10 +1303,13 @@ public class ManagerController {
 	public void tagManage(Model model) {
 		
 		List<TagDTO> useTagList = managerService.selectUseTag();
+		List<HotKeywordDTO> hotkewordList = managerService.selectHotkeword();
 		
 		System.out.println("useTagList : " + useTagList);
+		System.out.println("hotkewordList : " + hotkewordList);
 		
 		model.addAttribute("useTagList", useTagList);
+		model.addAttribute("hotkewordList", hotkewordList);
 	}
 	
 	/**
@@ -1328,6 +1334,12 @@ public class ManagerController {
 		return "redirect:tagManage";
 	}
 	
+	/**
+	 * 태그 삭제
+	 * @param tagNo
+	 * @return
+	 * @author leeseungwoo
+	 */
 	@PostMapping(value = "tagDelete", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String tagDelete(@RequestParam("tagNo") int tagNo) {
@@ -1343,9 +1355,236 @@ public class ManagerController {
 		return result > 0? "1" : "2";
 	}
 	
-	/* 카테고리 설정 */
+	/**
+	 * 사용태그로 등록하기
+	 * @param tagNo
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "useTag", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String useTag(@RequestParam("useTagNo[]") int[] tagNo) {
+		
+		List<Integer> useTagNoList = new ArrayList<>();
+		
+		for(int tn : tagNo) {
+			useTagNoList.add(tn);
+		}
+		
+		int result = managerService.updateUseTag(useTagNoList);
+		
+		if(result > 0) {
+			System.out.println("사용태그로 등록 완료");
+		} else {
+			System.out.println("사용태그로 등록 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
+	
+	/**
+	 * 미사용 태그로 등록하기
+	 * @param tagNo
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "unUseTag", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String unUseTag(@RequestParam("unUseTagNo[]") int[] tagNo) {
+		
+		List<Integer> unUseTagNoList = new ArrayList<>();
+		
+		for(int tn : tagNo) {
+			unUseTagNoList.add(tn);
+		}
+		
+		int result = managerService.updateUnUseTag(unUseTagNoList);
+		
+		if(result > 0) {
+			System.out.println("사용태그로 등록 완료");
+		} else {
+			System.out.println("사용태그로 등록 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
+	
+	/**
+	 * 핫 키워드 등록
+	 * @param tagNo
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "hotkewordAdd", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String hotkewordAdd(@RequestParam("tagNo[]") int[] tagNo, @RequestParam("tagName[]") String[] tagName) {
+		
+		System.out.println("들어옴");
+		
+		List<Map<String, Object>> hotkewordTagNoList = new ArrayList<>();
+		Map<String, Object> hotMap = null;
+		for(int i = 0; i < tagNo.length; i++) {
+			hotMap = new HashMap<>();
+			hotMap.put("tagNo", tagNo[i]);
+			hotMap.put("tagName", tagName[i]);
+			hotkewordTagNoList.add(hotMap);
+		}
+		
+		System.out.println("list : " + hotkewordTagNoList);
+		
+		int result = managerService.updateHotkewordAdd(hotkewordTagNoList);
+		
+		if(result > 0) {
+			System.out.println("핫 키워드 등록 완료");
+		} else {
+			System.out.println("핫 키워드 등록 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
+	
+	/**
+	 * 핫 키워드 수정
+	 * @param tagNo
+	 * @param tagName
+	 * @param hotNo
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "hotkewordEdit", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String hotkewordEdit(@RequestParam("tagNo[]") String[] tagNo, @RequestParam("tagName[]") String[] tagName,
+								@RequestParam("hotNo[]") String[] hotNo) {
+		
+		List<Map<String, Object>> hotkewordEditList = new ArrayList<>();
+		Map<String, Object> hotMap = null;
+		for(int i = 0; i < tagNo.length; i++) {
+			hotMap = new HashMap<>();
+			hotMap.put("tagNo", tagNo[i]);
+			hotMap.put("tagName", tagName[i]);
+			hotMap.put("hotNo", hotNo[i]);
+			hotkewordEditList.add(hotMap);
+		}
+		
+		System.out.println("hotkewordEditList : " + hotkewordEditList);
+		
+		int result = managerService.updateHotkewordEdit(hotkewordEditList);
+		
+		if(result > 0) {
+			System.out.println("핫 키워드 수정 완료");
+		} else {
+			System.out.println("핫 키워드 수정 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
+	
+	/**
+	 * 카테고리 조회
+	 * @param model
+	 * @author leeseungwoo
+	 */
 	@GetMapping("categoryManage")
-	public void categoryManage() {}
+	public void categoryManage(Model model) {
+		
+		List<CategoryDTO> categoryList = managerService.selectCategoryList();
+		System.out.println("categoryList : " + categoryList);
+		
+		model.addAttribute("categoryList", categoryList);
+	}
+	
+	/**
+	 * 카테고리 추가
+	 * @param category
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping("categoryAdd")
+	public String categoryAdd(@RequestParam("category") String category) {
+		
+		int result = managerService.insertCategory(category);
+		
+		if(result > 0) {
+			System.out.println("카테고리 추가 완료");
+		} else {
+			System.out.println("카테고리 추가 실패");
+		}
+		
+		return "redirect:categoryManage";
+	}
+	
+	/**
+	 * 카테고리 삭제
+	 * @param categoryCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "categoryDelete", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String categoryDelete(@RequestParam("categoryCode") int categoryCode) {
+		
+		int result = managerService.deleteCategory(categoryCode);
+		
+		if(result > 0) {
+			System.out.println("카테고리 삭제 완료");
+		} else {
+			System.out.println("카테고리 삭제 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
+	
+	/**
+	 * 사용 카테고리로 등록
+	 * @param categoryCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "useCategory", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String useCategory(@RequestParam("useCategoryCode[]") String[] categoryCode) {
+		
+		List<String> useCategoryCodeList = new ArrayList<>();
+		for(String ctc : categoryCode) {
+			useCategoryCodeList.add(ctc);
+		}
+		
+		int result = managerService.updateUseCategory(useCategoryCodeList);
+		
+		if(result > 0) {
+			System.out.println("사용 카테고리로 등록 완료");
+		} else {
+			System.out.println("사용 카테고리로 등록 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
+	
+	/**
+	 * 미사용 카테고리로 등록
+	 * @param categoryCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "unUseCategory", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String unUseCategory(@RequestParam("unUseCategoryCode[]") String[] categoryCode) {
+		
+		List<String> unUseCategoryCodeList = new ArrayList<>();
+		for(String ctc : categoryCode) {
+			unUseCategoryCodeList.add(ctc);
+		}
+		
+		int result = managerService.updateUnUseCategory(unUseCategoryCodeList);
+		
+		if(result > 0) {
+			System.out.println("미사용 카테고리로 등록 완료");
+		} else {
+			System.out.println("미사용 카테고리로 등록 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
 	
 	/* 관리자 조회 */
 	@GetMapping("manageManager")

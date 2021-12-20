@@ -34,6 +34,7 @@ import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
@@ -928,6 +929,26 @@ public class OwnerController {
 		model.addAttribute("membership",membership);
 		
 		return "owner/ownerPay2";
+	}
+	
+	@GetMapping("kakaoPay")
+	public String kakaoPay(Model model, @RequestParam(value="msCode") int msCode, @RequestParam(value="msDate") int msDate) {
+		
+		
+		System.out.println("카카오 페이로 넘겨받은 msCode : " + msCode);
+		System.out.println("카카오 페이로 넘겨받은 msDate : " + msDate);
+		
+		MembershipAndStoreDTO memberShip = ownerService.selectMembershipAndStore(msCode);
+		
+		
+		
+		return "/";
+		
+	}
+	
+	@GetMapping("paySuccess")
+	public void paySuccess(Model model) {
+		
 	}
 	
 	

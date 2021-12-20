@@ -147,7 +147,7 @@
     	<association property="storeInfo" resultMap="storeResultMap"/>
     </resultMap>
     
-    <resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="ReviewResultMap">
+    <resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap">
     	<id property="rvCode" column="RV_CODE"/>
     	<result property="memCode" column="MEM_CODE"/>
     	<result property="orderCode" column="ORDER_CODE"/>
@@ -156,8 +156,25 @@
     	<result property="grade" column="RV_GRADE"/>
     	<result property="memId" column="MEM_ID"/>
     	<result property="isDeleted" column="IS_DELETED"/>
+    	<association property="orderDTO" resultMap="orderResultMap"/>
     </resultMap>
- 
+    <resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+    	<id property="orderCode" column="ORDER_CODE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="totalPrice" column="TOTAL_PRICE"/>
+    	<result property="orderType" column="ORDER_TYPE"/>
+    	<result property="takeTime" column="TAKE_TIME"/>
+    	<result property="address" column="ADDRESS"/>
+    	<result property="phone" column="PHONE"/>
+    	<result property="storeName" column="STORE_NAME"/>
+    	<result property="code" column="CODE"/>
+    	<result property="cancleTime" column="ORDER_CANCLE_TIME"/>
+    	<result property="completeTime" column="ORDER_COMPLETE_TIME"/>
+    	<result property="acceptTime" column="ORDER_ACCEPT_TIME"/>
+    	<result property="requestTime" column="ORDER_RUQEUST_TIME"/>
+    	<association property="storeInfo" resultMap="storeResultMap"/>
+    </resultMap>
+
     <!-- 나의 주문내역 총 갯수 확인 -->
     <select id="selectMyOrderNum" resultType="_int" parameterType="hashmap">
 	SELECT
@@ -170,89 +187,94 @@
 	</select>
 	
 	<!-- 나의 주문목록 출력 및 페이지 네이션  -->
-	<select id="selectMyOrderList" resultMap="myOrderResultMap">
+	<select id="selectMyOrderList" resultMap="orderResultMap">
 		SELECT
-		        A.RNUM
-			  ,	A.MEM_CODE
-			  , A.TOTAL_PRICE
-			  ,	A.ORDER_CODE
-			  ,	A.ORDER_TYPE
-			  ,	A.TAKE_TIME
-			  ,	A.ADDRESS
-			  ,	A.PHONE
-		   	  ,	A.STORE_NAME
-		      ,	A.CODE
-			  ,	A.ORDER_CANCLE_TIME
-			  ,	A.ORDER_COMPLETE_TIME
-			  ,	A.ORDER_ACCEPT_TIME
-			  ,	A.ORDER_RUQEUST_TIME
-			  , A.SD_CODE
-			  , A.AMONT
-			  ,	A.SD_NAME
-			  , A.SD_IMG
-			  , A.PRICE
-			  , A.STORE_IMG
-		   FROM	(SELECT ROWNUM RNUM
-					  ,	B.MEM_CODE
-					  , B.TOTAL_PRICE
-					  ,	B.ORDER_CODE
-					  ,	B.ORDER_TYPE
-					  ,	B.TAKE_TIME
-					  ,	B.ADDRESS
-					  ,	B.PHONE
-				   	  ,	B.STORE_NAME
-				      ,	B.CODE
-					  ,	B.ORDER_CANCLE_TIME
-					  ,	B.ORDER_COMPLETE_TIME
-					  ,	B.ORDER_ACCEPT_TIME
-					  ,	B.ORDER_RUQEUST_TIME
-					  , B.SD_CODE
-					  , B.AMONT
-					  ,	B.SD_NAME
-					  , B.SD_IMG
-					  , B.PRICE
-					  , B.STORE_IMG
-				   FROM (SELECT C.MEM_CODE
-							  , C.TOTAL_PRICE
-							  ,	C.ORDER_CODE
-							  ,	C.ORDER_TYPE
-							  ,	C.TAKE_TIME
-							  ,	C.ADDRESS
-							  ,	C.PHONE
-						   	  ,	C.STORE_NAME
-						      ,	C.CODE
-							  ,	C.ORDER_CANCLE_TIME
-							  ,	C.ORDER_COMPLETE_TIME
-							  ,	C.ORDER_ACCEPT_TIME
-							  ,	C.ORDER_RUQEUST_TIME
-							  , D.SD_CODE
-							  , D.AMONT
-							  ,	E.SD_NAME
-							  , E.SD_IMG
-							  , E.PRICE
-							  , F.STORE_IMG
-						   FROM ORDER_TBL C
-						   JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE=C.ORDER_CODE)
-						   JOIN PRODUCT_TBL E ON(E.SD_CODE = D.SD_CODE)
-						   JOIN STORE_TBL F ON(F.MEM_CODE=E.MEM_CODE)
-						   <where>
-						   		C.MEM_CODE = #{ searchCondition }
-						   		<if test="searchValue != null">
-						   		AND F.STORE_NAME LIKE '%' || #{ searchValue } || '%'
-						   		</if>
-						   </where>
-						   ORDER BY C.ORDER_RUQEUST_TIME DESC
-						   )B
-					 <![CDATA[
-					 	 WHERE ROWNUM <= #{ endRow }
-					 	 ]]>
-					 	 )A
-			 <![CDATA[
-			 WHERE A.RNUM >= #{ startRow }
-			 ]]>
-			 
-			 	   
+			   A.RNUM
+			 , A.MEM_CODE
+			 , A.TOTAL_PRICE
+			 , A.ORDER_CODE
+			 , A.ORDER_TYPE
+			 , A.TAKE_TIME
+			 , A.ADDRESS
+			 , A.PHONE
+			 , A.STORE_NAME
+			 , A.CODE
+			 , A.ORDER_CANCLE_TIME
+			 , A.ORDER_COMPLETE_TIME
+			 , A.ORDER_ACCEPT_TIME
+			 , A.STORE_IMG
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.MEM_CODE
+					 , B.TOTAL_PRICE
+					 , B.ORDER_CODE
+					 , B.ORDER_TYPE
+					 , B.TAKE_TIME
+					 , B.ADDRESS
+					 , B.PHONE
+					 , B.STORE_NAME
+					 , B.CODE
+					 , B.ORDER_CANCLE_TIME
+					 , B.ORDER_COMPLETE_TIME
+					 , B.ORDER_ACCEPT_TIME
+					 , B.STORE_IMG		 
+				  FROM (SELECT C.MEM_CODE
+							 , C.TOTAL_PRICE
+							 , C.ORDER_CODE
+							 , C.ORDER_TYPE
+							 , C.TAKE_TIME
+							 , C.ADDRESS
+							 , C.PHONE
+							 , C.STORE_NAME
+							 , C.CODE
+							 , C.ORDER_CANCLE_TIME
+							 , C.ORDER_COMPLETE_TIME
+							 , C.ORDER_ACCEPT_TIME
+							 , F.STORE_IMG
+				  		  FROM ORDER_TBL C
+				  		  JOIN ORDER_INFO_TBL D ON(D.ORDER_CODE = C.ORDER_CODE)
+				  		  JOIN PRODUCT_TBL E ON(E.SD_CODE=D.SD_CODE)
+				  		  JOIN STORE_TBL F ON(E.MEM_CODE=F.MEM_CODE)		  		  
+				  		 WHERE C.MEM_CODE = #{ searchCondition } 		
+				  		 <if test="searchValue != null">
+				  		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'		
+				  		 </if>
+				  		 ORDER BY C.ORDER_CODE DESC
+				  )B	 
+		  <![CDATA[
+			 	 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+			 	 )A
+	 <![CDATA[
+	 WHERE A.RNUM >= #{ startRow }
+	 ]]>	    
 	</select>
+	<!-- 나의 주문 목록 중 반찬정보  -->
+	<select id="selectMyOrderSd" resultType="hashmap">
+	 SELECT
+	 		A.ORDER_CODE
+	 	  , B.SD_CODE
+	 	  , B.AMONT
+	 	  , C.SD_IMG
+	 	  , C.SD_NAME
+	 	  ,	C.PRICE
+	 	  , D.STORE_IMG	
+	   FROM	ORDER_TBL A
+	   JOIN ORDER_INFO_TBL B ON(B.ORDER_CODE = A.ORDER_CODE)
+	   JOIN PRODUCT_TBL C ON(C.SD_CODE = B.SD_CODE)
+	   JOIN STORE_TBL D ON(D.MEM_CODE = C.MEM_CODE)
+	  WHERE A.MEM_CODE = #{ userCode }	 
+	 </select>
+	 
+	  <!-- 주문취소 -->
+	  <update id="updateOrderCancel">
+	   UPDATE
+		      ORDER_TBL A
+		  SET ORDER_CANCLE_TIME = SYSDATE 
+		 WHERE A.ORDER_CODE = #{ orderNo }
+	  </update>
+	  
+	  
+	  
 	
 	    <!-- 내가 자주 찾는 가게 총 갯수 확인 -->
     <select id="selectMyRecommendStore" resultType="_int" parameterType="hashmap">
@@ -328,9 +350,117 @@
 		 FROM REVIEW_TBL A
 		 JOIN ORDER_TBL B ON(B.ORDER_CODE = A.ORDER_CODE)
 		WHERE A.MEM_CODE = #{ searchCondition }
+		  AND A.IS_DELETED = 'N'
 		  <if test="searchValue != null">
 		  AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
 		  </if>
 	</select>
-    </mapper>
+	
+	<!-- 내가 작성한 리뷰 및 페이지 네이션 -->
+	<select id="selectReviewContentList" resultMap="reviewResultMap">
+	SELECT
+		   A.RNUM
+		 , A.MEM_CODE
+		 , A.ORDER_CODE
+		 , A.RV_IMG
+		 , A.RV_CONTENT
+		 , A.RV_GRADE
+		 , A.RV_CODE
+		 , A.MEM_ID
+		 , A.IS_DELETED
+		 , A.ORDER_RUQEUST_TIME
+	 FROM (SELECT ROWNUM RNUM
+	 			, B.MEM_CODE
+				, B.ORDER_CODE
+				, B.RV_IMG
+				, B.RV_CONTENT
+				, B.RV_GRADE
+				, B.RV_CODE
+				, B.MEM_ID
+				, B.IS_DELETED
+				, B.ORDER_RUQEUST_TIME
+			FROM (SELECT C.MEM_CODE
+					   , C.ORDER_CODE
+					   , C.RV_IMG
+					   , C.RV_CONTENT
+					   , C.RV_GRADE
+					   , C.RV_CODE
+					   , C.MEM_ID
+					   , C.IS_DELETED
+					   , D.ORDER_RUQEUST_TIME
+				   FROM REVIEW_TBL C
+				   JOIN	ORDER_TBL D ON(D.ORDER_CODE = C.ORDER_CODE)
+				  WHERE C.MEM_CODE = #{ searchCondition }
+				  	AND C.IS_DELETED = 'N'
+				  <if test="searchValue != null">
+				    AND D.STORE_NAME = #{ searchValue }
+				  </if>
+				  	ORDER BY D.ORDER_RUQEUST_TIME DESC
+					)B
+			<![CDATA[
+		 	 WHERE ROWNUM <= #{ endRow }
+		 	 ]]>
+		 	 )A
+	 <![CDATA[
+	 WHERE A.RNUM >= #{ startRow }
+	 ]]>
+	</select>
+	 <!-- 리뷰관련 가게 제품정보 출력 (작업중)-->
+ 	<select id="selectMySdInfo" resultType="hashmap">
+	 SELECT
+             A.ORDER_CODE
+           , A.STORE_CODE
+           , B.STORE_IMG
+       FROM  ORDER_TBL A
+       JOIN STORE_TBL B ON(A.STORE_CODE=B.MEM_CODE) 
+      WHERE A.MEM_CODE = #{ userCode }
+	 </select>
+	
+	<insert id="insertReview">
+		INSERT
+		INTO REVIEW_TBL
+		(
+		  MEM_CODE
+		, ORDER_CODE
+		, RV_IMG
+		, RV_CONTENT
+		, RV_GRADE
+		, RV_CODE
+		, MEM_ID
+		, IS_DELETED
+		)
+		VALUES
+		(
+		  #{ memCode }
+		, #{ orderCode }
+		, #{ img }
+		, #{ content }
+		, #{ grade }
+		, SEQ_REVIEW.NEXTVAL
+		, #{ memId }
+		, 'N'
+		)
+	</insert>
+	
+	<update id="updateStoreGrade" parameterType="hashmap">
+		<selectKey resultType="string" keyProperty="memCode" order="BEFORE">
+       		SELECT A.STORE_CODE FROM ORDER_TBL A WHERE A.ORDER_CODE = #{ orderCode }
+    	</selectKey> 
+		UPDATE STORE_TBL
+		   SET GRADE = #{ grade }
+		 WHERE MEM_CODE = #{ memCode }
+	</update>
+	 
+	<select id="selectStoreGrade" resultType="double">
+	 	SELECT
+	 		   ROUND(AVG(A.RV_GRADE),1)
+	 	  FROM REVIEW_TBL A
+	 	  JOIN ORDER_TBL B ON(A.ORDER_CODE = B.ORDER_CODE)
+	 	 WHERE B.STORE_CODE = (SELECT C.STORE_CODE FROM ORDER_TBL C WHERE C.ORDER_CODE = #{ orderCode })
+	</select>
+	 <!-- 리뷰삭제  -->
+	 <update id="">
+	 </update>
+	 
+</mapper>
     

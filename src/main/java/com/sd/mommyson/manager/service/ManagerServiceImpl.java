@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
+import com.sd.mommyson.manager.dto.CategoryDTO;
+import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
@@ -428,7 +430,7 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectNormalInquiry(pagination);
 	}
 	
-	 /** 
+	/** 
 	 * 배너추가
 	 * @author leeseungwoo
 	 */
@@ -472,6 +474,127 @@ public class ManagerServiceImpl implements ManagerService {
 		return result;
 	}
 
+	/**
+	 * 사용 태그로 등록하기
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateUseTag(List<Integer> useTagNoList) {
+		
+		int result = managerDAO.updateUseTag(useTagNoList);
+		
+		return result;
+	}
+
+	/**
+	 * 미사용 태그로 등록하기
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateUnUseTag(List<Integer> unUseTagNoList) {
+		
+		int result = managerDAO.updateUnUseTag(unUseTagNoList);
+		
+		return result;
+	}
+
+	/**
+	 * 핫 키워드 조회
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<HotKeywordDTO> selectHotkeword() {
+		
+		return managerDAO.selectHotkeword();
+	}
+
+	/**
+	 * 핫 키워드 등록
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateHotkewordAdd(List<Map<String, Object>> hotkewordList) {
+		
+		int result = 0;
+		for(int i = 0; i < hotkewordList.size(); i++) {
+			result += managerDAO.updateHotkewordAdd(hotkewordList.get(i));
+		}
+		
+		return result;
+	}
+
+	/**
+	 * 핫 키워드 수정
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateHotkewordEdit(List<Map<String, Object>> hotkewordEditList) {
+		
+		int result = 0;
+		for(int i = 0; i < hotkewordEditList.size(); i++) {
+			result += managerDAO.updateHotkewordEdit(hotkewordEditList.get(i));
+		}
+		
+		return result;
+	}
+
+	/**
+	 * 카테고리 조회
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<CategoryDTO> selectCategoryList() {
+		
+		return managerDAO.selectCategoryList();
+	}
+
+	/**
+	 * 카테고리 추가
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int insertCategory(String category) {
+		
+		int result = managerDAO.insertCategory(category);
+		
+		return result;
+	}
+
+	/**
+	 * 카테고리 삭제
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int deleteCategory(int categoryCode) {
+		
+		int result = managerDAO.deleteCategory(categoryCode);
+		
+		return result;
+	}
+
+	/**
+	 * 사용 카테고리로 등록
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateUseCategory(List<String> useCategoryCodeList) {
+		
+		int result = managerDAO.updateUseCategory(useCategoryCodeList);
+		
+		return result;
+	}
+
+	/**
+	 * 미사용 카테고리로 등록
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateUnUseCategory(List<String> unUseCategoryCodeList) {
+		
+		int result = managerDAO.updateUnUseCategory(unUseCategoryCodeList);
+		
+		return result;
+	}
 
 
 }

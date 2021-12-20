@@ -7,6 +7,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
@@ -94,5 +95,7 @@ public interface OwnerService {
 	public List<Integer> seletTagList(int sdCode);
 
 	public int updateProduct(Map<String, Object> productInfo);
+
+	public MembershipAndStoreDTO selectMembershipAndStore(int msCode);
 
 }

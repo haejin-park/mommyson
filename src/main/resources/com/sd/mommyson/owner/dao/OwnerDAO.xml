@@ -77,12 +77,20 @@
 		<result property="content" column="RV_CONTENT"/>
 		<result property="grade" column="RV_GRADE"/>
 		<result property="rvCode" column="RV_CODE"/>
-		<collection property="orderDTO" resultMap="orderResultMap"></collection>
+		<collection property="orderDTO" resultMap="orderResultMap"/>
+	</resultMap>
+	
+	<!-- 리뷰가져오는 맵 -->
+	<resultMap type="com.sd.mommyson.user.dto.ReviewDTO" id="reviewResultMap1">
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="img" column="RV_IMG"/>
+		<result property="content" column="RV_CONTENT"/>
+		<result property="grade" column="RV_GRADE"/>
+		<result property="rvCode" column="RV_CODE"/>
+		<collection property="memberDTO" resultMap="memberResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-		<id property="memCode" column="MEM_CODE"/>
-		<result property="totalPrice" column="TOTAL_PRICE"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="orderType" column="ORDER_TYPE"/>
 		<result property="code" column="CODE"/>
@@ -94,6 +102,20 @@
 		<collection property="product" ofType="java.lang.String" javaType="list">
     		<result column="SD_NAME"/>
     	</collection>
+	</resultMap>
+	
+	<!-- 반찬 네임이랑 수량 따로 가져올것들 -->
+	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap2">
+		<result property="orderCode" column="ORDER_CODE"/>
+		<result property="orderType" column="ORDER_TYPE"/>
+		<result property="code" column="CODE"/>
+		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
+		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
+		<association property="memberDTO" resultMap="memberResultMap"/>
+		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
+		<association property="acceptDTO" resultMap="acceptResultMap"/>
+		<collection property="productDTO" resultMap="productResultMap"/>
+		<collection property="orderAmount" resultMap="InfoResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.user.dto.AcceptDTO" id="acceptResultMap">
@@ -110,7 +132,6 @@
 		<result property="address" column="ADDRESS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="storeName" column="STORE_NAME"/>
-		<result property="code" column="CODE"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
@@ -195,14 +216,14 @@
            , C.DC_CONDITION
         FROM (SELECT
                     ROWNUM RNUM
-                  , D.CP_CODE
+                , D.CP_CODE
                 , D.CP_NAME 
                 , D.START_DATE
                 , D.DISCOUNT_WON
                 , D.END_DATE
                 , D.DC_CONDITION
                FROM (SELECT
-                             A.CP_CODE
+                        A.CP_CODE
                       , A.CP_NAME
                       , A.START_DATE
                       , A.DISCOUNT_WON
@@ -270,18 +291,49 @@
 		
 	</insert>
 	
-	<!-- 리뷰 목록 가져오기 -->
-	<select id="selectReview" resultMap="reviewResultMap">
+	<select id="selectReviewListTotalCount" resultType="_int">
 		SELECT
-				A.RV_CODE
-			  , A.MEM_CODE
-			  , A.RV_CONTENT
-			  , B.NICKNAME 
+			    COUNT(*)
 		  FROM REVIEW_TBL A
 		  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
 		  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
-		 WHERE C.STORE_NAME = #{storeName}
+		 WHERE C.STORE_NAME = #{ storeName }
 		   AND A.IS_DELETED = 'N'
+	</select>
+	
+	<!-- 리뷰 목록 가져오기 -->
+	<select id="selectReview" resultMap="reviewResultMap1">
+		SELECT
+		        E.RNUM
+		      ,	E.RV_CODE
+			  , E.MEM_CODE
+			  , E.RV_CONTENT
+			  , E.NICKNAME 
+	     FROM (SELECT
+		                ROWNUM RNUM
+		              ,	D.RV_CODE
+					  , D.MEM_CODE
+					  , D.RV_CONTENT
+					  , D.NICKNAME 
+	            FROM (SELECT
+								A.RV_CODE
+							  , A.MEM_CODE
+							  , A.RV_CONTENT
+							  , B.NICKNAME 
+						  FROM REVIEW_TBL A
+						  JOIN MEMBER_TBL B ON (B.MEM_CODE = A.MEM_CODE)
+						  JOIN ORDER_TBL C ON (A.ORDER_CODE = C.ORDER_CODE)
+					   <where>
+					 		  C.STORE_NAME = #{ searchCondition }
+		   				  AND A.IS_DELETED = 'N'
+					   </where>
+		  			   )D
+		  			   <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)E
+	   <![CDATA[
+	  WHERE E.RNUM >= #{ startRow } 
+       ]]>
 	</select>
 	
 	<!-- 사업자 가게정보 변경 쿼리문 -->
@@ -692,6 +744,15 @@
 			 WHERE SD_CODE = #{ sdCode }
 	</update>
 	
+	<!-- 주문페이지 주문 접수 토탈타운트  -->
+	<select id="selectOrderListTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM ORDER_TBL A
+		 WHERE A.STORE_NAME = #{ storeName }
+		   AND A.CODE = 1 OR A.CODE = 2
+	</select>
+	
 	<!-- 주문페이지 주문 접수  -->
 	<select id="selectOrderList" resultMap="orderResultMap">
 		 SELECT
@@ -704,6 +765,7 @@
                , G.ORDER_TYPE 
                , G.ORDER_STATUS 
                , G.SD_NAME 
+               , G.AMONT
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_ACCEPT_TIME
@@ -714,6 +776,7 @@
 	                , F.ORDER_TYPE 
                     , F.ORDER_STATUS 
                     , F.SD_NAME 
+                    , F.AMONT
 	            FROM (SELECT
 						        A.ORDER_ACCEPT_TIME
 						      , A.ORDER_CODE
@@ -722,7 +785,8 @@
 						      , C.NICKNAME
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
-						      , E.SD_NAME        
+						      , E.SD_NAME 
+						      , B.AMONT       
 						  FROM ORDER_TBL A
 						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -743,7 +807,7 @@
        ]]>
 	</select>
 		
-	<select id="selectOrder" resultMap="orderResultMap">
+	<select id="selectOrder" resultMap="orderResultMap2">
 		SELECT
 		        A.ORDER_ACCEPT_TIME
 		      , A.ORDER_CODE
@@ -751,7 +815,8 @@
 		      , C.NICKNAME
 		      , A.ORDER_TYPE
 		      , D.ORDER_STATUS
-		      , E.SD_NAME        
+		      , E.SD_NAME   
+		      , B.AMONT     
 		  FROM ORDER_TBL A
 		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -816,7 +881,8 @@
                , G.NICKNAME
                , G.ORDER_TYPE 
                , G.ORDER_STATUS 
-               , G.SD_NAME 
+               , G.SD_NAME
+               , G.AMONT 
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_COMPLETE_TIME
@@ -826,6 +892,7 @@
 	                , F.ORDER_TYPE 
                     , F.ORDER_STATUS 
                     , F.SD_NAME 
+                    , F.AMONT
 	            FROM (SELECT
 						        A.ORDER_COMPLETE_TIME
 						      , A.ORDER_CODE
@@ -833,7 +900,8 @@
 						      , C.NICKNAME
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
-						      , E.SD_NAME        
+						      , E.SD_NAME 
+						      , B.AMONT       
 						  FROM ORDER_TBL A
 						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -843,7 +911,7 @@
 		                    	    A.STORE_NAME = #{ storeName }
 			 				    AND A.CODE = 3 OR A.CODE = 4
 			 			<if test="searchValue != null and searchValue != '' ">
-						  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+						  		AND A.ORDER_CODE LIKE '%' ||  #{ searchValue } || '%'
 						</if>
 						<if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
 							  	AND A.ORDER_COMPLETE_TIME IN (#{ mDate } , #{ mDate2 })
@@ -891,7 +959,8 @@
 	<!-- 멤버십 정보 select 쿼리문 -->
 	<select id="selectMembership" resultMap="membershipResultMap">
 		SELECT
-			   MS_TYPE
+			   MS_CODE
+			 , MS_TYPE
 			 , MS_DATE
 			 , MS_PRICE
 	 	  FROM MEMBERSHIP_TBL

@@ -14,6 +14,7 @@ import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
+import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
@@ -401,6 +402,14 @@ public class OwnerServiceImpl implements OwnerService{
 		}
 		
 		return result;
+	}
+
+	@Override
+	public MembershipAndStoreDTO selectMembershipAndStore(int msCode) {
+
+		MembershipAndStoreDTO membership = ownerDAO.selectMembershipAndStore(msCode);
+		
+		return membership;
 	}
 
 }

@@ -1,13 +1,16 @@
 package com.sd.mommyson.usermypage.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
+import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 
 public interface UserMyPageDAO {
 
@@ -26,5 +29,19 @@ public interface UserMyPageDAO {
 	int deleteRecommendStore(int storeNo);
 
 	int selectTotalReviewCount(Map<String, String> searchMap);
+
+	List<ReviewDTO> selectReviewContentList(SelectCriteria selectCriteria);
+
+	List<HashMap<String, String>> selectMyOrderSd(int userCode);
+
+	int insertReview(ReviewDTO review);
+
+	int updateStoreGrade(Map<String, Object> map);
+
+	double selectStoreGrade(int orderCode);
+
+	List<HashMap<String, String>> selectMySdInfo(int userCode);
+
+	int updateOrderCancel(int orderNo);
 
 }

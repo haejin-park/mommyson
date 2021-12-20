@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="../resources/css/pay.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <title>결제</title>
 </head>
 <body>
@@ -282,24 +283,49 @@
 	        $("#div2").toggle();
 	    });
 	    
-	    /* $('.payment').click(function(){
+	    $('.payment').click(function(){
 	    	
 	    	if($('#check').is(':checked')){
-	    		$.ajax({
-	    			url : '${ pageContext.servletContext.contextPath }/owner/kakaopay',
-	    			type : 'post',
-	    			dataType : 'json',
-	    			data : { },
-	    			success : function(data){
-	    				// 결제 요청이 되면 url이 넘어옴
-	    			location.href = data.next_redirect_pc_url
-	    				
-	    			}, 
-	    		});
+
+	    		let name = "${ requestScope.ownerInfo.ceo.store.storeName }";
+	      		let phone = "${ requestScope.ownerInfo.phone }";
+	      		let totalPrice = "${ requestScope.membership.msPrice }";
+	      		let msCode = "${ requestScope.membership.msCode }";
+	      		let msDate = "${ requestScope.membership.msDate }";
+	      		var IMP = window.IMP; 
+	      	    IMP.init('imp43692691'); 
+	      	    IMP.request_pay({
+	      	    	pg : 'kakaopay',
+	      	        pay_method : 'card', //생략 가능
+	      	        merchant_uid: "${ requestScope.orderCode }" + 4, // 상점에서 관리하는 주문 번호 db에서 가져와야함
+	      	        name : "${ requestScope.membership.msType }", // 상품명
+	      	        amount : totalPrice, 
+	      	        buyer_email : "${ requestScope.ownerInfo.email }",
+	      	        buyer_name : name,
+	      	        buyer_tel : phone,
+	      	        buyer_addr : "${ requestScope.ownerInfo.address }",
+	      	        buyer_postcode : "${ requestScope.ownerInfo.postCode }",
+	      	       /*  m_redirect_url : '{ ${ pageContext.servletContext.contextPath }/owner/kakaoPay?msCode=${ requestScope.membership.msCode }&msDate=${ requestScope.membership.msDate } }' */
+	      	    },  function(rsp) { 
+	      	    	
+	      	    	if( rsp.success ){
+		      	    	
+	      	    		location.href = ' ${ pageContext.servletContext.contextPath }/owner/kakaoPay?msCode=${ requestScope.membership.msCode }&msDate=${ requestScope.membership.msDate } ';
+	      	    		
+		      	    	} else {
+	      	    		//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
+		      	        var msg = '오류로 인하여 결제가 시작되지 못하였습니다.';
+		      	        msg += '에러내용 : ' + rsp.error_msg;
+
+		      	        alert(msg);
+	      	    	}
+	      	    	
+	      		});
+	    		
 	    	} else {
 	    		alert("약관 동의를 하지 않았습니다.")
 	    	}
-	    }); */
+	    }); 
 	    
     </script>
     

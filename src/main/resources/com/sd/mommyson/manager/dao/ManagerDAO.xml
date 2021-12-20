@@ -92,9 +92,15 @@
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.manager.dto.HotKeywordDTO" id="hotResultMap">
-		<id property="hotNo" column="HOT_NO"/>
+		<id property="tagNo" column="TAG_NO"/>
 		<result property="hotContent" column="HOT_CONTENT"/>
-		<result property="tagNo" column="TAG_NO"/>
+		<result property="hotNo" column="HOT_NO"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.manager.dto.CategoryDTO" id="categoryResultMap">
+		<id property="categoryCode" column="CATEGORY_CODE"/>
+		<result property="categoryName" column="CATEGORY_NAME"/>
+		<result property="status" column="STATUS"/>
 	</resultMap>
 	
 	<select id="selectNormalMemberTotalCount" resultType="_int">
@@ -601,6 +607,134 @@
 	      FROM TAGS_TBL
 	     WHERE TAG_NO = #{ tagNo }
 	</delete>
+	
+	<!-- 사용 태그로 등록하기 -->
+	<update id="updateUseTag" parameterType="list">
+		 UPDATE
+	           TAGS_TBL A
+	       SET A.STATUS = 'Y'
+    	<where>
+	     	A.TAG_NO IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+ 		</where>
+	</update>
+	
+	<!-- 미사용 태그로 등록하기 -->
+	<update id="updateUnUseTag" parameterType="list">
+		UPDATE
+	           TAGS_TBL A
+	       SET A.STATUS = 'N'
+    	<where>
+	     	A.TAG_NO IN
+	     	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	     		#{ item }
+	     	</foreach>
+ 		</where>
+	</update>
+	
+	<!-- 핫 키워드 조회 -->
+	<select id="selectHotkeword" resultMap="hotResultMap">
+	    SELECT
+	           A.HOT_NO
+	         , A.HOT_CONTENT
+	         , A.TAG_NO
+	      FROM HOT_TBL A
+	     WHERE A.TAG_NO IS NOT NULL
+	     ORDER BY A.HOT_NO ASC
+	</select>
+	
+	<!-- 핫 키워드 추가 -->
+	<update id="updateHotkewordAdd">
+	    UPDATE
+	           HOT_TBL A
+	       SET A.HOT_CONTENT = #{ tagName }
+	         , A.TAG_NO = #{ tagNo }
+		<where>
+			A.HOT_NO = 
+			           (SELECT 
+							   B.HOT_NO 
+						  FROM
+							   (SELECT 
+							           HOT_NO 
+							      FROM HOT_TBL 
+							     WHERE TAG_NO IS NULL 
+							     ORDER BY HOT_NO ASC) B
+						 WHERE ROWNUM = 1)
+		</where>
+	</update>
+	
+	<!-- 핫 키워드 수정 -->
+	<update id="updateHotkewordEdit">
+	    UPDATE
+	           HOT_TBL A
+	       SET A.HOT_CONTENT = #{ tagName }
+	         , A.TAG_NO = #{ tagNo }
+		<where>
+			A.HOT_NO IN #{ hotNo }
+		</where>
+	</update>
+	
+	<!-- 카테고리 조회 -->
+	<select id="selectCategoryList" resultMap="categoryResultMap">
+	    SELECT
+	           A.CATEGORY_CODE
+	         , A.CATEGORY_NAME
+	         , A.STATUS
+	      FROM CATEGORY_TBL A
+	     ORDER BY CATEGORY_CODE ASC
+	</select>
+	
+	<!-- 카테고리 추가 -->
+	<insert id="insertCategory">
+	    INSERT
+	      INTO CATEGORY_TBL
+	    (
+	      CATEGORY_CODE
+	    , CATEGORY_NAME
+	    , STATUS
+	    )
+	    VALUES
+	    (
+	      SEQ_CATEGORY_CODE.NEXTVAL
+	    , #{ category }
+	    , 'N'
+	    )
+	</insert>
+	
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteCategory">
+	    DELETE
+	      FROM CATEGORY_TBL
+	     WHERE CATEGORY_CODE = #{ categoryCode }
+	</delete>
+	
+	<!-- 사용 카테고리로 등록 -->
+	<update id="updateUseCategory" parameterType="list">
+	    UPDATE
+	           CATEGORY_TBL
+	       SET STATUS = 'Y'
+	    <where>
+	    	CATEGORY_CODE IN
+	    	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	    		#{ item }
+	    	</foreach>
+		</where>
+	</update>
+	
+	<!-- 미사용 카테고리로 등록 -->
+	<update id="updateUnUseCategory" parameterType="list">
+	    UPDATE
+	           CATEGORY_TBL
+	       SET STATUS = 'N'
+		<where>
+			CATEGORY_CODE IN
+			<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+	    		#{ item }
+	    	</foreach>
+		</where>
+	</update>
 	
 	<select id="selectAuth" resultMap="authResultMap">
 		SELECT

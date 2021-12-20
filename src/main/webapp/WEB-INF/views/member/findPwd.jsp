@@ -49,9 +49,6 @@
         <br>
     </div>    
     <div class="button" style="text-align: center;">
-<!--         <button type="submit" id="findPwdButton" onclick="findPwdButton1()"
-        style="width:100px; height:40px; border-radius: 9px; background-color:rgb(247, 170, 145); text-align : center;">비밀번호 찾기</button>
-        &nbsp; &nbsp;  -->
         <button type="submit" id="changePwdButton"
         style="width:100px; height:40px; border-radius: 9px; background-color:rgb(247, 170, 145); text-align : center;">비밀번호 변경</button>
         &nbsp; &nbsp;
@@ -131,52 +128,8 @@
          			type:"post",
          			url:"find_pass.do",
          			data : { email : email },	
-         			async : false, 
-         			success:function(data){  // memberController에서 try catch문 주석하고 data잘들어오는지 실행해보기 
-         				console.log("data : " + data);  
-         				emailCode = data;
-         				
-         				$("#emailCode").blur(function(){
-    	     				var inputEmailCode = $("#emailCode").val(); // 입력코드 
-    	     				var codeCheckResult = $("#codeCheckResult"); // 비교결과 
-    	     				
-    	     				if(inputEmailCode != emailCode){
-    	     					if(inputEmailCode == ""){
-    	     						codeCheckResult.html("인증번호를 입력해주세요.");
-    	     						codeCheckResult.attr("class", "incorrect");
-    	     						return false;
-    	     					} else {
-    	     						codeCheckResult.html("인증번호가 일치하지 않습니다. 인증번호를 다시 입력해주세요.");
-    	     						codeCheckResult.attr("class", "incorrect");
-    	     						return false;
-    	     					}
-    	     					
-    	     				} else {
-    	     					
-    	     					if(inputEmailCode == ""){
-    	     						codeCheckResult.html("인증번호를 입력해주세요.");
-    	     						codeCheckResult.attr("class", "incorrect");
-    	     						return false;
-    	     						
-    	     					} else {
-    	     						codeCheckResult.html("인증번호가 일치합니다.");
-    	     						codeCheckResult.attr("class", "correct");
-   	     						 	
-    	     						/*  $('#changePwdButton').click(function(){
-    	     				        	var email = $("#email").val(); //이메일 
-	     				         		location.href = "${ pageContext.servletContext.contextPath }/member/modifyPwd?email=" + email; //겟방식   
-     				        		});	*/
-    	     				        			
-    	     						return true;
-    	     						
-    	     					}
-    	     				}
-    	     				
-         				});
-         			},
-        			error : function(error){
-        				alert(error);
-        			}	
+         			async : false
+         			
          		});
         	}
 		}); 
@@ -192,11 +145,10 @@
 	 	 
 	 	 
 	 	/* 비밀번호 변경 버튼 클릭시 이메일과 인증코드 모두 입력이 잘 되어있고 이메일에 발송된 인증번호가 일치하면 비밀번호 변경 화면으로 넘어간다. */
-	   $('#changePwdButton').click(function(){
+	    $('#changePwdButton').click(function(){
 	        
 	       	var email = $("#email").val(); //이메일 
 	       	var inputEmailCode = $("#emailCode").val(); // 입력코드 
-	       	var emailCode =""; // 데이터 담는 용도 
 	       	
 	       	if(email !== "" || inputEmailCode!= ""){
 	       	
@@ -205,7 +157,6 @@
 	        			url:"findPass2",
 	        			data : { 
 	        				email : email, 
-	        				emailCode : emailCode,
 	        				inputEmailCode : inputEmailCode
 	        			},	
 	        			async : false, 
@@ -214,7 +165,8 @@
 	        				if(data == '인증코드가 일치하지 않습니다.') {
 	        					alert(data);
 	        				} else {
-	        					location.href = "${ pageContext.servletContext.contextPath }/member/modifyPwd2" //겟방식  
+	        					alert("인증번호가 일치합니다. 비밀번호 변경 화면으로 이동합니다.");
+	        					location.href = "${ pageContext.servletContext.contextPath }/member/modifyPwd?email=" + data; //겟방식  
 	        				}
 	        			},
 	        			
@@ -226,7 +178,7 @@
 	       			
 	       	}
 	
-		});  
+		});   
 	    
 	    /* 로그인 화면 이동  */ 
 	    const $goLogin = document.getElementById("goLogin");
