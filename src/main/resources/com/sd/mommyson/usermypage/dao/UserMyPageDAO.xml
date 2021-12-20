@@ -459,7 +459,11 @@
 	 	 WHERE B.STORE_CODE = (SELECT C.STORE_CODE FROM ORDER_TBL C WHERE C.ORDER_CODE = #{ orderCode })
 	</select>
 	 <!-- 리뷰삭제  -->
-	 <update id="">
+	 <update id="updateDelReview">
+	 UPDATE
+	 		REVIEW_TBL A
+	 	SET A.IS_DELETED = 'Y'
+	  WHERE	A.RV_CODE = #{ rvCodeDel }	
 	 </update>
 	 
 </mapper>

@@ -47,7 +47,7 @@
               <tbody>
 				<c:forEach var="reviewInfo" items="${ requestScope.reviewContentList }">
                 <tr>
-                  <td><input type="hidden" value="${ reviewInfo.orderCode }">
+                  <td>
                    <c:forEach var="RelativeSdIfo" items="${ requestScope.productInfo }">
                   	<c:if test="${ RelativeSdIfo.ORDER_CODE eq reviewInfo.orderCode }">
                		   <img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ RelativeSdIfo.STORE_IMG }">
@@ -65,71 +65,58 @@
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.content }"/></td>
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.grade }"/>개</td><!--추후 별 이미지 처리-->
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.orderDTO.requestTime }"/></td><!-- 주문일자 -->
-                  <td style="padding-top: 40px;"><button class="urBtn">삭제</button><button class="urBtn">수정</button></td>
+                  <td style="padding-top: 40px;"><button class="urBtn del" value="${ reviewInfo.rvCode }">삭제</button><button class="urBtn am" value="${ reviewInfo.rvCode }">수정</button></td>
+                <c:out value="${ reviewInfo.rvCode }"/>
                 </tr>
+               	
 				</c:forEach>
               </tbody>
             </table>
             <c:out value="${ requestScope.productInfo[0].ORDER_CODE }"/>
             <script>
-            	if(document.getElementsByTagName('td')){
-            		const $tds = $('td');           
-            			let orderInfo = $tds.find('input:hidden');
-            			console.log(orderInfo);
-            			
-            			//productInfo 반찬 
-            			let productInfo = ${ requestScope.productInfo };
-            			for(let i =0; productInfo.size(); i++) {
-            				console.log(JSON.stringfy(productInfo[i]));
-            			}
-            			
-            			/* consol.log(${ requestScope.productInfo}); */
-            			
-            			
-            			
-            			/* for(let orderA of orderInfo) {
-            				
-            				console.log(orderA.value);
-            				
-            				$.ajax({
-            					url : "${ pageContext.servletContext.contextPath }/userMyPage/userReview",
-            					method : "get",
-            					traditional : true,
-            					data : {
-            						orderNo : JSON.stringify(orderA.value)
-            					},
-            					dataType : "json",
-            					success : function(data, textStatus, xhr) {
-									alert("성공");
+									
+				if(document.getElementsByClassName("del")) {
+					const $button =$('.del');
+
+					console.log($button);
+					
+					for(let i = 0; i< $button.length; i++) {
+						$button[i].onclick = function() {
+							let rvCode = this.value;
+							console.log(rvCode);
+							
+							 $.ajax({
+								url:"${ pageContext.servletContext.contextPath }/userMyPage/delReview",
+								method : "post",
+								data : {
+									rvCode : rvCode
+								},
+								success : function(data, textStatus,xhr) {
+									alert(data);
+									location.reload();
 								},
 								error : function(xhr, status, error) {
 									
+									alert(error);
+									location.reload();
 								}
-            					
-            				});
-            			} */  
-						/* console.log(type of(orderA));
-						for(let orderA of orderInfo) {
-            				
-            				console.log(orderA.value);
-            				
-            				$.ajax({
-            					url : "${ pageContext.servletContext.contextPath }/userMyPage/userReview",
-            					method : "get",
-            					data : {
-            						orderNo : orderA.value
-            					},
-            					success : function(data, textStatus, xhr) {
-									alert("성공");
-								},
-								error : function(xhr, status, error) {
-									
-								}
-            					
-            				});
-            			}  */
-           
-            	}
+							}); 
+						}
+					}
+				}
+            	
+				if(document.getElementsByClassName("am")) {
+					const $button2 =$('.am');
+					console.log($button2);
+
+					for(let j = 0; j< $button2.length; j++) {
+						$button2[j].onclick = function() {
+							let rvCode2 = this.value;
+							console.log(rvCode2);
+							location.href = "${ pageContext.servletContext.contextPath }/userMyPage/amendmentReview?rvCode=" + rvCode2;
+						}
+					}
+				}
             </script>
 
 			<ul>

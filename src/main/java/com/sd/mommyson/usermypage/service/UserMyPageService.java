@@ -44,4 +44,6 @@ public interface UserMyPageService {
 
 	int updateOrderCancel(int orderNo);
 
+	int updateDelReview(int rvCodeDel);
+
 }

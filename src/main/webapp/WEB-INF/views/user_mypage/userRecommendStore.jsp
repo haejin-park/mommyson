@@ -55,8 +55,7 @@
                   </td>
               
                   <td style="padding-top: 40px;">
-                    <button class="urBtn">삭제</button>
-                    <input type="hidden" name=storeCode value="${ recommend.memCode }">
+                    <button class="urBtn" value="${ recommend.memCode }">삭제</button>
                   </td>
                 </tr>
                 </c:forEach>
@@ -81,7 +80,7 @@
               		const $delbutton =$('button');
         			for(let i = 0; i < $delbutton.length; i++) {
         				$delbutton[i].onclick = function() {
-        				 	let	earseButton = this.nextSibling.nextSibling.value;
+        				 	let	earseButton = this.value;
         				 	console.log(earseButton);
         				 	$.ajax({
         				 		url : "${ pageContext.servletContext.contextPath }/userMyPage/delRecommend",

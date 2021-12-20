@@ -44,4 +44,6 @@ public interface UserMyPageDAO {
 
 	int updateOrderCancel(int orderNo);
 
+	int updateDelReview(int rvCodeDel);
+
 }

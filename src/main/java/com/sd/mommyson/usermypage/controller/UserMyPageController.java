@@ -464,11 +464,32 @@ public class UserMyPageController {
 	}
 
 	/*리뷰 수정*/
+	@GetMapping("amendmentReview")
+	public String amendmentReview(HttpSession session, HttpServletRequest request, HttpServletResponse response){
+		
+		
+		return "user_mypage/review_change";
+	}
+	
 	/*리뷰 삭제*/
 	@PostMapping("delReview")
-	public int deleteReview() {
+	public void deleteReview(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		return 0;
+		String reviewDelInfo = request.getParameter("rvCode");
+		int rvCodeDel = Integer.parseInt(reviewDelInfo);
+		System.out.println("리뷰 삭제 번호 " +rvCodeDel);
+		
+		int result = userMyPageService.updateDelReview(rvCodeDel);
+		
+		response.setContentType("text/plain; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		if(result >0 ) {
+			out.print("리뷰가 삭제 되었습니다.");
+		} else {
+			out.print("리뷰 삭제에 실패했습니다. 관리자에게 문의 하세요");
+		}
+		
+		return;
 	}
 	
 	/**@author ShinHyungi

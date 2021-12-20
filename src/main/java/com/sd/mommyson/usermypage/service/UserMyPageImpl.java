@@ -125,4 +125,10 @@ public class UserMyPageImpl implements UserMyPageService {
 		return result;
 	}
 
+	@Override
+	public int updateDelReview(int rvCodeDel) {
+		int result = userMyPageDAO.updateDelReview(rvCodeDel);
+		return result;
+	}
+
 }
