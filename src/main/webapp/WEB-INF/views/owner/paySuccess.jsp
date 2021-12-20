@@ -60,7 +60,7 @@
     
     <div style="text-align: center; margin-top: 50px;">
         <a href="${ pageContext.servletContext.contextPath }/"><button class="payment" style="margin-right: 0px; width: 200px;">홈으로</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href=""><button class="payment" style="margin-right: 0px; width: 200px;">영수증 확인하기</button></a>
+        <a href="${ pageContext.servletContext.contextPath }/owner/receipt"><button class="payment" style="margin-right: 0px; width: 200px;">영수증 확인하기</button></a>
     </div>    
     
     

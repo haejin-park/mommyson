@@ -1048,6 +1048,7 @@
 			 , END_DATE
 		  FROM MS_STORE_TBL	 
 		 WHERE MEM_CODE = #{ memCode } 
+		   AND EXTEND_YN = 'N'
 	</select>
 	
 	<!-- 이용권 등록 쿼리문 -->	
@@ -1059,6 +1060,8 @@
 		 , MS_CODE
 		 , START_DATE
 		 , END_DATE
+		 , EXTEND_YN
+		 , PAY_DATE
 		 )
 		 VALUES
 		 (
@@ -1066,6 +1069,8 @@
 		  , #{ msCode }
 		  , TO_DATE(#{ startDate },'YYYY-MM-DD')
 		  , TO_DATE(#{ endDate },'YYYY-MM-DD')
+		  , 'N'
+		  , TO_DATE(SYSDATE,'YYYY-MM-DD HH24:mi:ss')
 		 )
 	</insert>
 	
@@ -1079,6 +1084,52 @@
 		  FROM MEMBERSHIP_TBL A
 		  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
 		 WHERE B.MEM_CODE = #{ memCode }
+		   AND B.EXTEND_YN = 'N'
 	</select>
 	
+	<!-- 사업자 이용권 연장 여부 변경 쿼리문 -->
+	<update id="modifyExtendYn">
+		UPDATE MS_STORE_TBL 
+		   SET EXTEND_YN = 'Y'
+		 WHERE MEM_CODE = #{ memCode }   
+	</update>
+	
+	<!-- 영수증 총 갯수 구하는 쿼리문 -->
+	<select id="selectTotalReceipt" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM MEMBERSHIP_TBL A
+		  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+		  JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+		 WHERE B.MEM_CODE = #{ memCode }      
+	</select>
+
+	<!-- 사업자 영수증 출력을 위한 쿼리문 -->
+	<select id="selectMembershipInfoList" resultType="hashMap">
+		SELECT
+			   E.RNUM
+		     , E.MS_TYPE
+		     , E.MS_PRICE
+		     , E.START_DATE
+		     , E.PAY_DATE
+		     , E.STORE_NAME
+		  FROM (SELECT
+					   ROWNUM RNUM
+				     , D.MS_TYPE
+				     , D.MS_PRICE
+				     , D.START_DATE
+				     , D.PAY_DATE
+				     , D.STORE_NAME
+				  FROM (SELECT
+						       A.MS_TYPE
+						     , A.MS_PRICE
+						     , B.START_DATE
+						     , B.PAY_DATE
+						     , C.STORE_NAME
+						  FROM MEMBERSHIP_TBL A
+						  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+						  JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+						 WHERE B.MEM_CODE = #{ memCode }) D ) E
+			WHERE E.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }		 
+	</select>	
 </mapper>

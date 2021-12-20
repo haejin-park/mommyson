@@ -139,11 +139,13 @@
                                 </li>                                                            
                             </ul>
                         </li>
-                        
                         <li>
                             <a href="#">탈퇴하기</a>
                         </li>
-		              </ul>
+                        <hr>
+                        <li>
+                            <a href="${ pageContext.servletContext.contextPath }/owner/receiptList">이용권 구매 영수증 관리</a>
+                        </li>
 		          </nav>
 	     		<script>
 		      		$(document).ready(function(){

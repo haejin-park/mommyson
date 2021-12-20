@@ -1003,7 +1003,18 @@ public class OwnerController {
 			
 		} else {
 			
-			info.put("dDay", memberShip.getEndDate()); 
+			info.put("dDay", memberShip.getEndDate());
+			
+			int extendMembership = ownerService.modifiyMembership(info); 
+			
+			if( extendMembership > 0 ) {
+				
+				rd.addFlashAttribute("successInfo",successInfo);
+				
+			} else {
+				
+				rd.addFlashAttribute("msg","결제에 실패하였습니다.");
+			}
 			
 		}
 		
@@ -1114,6 +1125,59 @@ public class OwnerController {
 		
 		return "redirect:productManagement";
 	}
+	
+	/* 사업자 이용권 영수증 페이지 */
+	@GetMapping("receiptList")
+	public void receiptList (Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
+		
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int totalCount = ownerService.selectTotalReceipt(memCode);
+		
+		Pagination pagenation = null;
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		map.put("pagination", pagenation);
+		map.put("memCode", memCode);
+	
+		List<Map<String, Object>> info = ownerService.selectMembershipInfoList(map);
+
+		model.addAttribute("info",info);
+			
+	}
+	
+	
+	@GetMapping("receipt")
+	public void receipt(Model model) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		
+		
+		
+	}
+	
 	
 	@GetMapping("salesDay")
 	public void salseDay(Model model) {

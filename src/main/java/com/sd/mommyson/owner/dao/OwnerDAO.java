@@ -109,4 +109,12 @@ public interface OwnerDAO {
 
 	public Map<String, Object> selectMembershipInfo(int memCode);
 
+	public int modifyExtendYn(Map<String, Object> info);
+
+	public Map<String, Object> selectMembershipHis(int memCode);
+
+	public List<Map<String, Object>> selectMembershipInfoList(Map<String, Object> map);
+
+	public int selectTotalReceipt(int memCode);
+
 }

@@ -102,4 +102,10 @@ public interface OwnerService {
 
 	public Map<String, Object> selectMembershipInfo(int memCode);
 
+	public int modifiyMembership(Map<String, Object> info);
+
+	public List<Map<String, Object>> selectMembershipInfoList(Map<String, Object> map);
+
+	public int selectTotalReceipt(int memCode);
+
 }
