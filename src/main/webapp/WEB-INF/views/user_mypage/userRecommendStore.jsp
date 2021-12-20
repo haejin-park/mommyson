@@ -115,6 +115,7 @@
                <ul style="display: flex; flex-direction: row; justify-content: center; align-items: baseline;">
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                   <form action="${ pageContext.servletContext.contextPath }/userMyPage/userRecommendStore" method="get">
+	              <input type="hidden" name="currentPage" value="1">
                   <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 가게 이름을 입력해주세요">
                   <button type="submit" class="searchbutton">검색하기</button>
                   </form>

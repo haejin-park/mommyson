@@ -123,14 +123,14 @@
                  <jsp:include page="../commons/userMyPagePagination.jsp"/>
              </ul>
             <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
-              	
-              <ul>
-                  <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                  <input type="text" class="searchtext" placeholder="찾고싶은 리뷰를 입력해주세요"></li>
-                  <button type="submit" class="searchbutton">검색하기</button></li>
-               </ul>
-            </nav>
+ 
+			<form action="${ pageContext.servletContext.contextPath }/userMyPage/userReview" method="get">
+               <input type="hidden" name="currentPage" value="1">			
+               <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
+               <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 리뷰 작성한 가게 이름을 입력해주세요">
+               <button type="submit" class="searchbutton">검색하기</button>
+			</form>
+           
 
           </div>
             

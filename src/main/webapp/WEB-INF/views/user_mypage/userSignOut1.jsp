@@ -30,19 +30,59 @@
               <h3><strong>회원 탈퇴</strong></h3>
             </div>
             <div class="changeUserInfo">
-              <label>ID</label><input type="text">
+              <label>ID</label><input name="memId" id="id" type="text">
             </div>
             <div class="changeUserInfo">
-              <label>비밀번호</label><input type="password">
+              <label>비밀번호</label><input name="memPwd" id="pwd" type="password">
             </div>
                         
             <div id="confirmInfobtn">
-              <button>&nbsp;&nbsp;확 &nbsp;&nbsp; 인</button>
+              <button type="submit" onclick="confirmation();">&nbsp; &nbsp; 확&nbsp;&nbsp;  인</button>
             </div>
             
           </div>
         </div>
       </div>
+      
+      <script>
+      function confirmation() {
+		const memId = document.getElementById('id').value;
+			/* $('#id').val(); */
+		const memPwd = document.getElementById('pwd').value;
+			/* $('#pwd').val(); */
+		console.log(memId);
+		console.log(memPwd);
+		if(memId==""){
+			alert("아이디를 입력해주세요.");
+			memId.focus();
+		}
+		
+		if(memPwd==null) {
+			alert("비밀번호를 입력해주세요");
+			memPwd.focus();
+		}
+		$.ajax({
+			url : "${ pageContext.servletContext.contextPath }/userMyPage/useSignOutConfirmation",
+			type : 'post',
+			data : {
+				memId : memId,
+				memPwd : memPwd
+			},
+			success : function (data) {
+				if(parseInt(data) > 0) {
+					alert("회원탈퇴처리가 되었습니다.");
+					location.href="${ pageContext.servletContext.contextPath }/";
+				} else {
+					alert("회원탈퇴에 실패했습니다. 관리자에게 문의 해주세요.");
+					location.href="${ pageContext.servletContext.contextPath }/user/MTMQnA";
+				}
+
+			}
+			
+		});
+	}
+      
+      </script>
     </section>
 	<jsp:include page="../commons/footer.jsp"/>
   </body>

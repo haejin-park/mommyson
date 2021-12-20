@@ -47,7 +47,7 @@
                                   <button type="button" class="pink_btn" id="save_img">저장</button>
                                 </div>
                                 <script>
-                                    // 이미지 미리보기
+                                    // 이미지 미리보기, 모달창내에
                                     function readImage(input) {
 
                                         if(input.files && input.files[0]) {
@@ -62,16 +62,17 @@
                                             reader.readAsDataURL(input.files[0])
                                         }
                                     }
-
+									//모달창안에 인풋 파일 부분
                                     const inputImage = document.getElementById("input-image")
                                     inputImage.addEventListener("change", e => {
-                                        readImage(e.target)
+                                        readImage(e.target)//위에 있는 함수 통해서 
                                     })
 
-                                    // 저장 버튼 클릭 시 리뷰 사진 등록 (ajax로 수정해야함)
+                                    // 저장 버튼 클릭 시 리뷰 사진 등록 (ajax로 수정해야함)//모달창 밖의 이미지가 변함
+									//프리뷰 이미지값 변환
                                     $('#save_img').on('click',function() {
                                         let img = $('#preview-image').attr('src')
-                                        $('#review_img').attr('src',img);
+                                        $('#review_img').attr('src',img);//프리뷰이미지를 리뷰 이미지로
                                         $('#exampleModal').modal('hide');
                                     })
                                 </script>

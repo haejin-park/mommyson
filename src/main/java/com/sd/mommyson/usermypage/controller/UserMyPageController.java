@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +22,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
@@ -38,14 +42,17 @@ import com.sd.mommyson.usermypage.service.UserMyPageService;
 
 @Controller
 @RequestMapping("/userMyPage/*")
+@SessionAttributes("loginMember")
 public class UserMyPageController {
 //양윤제
 	
 	private UserMyPageService userMyPageService;
+	private BCryptPasswordEncoder passwordEncorder;
 	
 	@Autowired
-	public UserMyPageController(UserMyPageService userMyPageService) {
+	public UserMyPageController(UserMyPageService userMyPageService, BCryptPasswordEncoder passwordEncorder) {
 		this.userMyPageService = userMyPageService;
+		this.passwordEncorder = passwordEncorder;
 	}
 	
 	/*주문내역*/
@@ -170,6 +177,24 @@ public class UserMyPageController {
 		
 		
 		return "user_mypage/userSignOut1";
+	}
+	
+	/*탈퇴처리과정*/
+	@PostMapping(value="useSignOutConfirmation", produces="text/plain; charset=UTF-8")
+	@ResponseBody
+	public String signOutConfirmation(@ModelAttribute MemberDTO memberInfo, Model mv, SessionStatus status) {
+		System.out.println("탈퇴처리과정진입");
+		int result = userMyPageService.updateSignOut(memberInfo);
+		
+		String message = "";
+
+		message = "" + result;
+		System.out.println("message : " +  message);
+		
+		if(result > 0) {
+			status.setComplete();
+		}
+	  return message;
 	}
 	
 	/*쿠폰함*/
@@ -463,10 +488,12 @@ public class UserMyPageController {
 		return "user_mypage/userReview";
 	}
 
-	/*리뷰 수정*/
+	/* 리뷰 수정페이지 출력 */
 	@GetMapping("amendmentReview")
 	public String amendmentReview(HttpSession session, HttpServletRequest request, HttpServletResponse response){
 		
+		String reviewCode = request.getParameter("rvCode");
+		System.out.println("reviewCode : " + reviewCode);
 		
 		return "user_mypage/review_change";
 	}
