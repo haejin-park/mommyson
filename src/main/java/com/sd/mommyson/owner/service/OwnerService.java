@@ -96,6 +96,16 @@ public interface OwnerService {
 
 	public int updateProduct(Map<String, Object> productInfo);
 
-	public MembershipAndStoreDTO selectMembershipAndStore(int msCode);
+	public MembershipAndStoreDTO selectMembershipAndStore(int memCode);
+
+	public int registMembership(Map<String, Object> info);
+
+	public Map<String, Object> selectMembershipInfo(int memCode);
+
+	public int modifiyMembership(Map<String, Object> info);
+
+	public List<Map<String, Object>> selectMembershipInfoList(Map<String, Object> map);
+
+	public int selectTotalReceipt(int memCode);
 
 }

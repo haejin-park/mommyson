@@ -2,7 +2,10 @@ package com.sd.mommyson.owner.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +47,7 @@ import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/owner/*")
-@SessionAttributes({"loginMember","owner"})
+@SessionAttributes({"loginMember","owner","membership"})
 public class OwnerController {
 	
 	private OwnerService ownerService;
@@ -68,6 +71,21 @@ public class OwnerController {
 		System.out.println(owner);
 
 		model.addAttribute("owner", owner);
+		
+		MemberDTO members = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = members.getMemCode();
+		
+		Map<String, Object> memberShip = ownerService.selectMembershipInfo(memCode);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String startDate = sdf.format(memberShip.get("START_DATE"));
+		String endDate = sdf.format(memberShip.get("END_DATE"));
+		
+		memberShip.put("startDate", startDate);
+		memberShip.put("endDate", endDate);
+		
+		model.addAttribute("membership",memberShip);
 		
 		return "owner/ownerMain";
 	}
@@ -943,25 +961,84 @@ public class OwnerController {
 	}
 	
 	@GetMapping("kakaoPay")
-	public String kakaoPay(Model model, @RequestParam(value="msCode") int msCode, @RequestParam(value="msDate") int msDate) {
+	public String kaakoapy(Model model, @RequestParam(value="msCode") int msCode, @RequestParam(value="msDate") int msDate, @RequestParam(value="msType") String msType, 
+			@RequestParam(value="price") String price, RedirectAttributes rd) {
 		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		String storeName = member.getCeo().getStore().getStoreName();
 		
 		System.out.println("카카오 페이로 넘겨받은 msCode : " + msCode);
 		System.out.println("카카오 페이로 넘겨받은 msDate : " + msDate);
+		System.out.println("카카오 페이로 넘겨받은 msType : " + msType);
+		System.out.println("카카오 페이로 넘겨받은 price : " + price);
+		System.out.println("사업자 이름 : " + storeName);
+
+		// 오늘 날짜 구하기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		
-		MembershipAndStoreDTO memberShip = ownerService.selectMembershipAndStore(msCode);
+		Calendar c1 = Calendar.getInstance(); 
+		
+		String today = sdf.format(c1.getTime());
+		
+		System.out.println(today);
 		
 		
+		MembershipAndStoreDTO memberShip = ownerService.selectMembershipAndStore(memCode);
 		
-		return "/";
+		
+		Map<String, Object> info = new HashMap<String, Object>();
+		
+		info.put("msCode", msCode);
+		info.put("memCode", memCode);
+		info.put("msDate",msDate);
+		
+		Map<String, Object> successInfo = new HashMap<String, Object>();
+		successInfo.put("storeName",storeName);
+		successInfo.put("msType",msType);
+		successInfo.put("price",price);
+		successInfo.put("payDate",today);
+		
+		if(memberShip == null) {
+			
+			int insertMembership = ownerService.registMembership(info);
+			
+			if( insertMembership > 0 ) {
+				
+				rd.addFlashAttribute("successInfo",successInfo);
+				
+			} else {
+				
+				rd.addFlashAttribute("msg","결제에 실패하였습니다.");
+			}
+			
+		} else {
+			
+			info.put("dDay", memberShip.getEndDate());
+			
+			int extendMembership = ownerService.modifiyMembership(info); 
+			
+			if( extendMembership > 0 ) {
+				
+				rd.addFlashAttribute("successInfo",successInfo);
+				
+			} else {
+				
+				rd.addFlashAttribute("msg","결제에 실패하였습니다.");
+			}
+			
+		}
+		
+		return "redirect:paySuccess";
 		
 	}
 	
 	@GetMapping("paySuccess")
 	public void paySuccess(Model model) {
 		
+		model.getAttribute("successInfo");
+		
 	}
-	
 	
 	/* 판매 상품 변경 */
 	@GetMapping("modifyProduct")
@@ -1058,6 +1135,58 @@ public class OwnerController {
 		}
 		
 		return "redirect:productManagement";
+	}
+	
+	/* 사업자 이용권 영수증 페이지 */
+	@GetMapping("receiptList")
+	public void receiptList (Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
+		
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int totalCount = ownerService.selectTotalReceipt(memCode);
+		
+		Pagination pagenation = null;
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		map.put("pagination", pagenation);
+		map.put("memCode", memCode);
+	
+		List<Map<String, Object>> info = ownerService.selectMembershipInfoList(map);
+
+		model.addAttribute("info",info);
+			
+	}
+	
+	
+	@GetMapping("receipt")
+	public void receipt(Model model) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		
+		
+		
 	}
 	
 	

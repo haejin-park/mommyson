@@ -75,7 +75,7 @@ public interface OwnerDAO {
 
 	public int modifyOwnerStatus(Map<String, Object> map);
 
-	public MembershipDTO selectMembership(int msCode);
+	public MembershipDTO selectMembership(int memCode);
 
 	public OrderDTO selectOrder(int orderCode);
 
@@ -104,5 +104,17 @@ public interface OwnerDAO {
 	public int removeTag(int sdCode);
 
 	public MembershipAndStoreDTO selectMembershipAndStore(int msCode);
+
+	public int registMembership(Map<String, Object> info);
+
+	public Map<String, Object> selectMembershipInfo(int memCode);
+
+	public int modifyExtendYn(Map<String, Object> info);
+
+	public Map<String, Object> selectMembershipHis(int memCode);
+
+	public List<Map<String, Object>> selectMembershipInfoList(Map<String, Object> map);
+
+	public int selectTotalReceipt(int memCode);
 
 }

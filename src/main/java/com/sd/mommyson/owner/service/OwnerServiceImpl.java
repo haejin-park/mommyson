@@ -1,10 +1,12 @@
 package com.sd.mommyson.owner.service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -405,11 +407,113 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public MembershipAndStoreDTO selectMembershipAndStore(int msCode) {
+	public MembershipAndStoreDTO selectMembershipAndStore(int memCode) {
 
-		MembershipAndStoreDTO membership = ownerDAO.selectMembershipAndStore(msCode);
+		MembershipAndStoreDTO membership = ownerDAO.selectMembershipAndStore(memCode);
 		
 		return membership;
+	}
+
+	@Override
+	public int registMembership(Map<String, Object> info) {
+
+		// 오늘 날짜 구하기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		
+		Calendar c1 = Calendar.getInstance(); 
+		
+		String today = sdf.format(c1.getTime());
+		
+		// 오늘날짜 + 이용권 일 수 
+		
+		int msDate = (Integer)info.get("msDate");
+		
+		c1.add(c1.DATE, msDate);
+		
+		String endDate = sdf.format(c1.getTime());
+		
+		System.out.println(endDate);
+		
+		info.put("endDate", endDate);
+		info.put("startDate", today);
+		
+		return ownerDAO.registMembership(info);
+	}
+
+	@Override
+	public Map<String, Object> selectMembershipInfo(int memCode) {
+
+		
+		return ownerDAO.selectMembershipInfo(memCode);
+	}
+
+	@Override
+	public int modifiyMembership(Map<String, Object> info) {
+
+		int result = 0;
+		
+		// 현재 사용하고 있는 이용권의 연장여부를 Y로 변경
+		int modify = ownerDAO.modifyExtendYn(info);
+		
+		// update 성공시 insert를 위한 작업을 수행
+		if(modify > 0 ) {
+			
+			// 이용권 남은 날짜 계산
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+			
+			Calendar c1 = Calendar.getInstance(); 
+			
+			String today = sdf.format(c1.getTime());
+			
+			Date date = Date.valueOf(today);
+			
+			Date dDay = (Date)info.get("dDay");
+			
+			long calDate = dDay.getTime() - date.getTime();
+			
+			long calDates = calDate / (24 * 60 * 60 * 1000);
+			
+			calDates = Math.abs(calDates);
+			
+			System.out.println("날짜 차이 : " + calDates);
+
+			// 이용권 남은 일 + 이용권 일 수
+			
+			Calendar c2 = Calendar.getInstance();
+			
+			c2.setTime(dDay);
+			
+			c2.add(Calendar.DATE, (int)calDates);
+			
+			String endDate = sdf.format(c2.getTime());
+			
+			System.out.println("종료일 : " + endDate);
+			
+			// 종료일 넘겨주기, 시작일 넘겨주기 
+			info.put("endDate", endDate);
+			info.put("startDate", today);
+			
+			int extend = ownerDAO.registMembership(info);
+			
+			// insert 성공 시 1을 반환하도록 
+			if(extend > 0) {
+				result = 1;
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMembershipInfoList(Map<String, Object> map) {
+
+		return ownerDAO.selectMembershipInfoList(map);
+	}
+
+	@Override
+	public int selectTotalReceipt(int memCode) {
+
+		return ownerDAO.selectTotalReceipt(memCode);
 	}
 
 }

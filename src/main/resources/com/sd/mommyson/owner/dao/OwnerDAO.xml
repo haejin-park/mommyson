@@ -179,6 +179,13 @@
 		<result property="msDate" column="MS_DATE"/>
 		<result property="msPrice" column="MS_PRICE"/>
 	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.MembershipAndStoreDTO" id="selectMembershipAndStoreResultMap">
+		<result property="memCode" column="MEM_CODE"/>
+		<result property="msCode" column="MS_CODE"/>
+		<result property="startDate" column="START_CODE"/>
+		<result property="endDate" column="END_DATE"/>
+	</resultMap>
 		
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
@@ -584,7 +591,7 @@
 						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						  </if>
 						  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
-						  	AND C.EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+						  	AND C.EXPIRY_DATE BETWEEN #{ eDate } AND #{ eDate2 }
 						  </if>
 						  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
 						  	AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
@@ -593,7 +600,7 @@
 						  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
 						  </if>
 						  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-						  	AND C.M_DATE BTWEEN #{ mDate } AND #{ mDate2 }
+						  	AND C.M_DATE BETWEEN #{ mDate } AND #{ mDate2 }
 						  </if>
 						  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
 						  	AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
@@ -1048,4 +1055,95 @@
 		) 
 	</insert>
 	
+	<!-- 사업자 이용권 여부 조회 쿼리문 -->
+	<select id="selectMembershipAndStore" resultMap="selectMembershipAndStoreResultMap">
+		SELECT
+			   START_DATE
+			 , END_DATE
+		  FROM MS_STORE_TBL	 
+		 WHERE MEM_CODE = #{ memCode } 
+		   AND EXTEND_YN = 'N'
+	</select>
+	
+	<!-- 이용권 등록 쿼리문 -->	
+	<insert id="registMembership">
+		INSERT 
+		  INTO MS_STORE_TBL
+		(
+		   MEM_CODE
+		 , MS_CODE
+		 , START_DATE
+		 , END_DATE
+		 , EXTEND_YN
+		 , PAY_DATE
+		 )
+		 VALUES
+		 (
+		    #{ memCode }
+		  , #{ msCode }
+		  , TO_DATE(#{ startDate },'YYYY-MM-DD')
+		  , TO_DATE(#{ endDate },'YYYY-MM-DD')
+		  , 'N'
+		  , TO_DATE(SYSDATE,'YYYY-MM-DD HH24:mi:ss')
+		 )
+	</insert>
+	
+	
+	<!-- 사업자 이용권 정보 가져오는 쿼리문 -->
+	<select id="selectMembershipInfo" resultType="hashMap">
+		SELECT
+		       A.MS_TYPE
+		     , B.START_DATE
+		     , B.END_DATE
+		  FROM MEMBERSHIP_TBL A
+		  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+		 WHERE B.MEM_CODE = #{ memCode }
+		   AND B.EXTEND_YN = 'N'
+	</select>
+	
+	<!-- 사업자 이용권 연장 여부 변경 쿼리문 -->
+	<update id="modifyExtendYn">
+		UPDATE MS_STORE_TBL 
+		   SET EXTEND_YN = 'Y'
+		 WHERE MEM_CODE = #{ memCode }   
+	</update>
+	
+	<!-- 영수증 총 갯수 구하는 쿼리문 -->
+	<select id="selectTotalReceipt" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM MEMBERSHIP_TBL A
+		  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+		  JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+		 WHERE B.MEM_CODE = #{ memCode }      
+	</select>
+
+	<!-- 사업자 영수증 출력을 위한 쿼리문 -->
+	<select id="selectMembershipInfoList" resultType="hashMap">
+		SELECT
+			   E.RNUM
+		     , E.MS_TYPE
+		     , E.MS_PRICE
+		     , E.START_DATE
+		     , E.PAY_DATE
+		     , E.STORE_NAME
+		  FROM (SELECT
+					   ROWNUM RNUM
+				     , D.MS_TYPE
+				     , D.MS_PRICE
+				     , D.START_DATE
+				     , D.PAY_DATE
+				     , D.STORE_NAME
+				  FROM (SELECT
+						       A.MS_TYPE
+						     , A.MS_PRICE
+						     , B.START_DATE
+						     , B.PAY_DATE
+						     , C.STORE_NAME
+						  FROM MEMBERSHIP_TBL A
+						  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+						  JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+						 WHERE B.MEM_CODE = #{ memCode }) D ) E
+			WHERE E.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }		 
+	</select>	
 </mapper>
