@@ -371,43 +371,43 @@ public class OwnerController {
 		
 		
 		// 주문 접수 페이지 처리  - 조건 없는 페이지
-				// 현재 페이지
-				int pageNo2 = 1;
-				
-				if(currentPage2 != null && !"".equals(currentPage2)) {
-					pageNo2 = Integer.parseInt(currentPage2);
-				}
-				
-				if(pageNo2 <= 0) {
-					pageNo2 = 1;
-				}
-				
-				System.out.println("현재 페이지 : " + currentPage2);
+		// 현재 페이지
+		int pageNo2 = 1;
+		
+		if(currentPage2 != null && !"".equals(currentPage2)) {
+			pageNo2 = Integer.parseInt(currentPage2);
+		}
+		
+		if(pageNo2 <= 0) {
+			pageNo2 = 1;
+		}
+		
+		System.out.println("현재 페이지 : " + currentPage2);
 
-				
-				/* ==== 조건에 맞는 게시물 수 처리 ==== */
-				int totalCount2 = ownerService.selectReviewListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
-				
-				int limit2 = 10; //페이지당 글 갯수
-				int buttonAmount2 =  10;//페이징 버튼의 갯수
-				String searchCondition2 = storeName;
-				
-				Pagination pagination2 = null;
-																			  // 검색 조건이 없으니까 null, null 처리
-				pagination2 = Pagination.getPagination(pageNo2, totalCount2, limit2, buttonAmount2, searchCondition2, null);
-				System.out.println("페이지 : " + pagination2);
-				
-				List<ReviewDTO> reviews = ownerService.selectReview(pagination2);
-				System.out.println("리뷰들아 들어왔니 : " + reviews);	
-				
-				if(reviews != null) {
-					//					items 이름 , 리스트이름
-					model.addAttribute("pagination",pagination2);
-					model.addAttribute("owner", owner);
-					model.addAttribute("reviews",reviews);
-				} else {
-					System.out.println("조회실패...");
-				}
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount2 = ownerService.selectReviewListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
+		
+		int limit2 = 10; //페이지당 글 갯수
+		int buttonAmount2 =  10;//페이징 버튼의 갯수
+		String searchCondition2 = storeName;
+		
+		Pagination pagination2 = null;
+																	  // 검색 조건이 없으니까 null, null 처리
+		pagination2 = Pagination.getPagination(pageNo2, totalCount2, limit2, buttonAmount2, searchCondition2, null);
+		System.out.println("페이지 : " + pagination2);
+		
+		List<ReviewDTO> reviews = ownerService.selectReview(pagination2);
+		System.out.println("리뷰들아 들어왔니 : " + reviews);	
+		
+		if(reviews != null) {
+			//					items 이름 , 리스트이름
+			model.addAttribute("pagination",pagination2);
+			model.addAttribute("owner", owner);
+			model.addAttribute("reviews",reviews);
+		} else {
+			System.out.println("조회실패...");
+		}
 		
 		/* 쿠폰 모달 리스트 가져오기 */ 
 		 System.out.println(owner);
@@ -454,6 +454,7 @@ public class OwnerController {
 		return "owner/review";	
 		
 	}
+	
 	/* 리뷰관리 - 리뷰쓴 고객들에게 쿠폰주기/삭제 인서트 (CP_HISTORY_TBL) */
 	//	          form 이름 작성
 	@PostMapping("registGiveAndDeleteCp")
@@ -476,6 +477,7 @@ public class OwnerController {
 		return "redirect:review";	
 		
 	}
+	
 
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
@@ -559,6 +561,17 @@ public class OwnerController {
 		
 	}
 
+	@PostMapping("giveCoupons")
+	public String giveCoupons(@RequestParam(value="cps",required = false) List<Integer> cpCode
+							, @RequestParam(value="chk",required = false) List<Integer> chkReview, RedirectAttributes ra) {
+		
+		System.out.println("리뷰리스트드르르르를 chkR : " + chkReview);
+		System.out.println("줄 쿠폰 코드드드드드들 cps : " + cpCode);
+		
+		
+		return "owner/review";
+	}
+	
 	@PostMapping("productManagement")
 	public String product(@RequestParam(value="sdCode", required = false ,defaultValue = "0") int sdCode, @RequestParam(value="deleteCode",required = false) List<Integer> deleteCode,
 			RedirectAttributes redirect) {
@@ -1050,6 +1063,11 @@ public class OwnerController {
 	
 	@GetMapping("salesDay")
 	public void salseDay(Model model) {
+		
+	}
+	
+	@GetMapping("detailReceipt")
+	public void viewReceipt(Model model) {
 		
 	}
 	

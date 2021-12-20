@@ -1,0 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/coupon.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+<title>리뷰페이지</title>
+</head>
+<body>
+<!-- header -->
+	<jsp:include page="../commons/header.jsp"/>
+	
+	 <br><br><br>
+    <div class="page-text" style="width: 1550px; margin: 0 auto;">
+        <h3 style="margin-left: 100px; font-weight: 900;">리뷰 관리</h3>
+        <hr>
+    </div>
+	
+	<div class="body-all">
+      <div class="body-inside">
+	
+	<!-- sidebar  -->
+      <jsp:include page="../commons/ownerSidebar.jsp"/>
+      
+      <div style="text-align: center;">
+      <br><br>
+        <img src="${ pageContext.servletContext.contextPath }/${ owner.ceo.store.storeImg }" width="300px"><br><br>
+        <br><br>
+        <div style="margin-left: 450px;" id="before">
+        <h3 style="font-weight: 900; text-align: left; margin-left: 30px;">작성된 리뷰</h3>
+        <br>
+       	
+       	
+       	
+       		
+        </div>
+        <!-- 페이지네이션 -->
+		<div style="margin-left: 450px; position: relative; top: 100px;">
+			<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
+		</div>
+    </div>
+   </div>  
+  </div>
+  
+  
+  
+  <!-- footer -->
+  <jsp:include page="../commons/footer.jsp"/>
+	
+</body>
+</html>

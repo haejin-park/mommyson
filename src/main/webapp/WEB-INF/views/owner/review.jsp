@@ -41,11 +41,11 @@
         <div style="margin-left: 450px;" id="before">
         <h3 style="font-weight: 900; text-align: left; margin-left: 30px;">작성된 리뷰</h3>
         <br>
-       		<form action="${ pageContext.servletContext.contextPath}/owner/registGiveAndDeleteCp" method="POST">
-        <table class="table table" style="width: 1050px;">
+       		<form action="${ pageContext.servletContext.contextPath}/owner/registGiveAndDeleteCp" method="POST" id="formOne">
+        <table class="table" style="width: 1050px;">
             <thead style="background-color: #EDEDED;">
               <tr>
-                <th scope="col"><input type="checkbox" name="selectAll" id="selectAll" onclick='selectAll(this)'></th>
+                <th scope="col"><input type="checkbox" id="chk_all" class="checkAll"></th>
                 <th scope="col">리뷰 번호</th>
                 <th scope="col">작성자</th>
                 <th scope="col">작성내용</th>
@@ -54,18 +54,16 @@
             <tbody>
                 <c:forEach var="review" items="${ reviews }">
               <tr>
-                <th scope="row"><input type="checkbox" name="reviews" value="${ review.rvCode }" onclick='selectAll(this)'></th>
-                <th>${ review.rvCode }</th>
+                <th scope="row"><input type="checkbox" name="chk" value="${ review.rvCode }" ></th>
+                <td>${ review.rvCode }</td>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
               </tr>
-                <input type="hidden" value="${ review.memCode }"/>
                 </c:forEach>
             </tbody>
           </table>
           <br><br><br>
-          <button type="button" id="couponBtn" class="btn btn-primary" data-toggle="modal" 
-          data-target="#staticBackdrop" data-memCode ="${ review.memCode }" >쿠폰 주기</button>
+          <button type="button" id="couponBtn" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">쿠폰 주기</button>
           <button id="couponBtn2">삭제</button>
         	</form>
         </div>
@@ -90,10 +88,10 @@
             </button>
           </div>
           <div class="modal-body">
-              <table class="table table" style="width: 1050px;">
+              <table class="table table" id="table2" style="width: 1050px;">
                   <thead style="background-color: #EDEDED;">
                   <tr>
-                      <th scope="col"><input type="checkbox" name="allCheck2"  id="allCheck2"></th>
+                      <th scope="col"><input type="checkbox" id="chk_all2" class="checkAll2"></th>
                       <th scope="col">쿠폰 번호</th>
                       <th scope="col">쿠폰 이름</th>
                       <th scope="col">등록일</th>
@@ -104,7 +102,7 @@
                 
                 <c:forEach items="${ coupon }" var="cp">
                   <tr>
-                      <td><input type="checkbox" name="allCheck2"></td>
+                      <th><input type="checkbox" name="cps" value="${ cp.cpCode }"></th>
                       <td>${ cp.cpCode }</td>
                       <td>${ cp.cpName }</td>
                       <td>${ cp.startDate }</td>
@@ -121,7 +119,7 @@
 			</div>
           </div>
           <div class="modal-footer" >
-            <button type="submit" class="btn btn-primary" id="btn1">쿠폰 주기</button>
+            <button type="button"class="btn btn-primary" id="giveCp">쿠폰 주기</button>
             <button type="reset" class="btn btn-secondary" data-dismiss="modal">닫기</button>
           </div>
          </div>
@@ -131,36 +129,60 @@
     </div>
    </div>  
   </div>
-  <script>
   
-  function checkSelectAll()  {
-	  // 전체 체크박스
-	  const checkboxes 
-	    = document.querySelectorAll('input[name="reviews"]');
-	  // 선택된 체크박스
-	  const checked 
-	    = document.querySelectorAll('input[name="reviews"]:checked');
-	  // select all 체크박스
-	  const selectAll 
-	    = document.querySelector('input[name="selectall"]');
-	  
-	  if(checkboxes.length === checked.length)  {
-	    selectAll.checked = true;
-	  }else {
-	    selectAll.checked = false;
-	  }
+  <script>
+  $(document).ready(function() { 
 
-	}
-
-	function selectAll(selectAll)  {
-	  const checkboxes 
-	     = document.getElementsByName('reviews');
+	  $("#chk_all").click(function(){
+	   	 let chk = $(this).is(":checked");
+	   	 if(chk){
+	   		 $(".table > tbody > tr th input").prop('checked', true);
+	   	 } else{
+	   		 $(".table > tbody > tr th input").prop('checked', false);
+	   	 }
+	   	 
+	  });
 	  
-	  checkboxes.forEach((checkbox) => {
-	    checkbox.checked = selectAll.checked
-	  })
-	}
-	
+	  $("#chk_all2").click(function(){
+	   	 let chk = $(this).is(":checked");
+	   	 if(chk){
+	   		 $("#table2 > tbody > tr th input").prop('checked', true);
+	   	 } else{
+	   		 $("#table2 > tbody > tr th input").prop('checked', false);
+	   	 }
+	   	 
+	 });
+  });	  
+  
+   let rvs = []; // 리뷰들
+   let cps = []; // 쿠폰들
+
+  // 선택된 리뷰들 배열로 담고
+  $("#couponBtn").click(function(){
+	  
+	  $("input:checkbox[name=chk]:checked").each(function() {
+		  rvs.push($(this).val());
+   	  });
+		  console.log(rvs);
+  });
+   
+   // 쿠폰도 선택해서 배열로 넘겨주자
+   $("#giveCp").on('click', function(){
+	   
+	  $("input:checkbox[name=cps]:checked").each(function(){
+		  cps.push($(this).val());
+	  });
+		  console.log(cps);
+	  
+   let form = $('<form></form>');
+   form.attr('action', '${pageContext.servletContext.contextPath}/owner/giveCoupons');
+   form.attr('method','post');
+   form.appendTo('body');
+   form.append($('<input type="hidden" value="' + rvs + '" name=chk>'));
+   form.append($('<input type="hidden" value="' + cps + '" name=cps>'));
+   form.submit();
+	  
+   });  
   </script>
   
   <!-- footer -->
