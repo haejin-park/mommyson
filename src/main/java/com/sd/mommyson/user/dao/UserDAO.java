@@ -66,4 +66,8 @@ public interface UserDAO {
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
 
+	int registMtmConsultingText(Map<String, Object> mtmConsulting);
+
+	int registMtmConFile(Map<String, Object> fileInfo);
+
 }

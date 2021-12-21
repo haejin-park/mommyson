@@ -2,6 +2,7 @@ package com.sd.mommyson.user.controller;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,7 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.filefilter.FalseFileFilter;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sd.mommyson.manager.common.Pagination;
@@ -55,6 +59,16 @@ public class UserController {
 	public UserController(UserService userService, ManagerService managerService) {
 		this.userService = userService;
 		this.managerService = managerService;
+	}
+	
+	@GetMapping("test")
+	public void test() {
+		
+	}
+	
+	@GetMapping("test2")
+	public void test2() {
+		
 	}
 	
 	
@@ -90,12 +104,171 @@ public class UserController {
 		return "user/userCustomerServiceCenterMTMConsult";
 	}
 	
+	@GetMapping("ucc/MTMQnA")
+	public String userCustomerServiceCenterMTMQnA(HttpSession session) {
+		
+		return "user/userCustomerServiceCenterMTMQnA";
+	}
+	
+	
+	
+	
 	/**
 	 * @author 양윤제
 	 * @category 1:1문의
 	 */
-	@GetMapping("ucc/MTMQnA")
-	public String userCustomerServiceCenterMTMQnA() {
+	@PostMapping("ucc/MTMQnA")
+	public String userCustomerServiceCenterMTMQnA(@RequestParam(required = false) List<MultipartFile> multiFiles, HttpServletRequest request, Model mv, HttpSession session) {
+		
+		String mtmTitle = request.getParameter("title");//상담제목
+		String mtmSort = request.getParameter("mtmSort");//질문 유형
+		String mtmContents = request.getParameter("content");//상담 본문
+		
+		System.out.println("mtmTitle : " + mtmTitle);
+		System.out.println("mtmSort : " + mtmSort);
+		System.out.println("mtmContents : " + mtmContents);
+		System.out.println("multiFiles : " + multiFiles);
+		
+		
+		//유저와 유저 종류(사업자, 소비자) 정보
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println("로그인 멤버: " + memberInfo);
+		//유저 코드
+		int memCode = memberInfo.getMemCode();
+		System.out.println("로그인한 멤버의 멤버 코드: " + memCode);
+		//유저 종류
+		String memType = memberInfo.getMemType();
+		System.out.println("멤버 타입 : " + memType);
+		
+		int boardCode = 0;
+		if(memType.equals("user")) {
+			switch (mtmSort) {
+			case "memberJoinQuestion": boardCode = 12 ; break;
+			case "billAndOrderQuestion": boardCode = 13; break;
+			case "reviewManagementQuestion": boardCode = 14; break;
+			case "userQuestion": boardCode = 15; break;
+			case "inconvenienceQuestion": boardCode = 16; break;
+			case "etcQuestion": boardCode = 17; break;
+			default: System.out.println("관리자에게 문의하세요"); break;
+			}
+		}
+		
+		
+		if(memType.equals("ceo")) {
+			switch (mtmSort) {
+			case "memberJoinQuestion": boardCode = 18; break;
+			case "billAndOrderQuestion": boardCode = 19; break;
+			case "reviewManagementQuestion": boardCode = 20; break;
+			case "userQuestion": boardCode = 21; break;
+			case "inconvenienceQuestion": boardCode = 22; break;
+			case "etcQuestion": boardCode = 23; break;
+			default: System.out.println("관리자에게 문의하세요"); break;
+			}
+		}
+		
+		
+		
+		Map<String,Object> mtmConsulting = new HashMap<>();
+		mtmConsulting.put("mtmTitle", mtmTitle);
+		mtmConsulting.put("mtmContents", mtmContents);
+		mtmConsulting.put("boardCode", boardCode);
+		mtmConsulting.put("memCode", memCode);
+		
+		System.out.println("mtmConsulting : " + mtmConsulting);
+		//인서트후 postNo값 받아옴 
+		int result = userService.registMtmConsultingText(mtmConsulting);
+		
+		System.out.println("result : " + result);
+		
+//		int postNo = postInfo.getPostNo();
+		
+		
+		//파일테이블 파일타입 설정값
+		String fileType ="";
+		switch (memType) {
+		case "ceo": fileType = "owner";	break;
+		case "user": fileType = "user";	break;
+		default: System.out.println("올바르지 못한 사용자 입니다."); break;
+		}
+		
+		/* 파일을 저장할 경로 설정 */
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		System.out.println("root : " + root);
+		
+		String filePath = root + "\\uploadFiles";
+	
+		System.out.println("filePath :" + filePath);
+		File mkdir = new File(filePath);
+		if(!mkdir.exists()) {
+			mkdir.mkdirs();
+		}
+		System.out.println("멀티파일 사이즈" + multiFiles.size());
+		List<Map<String,String>> files = new ArrayList<>();
+		for(int i = 0; i < multiFiles.size(); i++) {
+			
+			if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+				
+				/* 파일명 변경 처리 */
+				String originFileName = multiFiles.get(i).getOriginalFilename();
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));
+				String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+				System.out.println("변경되어 저장되는 파일 이름 : " + savedName);
+				/* 파일에 관한 정보 추출 후 보관 */
+				//데이터페이스에 쓸 내용
+				Map<String,String> file = new HashMap<>();
+				file.put("originFileName", originFileName);
+				file.put("savedName", savedName);
+				file.put("filePath", filePath);
+				files.add(file);
+			} else {
+				break;
+			}
+			
+		}
+		//파일저장
+		int fileUploadResult = 0;
+		try {
+					for(int i = 0; i < multiFiles.size(); i++) {
+						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+						
+						Map<String,String> file = files.get(i);//반복하며 하나씩 업로드
+						multiFiles.get(i).transferTo(new File(filePath + "\\" + file.get("savedName")));
+						
+						String fileLocation = "resources/uploadFiles/" + file.get("savedName");//DB에 올릴 파일경로 및 파일명
+						System.out.println("올라가는 파일명 및 이름  : " + fileLocation);
+						System.out.println("save : " + file.get("savedName"));
+						Map<String,Object> fileInfo = new HashMap<>();
+						fileInfo.put("boardCode", boardCode);
+						fileInfo.put("fileLocation", fileLocation);
+						fileInfo.put("fileType", fileType);
+						fileUploadResult += userService.registMtmConFile(fileInfo);
+						} else {
+							break;
+						}
+					}
+					
+				mv.addAttribute("message","파일업로드 성공");
+				if(fileUploadResult == multiFiles.size() ) {
+					System.out.println("정상적으로 파일이 처리됨");
+				} else {
+					System.out.println("비정상적으로 파일이 업로드됨");
+				}
+			} catch (IllegalStateException | IOException e) {
+				//실패시파일삭제
+					
+					for(int i = 0; i < multiFiles.size(); i++) {
+						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+							Map<String,String> file = files.get(i);
+							new File(filePath + "\\" + file.get("savedName")).delete(); 
+						
+						} else {
+							break;
+						}
+					}
+				
+//				e.printStackTrace();
+			}
+		
 		
 		return "user/userCustomerServiceCenterMTMQnA";
 	}

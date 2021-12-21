@@ -193,4 +193,19 @@ public class UserServiceImpl implements UserService{
 		return userDAO.deleteJJIMplus(map);
 	}
 
+
+	@Override
+	public int registMtmConsultingText(Map<String, Object> mtmConsulting) {
+
+		int result = userDAO.registMtmConsultingText(mtmConsulting);
+		return result;
+	}
+
+
+	@Override
+	public int registMtmConFile(Map<String, Object> fileInfo) {
+		int fileUploadResult = userDAO.registMtmConFile(fileInfo);
+		return fileUploadResult;
+	}
+
 }

@@ -12,7 +12,7 @@
     	<result property="postContent" column="POST_CONTENT"/>
     	<result property="postDate" column="POST_DATE"/>
     	<result property="ansStatus" column="ANS_STATUS"/>
-    	<result property="questionNo" column="QUE_NO"/>
+    	<result property="queNo" column="QUE_NO"/>
     	<result property="status" column="STATUS"/>
     	<result property="viewCnt" column="VIEW_CNT"/>
     </resultMap>
@@ -696,4 +696,49 @@
     	WHERE MEM_CODE = #{ memCode }
     	  AND CEO_CODE = #{ storeCode }
     </delete>
+    
+     <insert id="registMtmConsultingText" parameterType="hashmap">
+	    INSERT
+	       	INTO POST_TBL A
+	    (
+	       A.POST_NO
+		 , A.BOARD_CODE
+		 , A.POST_TITLE
+		 , A.MEM_CODE
+		 , A.POST_CONTENT
+		 , A.POST_DATE
+	    )
+	    VALUES
+	    (
+	       SEQ_POST.NEXTVAL
+		 , #{ boardCode }
+		 , #{ mtmTitle }
+		 , #{ memCode }
+		 , #{ mtmContents }
+		 , SYSDATE
+	    )
+     </insert>
+     <!-- com.sd.mommyson.manager.dto.PostDTO -->
+     <insert id="registMtmConFile" parameterType="hashmap">
+	    <selectKey keyProperty="postNo" resultType="int" order="BEFORE">
+	    	SELECT
+	    		   SEQ_POST.CURRVAL
+	    	  FROM DUAL	   
+	    </selectKey>	
+     	INSERT
+     		INTO FILE_TBL A
+     	(
+     	  FILE_CODE
+		, A.FILE_NAME
+		, A.POST_NO
+		, A.FILE_TYPE
+     	)
+     	VALUES
+     	(
+     	  SEQ_FILE.NEXTVAL
+     	, #{ fileLocation }
+     	, #{ postNo }
+     	, #{ fileType }
+     	)	
+     </insert>
     </mapper>
