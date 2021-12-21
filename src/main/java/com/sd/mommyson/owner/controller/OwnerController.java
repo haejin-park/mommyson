@@ -568,9 +568,38 @@ public class OwnerController {
 		System.out.println("productList : " + productList);
 		
 		if(productList != null) {
+			
+//			for(ProductDTO pro : productList) {
+//
+//				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+//				
+//				Calendar c1 = Calendar.getInstance(); 
+//				
+//				long da = pro.geteDate().getTime();
+//				
+//				long to = Long.parseLong(sdf.format(c1.getTime()));
+//
+//				Date date = new Date(da);
+//				
+//				Date today = new Date(to);
+//				
+//				if(today.after(date)) {
+//					
+//					int sdCode = pro.getSdCode();
+//					
+//					int modify = ownerService.modifyStatus(sdCode);
+//					
+//				}
+//				
+//			}
+//			
+//			List<ProductDTO> product = ownerService.selectProduct(searchMap);
+			
 			model.addAttribute("pagination",pagenation);
 			model.addAttribute("productList", productList);
 			model.addAttribute("searchMap",searchMap);
+			
+			
 		} else {
 			System.out.println("조회실패");
 		}
@@ -1164,9 +1193,9 @@ public class OwnerController {
 		List<Map<String, Object>> info = ownerService.selectMembershipInfoList(map);
 
 		model.addAttribute("info",info);
+		model.addAttribute("pagination",pagenation);
 			
 	}
-	
 	
 	@GetMapping("receipt")
 	public void receipt(Model model) {

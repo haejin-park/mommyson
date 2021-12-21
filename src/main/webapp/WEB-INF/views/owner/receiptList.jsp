@@ -68,7 +68,7 @@
           </table>
         </div>
         </div>
-        <jsp:include page="../commons/ownerPaging.jsp"/>
+        <jsp:include page="../commons/pagingWithoutSearch.jsp"/>
       </div>  
     </div>
 	
