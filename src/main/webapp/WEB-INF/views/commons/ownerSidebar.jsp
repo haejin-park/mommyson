@@ -127,7 +127,7 @@
                                     <a href="#">월별 매출</a>
                                 </li>
                                 <li>
-                                    <a href="#">정산</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/salesList">정산</a>
                                 </li>
                             </ul>
                         </li>

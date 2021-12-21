@@ -31,10 +31,10 @@
 
         <br><h2>오늘의 매출 내역</h2><br><br>
 
-            <table class="table table" style="width: 1050px;margin-left: 60px; text-align: center;" >
-                <thead style="background-color: #EDEDED;">
+            <table class="table table" style="width: 1050px; margin-left: 60px; text-align: center;" >
+                <thead>
                     <tr>
-                        <td rowspan="2">배달</td>
+                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1);">배달</th>
                         <td >주문 총 금액</td>
                         <td >주문금액(영업이익)</td>
                         <td >배송비</td>
@@ -48,9 +48,9 @@
                 </table><br>
 
             <table class="table table" style="width: 1050px;margin-left: 60px; text-align: center;" >
-                <thead style="background-color: #EDEDED;">
+                <thead>
                     <tr>
-                        <td rowspan="2">포장</td>
+                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1);">포장</th>
                         <td colspan="3">주문금액(영업이익)</td>
                         </tr>
                         <tr>
@@ -62,22 +62,23 @@
             </table><br>   
   
 
-            <table class="table table" style="width: 1050px;margin-left: 60px; text-align: center;" >
-                <thead style="background-color: #EDEDED;">
+            <table class="table table" style="width: 1050px; margin-left: 60px; text-align: center;" >
+                <thead>
                     <tr>
-                        <td rowspan="2">총 매출</td>
-                        <td >주문 총 금액</td>
-                        <td >주문금액(영업이익)</td>
-                        <td >배송비</td>
+                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1);">총 매출</th>
+                        <td>주문 총 금액</td>
+                        <td>주문금액(영업이익)</td>
+                        <td>배송비</td>
                     </tr>
                     <tr>
-                        <td > ㅇㅇㅇ</td>
+                        <td>ㅇㅇㅇ</td>
                         <td> ㅇㅇ</td>
                         <td> ㅇㅇ</td>
                     </tr>
                 </thead>
             </table><br>
-
+			
+			<br><br><br><br>
             <canvas id="bar-chart-grouped" width="830" height="450" style="margin-left: 80px;"></canvas>
 
             <script>

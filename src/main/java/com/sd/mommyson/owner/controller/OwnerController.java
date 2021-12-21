@@ -1200,5 +1200,10 @@ public class OwnerController {
 		
 	}
 	
+	@GetMapping("salesList")
+	public void salesList(Model model) {
+		
+	}
+	
 	
 }
