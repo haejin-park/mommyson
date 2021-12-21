@@ -522,4 +522,16 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerDAO.selectPayInfo(map);
 	}
 
+	@Override
+	public int modifyEDateStatus(int sdCode) {
+
+		return ownerDAO.modifyEDateStatus(sdCode);
+	}
+
+	@Override
+	public List<ProductDTO> selectProdoucts(int memCode) {
+
+		return ownerDAO.selectProdoucts(memCode);
+	}
+
 }

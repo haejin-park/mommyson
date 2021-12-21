@@ -95,6 +95,10 @@
 	                <c:if test="${ list.orderableStatus eq 'Y' }">
 	                <button class="couponBtn btn1" id="btn1" name="sdCode" value="${ list.sdCode }" style="background-color : #777777;">판매중</button>
 	                </c:if>
+	                
+	                <c:if test="${ list.orderableStatus eq 'X' }">
+	                <button class="couponBtn btn2" id="btn1" name="sdCode" value="${ list.sdCode }" style="background-color : #E72E13;">유통기한 지남</button>
+	                </c:if>
                 </td>
                 <td><a href="${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=${ list.sdCode }">상세보기</a></td>
               </tr>
@@ -103,7 +107,7 @@
           </table>
         </div>
         <div style="float: right; margin: 20px 30px 0 0;">
-          <button class="couponBtn" id="delete" style="background-color: #777777; height: 30px;">삭제</button>
+          <button class="couponBtn" id="delete" style="background-color: #777777; height: 30px; width: 80px">삭제</button>
         </div>
         </div>
         <jsp:include page="../commons/ownerPaging.jsp"/>
@@ -148,6 +152,16 @@
 	        form.appendTo('body');
 	        form.append($('<input type="hidden" value="' + arr + '" name=deleteCode>'));
 	        form.submit(); 
+	    	
+	    });
+	    
+	    $('.btn2').on('click',function(){
+	    	
+	    	if(!alert('유통기한이 지난 상품입니다. 유통기한을 변경하여주세요.')){
+	    		
+	    		location.href = '${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=${ list.sdCode }'
+	    		
+	    	}
 	    	
 	    });
 	    

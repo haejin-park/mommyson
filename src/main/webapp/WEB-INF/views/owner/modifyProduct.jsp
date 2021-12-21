@@ -183,6 +183,7 @@
 	                <select name="orderableStatus" id="status">
 	                   <option value="Y">판매중</option>
 	                   <option value="N">판매전</option>
+	                   <option value="X">유통기한 지남</option>
 	               </select>
 	            </td>
 	        </tr>
@@ -254,6 +255,10 @@
 				$('input[name=category]').val() == '' || $('input[name=price]').val() ==''){
 				
 				alert('작성되지 않은 부분이 있습니다. 다시 확인하여 작성해주세요.');
+				
+			} else if($('#status').val() == 'X'){
+			
+				alert('유통기한이 지난 상품입니다. 유통기한을 변경해주세요.');
 				
 			} else{
 				

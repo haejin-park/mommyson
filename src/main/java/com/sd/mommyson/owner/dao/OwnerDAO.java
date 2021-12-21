@@ -119,4 +119,8 @@ public interface OwnerDAO {
 
 	public Map<String, Object> selectPayInfo(Map<String, Object> map);
 
+	public int modifyEDateStatus(int sdCode);
+
+	public List<ProductDTO> selectProdoucts(int memCode);
+
 }

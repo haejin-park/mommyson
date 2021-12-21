@@ -3,6 +3,7 @@ package com.sd.mommyson.owner.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,7 +65,7 @@ public class OwnerController {
 	
 	/* 사업자 마이페이지 메인화면 */
 	@GetMapping("ownerMain")
-	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member, Model model) throws ParseException {
 		
 		MemberDTO owner = ownerService.selectOwner(member);
 		
@@ -79,6 +80,12 @@ public class OwnerController {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
+		Calendar c1 = Calendar.getInstance(); 
+		
+		String dd = sdf.format(c1.getTime());
+		
+		java.util.Date today = sdf.parse(dd);
+		
 		String startDate = sdf.format(memberShip.get("START_DATE"));
 		String endDate = sdf.format(memberShip.get("END_DATE"));
 		
@@ -86,6 +93,23 @@ public class OwnerController {
 		memberShip.put("endDate", endDate);
 		
 		model.addAttribute("membership",memberShip);
+		
+		List<ProductDTO> proList = ownerService.selectProdoucts(memCode);
+		
+		int status = 0;
+		
+		for(ProductDTO i : proList) {
+			
+			if(i.geteDate().before(today) && !i.getOrderableStatus().equals("X")) {
+				
+				 status += ownerService.modifyEDateStatus(i.getSdCode());
+				
+			}
+			
+		}
+		
+		System.out.println(status + "행 업데이트 성공!");
+		
 		
 		return "owner/ownerMain";
 	}
@@ -569,32 +593,6 @@ public class OwnerController {
 		
 		if(productList != null) {
 			
-//			for(ProductDTO pro : productList) {
-//
-//				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
-//				
-//				Calendar c1 = Calendar.getInstance(); 
-//				
-//				long da = pro.geteDate().getTime();
-//				
-//				long to = Long.parseLong(sdf.format(c1.getTime()));
-//
-//				Date date = new Date(da);
-//				
-//				Date today = new Date(to);
-//				
-//				if(today.after(date)) {
-//					
-//					int sdCode = pro.getSdCode();
-//					
-//					int modify = ownerService.modifyStatus(sdCode);
-//					
-//				}
-//				
-//			}
-//			
-//			List<ProductDTO> product = ownerService.selectProduct(searchMap);
-			
 			model.addAttribute("pagination",pagenation);
 			model.addAttribute("productList", productList);
 			model.addAttribute("searchMap",searchMap);
@@ -704,7 +702,7 @@ public class OwnerController {
 				System.out.println("orderList2 : " + orderList2);
 				
 				if(orderList2 != null) {
-					model.addAttribute("pagenation",pagenation);
+					model.addAttribute("pagination",pagenation);
 					model.addAttribute("orderList2", orderList2);
 					model.addAttribute("searchMap",searchMap);
 				} else {

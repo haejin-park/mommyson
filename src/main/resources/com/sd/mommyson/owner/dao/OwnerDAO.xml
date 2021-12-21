@@ -712,11 +712,25 @@
 		     , A.SD_NAME
 		     , A.PRICE
 		     , A.M_DATE 
+		     , A.EXPIRY_DATE
+		     , A.ORDERABLE_STATUS
 		  FROM PRODUCT_TBL A
 		 WHERE A.IS_DELETED = 'N' 
 		   AND A.MEM_CODE = #{ memCode }
 		   AND A.DISCOUNT_RATE <![CDATA[ = ]]> 0
+		   AND A.ORDERABLE_STATUS IN ('Y','N')
 		 ORDER BY A.M_DATE DESC
+	</select>
+	
+	<!-- 유통기한이 지난 상품 가져오기 -->
+	<select id="selectProdoucts" resultMap="productResultMap">
+		SELECT 
+		       A.SD_CODE
+		     , A.EXPIRY_DATE
+		     , A.ORDERABLE_STATUS
+		  FROM PRODUCT_TBL A
+		 WHERE A.IS_DELETED = 'N' 
+		   AND A.MEM_CODE = #{ memCode }
 	</select>
 	
 	<!-- 할인 등록 쿼리문 -->
@@ -1147,6 +1161,7 @@
 			WHERE E.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }		 
 	</select>	
 	
+	<!-- 사업자 이용권 영수증 정보 쿼리문 -->
 	<select id="selectPayInfo" resultType="hashMap">
 		SELECT
 		       A.STORE_NAME
@@ -1164,5 +1179,11 @@
 		 WHERE A.MEM_CODE = #{ memCode }
 		   AND TO_DATE(D.PAY_DATE,'yy-mm-dd') = #{ payDate } 
 	</select>	
+	
+	<update id="modifyEDateStatus">
+		UPDATE PRODUCT_TBL
+		   SET ORDERABLE_STATUS = 'X'
+		 WHERE SD_CODE = #{ sdCode }   
+	</update>
 	
 </mapper>
