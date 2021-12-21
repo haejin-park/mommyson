@@ -245,7 +245,15 @@
 		
 		$('#subBtn').on('click',function(){
 			
+			let today = new Date();
 			
+			let year = today.getFullYear();
+			let month = ('0' + (today.getMonth() + 1)).slice(-2);
+			let day = ('0' + today.getDate()).slice(-2);
+
+			let dateString = year + '-' + month  + '-' + day;
+
+			console.log(dateString);
 			
 			if($('#input-image').val() ==''){
 				$('input[name=img]').val("${ product.sdImg }");
@@ -256,8 +264,12 @@
 				
 				alert('작성되지 않은 부분이 있습니다. 다시 확인하여 작성해주세요.');
 				
-			} else if($('#status').val() == 'X'){
+			} else if($('#status').val() == 'X' ){
 			
+				alert('유통기한이 지난 상품입니다. 유통기한을 변경해주세요.');
+				
+			} else if($('#input-image').val() < dateString ){
+				
 				alert('유통기한이 지난 상품입니다. 유통기한을 변경해주세요.');
 				
 			} else{

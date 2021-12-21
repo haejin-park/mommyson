@@ -155,11 +155,15 @@
 	    	
 	    });
 	    
-	    $('.btn2').on('click',function(){
+	    $('.btn2').on('click',function(e){
 	    	
 	    	if(!alert('유통기한이 지난 상품입니다. 유통기한을 변경하여주세요.')){
 	    		
-	    		location.href = '${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=${ list.sdCode }'
+	    		let sdCode = e.target.value;
+	    		
+	    		console.log(sdCode);
+	    		
+	    		location.href = '${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=' + sdCode
 	    		
 	    	}
 	    	
