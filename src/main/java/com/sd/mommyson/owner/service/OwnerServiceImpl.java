@@ -15,6 +15,7 @@ import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dao.OwnerDAO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.CpHistoryDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
 import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
@@ -514,6 +515,50 @@ public class OwnerServiceImpl implements OwnerService{
 	public int selectTotalReceipt(int memCode) {
 
 		return ownerDAO.selectTotalReceipt(memCode);
+	}
+
+	@Override
+	public int registCpToReview(List<Integer> chkReview, List<Integer> cpCode) {
+		
+		//리뷰 리스트들 요소 하나씩 뽑아주기
+		Map<String,Object> result = new HashMap<>();
+		
+		int success = 0;
+		
+		for(int i = 0; chkReview.size() > i; i++) {
+			
+			int value = chkReview.get(i);
+			
+			result.put("review", value);
+			
+			for(int j = 0; j < cpCode.size(); j++) {
+				
+				int value2 = cpCode.get(j);
+				
+				result.put("cpCode",value2);
+				
+				int goDAO = ownerDAO.registCpToReview(result);
+				
+				// 하나씩 보내서 성공하면 1반환 계속 반환되면 2가 되고....
+				if(goDAO > 0 ) {
+					success += 1;
+				} 
+				System.out.println("인서트 성공이니??!!! : " + success);
+			}
+		}
+		return success;
+	}
+
+	@Override
+	public int selectgiveListTotalCount(int memCode) {
+		
+		return ownerDAO.selectgiveListTotalCount(memCode);
+	}
+
+	@Override
+	public List<CpHistoryDTO> selectgiveList(Pagination pagination) {
+		
+		return ownerDAO.selectgiveList(pagination);
 	}
 
 }

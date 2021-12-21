@@ -186,6 +186,15 @@
 		<result property="startDate" column="START_CODE"/>
 		<result property="endDate" column="END_DATE"/>
 	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.CpHistoryDTO" id="cpHistoryResultMap">
+		<result property="cpNum" column="CP_NUM"/>
+		<result property="cpCode" column="CP_CODE"/>
+		<result property="giveDate" column="GIVE_DATE"/>
+		<result property="useStatus" column="USE_STATUS"/>
+		<result property="cpName" column="CP_NAME"/>
+    	<result property="nickName" column="NICKNAME"/>
+	</resultMap>
 		
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
@@ -1146,4 +1155,74 @@
 						 WHERE B.MEM_CODE = #{ memCode }) D ) E
 			WHERE E.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }		 
 	</select>	
+	
+	<!-- 고객들에게 쿠폰 주기 -->
+	<insert id="registCpToReview">
+		INSERT
+		  INTO CP_HISTORY_TBL
+		(
+			CP_CODE
+		  , MEM_CODE
+		  , USE_STATUS
+		  , CP_NUM
+		  , GIVE_DATE
+		)
+		VALUES
+		(
+		  	#{ cpCode }
+		  , #{ review }
+		  , 'N'
+		  , SEQ_CP_NUM.NEXTVAL
+		  , default
+		)
+	</insert>
+	
+	<!-- 쿠폰 발행 내역  -->
+	<select id="selectgiveListTotalCount" resultType="_int">
+		SELECT
+		      COUNT(*)
+		 FROM CP_HISTORY_TBL A 
+	     JOIN COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
+	    WHERE B.MEM_CODE = #{ memCode }
+	</select>
+	
+	<select id="selectgiveList" resultMap="cpHistoryResultMap">
+		SELECT
+		         G.RNUM
+		       , G.CP_CODE
+		       , G.MEM_CODE
+		       , G.USE_STATUS
+		       , G.GIVE_DATE
+		       , G.NICKNAME
+		       , G.CP_NAME
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , E.CP_CODE
+			        , E.MEM_CODE
+			        , E.USE_STATUS
+			        , E.GIVE_DATE
+			        , E.NICKNAME
+			        , E.CP_NAME
+	            FROM (SELECT
+						        A.CP_CODE
+						      , A.MEM_CODE
+						      , A.USE_STATUS
+						      , A.GIVE_DATE
+						      , C.NICKNAME
+						      , D.CP_NAME
+						  FROM CP_HISTORY_TBL A 
+						  JOIN COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
+						  JOIN COUPON_TBL D ON (B.CP_CODE = D.CP_CODE) 
+						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		                 WHERE B.MEM_CODE = #{ searchCondition }
+			   	        ORDER BY A.GIVE_DATE DESC
+	                    )E
+	          <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)G
+	   <![CDATA[
+	  WHERE G.RNUM >= #{ startRow } 
+       ]]>
+	</select>
+	
 </mapper>

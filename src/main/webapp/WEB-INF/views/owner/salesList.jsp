@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/owners.css">
-<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/mypage-sidebar.css">
+<link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/coupon.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -22,15 +22,13 @@
         <br><h3 style="margin-left: 100px; font-weight: 900;">매출 내역</h3>
         <hr>
     </div>
-
     <div class="body-all">
         <div class="body-inside">
         <jsp:include page="../commons/ownerSidebar.jsp"/>
         
     <div class="body-center" style="text-align: center;">
-
-        <br><h2>오늘의 매출 내역</h2><br><br>
-
+        <h2 style="margin-left: 150px;"><strong>오늘의 매출 내역</strong></h2>
+        <br><br>
             <table class="table table" style="width: 1050px; margin-left: 60px; text-align: center;" >
                 <thead>
                     <tr>
@@ -77,8 +75,12 @@
                     </tr>
                 </thead>
             </table><br>
+            <div style="float: right;">
+            <button type="button"  id="couponBtn" style="height: 30px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salesDay'">일별 매출</button>
+          	<button id="couponBtn" style="height: 30px; margin-left: 20px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salesMonth'">월별 매출</button>
+            </div>
 			
-			<br><br><br><br>
+			<br><br><br><br><br><br>
             <canvas id="bar-chart-grouped" width="830" height="450" style="margin-left: 80px;"></canvas>
 
             <script>

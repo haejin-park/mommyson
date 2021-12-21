@@ -32,7 +32,7 @@
 	<br>
 	<br>
 	<div class="page-text" style="width: 1550px; margin: 0 auto;">
-		<h3 style="margin-left: 100px; font-weight: 900;">리뷰 관리</h3>
+		<h3 style="margin-left: 100px; font-weight: 900;">상세 영수증</h3>
 		<hr>
 	</div>
 
@@ -43,12 +43,10 @@
 			<jsp:include page="../commons/ownerSidebar.jsp" />
 
 			<div style="text-align: center;" >
-				<br>
-				<br> <img src="${ pageContext.servletContext.contextPath }/${ owner.ceo.store.storeImg }" width="300px">
-				<br>
-				<br>
+				
+				<br><br><br>
 				<div style="margin-left: 600px;" id="before">
-					<h3 style="font-weight: 900; text-align: left;">상세영수증</h3>
+					<h3 style="font-weight: 900; text-align: left;">영수증 상세 페이지</h3>
 					<br>
 					<div id="Layout" style="width: 700px; background-color: #ededed">
 						<br>
