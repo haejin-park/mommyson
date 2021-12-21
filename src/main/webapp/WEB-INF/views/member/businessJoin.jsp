@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사업자 회원가입</title>
    
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -15,7 +16,16 @@
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
    	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-  
+      
+    <style>
+    .correct {
+    color : green;
+    }
+     .incorrect {
+    color : red;
+    }
+    </style>
+
 
 </head>
 <body>
@@ -28,7 +38,7 @@
             <img class=logo src="${ pageContext.servletContext.contextPath }/resources/images/logo.png">
         </div>
         <div class="text">
-            <form name="join_form" id="join_form" method="POST" onsubmit="return validate();"> 
+            <form name="join_form" id="join_form" method="POST" onsubmit="return validate();" enctype="multipart/form-data"> 
             <input type="text" class="id" name="memId" id="id" placeholder=" 아이디(알파벳 소문자,숫자 혼합 4~12글자)"
              style=" height:40px;width:440px;border-radius: 9px;">
             <button type="button" name="idChk" id="idChk" onclick="idChk1()">중복확인</button>
@@ -38,21 +48,29 @@
             <br>
             <input type="password" class="pwd1" name="memPwd" id="pwd1" placeholder=" 비밀번호(알파벳,숫자,특수기호!@#$%^*+=- 를 혼합 4~12글자)"
              style=" height:40px;width:440px;border-radius: 9px;">
-           	<br><br>
+           	<br>
+           	<span id="pwd1CheckResult"></span>
+            <br>
             <input type="password" class="pwd2"  id="pwd2" placeholder=" 비밀번호 확인"
              style=" height:40px;width:440px;border-radius: 9px;">
            	<br>
-           	<span id="pwdCheckResult"></span>
+           	<span id="pwd2CheckResult"></span>
             <br>
             <input type="text" class="input1" name="ceo.name" id="name" placeholder="대표자명"
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
-            <input type="text" class="input1" name="account" id="account" placeholder="계좌번호"
+            <br>
+           	<span id="nameCheckResult"></span>
+            <br>
+            <input type="text" class="input1" name="ceo.account" id="account" placeholder="계좌번호는 숫자, - 를 사용"
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
+            <br>
+           	<span id="accountCheckResult"></span>
+            <br>
              <input type="text" class="input1" name="phone" id="phone" placeholder=" 전화번호(올바른 형식으로 9~11자리 숫자)"
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
+            <br>
+           	<span id="phoneCheckResult"></span>
+            <br>
             <input type="email" class="email" name="email" id="email" placeholder=" 이메일주소(@ 포함)"
              style=" height: 40px;  width: 440px; border-radius: 9px;">
             <button type="button" name="emailChk" id="emailChk" onclick="emailChk1()" 
@@ -75,19 +93,25 @@
             <br><br>
             <input type="text" class="input1" name="address" id="address1" placeholder=" 주소" readonly
              style=" height:40px;width:440px;border-radius: 9px;">
-            <button type="button" id="button" onclick="locationCode1()">지역코드</button>
+            <button type="button" id="button" onclick="locationCode1()">'구' 저장</button>
             <input type="hidden" name="locationCode" id="locationCode" value="N" > 
             <br><br>
             <input type="text" class="input1" name="dAddress" id="address2" placeholder=" 상세주소" required
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
-            <input type="text" class="input1" name="companyName" id="companyName" placeholder="상호명"
+            <br>
+           	<span id="address2CheckResult"></span>
+            <br>
+            <input type="text" class="input1" name="storeName" id="storeName" placeholder="상호명"
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
-            <input type="text" class="input1" name="businessRegistrationNo" id="businessRegistrationNo" placeholder=" 사업자등록번호" required
+            <br>
+           	<span id="storeNameCheckResult"></span>
+            <br>
+            <input type="text" class="input1" name="ceo.no" id="businessRegistrationNo" placeholder=" 사업자번호는 숫자, - 를 사용(ex 123-45-67890)" required
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
-            <p>상호 대표 이미지 &nbsp; <input type="file" id=companyImage></p>
+            <br>
+           	<span id="noCheckResult"></span>
+            <img src="" id="preview-image" style="width: 440px;">
+            <p>상호 대표 이미지 &nbsp; <input type="file" name="storeImg2" id=storeImg></p>
             <br>
             
             <!-- 모달 띄우기 -->
@@ -151,7 +175,7 @@
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; 
             <button type="submit" id="joinButton" style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
@@ -160,6 +184,33 @@
     </div>
     <jsp:include page="../commons/footer.jsp"/>
         
+	<script>
+		/* 이미지 미리보기 */
+		function readImage(input) {
+			if(input.files && input.files[0]) {
+				
+				const reder = new FileReader();
+				
+				reader.onload = e => {
+					const previewImage = document.getElementById("preview-image");
+					previewImage.src = e.target.result;
+				}
+				
+				reder.readAsDataURL(input.files[0]);
+			}
+		}
+		
+		const inputStoreImg= document.getElementById("storeImg");
+		inputStoreImg.addEventListener("change", e => {
+			readImage(e.target);
+		});
+		
+		// 가입 버튼 클릭시 상호 이미지 사진 등록
+		$('#joinButton').on('click', function(){
+			let img = $('#preview-image').attr('src');
+		});
+	
+	</script>
     
     <script>
 
@@ -174,9 +225,9 @@
             var code = document.getElementById("code");
             var address1 = document.getElementById("address1");
             var address2 = document.getElementById("address2");
-            var companyName = document.getElementById("companyName");
+            var storeName = document.getElementById("storeName");
             var businessRegistrationNo = document.getElementById("businessRegistrationNo");
-            var companyImage = document.getElementById("companyImage");
+            var storeImg = document.getElementById("storeImg");
             var all = document.getElementById("all");
         
             if(id.value == ""){
@@ -242,9 +293,9 @@
                 return false;
             }
             
-            if(companyName.value == ""){
+            if(storeName.value == ""){
                 alert("상호를 입력해주세요.")
-                companyName.focus()
+                storeName.focus()
                 return false;
             }
             
@@ -254,9 +305,9 @@
                 return false;
             }
             
-            if(companyImage.value == ""){
+            if(storeImg.value == ""){
                 alert("상호 대표 이미지를 첨부해주세요.")
-                companyImage.focus()
+                storeImg.focus()
                 return false;
             }
 
@@ -271,28 +322,124 @@
                 }
                 return true;
         }
-       
         
+       /* 아이디 입력 여부 확인 & 정규식 확인 */
+       
+       $("#id").blur(function(){
+	 	 var inputId = $("#id").val();
+	 	 var regex = /^[a-z]+[a-z0-9]{3,11}$/g;
+		 var result = regex.exec(inputId);
+		 var idCheckResult = $("#idCheckResult");
+			 
+			 if(inputId == ""){
+				 idCheckResult.html("아이디를 입력하신 후 중북확인 버튼을 클릭해주세요.");
+				 idCheckResult.attr("class", "incorrect");
+				 return false;
+				 
+			 } else {
+	
+				 if(result != null){
+					 idCheckResult.html("");
+					 return true;
+				 } else {
+					 idCheckResult.html("아이디 형식이 올바르지 않습니다. 아이디는 알파벳 소문자, 숫자를 혼합하여 4~12 글자로 작성해주세요.");
+					 idCheckResult.attr("class", "incorrect");
+					 return false;
+				 }
+			 }
+			 
+	   });  
+        
+      /* 아이디 중복 체크 여부 확인 알럿 */
+      
+	    $(function(){  
+	       $("#joinButton").click(function(){ 
+	    	  if($("#idChkHd").val() == 'N'){
+	    		  alert("아이디 중복확인을 해주세요.");
+	    		  return false;
+	    		  }
+	    		  
+	    	  }); 
+	      });
+       
+
+        /* 아이디 입력 여부 확인 알럿 & 중복 확인 알럿 */
+         function idChk1(){
+        	
+        	let id = $('#id').val();
+        	let id2 = $('#id');
+        	
+            if(id == ""){
+                alert("아이디를 입력해주세요.");
+                id2.focus();
+                return false;
+                
+            } else {     
+            	
+	        	$.ajax({
+	        		url : "${ pageContext.servletContext.contextPath }/member/idChk",
+	        		type : "post",
+	        		data : {
+	        			id : id
+	        		},
+	        		async: false,
+	        		success:function(data){
+	        			console.log("data : " + data);
+        				
+	        			var regex = /^[a-z]+[a-z0-9]{3,11}$/g;
+	        			var result = regex.exec(id);
+	        			
+	        			if(data == '1') {
+	        				alert("중복된 아이디 입니다.");
+	        				return false;
+	        				
+	        			} else if(data == '0') {
+	        				
+	        				if(result !=null){
+	        					$('#idChkHd').attr("value","Y");
+	        					alert("사용 가능한 아이디 입니다.")
+	        					return true;
+	        				
+	        				} else { 
+	        					alert("아이디 형식이 올바르지 않습니다. 아이디는 영문 소문자로 시작해야하며, 숫자와 혼합하여 4~12글자로 작성해야합니다.")
+	        					return false;
+	        				} 
+	        			}
+	        		},
+	         		error:function(error){
+	        			alert(error);
+	        			
+	        		}
+        	  	 
+        		});
+        	            
+           	 }
+        	
+    	 }  
+
+      
         /* 비밀번호 입력 여부 확인 알럿 & 정규식 확인 */
         $("#pwd1").blur(function(){
        	var inputPwd = $("#pwd1").val();
       		var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/;
       		var result = regex.exec(inputPwd);
-
+      		 var pwd1CheckResult = $("#pwd1CheckResult");
       		
       			if(inputPwd == ""){
-      				alert("비밀번호를 입력해주세요.");
+      				pwd1CheckResult.html("비밀번호를 입력해주세요.");
+	        		pwd1CheckResult.attr("class", "incorrect");
 	        		return false;
       				
       			} else {
-      				
-      				if(result != null){
-	        			return true;
+      				 if(result != null){
+	        			pwd1CheckResult.html("");
+		        		return true;
 	        			
 	        		} else {
-	        			alert("비밀번호 형식이 올바르지 않습니다. 비밀번호는 알파벳과 특수기호 !@#$%^*+=- 와 숫자를 혼합하여 4~12글자를 작성해주세요 ");
+	        			pwd1CheckResult.html("비밀번호 형식이 올바르지 않습니다. 비밀번호는 알파벳과 특수기호 !@#$%^*+=- 와 숫자를 혼합하여 4~12글자를 작성해주세요 ");
+	        			pwd1CheckResult.attr("class", "incorrect");
 	        			return false;
-	        		}
+	        		} 
       				
       			}	
        	}); 
@@ -304,43 +451,49 @@
       	 
       	 var inputPwd1 = $("#pwd1").val();
       	 var inputPwd2 = $("#pwd2").val();
-   	 var pwdCheckResult = $("#pwdCheckResult");
+   	 	 var pwd2CheckResult = $("#pwd2CheckResult");
       	 
       	 if(inputPwd2 == "") {
-			alert("비밀번호를 확인해주세요.");
+      		pwd2CheckResult.html("비밀번호를 확인해주세요.");
+      		pwd2CheckResult.attr("class", "incorrect");
 			return false;
 			
       	 }	else {
       		 
-	        	if(inputPwd1 != inputPwd2){
-	        		pwdCheckResult.html("비밀번호가 일치하지않습니다. 비밀번호를 동일하게 입력해주세요.");
-	        		pwdCheckResult.attr("class", "incorrect");
-	        		return false;
+	        	if(inputPwd1 == inputPwd2){
+	        		pwd2CheckResult.html("비밀번호가 일치합니다.");
+	        		pwd2CheckResult.attr("class", "correct");
+	        		return true;
 	        		
 	        	} else {
-	        		pwdCheckResult.html("비밀번호가 일치합니다.");
-	        		pwdCheckResult.attr("class", "correct");
-	        		return true;
+	        		pwd2CheckResult.html("비밀번호가 일치하지않습니다. 비밀번호를 동일하게 입력해주세요.");
+	        		pwd2CheckResult.attr("class", "incorrect");
+	        		return false;
 	        	}
       		 }	
       }); 
+       
        
        /* 이름 입력 여부 확인 알럿 & 정규식 알럿 */
        $("#name").blur(function(){
        	var inputName = $("#name").val();
        	var regex = /^[가-힣]{2,}$/;
        	var result = regex.exec(inputName);
+       	var nameCheckResult = $("#nameCheckResult")
        	
        	if(inputName == ""){
-       		alert("대표자명을 입력해주세요.");
+       		nameCheckResult.html("대표자명을 입력해주세요.");
+       		nameCheckResult.attr("class", "incorrect");
        		return false;
        	} else {
        		
        		if(result != null) {
+       	  		nameCheckResult.html("");
        			return true;
        			
        		} else {
-       			alert("대표자명 형식이 올바르지 않습니다. 대표자명은 한글로 2글자 이상 입력해주세요. ");
+       			nameCheckResult.html("대표자명 형식이 올바르지 않습니다. 대표자명은 한글로 2글자 이상 입력해주세요. ");
+       			nameCheckResult.attr("class", "incorrect");
        		 	return false;
        		}
        	}
@@ -351,11 +504,30 @@
       /* 계좌번호 여부 확인 알럿 */
       $("#account").blur(function(){
    	   var inputAccount = $("#account").val();
+   	   var regex = /^(\d{1,})(-(\d{1,})){1,}/;
+   	   var result = regex.exec(inputAccount);
+   	   var accountCheckResult = $("#accountCheckResult");
    	   
-	   	   if(inputAccount == "") {
-	   			alert("계좌번호를 입력해주세요.");
-	       		return false;
-	   	   }
+   	   if(inputAccount == "") {
+   			accountCheckResult.html("계좌번호를 입력해주세요.");
+   			accountCheckResult.attr("class","incorrect");
+       		return false;
+       		
+   	   } else {
+   		   
+   		   if(result != null){
+   			accountCheckResult.html("");
+   			return true;
+   			
+   	 	  } else {
+   	 		  
+   	 		accountCheckResult.html("계좌번호 형식이 올바르지 않습니다. 계좌번호는 숫자와 - 를 사용해주세요.");
+   			accountCheckResult.attr("class", "incorrect");
+   			return false;
+   	 	  }
+   	 		  
+   	   }
+   	   
       });
        
        
@@ -367,20 +539,23 @@
        	var phoneCheckResult = $("#phoneCheckResult");  
        		
        		if(inputPhone == ""){
-       			alert("전화번호를 입력해주세요.");
+       			phoneCheckResult.html("전화번호를 입력해주세요.");
+       			phoneCheckResult.attr("class","incorrect");
        			return false;
        	
        		} else {
        			
        			if(result != null) {
+       				phoneCheckResult.html("");
        				return true;
        			} else {
-       				alert("전화번호 형식이 올바르지 않습니다. 올바른 형식으로 9~11자리 숫자를 입력해주세요.");
+       				phoneCheckResult.html("전화번호 형식이 올바르지 않습니다. 올바른 형식으로 9~11자리 숫자를 입력해주세요.");
+       				phoneCheckResult.attr("class","incorrect");
        				return false;
        			} 
        		}
        	
-      	 	});
+      	 });
       
        /* 이메일 입력 여부 확인 & 정규식 확인 */
        $("#email").blur(function(){
@@ -390,7 +565,7 @@
 		 	var emailCheckResult = $("#emailCheckResult");
 		 	
 		 		if(inputEmail == ""){
-		 			emailCheckResult.html("이메일을 입력해주세요.");
+		 			emailCheckResult.html("이메일을 입력하여 중복확인 후, 인증번호 전송 버튼을 눌러 인증번호를 입력해주세요.");
 		 			emailCheckResult.attr("class", "incorrect");
 		 			return false;
 		 			
@@ -559,11 +734,13 @@
   		$(function(){
   			$('#joinButton').click(function(){
   				if($('#locationCode').val() == 'N'){
-  					alert('지역코드를 클릭해주세요 ');
+  					alert('구주소 저장 버튼을 클릭해주세요 ');
   					return false;
   				}
   			});
   		});
+
+        
 
         
 		/* 서블릿에서 가져온 지역 코드 밸류에 넣기 */ 
@@ -585,28 +762,65 @@
 	    	
 	    	});
 	    }
+		
+ 		/* 상세주소 입력 여부 확인 알럿 */
+        $("#address2").blur(function(){
+        	var inputAdress2 = $("#address2").val();
+        	var address2CheckResult = $("#address2CheckResult");
+        	
+        	if(inputAdress2 == ""){
+        		address2CheckResult.html("상세주소를 입력해주세요.");
+        		address2CheckResult.attr("class", "incorrect");
+        		return false;
+        	} else {
+       			address2CheckResult.html("");
+       		 	return true;
+        	}
+        	
+        });
 
       /* 상호명 입력 여부 확인 알럿 */
-      $("#companyName").blur(function(){
-   	   var inputCompanyName = $("#companyName").val();
+      $("#storeName").blur(function(){
+   	   var inputStoreName = $("#storeName").val();
+   	   var storeNameCheckResult = $("#storeNameCheckResult");
    	   
-	   	   if(inputCompanyName == "") {
-	   			alert("상호명을 입력해주세요.");
+	   	   if(inputStoreName == "") {
+		   		storeNameCheckResult.html("상호명을 입력해주세요.");
+		   		storeNameCheckResult.attr("class", "incorrect");
 	       		return false;
-	   	   }
-   	   
+		   	} else {
+		   		storeNameCheckResult.html("");
+			 	return true;
+			}	
+	   	   
       });
    	   
 
       /* 사업자등록번호 입력 여부 확인 알럿 */
       $("#businessRegistrationNo").blur(function(){
    	   var inputBusinessRegistrationNo = $("#businessRegistrationNo").val();
+   	   var regex = /^(\d{3,3})+[-]+(\d{2,2})+[-]+(\d{5,5})/;
+   	   var result = regex.exec(inputBusinessRegistrationNo);
+	   var noCheckResult = $("#noCheckResult");
    	   
 	   	   if(inputBusinessRegistrationNo == "") {
-	   			alert("사업자등록번호를 입력해주세요.");
+	   			noCheckResult.html("사업자등록번호를 입력해주세요.");
+	   			noCheckResult.attr("class", "incorrect");
 	       		return false;
-	  	   }
-   	   
+	       		
+		   	} else {
+		   		
+		   		if(result != null) {
+		   		noCheckResult.html("");
+			 	return true;
+			 	
+		   		} else {
+		   			noCheckResult.html("사업자번호 형식이 올바르지 않습니다.	사업자번호는 숫자와 - 를 사용해주세요. ex 123-45-67890 ");
+		   			noCheckResult.attr("class", "incorrect");
+				 	return false;
+		   		}
+			}	
+	   	   
       });
 		
        /* 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선택 */ 
@@ -649,7 +863,7 @@
 		$(document).ready(function(){
 			
 			$("#joinButton").click(function(){
-				$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/businessJoin2");
+				$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/businessJoin");
 				$("#join_form").submit();
 				
 			});

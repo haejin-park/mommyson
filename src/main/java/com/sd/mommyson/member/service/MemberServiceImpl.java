@@ -125,9 +125,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	/* 사용자 회원가입 */
+	/* 소비자 회원가입 */
 	@Override
-	public int customerJoin(MemberDTO member) throws Exception{
+	public int customerJoin(MemberDTO member) throws Exception {
 		
 		EmailCodeDTO dto = new EmailCodeDTO();
 		System.out.println(dto);
@@ -138,7 +138,7 @@ public class MemberServiceImpl implements MemberService {
 		int result2;
 		int result3;
 
-		/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode와 email을 select */
+		/* 소비자 회원가입 성공하면 MEMBER_TBL 의 memCode와 email을 select */
 		if(result1 > 0) {
 
 			int code = memberDAO.selectCode(dto);
@@ -156,7 +156,55 @@ public class MemberServiceImpl implements MemberService {
 			System.out.println(dto);
 			
 			
-			/* 사용자 회원가입 성공하고 memCode가 조회가 되면 EMAIL_CODE_TBL의 memCode와 email을 MEMBER_TBL 의 memCode와 email로 업데이트 */
+			/* 소비자 회원가입 성공하고 memCode가 조회가 되면 EMAIL_CODE_TBL의 memCode와 email을 MEMBER_TBL 의 memCode와 email로 업데이트 */
+			 
+			if(email != "") {
+				 result2 = memberDAO.updateEmail(dto);
+				 System.out.println("result2 : " + result2);
+			}
+			
+			if(memCode > 0) {
+				result3 = memberDAO.updateMemCode(dto);
+				System.out.println("result3 : " + result3);
+			 }
+			
+		}
+		return result1;
+	}
+	
+	
+	/* 사업자 회원가입 */
+	@Override
+	public int businessJoin(HashMap<String,Object>ceoRegist) throws Exception {
+		
+		EmailCodeDTO dto = new EmailCodeDTO();
+		System.out.println(dto);
+		
+		int result1 = memberDAO.businessJoin(ceoRegist);
+		System.out.println("result1 : " + result1);
+		
+		int result2;
+		int result3;
+
+		/* 사업자 회원가입 성공하면 MEMBER_TBL 의 memCode와 email을 select */
+		if(result1 > 0) {
+
+			int code = memberDAO.selectCode(dto);
+			System.out.println("code : " + code);
+			
+			String email = memberDAO.selectEmail(ceoRegist);
+			System.out.println("email : " + email);
+			
+			int memCode =	memberDAO.selectMemCode(ceoRegist);
+			System.out.println("memCode : " + memCode);
+			
+ 			dto.setCode(code);
+			dto.setEmail(email);
+			dto.setMemCode(memCode);
+			System.out.println(dto);
+			
+			
+			/* 사업자 회원가입 성공하고 memCode가 조회가 되면 EMAIL_CODE_TBL의 memCode와 email을 MEMBER_TBL 의 memCode와 email로 업데이트 */
 			 
 			if(email != "") {
 				 result2 = memberDAO.updateEmail(dto);
