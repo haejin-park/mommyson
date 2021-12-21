@@ -14,13 +14,13 @@
             <div class="side-1">
                 <br>
                     <img src="${ pageContext.servletContext.contextPath }/${ sessionScope.owner.ceo.store.storeImg }" width="150px;"><br> <hr>
-                    <h3>${ sessionScope.owner.ceo.name }사장님</h3>
+                    <h4><strong>${ sessionScope.owner.ceo.name } </strong>사장님</h4>
                     <br>
                     
                     <c:if test="${ sessionScope.membership != null && !empty sessionScope.membership }">
-                    <h5>시작일 : ${ sessionScope.membership.startDate }</h5><br>
-                    <h5>만료일 : ${ sessionScope.membership.endDate }</h5><br>
-                    <h5>${ sessionScope.membership.MS_TYPE } 사용중</h5>
+                    <h6>시작일 : ${ sessionScope.membership.startDate }</h6><br>
+                    <h6>만료일 : ${ sessionScope.membership.endDate }</h6><br>
+                    <h6>${ sessionScope.membership.MS_TYPE } 사용중</h6>
                     <input type="hidden" name="statusYN">
                     <br>
 	                <a href="${ pageContext.servletContext.contextPath }/owner/ownerPay">
@@ -127,7 +127,7 @@
                                     <a href="#">월별 매출</a>
                                 </li>
                                 <li>
-                                    <a href="#">정산</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/salesList">정산</a>
                                 </li>
                             </ul>
                         </li>
@@ -140,7 +140,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#">탈퇴하기</a>
+                            <a href="${ pageContext.servletContext.contextPath }/owner/detailReceipt">탈퇴하기</a>
                         </li>
                         <hr>
                         <li>
