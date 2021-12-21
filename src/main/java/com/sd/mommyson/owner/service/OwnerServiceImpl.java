@@ -516,4 +516,10 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerDAO.selectTotalReceipt(memCode);
 	}
 
+	@Override
+	public Map<String, Object> selectPayInfo(Map<String, Object> map) {
+
+		return ownerDAO.selectPayInfo(map);
+	}
+
 }

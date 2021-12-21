@@ -389,43 +389,43 @@ public class OwnerController {
 		
 		
 		// 주문 접수 페이지 처리  - 조건 없는 페이지
-		// 현재 페이지
-		int pageNo2 = 1;
-		
-		if(currentPage2 != null && !"".equals(currentPage2)) {
-			pageNo2 = Integer.parseInt(currentPage2);
-		}
-		
-		if(pageNo2 <= 0) {
-			pageNo2 = 1;
-		}
-		
-		System.out.println("현재 페이지 : " + currentPage2);
+				// 현재 페이지
+				int pageNo2 = 1;
+				
+				if(currentPage2 != null && !"".equals(currentPage2)) {
+					pageNo2 = Integer.parseInt(currentPage2);
+				}
+				
+				if(pageNo2 <= 0) {
+					pageNo2 = 1;
+				}
+				
+				System.out.println("현재 페이지 : " + currentPage2);
 
-		
-		/* ==== 조건에 맞는 게시물 수 처리 ==== */
-		int totalCount2 = ownerService.selectReviewListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
-		
-		int limit2 = 10; //페이지당 글 갯수
-		int buttonAmount2 =  10;//페이징 버튼의 갯수
-		String searchCondition2 = storeName;
-		
-		Pagination pagination2 = null;
-																	  // 검색 조건이 없으니까 null, null 처리
-		pagination2 = Pagination.getPagination(pageNo2, totalCount2, limit2, buttonAmount2, searchCondition2, null);
-		System.out.println("페이지 : " + pagination2);
-		
-		List<ReviewDTO> reviews = ownerService.selectReview(pagination2);
-		System.out.println("리뷰들아 들어왔니 : " + reviews);	
-		
-		if(reviews != null) {
-			//					items 이름 , 리스트이름
-			model.addAttribute("pagination",pagination2);
-			model.addAttribute("owner", owner);
-			model.addAttribute("reviews",reviews);
-		} else {
-			System.out.println("조회실패...");
-		}
+				
+				/* ==== 조건에 맞는 게시물 수 처리 ==== */
+				int totalCount2 = ownerService.selectReviewListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
+				
+				int limit2 = 10; //페이지당 글 갯수
+				int buttonAmount2 =  10;//페이징 버튼의 갯수
+				String searchCondition2 = storeName;
+				
+				Pagination pagination2 = null;
+																			  // 검색 조건이 없으니까 null, null 처리
+				pagination2 = Pagination.getPagination(pageNo2, totalCount2, limit2, buttonAmount2, searchCondition2, null);
+				System.out.println("페이지 : " + pagination2);
+				
+				List<ReviewDTO> reviews = ownerService.selectReview(pagination2);
+				System.out.println("리뷰들아 들어왔니 : " + reviews);	
+				
+				if(reviews != null) {
+					//					items 이름 , 리스트이름
+					model.addAttribute("pagination",pagination2);
+					model.addAttribute("owner", owner);
+					model.addAttribute("reviews",reviews);
+				} else {
+					System.out.println("조회실패...");
+				}
 		
 		/* 쿠폰 모달 리스트 가져오기 */ 
 		 System.out.println(owner);
@@ -472,7 +472,6 @@ public class OwnerController {
 		return "owner/review";	
 		
 	}
-	
 	/* 리뷰관리 - 리뷰쓴 고객들에게 쿠폰주기/삭제 인서트 (CP_HISTORY_TBL) */
 	//	          form 이름 작성
 	@PostMapping("registGiveAndDeleteCp")
@@ -495,7 +494,6 @@ public class OwnerController {
 		return "redirect:review";	
 		
 	}
-	
 
 	/* 판매상품 관리 */
 	@GetMapping("productManagement")
@@ -608,17 +606,6 @@ public class OwnerController {
 		
 	}
 
-	@PostMapping("giveCoupons")
-	public String giveCoupons(@RequestParam(value="cps",required = false) List<Integer> cpCode
-							, @RequestParam(value="chk",required = false) List<Integer> chkReview, RedirectAttributes ra) {
-		
-		System.out.println("리뷰리스트드르르르를 chkR : " + chkReview);
-		System.out.println("줄 쿠폰 코드드드드드들 cps : " + cpCode);
-		
-		
-		return "owner/review";
-	}
-	
 	@PostMapping("productManagement")
 	public String product(@RequestParam(value="sdCode", required = false ,defaultValue = "0") int sdCode, @RequestParam(value="deleteCode",required = false) List<Integer> deleteCode,
 			RedirectAttributes redirect) {
@@ -654,7 +641,7 @@ public class OwnerController {
 	
 	/* 오더페이지 완료된 주문 페이지네이션*/
 	@GetMapping("order2")
-	public String orderList2(@ModelAttribute("loginMember") MemberDTO member, @RequestParam( required = false) Map<String, String> param, Model model) {
+	public String orderList2(@ModelAttribute("loginMember") MemberDTO member, @RequestParam( required = false) Map<String, String> param,Model model) {
 		
 		// MemberDTO 안에 CeoDTo 안에 StoreDTO 안에 storeName 이 존재하니 뽑아서 넘겨준다.
 				MemberDTO owner = ownerService.selectOwner(member);
@@ -706,10 +693,10 @@ public class OwnerController {
 				
 				if(searchValue != null && !"".equals(searchValue)) {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
-					searchMap.put("pagination", pagenation);
+					searchMap.put("pagenation", pagenation);
 				} else {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
-					searchMap.put("pagination", pagenation);
+					searchMap.put("pagenation", pagenation);
 				}
 				
 				List<OrderDTO> orderList2 = ownerService.selectOrderList2(searchMap);
@@ -717,7 +704,7 @@ public class OwnerController {
 				System.out.println("orderList2 : " + orderList2);
 				
 				if(orderList2 != null) {
-					model.addAttribute("pagination",pagenation);
+					model.addAttribute("pagenation",pagenation);
 					model.addAttribute("orderList2", orderList2);
 					model.addAttribute("searchMap",searchMap);
 				} else {
@@ -734,6 +721,10 @@ public class OwnerController {
 		MemberDTO owner = ownerService.selectOwner(member);
 		String storeName = owner.getCeo().getStore().getStoreName();
 		System.out.println("스토어 이름 : " + storeName);
+		
+		// 주문 접수 가져오기
+		
+//		List<OrderDTO> orderList2 = ownerService.selectOrderList2(storeName);
 		
 		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
 		// 현재 페이지
@@ -755,8 +746,8 @@ public class OwnerController {
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = ownerService.selectOrderListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
 		
-		int limit = 10; //페이지당 글 갯수
-		int buttonAmount =  10;//페이징 버튼의 갯수
+		int limit = 15; //페이지당 글 갯수
+		int buttonAmount =  15;//페이징 버튼의 갯수
 		
 		Pagination pagination = null;
 		String searchCondition = storeName;
@@ -776,7 +767,6 @@ public class OwnerController {
 		return "owner/order";
 	}
 
-	// 모달 ajax
 	@PostMapping(value="order",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderList2(@RequestParam(value="orderCode") int orderCode) throws JsonProcessingException {
@@ -794,7 +784,6 @@ public class OwnerController {
 		
 	}
 	
-	// order 상태 변경
 	@PostMapping("orderUpdateAndDelete")
 	public String orderUpdate(@RequestParam("orderType") int orderType,@RequestParam("orderCode") int orderCode, Model model) {
 
@@ -1208,29 +1197,32 @@ public class OwnerController {
 			
 	}
 	
+	/* 영수증 출력 */
 	@GetMapping("receipt")
-	public void receipt(Model model) {
+	public void receipt(Model model, @RequestParam String payDate) {
 		
 		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
 		int memCode = member.getMemCode();
 		
+		System.out.println("payDate : " + payDate);
 		
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memCode",memCode);
+		map.put("payDate",payDate);
+		
+		Map<String, Object> payInfo = ownerService.selectPayInfo(map);
+		
+		if(payInfo != null && !payInfo.isEmpty()) {
+			
+			model.addAttribute("payInfo",payInfo);
+		} 
 		
 	}
 	
 	
 	@GetMapping("salesDay")
 	public void salseDay(Model model) {
-		
-	}
-	
-	@GetMapping("detailReceipt")
-	public void viewReceipt(Model model) {
-		
-	}
-	
-	@GetMapping("salesList")
-	public void salesList(Model model) {
 		
 	}
 	

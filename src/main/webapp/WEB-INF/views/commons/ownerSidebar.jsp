@@ -140,7 +140,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="${ pageContext.servletContext.contextPath }/owner/detailReceipt">탈퇴하기</a>
+                            <a href="#">탈퇴하기</a>
                         </li>
                         <hr>
                         <li>

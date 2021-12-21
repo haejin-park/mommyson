@@ -108,4 +108,6 @@ public interface OwnerService {
 
 	public int selectTotalReceipt(int memCode);
 
+	public Map<String, Object> selectPayInfo(Map<String, Object> map);
+
 }

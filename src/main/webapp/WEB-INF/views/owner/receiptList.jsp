@@ -48,7 +48,6 @@
               <c:set var="i" value="${ i + 1 }"/>
               <c:set var="j" value="${ (requestScope.pagination.pageNo / 2) * 10 }"/>
               <fmt:parseNumber var="page" integerOnly="true" value="${ j }"/>
-              
               <tr>
                 <%-- <c:if test="${ requestScope.pagination.pageNo > 1 }">
                 <th scope="row">${ i + page }</th>
@@ -61,7 +60,7 @@
                 <td>${ list.MS_TYPE }</td>
                 <td>${ list.MS_PRICE }</td>
                 <td>${ list.PAY_DATE }</td>
-                <td><a href="${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=${ list.sdCode }">상세보기</a></td>
+                <td><a href="${ pageContext.servletContext.contextPath }/owner/receipt?payDate=<fmt:formatDate value="${ list.PAY_DATE }" pattern="yyyy-MM-dd"/>">상세보기</a></td>
               </tr>
               </c:forEach>
             </tbody>
