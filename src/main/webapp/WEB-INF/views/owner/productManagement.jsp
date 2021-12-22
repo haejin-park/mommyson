@@ -97,7 +97,7 @@
 	                </c:if>
 	                
 	                <c:if test="${ list.orderableStatus eq 'X' }">
-	                <button class="couponBtn btn2" id="btn1" name="sdCode" value="${ list.sdCode }" style="background-color : #E72E13;">유통기한 지남</button>
+	                <button class="couponBtn btn2" id="btn1" name="sdCode" value="${ list.sdCode }" style="background-color : #E72E13; width:110px; ">유통기한 지남</button>
 	                </c:if>
                 </td>
                 <td><a href="${ pageContext.servletContext.contextPath }/owner/modifyProduct?sdCode=${ list.sdCode }">상세보기</a></td>
