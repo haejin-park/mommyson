@@ -1433,4 +1433,27 @@
        	  AND A.PAY_DATE BETWEEN #{ startDate } AND #{ endDate }
        	</if>
    </select>
+   
+   <select id="selectTaxList" resultMap="taxResultMap">
+       SELECT
+       	  	  A.MS_STORE_CODE
+       	  	, A.PAY_DATE
+       	  	, B.MS_PRICE
+       	  	, B.MS_TYPE
+       	  	, C.EMAIL
+       	  	, D.CEO_NAME
+       	  	, D.STORE_NO
+       	  	, E.STORE_NAME
+       	 FROM MS_STORE_TBL A
+         LEFT JOIN MEMBERSHIP_TBL B ON(A.MS_CODE = B.MS_CODE)
+       	 LEFT JOIN MEMBER_TBL C ON(A.MEM_CODE = C.MEM_CODE)
+       	 LEFT JOIN CEO_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+       	 LEFT JOIN STORE_TBL E ON(D.MEM_CODE = E.MEM_CODE)
+       	WHERE MS_STORE_CODE IN (
+       	<foreach collection="list" item="code" separator=",">
+       	#{ code }
+       	</foreach>
+       	)
+   </select>
+   
 </mapper>

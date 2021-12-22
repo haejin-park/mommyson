@@ -191,4 +191,6 @@ public interface ManagerService {
 
 	public int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
+	public List<TaxAdjustDTO> selectTaxList(List<String> list);
+
 }

@@ -155,4 +155,6 @@ public interface ManagerDAO {
 
 	int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
+	List<TaxAdjustDTO> selectTaxList(List<String> list);
+
 }
