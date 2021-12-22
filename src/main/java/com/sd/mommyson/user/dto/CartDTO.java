@@ -9,7 +9,8 @@ public class CartDTO {
 	private String storeName;//STORE_TBL에 있음
 	private String storeImg; //STORE_TBL에 있음
 	private int sdCode; //PRODUCT_TBL에 있음
-	private int sdName; //PRODUCT_TBL에 있음
+	private String sdName; //PRODUCT_TBL에 있음
+	private String sdImg;
 	private int price;  //PRODUCT_TBL에 있음
 
 
@@ -19,18 +20,19 @@ public class CartDTO {
 	}
 
 
-	public CartDTO(int memCode, int cartCode, String storeName, String storeImg, int sdCode, int sdName, int price,
-			int amount, int totalPrice) {
+	public CartDTO(int memCode, int cartCode, int amount, int totalPrice, String storeName, String storeImg, int sdCode,
+			String sdName, String sdImg, int price) {
 		super();
 		this.memCode = memCode;
 		this.cartCode = cartCode;
+		this.amount = amount;
+		this.totalPrice = totalPrice;
 		this.storeName = storeName;
 		this.storeImg = storeImg;
 		this.sdCode = sdCode;
 		this.sdName = sdName;
+		this.sdImg = sdImg;
 		this.price = price;
-		this.amount = amount;
-		this.totalPrice = totalPrice;
 	}
 
 
@@ -51,6 +53,26 @@ public class CartDTO {
 
 	public void setCartCode(int cartCode) {
 		this.cartCode = cartCode;
+	}
+
+
+	public int getAmount() {
+		return amount;
+	}
+
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+
+
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 
@@ -84,13 +106,23 @@ public class CartDTO {
 	}
 
 
-	public int getSdName() {
+	public String getSdName() {
 		return sdName;
 	}
 
 
-	public void setSdName(int sdName) {
+	public void setSdName(String sdName) {
 		this.sdName = sdName;
+	}
+
+
+	public String getSdImg() {
+		return sdImg;
+	}
+
+
+	public void setSdImg(String sdImg) {
+		this.sdImg = sdImg;
 	}
 
 
@@ -104,32 +136,15 @@ public class CartDTO {
 	}
 
 
-	public int getAmount() {
-		return amount;
-	}
-
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-
-	public int getTotalPrice() {
-		return totalPrice;
-	}
-
-
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-
-
 	@Override
 	public String toString() {
-		return "CartDTO [memCode=" + memCode + ", cartCode=" + cartCode + ", storeName=" + storeName + ", storeImg="
-				+ storeImg + ", sdCode=" + sdCode + ", sdName=" + sdName + ", price=" + price + ", amount=" + amount
-				+ ", totalPrice=" + totalPrice + "]";
+		return "CartDTO [memCode=" + memCode + ", cartCode=" + cartCode + ", amount=" + amount + ", totalPrice="
+				+ totalPrice + ", storeName=" + storeName + ", storeImg=" + storeImg + ", sdCode=" + sdCode
+				+ ", sdName=" + sdName + ", sdImg=" + sdImg + ", price=" + price + "]";
 	}
+
+
+
 
 
 }

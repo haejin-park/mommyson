@@ -72,6 +72,7 @@
 	                    <div class="side_info">
 	                        <p>가격</p>
 	                        <p>${ requestScope.product.price } 원</p>
+	                        <input type="hidden" value="${ requestScope.product.price }" name="price">
 	                    </div>
 	                    <div class="side_info">
 	                        <p>할인</p>

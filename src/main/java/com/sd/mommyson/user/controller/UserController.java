@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -789,16 +788,6 @@ public class UserController {
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
 	
-	
-	/**@author ShinHyungi
-	 * @return
-	 */
-	@GetMapping("cart")
-	public String cart() {
-		return "user/shoppingBasket";
-	}
-
-	
 	/**
 	 * 장바구니 상품 조회 & 상품 담기 
 	 * @author ShinHyungi, ParkHaejin
@@ -808,10 +797,11 @@ public class UserController {
 	 * @return "user/shoppingBasket"
 	 */
 	@RequestMapping("insertCart")
-	public String insertCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode,  HttpSession session) {
+	public String insertCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode, @RequestParam("price") int price, HttpSession session) {
 		
 		System.out.println("amount : " + amount);
 		System.out.println("sdCode : " + sdCode);
+		System.out.println("price : " + price);
 		
 		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
 		System.out.println("member :" + member);
@@ -820,6 +810,7 @@ public class UserController {
 		order.put("sdCode", sdCode);
 		order.put("amount", amount);
 		order.put("memCode", member.getMemCode());
+		order.put("totalPrice", price*amount);
 		System.out.println("order : " + order);
 		
 		int count = userService.selectCountCart(order); 	//장바구니에 기존 상품이 있는지 조회 
@@ -831,40 +822,52 @@ public class UserController {
 			userService.updateCart(order); // 장바구니에 상품이 0개이상이면 update 
 		}
 				
+		return "redirect:user/cart";
+	
+	}
+	
+
+	/**
+	 * @author ShinHyungi, ParkHaejin
+	 * @param model
+	 * @param session
+	 * @return "user/shoppingBasket"
+	 */
+	@GetMapping("cart")
+		public String cart(Model model,  HttpSession session) {
+			
+			MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+			System.out.println("member : " + member);
+			
+			List<CartDTO> cartList = userService.cartList(member);
+			
+			HashMap<String,Object> map = new HashMap<String,Object>();
+			map.put("cartList", cartList); 
+			System.out.println("map : " + map);
+			
+			model.addAttribute("map", map);
+			System.out.println("model : " + model);
 		return "user/shoppingBasket";
 	}
 	
-	
-
-	
-	/**
-	 * 장바구니 목록 조회 
-	 * @author ParkHaejin
-	 * @param model
-	 * @param session
-	 * @return model
-	 */
-	@RequestMapping("selectCartList")
-	public Model selectCartList(Model model,  HttpSession session) {
+	@PostMapping(value = "updateAmountAndPrice", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public int updateAmount(@RequestParam("updateAmountAndPrice") int totalPrice, @RequestParam("stat") int amount, HttpSession session) {
+		
+		System.out.println("totalPrice : " + totalPrice);
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
 		System.out.println("member : " + member);
 		
-		CartDTO dto = userService.selectCart(member); //회원정보로 장바구니 리스트 받아오기 
-		System.out.println("dto :" + dto);
+		CartDTO dto = new CartDTO();
+		dto.setTotalPrice(totalPrice);
+		dto.setAmount(amount);
+		System.out.println("dto : " + dto);
+		int result = userService.updateAmountAndPrice(dto);
 		
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		map.put("memCode", member.getMemCode()); 
-		map.put("dto", dto); 
-		System.out.println("map : " + map);
+		return result;
 		
-		model.addAttribute("map", map);
-		System.out.println("model : " + model);
-		
-	return model;
-	
 	}
-	
 	
 	private int sum(int price) {
 		// TODO Auto-generated method stub

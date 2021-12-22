@@ -55,8 +55,11 @@ public interface UserService {
 	void updateCart(HashMap<String, Integer> order);
 	
 	/* 장바구니 목록 조회 */
-	CartDTO selectCart(MemberDTO member);
+	List<CartDTO> cartList(MemberDTO member);
 	
+	/* 장바구니 상품 수량 변경 update */
+	int updateAmountAndPrice(CartDTO dto);
+
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);
@@ -78,14 +81,8 @@ public interface UserService {
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
 
-//	int selectCountCart(CartDTO dto);
-//	
-//	void insertCart(CartDTO dto);
-//
-//	void updateCart(CartDTO dto);
 
-
-
+	
 
 
 

@@ -24,11 +24,11 @@
 	<br>
     <img class=cart1 src="${ pageContext.servletContext.contextPath }/resources/images/cart1.png" >
     
- 	<form method="post" action="${ pageContext.servletContext.contextPath }/user/selectCartList">
+ 	<form method="post">
 	    <c:choose>
 	    	<c:when test="${ map.count == 0 }"> 장바구니가 비어있습니다. </c:when>
 	    	<c:otherwise>
-	    		<c:forEach var="row" items="${ map.dto }" varStatus="i">
+	    		<c:forEach var="row" items="${ map.cartList }" varStatus="i">
 				    
 				    <table id="table1">
 				      <tr id="tr1">
@@ -41,9 +41,9 @@
 				      </tr>
 				      <tr id="tr2">
 				        <td><input type=checkbox name="checkbox"></td>
-				        <td><c:out value="${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
-				        <td><c:out value="${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
-				        <td><c:out value="${ row.rice }"/></td>
+				        <td><img src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
+				        <td><img src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
+				        <td><span id="price"><c:out value="${ row.price }"/></span></td>
 				        <td>
 				         	<div class="number">
 				           	<a href="#" id="decreaseQuantity"> - </a>
@@ -51,7 +51,7 @@
 				            <a href="#" id="increaseQuantity"> + </a>
 				        	</div>
 				        </td>
-				        <td><c:out value="${ row.totalPrice }"/>원</td>
+				        <td> <span id="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
 				      </tr>
 				    </table>
 				    
@@ -111,7 +111,7 @@
 	  }
 	  
 	  /* 수량 증감 */
-	  $(function(){
+	 /*  $(function(){
 	    $('#decreaseQuantity').click(function(e){
 	      e.preventDefault();
 	      var stat = $('#numberUpDown').text();
@@ -130,9 +130,73 @@
 	      num++;
 	      $('#numberUpDown').text(num);
 	  });
-	});
+	}); */
 	
-	
+	/* 수량증감에따라 totalCount 변경 */
+/* 	  $("#amount").on("change",function(){
+        	
+            if($("#decreaseQuantity").is(":clicked")) {
+                $("#totalPrice").prop("#price"*"#amount");
+                
+            } else if($("#increaseQuantity").is(":clicked")) {
+                $("#totalPrice").prop("#price"*"#amount");
+            }
+        }); */
+        
+        $(function(){
+        	
+            var price = $('#price').val();
+  	     	var totalPrice = $('#totalprice').val();
+  	     	var totalAmountByStore = $('#totalAmountByStore').val();
+  	     	var paymentAmount = $('#paymentAmount').val();
+        	
+    	    $('#decreaseQuantity').click(function(e){
+    	      e.preventDefault();
+    	      var stat = $('#numberUpDown').text();
+    	      var num = parseInt(stat,10);
+    	      
+    	      num--;
+    	      if(num < 0){
+    	      	num = 0;
+    	      }
+    	      $('#numberUpDown').text(num);
+    	    });
+    	    
+    	    
+    	    
+    	    $('#increaseQuantity').click(function(e){
+    	      e.preventDefault();
+    	      var stat = $('#numberUpDown').text();
+    	      var num = parseInt(stat,10);
+    	      num++;
+    	      $('#numberUpDown').text(num);
+    	  });
+    	    
+  	       totalPrice = price * stat; 
+  	       paymentAmount = sum(totalPrice);
+  	       
+  	       $.ajax({
+  	    	   url : "${ pageContext.servletContext.contextPath }/user/updateAmount",
+  	    	   type : "post",
+  	    	   data : {
+  	    		 stat : stat,  
+  	    		 totalPrice : totalPrice
+  	    	   }, 
+  	    	   async:false,
+  	    	   success:function(data){
+  	    		   console.log("data : " + data);
+  	    	   },
+  	    	 
+  	    	   error:function(error){
+     			alert(error);
+  	    	   }
+     			
+  	       });
+  	       
+  	       
+    	});
+        
+	  
 	</script>
 
 </body>

@@ -173,8 +173,17 @@ public class UserServiceImpl implements UserService{
 	
 	/* 장바구니 목록 조회 */
 	@Override
-	public CartDTO selectCart(MemberDTO member) {
-		return userDAO.selectCart(member);
+	public List<CartDTO> cartList(MemberDTO member) {
+		// TODO Auto-generated method stub
+		return userDAO.cartList(member);
+	}
+
+
+	/* 장바구니 상품 수량 변경 update */
+	@Override
+	public int updateAmountAndPrice(CartDTO dto) {
+		// TODO Auto-generated method stub
+		return userDAO.updateAmountAndPrice(dto);
 	}
 
 
@@ -217,6 +226,7 @@ public class UserServiceImpl implements UserService{
 	public Integer deleteJJIMplus(Map<String, Integer> map) {
 		return userDAO.deleteJJIMplus(map);
 	}
+
 
 
 
