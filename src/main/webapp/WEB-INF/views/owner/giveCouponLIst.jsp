@@ -21,7 +21,7 @@
 
     <br><br><br>
 	<div class="page-text" style="width: 1550px; margin: 0 auto;">
-		<h3 style="margin-left: 100px; font-weight: 900;">쿠폰 발행 내역</h3>
+		<h3 style="margin-left: 100px; font-weight: 900;">쿠폰 지급 내역</h3>
 		<hr>
 	</div>
 
@@ -39,8 +39,7 @@
 				<br> <br>
 				<br>
 				<div style="margin-left: 450px;" id="before">
-					<h3 style="font-weight: 900; text-align: left; margin-left: 30px;">발행한
-						쿠폰</h3>
+					<h3 style="font-weight: 900; text-align: left; margin-left: 30px;">지급한 쿠폰</h3>
 					<br>
 			         <table class="table table" style="width: 1050px;">
 			            <thead style="background-color: #EDEDED;">

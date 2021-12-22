@@ -1192,8 +1192,6 @@ public class OwnerController {
 		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
 		int memCode = member.getMemCode();
 		
-		
-		
 	}
 	
 	
