@@ -1418,6 +1418,13 @@ public class ManagerController {
 	}
 	
 	/* 관리자 정산 */
+	/**@author ShinHyungi
+	 * @param model
+	 * @param currentPage
+	 * @param searchValue
+	 * @param startDate
+	 * @param endDate
+	 */
 	@GetMapping("taxAdjustment")
 	public void taxAdjustment(Model model, @RequestParam(value = "currentPage", required = false) String currentPage, @RequestParam(value = "searchValue", required = false) String searchValue
 			, @RequestParam(value = "startDate", required = false) String startDate, @RequestParam(value = "endDate", required = false) String endDate) {
