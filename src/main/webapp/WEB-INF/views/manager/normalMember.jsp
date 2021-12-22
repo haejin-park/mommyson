@@ -132,7 +132,6 @@
 		    const sum = totalV.reduce((a,b) => (a+b));
 		    console.log(sum);
 		    
-		    
 	    }
 	    
 	    /* const sum = num1.reduce((a,b) => (a+b));
