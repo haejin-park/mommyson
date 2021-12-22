@@ -1,5 +1,7 @@
 package com.sd.mommyson.member.dto;
 
+import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
+
 public class StoreDTO {
 
 	private String storeName;
@@ -11,14 +13,14 @@ public class StoreDTO {
 	private int memCode;
 	private int rvCount;
 	private String statusYN;
-	
+	private MembershipAndStoreDTO membershipAndStore;
 	
 	public StoreDTO() {
 
 	}
 
 	public StoreDTO(String storeName, String storeImg, String storeInfo, float grade, int delCost, String workTime,
-			int memCode, int rvCount, String statusYN) {
+			int memCode, int rvCount, String statusYN, MembershipAndStoreDTO membershipAndStore) {
 		super();
 		this.storeName = storeName;
 		this.storeImg = storeImg;
@@ -29,6 +31,7 @@ public class StoreDTO {
 		this.memCode = memCode;
 		this.rvCount = rvCount;
 		this.statusYN = statusYN;
+		this.membershipAndStore = membershipAndStore;
 	}
 
 	public String getStoreName() {
@@ -103,11 +106,20 @@ public class StoreDTO {
 		this.statusYN = statusYN;
 	}
 
+	public MembershipAndStoreDTO getMembershipAndStore() {
+		return membershipAndStore;
+	}
+
+	public void setMembershipAndStore(MembershipAndStoreDTO membershipAndStore) {
+		this.membershipAndStore = membershipAndStore;
+	}
+
 	@Override
 	public String toString() {
 		return "StoreDTO [storeName=" + storeName + ", storeImg=" + storeImg + ", storeInfo=" + storeInfo + ", grade="
 				+ grade + ", delCost=" + delCost + ", workTime=" + workTime + ", memCode=" + memCode + ", rvCount="
-				+ rvCount + ", statusYN=" + statusYN + "]";
+				+ rvCount + ", statusYN=" + statusYN + ", membershipAndStore=" + membershipAndStore + "]";
 	}
 
+	
 }

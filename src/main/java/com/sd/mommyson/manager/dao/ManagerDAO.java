@@ -136,4 +136,14 @@ public interface ManagerDAO {
 
 	List<BannerDTO> selectBanner();
 
+	BannerDTO selectBannerEditView(int bnCode);
+
+	int updateBanner(Map<String, Object> bnMap);
+
+	int deleteBanner(List<String> chkBannerList);
+
+	int selectUserTotalCount(Map<String, Object> searchMap);
+
+	List<MemberDTO> selectUser(Pagination pagination);
+
 }

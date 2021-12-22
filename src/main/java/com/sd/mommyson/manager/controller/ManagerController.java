@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -93,7 +95,7 @@ public class ManagerController {
 		System.out.println("searchMap : " + searchMap);
 		
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
-		int totalCount = managerService.selectNormalMemberTotalCount(searchMap);
+		int totalCount = managerService.selectUserTotalCount(searchMap);
 		
 		System.out.println("totalInquiryBoardCount : " + totalCount);
 		
@@ -114,8 +116,19 @@ public class ManagerController {
 		System.out.println("pagination : " + pagination);
 		
 		
-		List<MemberDTO> normalMemberList = managerService.selectMember(pagination);
+		List<MemberDTO> normalMemberList = managerService.selectUser(pagination);
 		System.out.println("리스트 확인 : " + normalMemberList);
+		
+//		Iterator<MemberDTO> a = normalMemberList.iterator();
+//		while(a.hasNext()) {
+//			MemberDTO str = a.next();
+//			List<Integer> arr = str.getUser().getTotalPrice();
+//			for(int b : arr) {
+//				System.out.println(b);
+//			}
+//		}
+		
+		
 		
 		if(normalMemberList != null) {
 			model.addAttribute("pagination", pagination);
@@ -1289,10 +1302,7 @@ public class ManagerController {
 	
 	/* 배너추가 페이지 */
 	@GetMapping("bannerAdd")
-	public void bannerAdd() {
-		
-		
-	}
+	public void bannerAdd() {}
 	
 	/**
 	 * 배너추가
@@ -1303,7 +1313,7 @@ public class ManagerController {
 	 * @author leeseungwoo
 	 */
 	@PostMapping("bannerinsert")
-	public String bannerinsert(@ModelAttribute BannerDTO banner, @RequestParam MultipartFile bnImg
+	public String bannerinsert(@ModelAttribute BannerDTO banner, @RequestParam MultipartFile bnImgs
 							   , HttpServletRequest request) {
 		System.out.println("들어옴");
 		System.out.println("banner : " + banner);
@@ -1318,12 +1328,12 @@ public class ManagerController {
 			mkdir.mkdirs();
 		}
 		
-		String orginFileName = bnImg.getOriginalFilename();
+		String orginFileName = bnImgs.getOriginalFilename();
 		String ext = orginFileName.substring(orginFileName.indexOf("."));
 		String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
 		
 		try {
-			bnImg.transferTo(new File(filePath + "/" + savedName));
+			bnImgs.transferTo(new File(filePath + "/" + savedName));
 			
 			String fileName = "resources/uploadFiles/" + savedName;
 			System.out.println("fileName : " + fileName);
@@ -1345,6 +1355,102 @@ public class ManagerController {
 		}
 		
 		return "redirect:bannerManage";
+	}
+	
+	/**
+	 * 배너 수정 페이지
+	 * @param model
+	 * @param bnCode
+	 * @author leeseungwoo
+	 */
+	@GetMapping("bannerEditView")
+	public void bannerEditView(Model model, @RequestParam(value = "bnCode", required = false) int bnCode) {
+		
+		BannerDTO bannerList = managerService.selectBannerEditView(bnCode);
+		model.addAttribute("bannerList", bannerList);
+	}
+	
+	/**
+	 * 배너 수정
+	 * @param banner
+	 * @param bnImgs
+	 * @param request
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping("bannerEdit")
+	public String bannerEdit(@ModelAttribute BannerDTO banner, @RequestParam MultipartFile bnImgs
+			   , HttpServletRequest request) {
+		
+		System.out.println("들어옴");
+		System.out.println("banner : " + banner);
+		Map<String, Object> bnMap = new HashMap<>();
+		bnMap.put("banner", banner);
+		System.out.println("bnImgs : " + bnImgs);
+		
+		if(!bnImgs.isEmpty()) {
+			
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			String filePath = root + "/uploadFiles";
+			
+			File mkdir = new File(filePath);
+			if(!mkdir.exists()) {
+				mkdir.mkdirs();
+			}
+			
+			String orginFileName = bnImgs.getOriginalFilename();
+			String ext = orginFileName.substring(orginFileName.indexOf("."));
+			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+			
+			try {
+				bnImgs.transferTo(new File(filePath + "/" + savedName));
+				
+				String fileName = "resources/uploadFiles/" + savedName;
+				System.out.println("fileName : " + fileName);
+				bnMap.put("bnImg", fileName);
+				
+				
+			} catch (IllegalStateException | IOException e) {
+				new File(filePath + "/" + savedName).delete();	
+				e.printStackTrace();
+			}
+			
+		}
+		
+		int result = managerService.updateBanner(bnMap);
+		
+		if(result > 0) {
+			System.out.println("배너수정성공");
+		} else {
+			System.out.println("배너수정실패");
+		}
+		
+		return "redirect:bannerManage";
+	}
+	
+	/**
+	 * 배너삭제
+	 * @param bnCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "deleteBanner", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String deleteBanner(@RequestParam("chkBanner[]") String[] bnCode) {
+		
+		List<String> chkBannerList = new ArrayList<>();
+		for(String bc : bnCode) {
+			chkBannerList.add(bc);
+		}
+		
+		int result = managerService.deleteBanner(chkBannerList);
+		if(result > 0) {
+			System.out.println("배너 삭제 성공");
+		} else {
+			System.out.println("배너 삭제 실패");
+		}
+		
+		return result > 0? "1" : "2";
 	}
 	
 	/**

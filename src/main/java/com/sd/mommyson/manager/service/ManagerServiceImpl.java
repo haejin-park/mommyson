@@ -448,7 +448,43 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public int insertBannerAdd(Map<String, Object> bnMap) {
 		
-		return managerDAO.insertBannerAdd(bnMap);
+		int result = managerDAO.insertBannerAdd(bnMap);
+		
+		return result;
+	}
+	
+	/**
+	 * 배너수정 페이지
+	 * @author leeseungwoo 
+	 */
+	@Override
+	public BannerDTO selectBannerEditView(int bnCode) {
+		
+		return managerDAO.selectBannerEditView(bnCode);
+	}
+	
+	/**
+	 * 배너수정
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateBanner(Map<String, Object> bnMap) {
+		
+		int result = managerDAO.updateBanner(bnMap);
+		
+		return result;
+	}
+	
+	/**
+	 * 배너삭제
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int deleteBanner(List<String> chkBannerList) {
+		
+		int result = managerDAO.deleteBanner(chkBannerList);
+		
+		return result;
 	}
 
 	/**
@@ -606,6 +642,26 @@ public class ManagerServiceImpl implements ManagerService {
 		
 		return result;
 	}
+
+	/**
+	 * 일반회원 인원수
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int selectUserTotalCount(Map<String, Object> searchMap) {
+		
+		return managerDAO.selectUserTotalCount(searchMap);
+	}
+
+	/**
+	 * 일반회원 조회
+	 */
+	@Override
+	public List<MemberDTO> selectUser(Pagination pagination) {
+		
+		return managerDAO.selectUser(pagination);
+	}
+
 
 
 }

@@ -38,7 +38,6 @@
 	                    <col width=""/>
 	                    <col width=""/>
 	                    <col width=""/>
-	                    <col width=""/>
 	                </colgroup>
 	                <thead style="background-color: #EDEDED;">
 	                    <tr>
@@ -48,14 +47,13 @@
 	                        <th>닉네임</th>
 	                        <th>이메일</th>
 	                        <th>가입일</th>
-	                        <th>주문횟수</th>
-	                        <th>총 결제금액</th>
+	                        <th>총 주문금액</th>
 	                        <th>경고</th>
 	                        <th>상태</th>
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                	<c:forEach items="${ requestScope.normalMemberList }" var="nm">
+	                	<c:forEach items="${ requestScope.normalMemberList }" var="nm" varStatus="vst">
 		                    <tr>
 		                        <th scope="row"><input type="checkbox" name="chkMember" value="${ nm.memCode }" class="chkbox"></th>
 		                        <td>${ nm.memCode }</td>
@@ -63,8 +61,7 @@
 		                        <td>${ nm.nickname }</td>
 		                        <td>${ nm.email }</td>
 		                        <td>${ nm.enrollDate }</td>
-		                        <td></td>
-		                        <td></td>
+		                        <td class="totalPrice totalPrice<c:out value="${ vst.index }"/>"><input type="hidden" value="${ nm.user.totalPrice }"/> ${ nm.user.totalPrice }</td>
 		                        <td>${ nm.user.repCount }</td>
 		                        <td class="memberState">${ nm.isDeleted }</td>
 		                    </tr>
@@ -125,6 +122,56 @@
 	    if($(".memberState").text().charAt(0) == 'N'){
     		$(".memberState").text("정상")
     	}
+	    
+	    for(let i = 0; i < $('.totalPrice input').length; i++){
+	    	let total = $('.totalPrice input');
+		    console.log(total[i].value);
+		    console.log('isNan : ', typeof total[i]);
+		    
+		    let totalV = total[i].value;
+		    const sum = totalV.reduce((a,b) => (a+b));
+		    console.log(sum);
+		    
+		    
+	    }
+	    
+	    /* const sum = num1.reduce((a,b) => (a+b));
+	    document.write('reduce : ', sum); */
+	    
+	    
+	    
+	    /* document.write('forEach item : ', sumsum); */
+	    
+	    /* let total = $('.totalPrice').text().replace("[", "");
+	    let result = total.replace("]", "");
+	    let result1 = result.replace(/[[]]/gi,"");
+	    let result2 = result1.replace("[", "");
+	    let result3 = result2.replace("]", "");
+	    let totalResult = result3.split(",");
+	    
+	    console.log(total);
+	    console.log(result);
+	    console.log(result1);
+	    console.log(result2);
+	    console.log(result3);
+	    console.log(totalResult);
+	    
+	    let arr = [];
+	    let num = 0;
+	    for(let i = 0; i < totalResult.length; i++){
+	    	arr[i] = Number(totalResult[i]);
+	    	num += arr[i]
+	    }
+	    console.log(arr);
+	    console.log(num);
+	    
+	    $('.totalPrice').text(num); */
+	    /* let trLength = $('.board_table tr');
+	    for(let i = 0; i < trLength.length; i++ ){
+	    	
+	    } */
+	    
+	    
      </script>
 </body>
 </html>

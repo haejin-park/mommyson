@@ -131,6 +131,15 @@ public interface ManagerService {
 	
 	/* 배너추가 */
 	public int insertBannerAdd(Map<String, Object> bnMap);
+	
+	/* 배너수정 페이지 */
+	public BannerDTO selectBannerEditView(int bnCode);
+	
+	/* 배너수정 */
+	public int updateBanner(Map<String, Object> bnMap);
+	
+	/* 배너삭제 */
+	public int deleteBanner(List<String> chkBannerList);
 
 	/* 사용중인 태그 조회 */
 	public List<TagDTO> selectUseTag();
@@ -170,6 +179,13 @@ public interface ManagerService {
 
 	/* 미사용 카테고리로 등록 */
 	public int updateUnUseCategory(List<String> unUseCategoryCodeList);
+
+	/* 일반회원 인원 수 */
+	public int selectUserTotalCount(Map<String, Object> searchMap);
+
+	/* 일반회원 조회 */
+	public List<MemberDTO> selectUser(Pagination pagination);
+
 
 
 }
