@@ -71,18 +71,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row"><input type="checkbox" name="ch1"></td>
-                        <td>2021/11/05</td>
-                        <td>3</td>
-                        <td>180,910</td>
-                        <td>18,090</td>
-                        <td>199,000</td>
-                        <td>혜찌마요</td>
-                        <td>꼬꼬반찬 꼬꼬반찬 꼬꼬반찬 꼬꼬반찬</td>
-                        <td>110-123-56781</td>
-                        <td><input type="text" value="lucky1@namver.comafdsfasfsdfasfsd" class="text_email" disabled></td>
-                    </tr>
                     <c:forEach items="${ requestScope.taxAdjustList }" var="tax">
                     <tr>
                         <td scope="row"><input type="checkbox" name="ch1"></td>
