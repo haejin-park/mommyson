@@ -78,38 +78,40 @@ public class OwnerController {
 		
 		Map<String, Object> memberShip = ownerService.selectMembershipInfo(memCode);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Calendar c1 = Calendar.getInstance(); 
-		
-		String dd = sdf.format(c1.getTime());
-		
-		java.util.Date today = sdf.parse(dd);
-		
-		String startDate = sdf.format(memberShip.get("START_DATE"));
-		String endDate = sdf.format(memberShip.get("END_DATE"));
-		
-		memberShip.put("startDate", startDate);
-		memberShip.put("endDate", endDate);
-		
-		model.addAttribute("membership",memberShip);
-		
-		List<ProductDTO> proList = ownerService.selectProdoucts(memCode);
-		
-		int status = 0;
-		
-		for(ProductDTO i : proList) {
+		if(memberShip != null && !memberShip.isEmpty()) {
 			
-			if(i.geteDate().before(today) && !i.getOrderableStatus().equals("X")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Calendar c1 = Calendar.getInstance(); 
+			
+			String dd = sdf.format(c1.getTime());
+			
+			java.util.Date today = sdf.parse(dd);
+			
+			String startDate = sdf.format(memberShip.get("START_DATE"));
+			String endDate = sdf.format(memberShip.get("END_DATE"));
+			
+			memberShip.put("startDate", startDate);
+			memberShip.put("endDate", endDate);
+			
+			model.addAttribute("membership",memberShip);
+			
+			List<ProductDTO> proList = ownerService.selectProdoucts(memCode);
+			
+			int status = 0;
+			
+			for(ProductDTO i : proList) {
 				
-				 status += ownerService.modifyEDateStatus(i.getSdCode());
+				if(i.geteDate().before(today) && !i.getOrderableStatus().equals("X")) {
+					
+					 status += ownerService.modifyEDateStatus(i.getSdCode());
+					
+				}
 				
 			}
 			
+			System.out.println(status + "행 업데이트 성공!");
 		}
-		
-		System.out.println(status + "행 업데이트 성공!");
-		
 		
 		return "owner/ownerMain";
 	}
@@ -1249,6 +1251,12 @@ public class OwnerController {
 	
 	@GetMapping("salesList")
 	public void salesList(Model model) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("logiMember");
+		
+		String storeName = member.getCeo().getStore().getStoreName();
+		
+		long totalPrice = ownerService.selectTotalPrice(storeName); 
 		
 	}
 	

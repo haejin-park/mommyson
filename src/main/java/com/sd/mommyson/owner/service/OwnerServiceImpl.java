@@ -595,8 +595,8 @@ public class OwnerServiceImpl implements OwnerService{
 
 	@Override
 	public long selectTotalPrice(String storeName) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return ownerDAO.selectTotalPrice(storeName);
 	}
 
 }
