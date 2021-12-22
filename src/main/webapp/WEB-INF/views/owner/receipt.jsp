@@ -46,8 +46,10 @@
 			<div style="text-align: center;" >
 				<br>
 				<br>
+				
+				<br><br><br>
 				<div style="margin-left: 600px;" id="before">
-					<h3 style="font-weight: 900; text-align: left;">상세영수증</h3>
+					<h3 style="font-weight: 900; text-align: left;">영수증 상세 페이지</h3>
 					<br>
 					<div id="Layout" style="width: 700px; background-color: #ededed">
 						<br>

@@ -114,8 +114,16 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="${ pageContext.servletContext.contextPath }/owner/coupon">쿠폰발행</a>
-                        </li><hr>
+                            <a href="#pageSubmenu4" data-toggle="collapse" aria-expanded="false">쿠폰내역</a><hr>
+                            <ul class="collapse list-unstyled 1" id="pageSubmenu4">
+                                <li>
+                            		<a href="${ pageContext.servletContext.contextPath }/owner/coupon">쿠폰발행</a>
+                                </li>
+                                <li>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/giveCouponLIst">쿠폰 발행 내역</a>
+                                </li> 
+                            </ul>
+                        </li>
                         <li>
                             <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">매출내역</a><hr>
                             <ul class="collapse list-unstyled 1" id="pageSubmenu1">
@@ -135,7 +143,7 @@
                             <ul class="collapse list-unstyled" id="pageSubmenu2">
                                 <li>
                                     <a href="${ pageContext.servletContext.contextPath }/owner/review">리뷰관리</a>
-                                </li>                                                            
+                                </li> 
                             </ul>
                         </li>
                         <li>

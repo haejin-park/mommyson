@@ -54,7 +54,7 @@
             <tbody>
                 <c:forEach var="review" items="${ reviews }">
               <tr>
-                <th scope="row"><input type="checkbox" name="chk" value="${ review.rvCode }" ></th>
+                <th scope="row"><input type="checkbox" name="chk" value="${ review.memberDTO.memCode }" ></th>
                 <td>${ review.rvCode }</td>
                 <td>${ review.memberDTO.nickname }</td>
                 <td>${ review.content }</td>
@@ -113,10 +113,6 @@
               </table>
               <br><br>
               
-            <!-- 페이지네이션 -->
-			<div >
-				<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
-			</div>
           </div>
           <div class="modal-footer" >
             <button type="button"class="btn btn-primary" id="giveCp">쿠폰 주기</button>
@@ -183,6 +179,27 @@
    form.submit();
 	  
    });  
+   
+   // 리뷰 삭제
+   
+	$("#couponBtn2").click(function(){
+		
+	   let chkreview = [];
+	   
+	   $('input:checkbox[name=chk]:checked').each(function(){
+		
+		   let value = $(this).parent().parent().children().first().next().text()
+		   chkreview.push(value);
+	   });
+		   console.log(chkreview);
+		   
+		   $('#formOne').append($('<input type="hidden" value="' + chkreview + '" name=chkreview>'))
+	});   
+
+   
+   
+   
+   
   </script>
   
   <!-- footer -->

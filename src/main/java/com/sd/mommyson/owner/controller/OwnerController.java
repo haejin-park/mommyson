@@ -37,6 +37,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.CpHistoryDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
 import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
@@ -493,6 +494,9 @@ public class OwnerController {
 			System.out.println("조회실패...");
 		}
 		
+		// 알럿
+		model.addAttribute("message",model.getAttribute("message"));
+		
 		return "owner/review";	
 		
 	}
@@ -604,6 +608,31 @@ public class OwnerController {
 		
 	}
 
+	@PostMapping("giveCoupons")
+	public String giveCoupons(@RequestParam(value="cps",required = false) List<Integer> cpCode
+							, @RequestParam(value="chk",required = false) List<Integer> chkReview, RedirectAttributes ra) {
+		
+		if(chkReview != null && chkReview.size() > 0 && cpCode !=null && cpCode.size() > 0) {
+			
+			System.out.println("리뷰리스트드르르르를 chkR : " + chkReview);
+			System.out.println("줄 쿠폰 코드드드드드들 cps : " + cpCode);
+			
+			int registCoupon = ownerService.registCpToReview(chkReview,cpCode);
+			
+			if(registCoupon > 0 ) {
+				ra.addFlashAttribute("message","쿠폰 주기를 성공하였습니다.");
+				
+			}else {
+				ra.addFlashAttribute("message","쿠폰 주기를 실패하였습니다.");
+			}
+			
+		} else {
+			System.out.println("실패실패실패!!");
+		}
+		
+		return "redirect:review";
+	}
+	
 	@PostMapping("productManagement")
 	public String product(@RequestParam(value="sdCode", required = false ,defaultValue = "0") int sdCode, @RequestParam(value="deleteCode",required = false) List<Integer> deleteCode,
 			RedirectAttributes redirect) {
@@ -757,11 +786,7 @@ public class OwnerController {
 		System.out.println("주문 내역 : " + orderList);
 		
 		model.addAttribute("pagination",pagination);
-		
-		/* 완료된 주문 페이지 처리 - 조건 있는 페이지 */
-		
 		model.addAttribute("orderList",orderList);
-//		model.addAttribute("orderList2",orderList2);
 		return "owner/order";
 	}
 
@@ -1215,7 +1240,6 @@ public class OwnerController {
 			
 			model.addAttribute("payInfo",payInfo);
 		} 
-		
 	}
 	
 	
@@ -1224,5 +1248,56 @@ public class OwnerController {
 		
 	}
 	
+	@GetMapping("salesList")
+	public void salesList(Model model) {
+		
+	}
+	
+	// 쿠폰 발행 내역
+	@GetMapping("giveCouponLIst")
+	public void giveCouponLIst(@ModelAttribute("loginMember") MemberDTO member,  @RequestParam(value = "currentPage", required = false) String currentPage, Model model) {
+		
+		// SearchCondition 에 필요한 memCode 가져와주고
+		MemberDTO owner = ownerService.selectOwner(member);
+		int memCode = owner.getMemCode();
+		
+		System.out.println("멤버 코드 잘 오니~~~~ : " + memCode);
+		
+		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
+		// 현재 페이지
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = ownerService.selectgiveListTotalCount(memCode); // where 절에 storeName을 써야하니까 넘겨준다
+		
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		
+		Pagination pagination = null;
+		String searchCondition = String.valueOf(memCode);
+																	  					// 검색 조건이 없으니까  null 처리
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		System.out.println("페이지 : " + pagination);
+		
+		List<CpHistoryDTO> givecpList = ownerService.selectgiveList(pagination); 
+		System.out.println("쿠폰 발행 내역 : " + givecpList);
+		
+		model.addAttribute("pagination",pagination);
+		model.addAttribute("givecpList",givecpList);
+
+	}
 	
 }
