@@ -593,4 +593,10 @@ public class OwnerServiceImpl implements OwnerService{
 		return ownerDAO.selectgiveList(pagination);
 	}
 
+	@Override
+	public long selectTotalPrice(String storeName) {
+
+		return ownerDAO.selectTotalPrice(storeName);
+	}
+
 }
