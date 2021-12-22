@@ -179,6 +179,27 @@
    form.submit();
 	  
    });  
+   
+   // 리뷰 삭제
+   
+	$("#couponBtn2").click(function(){
+		
+	   let chkreview = [];
+	   
+	   $('input:checkbox[name=chk]:checked').each(function(){
+		
+		   let value = $(this).parent().parent().children().first().next().text()
+		   chkreview.push(value);
+	   });
+		   console.log(chkreview);
+		   
+		   $('#formOne').append($('<input type="hidden" value="' + chkreview + '" name=chkreview>'))
+	});   
+
+   
+   
+   
+   
   </script>
   
   <!-- footer -->

@@ -32,7 +32,7 @@
             <table class="table table" style="width: 1050px; margin-left: 60px; text-align: center;" >
                 <thead>
                     <tr>
-                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1);">배달</th>
+                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1); width: 200px;">배달</th>
                         <td >주문 총 금액</td>
                         <td >주문금액(영업이익)</td>
                         <td >배송비</td>
@@ -48,7 +48,7 @@
             <table class="table table" style="width: 1050px;margin-left: 60px; text-align: center;" >
                 <thead>
                     <tr>
-                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1);">포장</th>
+                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1); width: 200px;">포장</th>
                         <td colspan="3">주문금액(영업이익)</td>
                         </tr>
                         <tr>
@@ -63,7 +63,7 @@
             <table class="table table" style="width: 1050px; margin-left: 60px; text-align: center;" >
                 <thead>
                     <tr>
-                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1);">총 매출</th>
+                        <th rowspan="2" style="background-color: rgba(252, 235, 233, 1); width: 200px;">총 매출</th>
                         <td>주문 총 금액</td>
                         <td>주문금액(영업이익)</td>
                         <td>배송비</td>

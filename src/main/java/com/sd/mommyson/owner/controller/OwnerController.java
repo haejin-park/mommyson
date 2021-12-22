@@ -469,6 +469,9 @@ public class OwnerController {
 			System.out.println("조회실패...");
 		}
 		
+		// 알럿
+		model.addAttribute("message",model.getAttribute("message"));
+		
 		return "owner/review";	
 		
 	}
@@ -591,7 +594,10 @@ public class OwnerController {
 			int registCoupon = ownerService.registCpToReview(chkReview,cpCode);
 			
 			if(registCoupon > 0 ) {
+				ra.addFlashAttribute("message","쿠폰 주기를 성공하였습니다.");
 				
+			}else {
+				ra.addFlashAttribute("message","쿠폰 주기를 실패하였습니다.");
 			}
 			
 		} else {

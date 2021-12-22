@@ -219,7 +219,7 @@ public class OwnerServiceImpl implements OwnerService{
 	@Override
 	public int deleteReview(List<Integer> deleteReviewList) {
 
-		int result = ownerDAO.deleteCoupon(deleteReviewList);
+		int result = ownerDAO.deleteReview(deleteReviewList);
 		
 		return result;
 	}
