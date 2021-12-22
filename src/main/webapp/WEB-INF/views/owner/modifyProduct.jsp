@@ -266,9 +266,9 @@
 				
 			} else if($('#status').val() == 'X' ){
 			
-				alert('유통기한이 지난 상품입니다. 유통기한을 변경해주세요.');
+				alert('유통기한이 지난 상품입니다. 판매 여부를 변경해주세요.');
 				
-			} else if($('#input-image').val() < dateString ){
+			} else if($('input[name=eDate]').val() < dateString ){
 				
 				alert('유통기한이 지난 상품입니다. 유통기한을 변경해주세요.');
 				

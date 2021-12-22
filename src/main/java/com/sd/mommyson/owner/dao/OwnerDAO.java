@@ -130,4 +130,8 @@ public interface OwnerDAO {
 
 	public List<CpHistoryDTO> selectgiveList(Pagination pagination);
 
+	public int removeDcs(int sdCode);
+
+	public long selectTotalPrice(String storeName);
+
 }

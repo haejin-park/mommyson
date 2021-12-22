@@ -544,22 +544,22 @@
 		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 		  </if>
 		  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
-		  	AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+		  	AND EXPIRY_DATE BETWEEN #{ eDate } AND #{ eDate2 }
 		  </if>
 		  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
 		  	AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
 		  </if>
 		  <if test="eDate == null and eDate == '' and eDate2 != null and eDate2 != '' ">
-		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+		  	AND EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
 		  </if>
 		  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-		  	AND C.M_DATE BTWEEN #{ mDate } AND #{ mDate2 }
+		  	AND M_DATE BETWEEN #{ mDate } AND #{ mDate2 }
 		  </if>
 		  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
 		  	AND M_DATE <![CDATA[ <= ]]> #{ mDate }
 		  </if>
 		  <if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
-		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+		  	AND EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
 		  </if>
 		  <if test="status == 'Y'.toString() ">
 		  	AND ORDERABLE_STATUS = 'Y' 
@@ -672,6 +672,7 @@
 		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 		  </if>
 		  AND DISCOUNT_RATE <![CDATA[ > ]]> 0
+		  AND ORDERABLE_STATUS = 'Y'
 		  AND MEM_CODE = #{ memCode }
 		</where>
 	</select>
@@ -704,6 +705,7 @@
 						  C.IS_DELETED = 'N' 
 						  AND C.DISCOUNT_RATE <![CDATA[ > ]]> 0
 						  AND D.DC_YN = 'Y'
+						  AND ORDERABLE_STATUS = 'Y'
 						  <if test="searchValue != null and searchValue != '' ">
 						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						  </if>
@@ -727,7 +729,7 @@
 		 WHERE A.IS_DELETED = 'N' 
 		   AND A.MEM_CODE = #{ memCode }
 		   AND A.DISCOUNT_RATE <![CDATA[ = ]]> 0
-		   AND A.ORDERABLE_STATUS IN ('Y','N')
+		   AND A.ORDERABLE_STATUS = 'Y'
 		 ORDER BY A.M_DATE DESC
 	</select>
 	
@@ -981,6 +983,13 @@
 		 </where> 
 	</update>
 	
+	<update id="removeDcs">
+			UPDATE DC_PRODUCT
+			   SET DC_YN = 'N'
+		 	 WHERE SD_CODE = #{ sdCode } 
+	</update>
+	
+	
 	<!-- 반찬 할인율 제거 쿼리문 -->
 	<update id="modifyDc">
 			UPDATE PRODUCT_TBL
@@ -1189,9 +1198,11 @@
 		   AND TO_DATE(D.PAY_DATE,'yy-mm-dd') = #{ payDate } 
 	</select>	
 	
+	<!-- 유통기한 지난 상품 판매여부 변경 쿼리문 -->
 	<update id="modifyEDateStatus">
 		UPDATE PRODUCT_TBL
-		   SET ORDERABLE_STATUS = 'X'
+		   SET ORDERABLE_STATUS = 'X',
+		       DISCOUNT_RATE = 0
 		 WHERE SD_CODE = #{ sdCode }   
 	</update>
 
@@ -1262,6 +1273,14 @@
 	   <![CDATA[
 	  WHERE G.RNUM >= #{ startRow } 
        ]]>
+	</select>
+	
+	<!-- 사업자 총 매출 -->
+	<select id="selectTotalPrice" resultType="_long">
+		SELECT
+		       SUM(TOTAL_PRICE)
+		  FROM ORDER_TBL
+		 WHERE STORE_NAME = #{ storeName }
 	</select>
 	
 </mapper>

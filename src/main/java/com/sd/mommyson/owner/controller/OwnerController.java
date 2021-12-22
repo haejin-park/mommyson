@@ -720,10 +720,10 @@ public class OwnerController {
 				
 				if(searchValue != null && !"".equals(searchValue)) {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
-					searchMap.put("pagenation", pagenation);
+					searchMap.put("pagination", pagenation);
 				} else {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
-					searchMap.put("pagenation", pagenation);
+					searchMap.put("pagination", pagenation);
 				}
 				
 				List<OrderDTO> orderList2 = ownerService.selectOrderList2(searchMap);

@@ -526,7 +526,21 @@ public class OwnerServiceImpl implements OwnerService{
 	@Override
 	public int modifyEDateStatus(int sdCode) {
 
-		return ownerDAO.modifyEDateStatus(sdCode);
+		int result = 0;
+		
+		int status = ownerDAO.modifyEDateStatus(sdCode);
+		
+		if(status > 0) {
+			
+			int dc = ownerDAO.removeDcs(sdCode); 
+			
+			if(dc > 0) {
+					
+				result += 1;
+			}
+		}
+		
+		return result;
 	}
 
 	@Override
