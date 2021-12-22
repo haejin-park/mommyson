@@ -1,5 +1,6 @@
 package com.sd.mommyson.user.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserDAO {
@@ -43,8 +45,18 @@ public interface UserDAO {
 
 	ProductDTO selectProductBySdCode(int sdCode);
 
-	void insertShoppingBasket(Map<String, Integer> order);
+	/* 장바구니 상품 조회  */
+	int selectCountCart(HashMap<String, Integer> order);
 
+	/* 장바구니에 상품 insert  */
+	void insertCart(HashMap<String,Integer> order);
+	
+	/* 장바구니에 상품 update */
+	void updateCart(HashMap<String,Integer> order);
+	
+	/* 장바구니 목록 조회 */
+	CartDTO selectCart(MemberDTO member);
+	
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);
@@ -65,5 +77,11 @@ public interface UserDAO {
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
+
+
+
+	
+
 
 }

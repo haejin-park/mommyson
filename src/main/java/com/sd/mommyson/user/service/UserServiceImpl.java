@@ -1,5 +1,6 @@
 package com.sd.mommyson.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dao.UserDAO;
+import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
@@ -147,9 +149,32 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	/* 장바구니 상품 조회  */
 	@Override
-	public void insertShoppingBasket(Map<String, Integer> order) {
-		userDAO.insertShoppingBasket(order);
+	public int selectCountCart(HashMap<String, Integer> order) {
+		return userDAO.selectCountCart(order);
+	}
+	
+	/* 장바구니에 상품 insert  */
+	@Override
+	public void insertCart(HashMap<String, Integer> order) {
+		 userDAO.insertCart(order);
+		
+	}
+
+
+	/* 장바구니에 상품 update */
+	@Override
+	public void updateCart(HashMap<String, Integer> order) {
+		userDAO.updateCart(order);
+		
+	}
+
+	
+	/* 장바구니 목록 조회 */
+	@Override
+	public CartDTO selectCart(MemberDTO member) {
+		return userDAO.selectCart(member);
 	}
 
 
@@ -193,4 +218,8 @@ public class UserServiceImpl implements UserService{
 		return userDAO.deleteJJIMplus(map);
 	}
 
+
+
+
+	
 }

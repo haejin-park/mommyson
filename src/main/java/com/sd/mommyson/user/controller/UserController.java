@@ -1,14 +1,5 @@
 package com.sd.mommyson.user.controller;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,33 +7,33 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.filefilter.FalseFileFilter;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
 
+/**
+ * @author haejinpark
+ *
+ */
 @Controller
 //@SessionAttributes("")
 @RequestMapping("/user/*")
@@ -798,7 +789,6 @@ public class UserController {
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
 	
-
 	
 	/**@author ShinHyungi
 	 * @return
@@ -807,27 +797,81 @@ public class UserController {
 	public String cart() {
 		return "user/shoppingBasket";
 	}
+
 	
-	/**@author ShinHyungi
+	/**
+	 * 장바구니 상품 조회 & 상품 담기 
+	 * @author ShinHyungi, ParkHaejin
 	 * @param amount
 	 * @param sdCode
 	 * @param session
-	 * @return
+	 * @return "user/shoppingBasket"
 	 */
-	@PostMapping("cart")
-	public String addCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode, HttpSession session) {
+	@RequestMapping("insertCart")
+	public String insertCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode,  HttpSession session) {
+		
+		System.out.println("amount : " + amount);
+		System.out.println("sdCode : " + sdCode);
+		
 		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
-		System.out.println(member);
-		Map<String, Integer> order = new HashMap<String, Integer>();
+		System.out.println("member :" + member);
+	
+		HashMap<String,Integer> order = new HashMap<String,Integer>();
 		order.put("sdCode", sdCode);
 		order.put("amount", amount);
 		order.put("memCode", member.getMemCode());
+		System.out.println("order : " + order);
 		
-		userService.insertShoppingBasket(order);
+		int count = userService.selectCountCart(order); 	//장바구니에 기존 상품이 있는지 조회 
+		System.out.println("count : " + count);
 		
+		if(count == 0) {
+			userService.insertCart(order); // 장바구니에 상품이 0개이면 insert  
+		} else {
+			userService.updateCart(order); // 장바구니에 상품이 0개이상이면 update 
+		}
+				
 		return "user/shoppingBasket";
 	}
 	
+	
+
+	
+	/**
+	 * 장바구니 목록 조회 
+	 * @author ParkHaejin
+	 * @param model
+	 * @param session
+	 * @return model
+	 */
+	@RequestMapping("selectCartList")
+	public Model selectCartList(Model model,  HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+		System.out.println("member : " + member);
+		
+		CartDTO dto = userService.selectCart(member); //회원정보로 장바구니 리스트 받아오기 
+		System.out.println("dto :" + dto);
+		
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map.put("memCode", member.getMemCode()); 
+		map.put("dto", dto); 
+		System.out.println("map : " + map);
+		
+		model.addAttribute("map", map);
+		System.out.println("model : " + model);
+		
+	return model;
+	
+	}
+	
+	
+	private int sum(int price) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 	/**
 	 * @author ShinHyungi
 	 * @param mv
@@ -1272,4 +1316,6 @@ public class UserController {
 		
 		return result > 0? "삭제 완료" : "삭제 실패";
 	}
+	
+
 }

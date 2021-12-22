@@ -57,7 +57,6 @@
 		<association property="user" resultMap="userResultMap"/>
 		<association property="ceo" resultMap="ceoResultMap"/>
 		<association property="manager" resultMap="managerResultMap"/>
-
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.EmailCodeDTO" id="emailCodeResultMap">

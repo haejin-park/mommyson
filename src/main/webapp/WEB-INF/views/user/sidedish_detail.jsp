@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/store_page.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 </head>
 <body>
     <jsp:include page="../commons/header.jsp"/>
@@ -22,7 +23,7 @@
                 <img src="${ pageContext.servletContext.contextPath }/${ requestScope.store.STORE_IMG }">
             </div>
             <div class="bottom" style="border-top: 1px solid black; margin-top: 100px;">
-                <form action="${ pageContext.servletContext.contextPath }/user/cart" method="post" onsubmit="return validate();">
+                <form action="${ pageContext.servletContext.contextPath }/user/insertCart" method="post" onsubmit="return validate();">  
 	                <div class="menu_box" style="margin-top: 100px;">
 	                    <!-- 메뉴 이름 -->
 	                    <input type="hidden" name="sdCode" value="${ requestScope.product.sdCode }">
@@ -88,6 +89,13 @@
 	                            <input type="text" id="num" name="amount" value="0" readonly style="width: 30px; height: 30px; border-radius: 0; text-align: center;">
 	                            <button type="button" class="numbtn" onclick="stepup();">+</button>
 	                        </div>
+	                                      
+	                        <%-- <select name="amount">
+	                        	<c:forEach begin="1" end="50" var="i">
+	                        		<option value="${ i }" >${ i } 개</option> 
+	                        	</c:forEach> 
+	                        </select> --%>
+	                        
 	                        <script>
 	                            function stepup() {
 	                                $('#num').val(parseInt($('#num').val()) + 1);
