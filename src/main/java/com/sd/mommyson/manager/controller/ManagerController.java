@@ -1,5 +1,6 @@
 package com.sd.mommyson.manager.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,17 +22,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sd.mommyson.manager.common.Pagination;
-import com.sd.mommyson.manager.dao.ManagerDAO;
 import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
-import com.sd.mommyson.user.dto.ReportDTO;
-import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/manager/*")
@@ -1421,7 +1419,75 @@ public class ManagerController {
 	
 	/* 관리자 정산 */
 	@GetMapping("taxAdjustment")
-	public void taxAdjustment() {}
+	public void taxAdjustment(Model model, @RequestParam(value = "currentPage", required = false) String currentPage, @RequestParam(value = "searchValue", required = false) String searchValue
+			, @RequestParam(value = "startDate", required = false) String startDate, @RequestParam(value = "endDate", required = false) String endDate) {
+		/* ==== 현재 페이지 처리 ==== */
+		int pageNo = 1;
+		
+		System.out.println("currentPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("startDate", startDate);
+		searchMap.put("endDate", endDate);
+		
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = managerService.selectTaxAdjustTotalCount(searchMap);
+		
+		System.out.println("totalInquiryBoardCount : " + totalCount);
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		Pagination pagination = null;
+		
+		/* ==== 검색과 selectOption 고르기 ==== */
+		if(searchValue != null && !"".equals(searchValue)) {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, "", searchValue);
+		} else {
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount);
+		}
+		System.out.println("pagination : " + pagination);
+		
+//		pagination.setSearchCondition(condition);
+		Map<String, Object> map = new HashMap<>();
+		map.put("pagination", pagination);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		
+		List<TaxAdjustDTO> taxAdjustList = managerService.selectTaxAdjustListList(map);
+		System.out.println("리스트 확인 : " + taxAdjustList);
+		
+		for(TaxAdjustDTO t : taxAdjustList) {
+			t.setMsPrice(t.getMsPrice().replaceAll(",", ""));;
+		}
+		
+		Map<String, String> dateMap = new HashMap<String, String>();;
+		if(startDate != null) {
+			dateMap.put("startDate", startDate);
+			dateMap.put("endDate", endDate);
+		}
+		
+		if(taxAdjustList != null) {
+			model.addAttribute("pagination", pagination);
+			model.addAttribute("taxAdjustList", taxAdjustList);
+			model.addAttribute("dateMap", dateMap);
+		} else {
+			System.out.println("조회실패");
+		}
+	}
 	
 	/* 중개이용료 리스트 */
 	@GetMapping("taxDetailAdjustment")

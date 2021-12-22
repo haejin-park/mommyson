@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -110,5 +111,9 @@ public interface ManagerDAO {
 	int insertTagAdd(String tag);
 
 	int deleteTag(int tagNo);
+
+	List<TaxAdjustDTO> selectTaxAdjustListList(Map<String, Object> map);
+
+	int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
 }

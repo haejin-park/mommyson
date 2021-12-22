@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +27,18 @@
                     <input type="date" class="calendar" id="startDate">
                     <label>~</label>
                     <input type="date" class="calendar" id="endDate">
-                    <input type="button" class="gray_btn" value="검색">
+                    <input type="button" id="searchByDate" class="gray_btn" value="검색">
+                    <script>
+                    	$('#searchByDate').on('click',function() {
+                    		let startDate = $('#startDate').val();
+                    		let endDate = $('#endDate').val();
+                    		if(startDate == null || endDate == null) {
+                    			alert("날짜를 지정해주세요.");
+                    		} else {
+                    			location.href='${ pageContext.servletContext.contextPath }/manager/taxAdjustment?startDate=' + startDate + '&endDate=' + endDate;
+                    		}
+                    	});
+                    </script>
                 </div>
                 <div class="top_box">
                     <input type="button" value="엑셀변환" style="background-color: #F89E91;">
@@ -68,93 +81,39 @@
                         <td>혜찌마요</td>
                         <td>꼬꼬반찬 꼬꼬반찬 꼬꼬반찬 꼬꼬반찬</td>
                         <td>110-123-56781</td>
-                        <td><input type="text" value="lucky1@namver.comafdsfasfsdfasfsd" class="text_email"></td>
+                        <td><input type="text" value="lucky1@namver.comafdsfasfsdfasfsd" class="text_email" disabled></td>
                     </tr>
+                    <c:forEach items="${ requestScope.taxAdjustList }" var="tax">
                     <tr>
                         <td scope="row"><input type="checkbox" name="ch1"></td>
-                        <td>2021/11/04</td>
-                        <td>3</td>
-                        <td>635,450</td>
-                        <td>65,550</td>
-                        <td>699,000</td>
-                        <td>로찜마</td>
-                        <td>장수가</td>
-                        <td>110-123-56781</td>
-                        <td><input type="text" value="lucky1@namver.com" class="text_email"></td>
+                        <td>${ tax.payDate }</td>
+                        <td>${ tax.msType }</td>
+                        <td><fmt:formatNumber value="${ tax.msPrice * 0.9 }"/></td>
+                        <td><fmt:formatNumber value="${ tax.msPrice * 0.1 }"/></td>
+                        <td><fmt:formatNumber value="${ tax.msPrice }"/></td>
+                        <td>${ tax.ceoName }</td>
+                        <td>${ tax.storeName }</td>
+                        <td>${ tax.storeNo }</td>
+                        <td><input type="text" value="${ tax.email }" class="text_email" disabled></td>
                     </tr>
-                    <tr>
-                        <td scope="row"><input type="checkbox" name="ch1"></td>
-                        <td>2021/11/03</td>
-                        <td>12</td>
-                        <td>180,910</td>
-                        <td>18,090</td>
-                        <td>199,000</td>
-                        <td>따띠마요</td>
-                        <td>토토반찬</td>
-                        <td>110-123-56781</td>
-                        <td><input type="text" value="lucky1@namver.com" class="text_email"></td>
-                    </tr>
-                    <tr>
-                        <td scope="row"><input type="checkbox" name="ch1"></td>
-                        <td>2021/11/02</td>
-                        <td>12</td>
-                        <td>635,450</td>
-                        <td>65,550</td>
-                        <td>699,000</td>
-                        <td>지지마요</td>
-                        <td>현기야밥묵자</td>
-                        <td>110-123-56781</td>
-                        <td><input type="text" value="lucky1@namver.com" class="text_email"></td>
-                    </tr>
-                    <tr>
-                        <td scope="row"><input type="checkbox" name="ch1"></td>
-                        <td>2021/11/05</td>
-                        <td>12</td>
-                        <td>180,910</td>
-                        <td>18,090</td>
-                        <td>199,000</td>
-                        <td>승승마요</td>
-                        <td>혜주야밥무라</td>
-                        <td>110-123-56781</td>
-                        <td><input type="text" value="lucky1@namver.com" class="text_email"></td>
-                    </tr>
+                    </c:forEach>
                 </tbody>
             </table>
             <p style="float: right; color: gray">작성일자는 결제일자가 포함된 달의 다음달 10일까지 입니다!</p>
-            <!-- 페이징 -->
-            <nav class="page_box" aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">&laquo;</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">&lt;</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">6</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">8</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">9</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">10</a></li>
-                    <li class="page-item"><a class="page-link-num nbdr" href="#">&gt;</a></li>
-                    <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-                </ul>
-                <form action="">
-                    <ul>
-                        <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                        <input type="text" class="searchtext" placeholder="찾고싶은 게시물의 제목을 입력해주세요"></li>
-                        <button type="submit" class="searchbutton">검색하기</button></li>
-                    </ul>
-                </form>
-            </nav>
+            
+            <jsp:include page="../commons/paging.jsp"/>
         </div>
     </div>
 
 	<jsp:include page="../commons/footer.jsp"></jsp:include>
 	
    <script>
-       $("#chk_all").click(function(){
-        $(this).parent
+       $("#chk_all").on('click',function(){
+         if($('#chk_all').is(':checked') == true) {
+        	 $('input:checkbox').attr('checked',true);
+         } else {
+        	 $('input:checkbox').attr('checked',false);
+         }
        });
    </script>
     

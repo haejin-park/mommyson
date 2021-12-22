@@ -105,6 +105,7 @@
 			 , A.NICKNAME
 			 , A.MEM_ID
 			 , A.ENROLL_DATE
+			 , A.IS_DELETED
 			 , B.NAME
 			 , B.REP_COUNT
 			 , C.MEM_CODE
@@ -376,6 +377,7 @@
     	  JOIN STORE_TBL B ON(A.MEM_CODE = B.MEM_CODE)
     	 WHERE A.ORDERABLE_STATUS = 'Y'
     	   AND A.IS_DELETED = 'N'
+    	   AND A.EXPIRY_DATE <![CDATA[ >=  ]]> SYSDATE
 	</select>
 	
 	<select id="selectHotKeywordList" resultMap="tagResultMap">
