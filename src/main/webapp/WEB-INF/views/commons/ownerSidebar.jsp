@@ -91,7 +91,6 @@
                             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">상품관리</a><hr>
                             <ul class="collapse list-unstyled" id="homeSubmenu">
                                 <li>
-
                                     <a href="${ pageContext.servletContext.contextPath }/owner/productRegist">상품등록</a>
                                 </li>
                                 <li>

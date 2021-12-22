@@ -49,13 +49,12 @@
               <c:set var="j" value="${ (requestScope.pagination.pageNo / 2) * 10 }"/>
               <fmt:parseNumber var="page" integerOnly="true" value="${ j }"/>
               <tr>
-                <%-- <c:if test="${ requestScope.pagination.pageNo > 1 }">
+                <c:if test="${ requestScope.pagination.pageNo > 1 }">
                 <th scope="row">${ i + page }</th>
                 </c:if>
                 <c:if test="${ requestScope.pagination.pageNo <= 1 }">
                 <th scope="row">${ i }</th>
-                </c:if> --%>
-                <th scope="row">${ i }</th>
+                </c:if> 
                 <td>${ list.STORE_NAME }</td>
                 <td>${ list.MS_TYPE }</td>
                 <td>${ list.MS_PRICE }</td>
