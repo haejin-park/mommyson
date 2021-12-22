@@ -66,11 +66,7 @@
 	    if(!(document.location.href).includes("?type")) {
 	       link = document.location.pathname;
 	    } else {
-	       if(${ requestScope.type == '우리동네 인기 맛집' } || (document.location.search).includes('famous')) {
-	          link = document.location.href;
-	     } else if(${ requestScope.type == '신규 반찬 가게' } || (document.location.search).includes('new')) {
-	        link = document.location.href;
-	     }
+           link = document.location.href;
 	    }
 	    
 	   let searchText = "";
@@ -81,6 +77,10 @@
 		
 		if(${ !empty requestScope.pagination.searchValue? true : false }) {
 			searchText += "&searchValue=${ requestScope.pagination.searchValue }";
+		}
+		
+		if(${ !empty requestScope.dateMap? true : false }) {
+			searchText += "&startDate=${ requestScope.dateMap.startDate }&endDate=${ requestScope.dateMap.endDate }";
 		}
 		
 		if(document.getElementById("startPage")) {
@@ -129,9 +129,12 @@
 				location.href = document.location.pathname + "?searchValue=" + searchValue;
 	 		} else if((document.location.href).includes("?currentPage")){
 	 			location.href = document.location.pathname + "?searchValue=" + searchValue;
-	 		} else {
-	 			location.href = document.location.href + "?searchValue=" + searchValue;
+	 		} else if((document.location.href).includes("startDate")) {
+	 			location.href = document.location.pathname + "?searchValue=" + searchValue + searchText;
+		    } else {
+	 			location.href = document.location.href + "&searchValue=" + searchValue;
 	 		}
+		  }
 		}
 		
 		

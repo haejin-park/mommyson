@@ -592,6 +592,7 @@
     		 , A.ORDERABLE_STATUS
     	  FROM PRODUCT_TBL A
     	 WHERE A.IS_DELETED = 'N'
+    	   AND A.EXPIRY_DATE <![CDATA[ >=  ]]> SYSDATE
     	   AND A.MEM_CODE = #{ memCode }
     </select>
     
@@ -728,6 +729,7 @@
          <where>
            	A.IS_DELETED = 'N'
            	AND A.ORDERABLE_STATUS = 'Y'
+           	AND A.EXPIRY_DATE <![CDATA[ >=  ]]> SYSDATE
       		<if test="searchCondition == null">
    				AND T.TAG IN 
 			    <foreach collection="searchValue" item="item" index="index" separator="," open="(" close=")">

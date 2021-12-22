@@ -8,13 +8,11 @@ import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
-import com.sd.mommyson.user.dto.ReportDTO;
-import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerService {
 
@@ -189,6 +187,8 @@ public interface ManagerService {
 	/* 미사용 카테고리로 등록 */
 	public int updateUnUseCategory(List<String> unUseCategoryCodeList);
 
+	public List<TaxAdjustDTO> selectTaxAdjustListList(Map<String, Object> map);
 
+	public int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
 }

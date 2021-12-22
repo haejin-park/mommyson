@@ -8,6 +8,7 @@ import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -150,5 +151,8 @@ public interface ManagerDAO {
 
 	int updateBusinessAnswer(Map<String, Object> updateInfo);
 
+	List<TaxAdjustDTO> selectTaxAdjustListList(Map<String, Object> map);
+
+	int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
 }

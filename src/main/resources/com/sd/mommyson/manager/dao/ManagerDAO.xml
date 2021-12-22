@@ -1352,4 +1352,85 @@
        	  AND IS_DELETED = 'N'
        	  AND MEM_TYPE = 'manager'
    </select>
+   
+   <resultMap type="com.sd.mommyson.manager.dto.TaxAdjustDTO" id="taxResultMap">
+       <id property="code" column="MS_STORE_CODE"/>
+       <result property="payDate" column="PAY_DATE"/>
+       <result property="msType" column="MS_TYPE"/>
+       <result property="msPrice" column="MS_PRICE"/>
+       <result property="ceoName" column="CEO_NAME"/>
+       <result property="storeName" column="STORE_NAME"/>
+       <result property="storeNo" column="STORE_NO"/>
+       <result property="email" column="EMAIL"/>
+   </resultMap>
+   
+   <select id="selectTaxAdjustListList" resultMap="taxResultMap">
+       SELECT
+    	       A.RNUM	
+    	     , A.MS_STORE_CODE
+			 , A.PAY_DATE
+			 , A.MS_PRICE
+			 , A.MS_TYPE
+			 , A.EMAIL
+			 , A.CEO_NAME
+			 , A.STORE_NO
+			 , A.STORE_NAME				
+		FROM (SELECT ROWNUM RNUM	
+				 , B.MS_STORE_CODE
+				 , B.PAY_DATE
+				 , B.MS_PRICE
+				 , B.MS_TYPE
+				 , B.EMAIL
+				 , B.CEO_NAME
+				 , B.STORE_NO
+				 , B.STORE_NAME
+			  FROM (SELECT
+			       	  	   A.MS_STORE_CODE
+			       	  	 , A.PAY_DATE
+			       	  	 , B.MS_PRICE
+			       	  	 , B.MS_TYPE
+			       	  	 , C.EMAIL
+			       	  	 , D.CEO_NAME
+			       	  	 , D.STORE_NO
+			       	  	 , E.STORE_NAME
+			       	  FROM MS_STORE_TBL A
+			       	  LEFT JOIN MEMBERSHIP_TBL B ON(A.MS_CODE = B.MS_CODE)
+			       	  LEFT JOIN MEMBER_TBL C ON(A.MEM_CODE = C.MEM_CODE)
+			       	  LEFT JOIN CEO_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+			       	  LEFT JOIN STORE_TBL E ON(D.MEM_CODE = E.MEM_CODE)
+                     <where>
+                     	C.IS_DELETED = 'N'
+                     	<if test="pagination.searchValue != null">
+                     	AND (D.CEO_NAME LIKE '%' || #{ pagination.searchValue } || '%'
+       	   				  OR E.STORE_NAME LIKE '%' || #{ pagination.searchValue } || '%') 
+                     	</if>
+                     	<if test="startDate != null and endDate != null">
+                     	AND	A.PAY_DATE BETWEEN #{ startDate } AND #{ endDate } 
+                     	</if>
+                     </where>
+                     ORDER BY A.PAY_DATE DESC
+						  ) B
+				  <![CDATA[
+				  WHERE ROWNUM <= #{ pagination.endRow }
+				  ]]>
+				  ) A
+	 	   WHERE A.RNUM >= #{ pagination.startRow }
+   </select>
+   
+   <select id="selectTaxAdjustTotalCount" resultType="_int">
+       SELECT
+       		  COUNT(*)
+       	 FROM MS_STORE_TBL A
+       	 JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+       	 JOIN CEO_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+       	 JOIN STORE_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+       	WHERE B.IS_DELETED = 'N'
+       	<if test="searchValue != null">
+       	  AND (C.CEO_NAME LIKE '%' || #{ searchValue } || '%'
+       	   OR D.STORE_NAME LIKE '%' || #{ searchValue } || '%')
+       	</if>
+       	<if test="startDate != null and endDate != null">
+       	  AND A.PAY_DATE BETWEEN #{ startDate } AND #{ endDate }
+       	</if>
+   </select>
 </mapper>

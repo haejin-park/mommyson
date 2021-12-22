@@ -1,7 +1,5 @@
 package com.sd.mommyson.manager.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,15 +12,12 @@ import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
-
-import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
-import com.sd.mommyson.user.dto.ReportDTO;
-import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -671,7 +666,14 @@ public class ManagerServiceImpl implements ManagerService {
 		return result;
 	}
 
+	@Override
+	public List<TaxAdjustDTO> selectTaxAdjustListList(Map<String, Object> map) {
+		return managerDAO.selectTaxAdjustListList(map);
+	}
 
-
+	@Override
+	public int selectTaxAdjustTotalCount(Map<String, Object> searchMap) {
+		return managerDAO.selectTaxAdjustTotalCount(searchMap);
+	}
 
 }
