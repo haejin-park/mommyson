@@ -11,6 +11,7 @@
   		<typeAliases>
   			<typeAlias type="com.sd.mommyson.member.dto.MemberDTO" alias="MemberDTO"/>
   			<typeAlias type="com.sd.mommyson.member.dto.EmailCodeDTO" alias="EmailCodeDTO"/>
+  			<typeAlias type="com.sd.mommyson.user.dto.CartDTO" alias="CartDTO"/>
   		</typeAliases>
   		
   			

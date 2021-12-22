@@ -46,17 +46,26 @@ public interface MemberDAO {
 	/* 사용자 회원가입 */
 	public int customerJoin(MemberDTO member);
 	
+	/* 사업자 회원가입 */
+	public int businessJoin(HashMap<String,Object> ceoRegist) ;
+	
 	/* 이메일 인증번호 전송시 EmailCodeTBL의 마지막 code를 select */
 	public int selectCode(EmailCodeDTO dto);
 	
 	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 email select */
 	public String selectEmail(MemberDTO member);
-	
+
+	/* 사업자 회원가입 성공하면 MEMBER_TBL 의 email select */
+	public String selectEmail(HashMap<String, Object> ceoRegist);
+
 	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 email을 MEMBER_TBL 의 email로 업데이트 */
 	public int updateEmail(EmailCodeDTO dto);
 	
 	/* 사용자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
 	public int selectMemCode(MemberDTO memCode);
+	
+	/* 사업자 회원가입 성공하면 MEMBER_TBL 의 memCode select */
+	public int selectMemCode(HashMap<String, Object> ceoRegist);
 	
 	/* 사용자 회원가입 성공하면 EMAIL_CODE_TBL의 memCode를 MEMBER_TBL 의 memCode로 업데이트 */
 	public int updateMemCode(EmailCodeDTO dto);
@@ -86,5 +95,9 @@ public interface MemberDAO {
 	public int deleteNotice(int noticeCode);
 
 	public int selectCartCount(int memCode);
+
+
+
+
 
 }

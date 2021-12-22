@@ -1,10 +1,14 @@
 package com.sd.mommyson.member.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
+import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.member.service.MemberService;
 
@@ -86,7 +93,7 @@ public class MemberController {
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("customerJoin")
 	public void customerJoin() {}
-
+	
 	
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("businessJoin")
@@ -217,8 +224,8 @@ public class MemberController {
 	}
 	
 	
-	/* 회원가입 */
-	@RequestMapping(value="customerJoin2", method=RequestMethod.POST)
+	/* 소비자 회원가입 */
+	@RequestMapping(value="customerJoin", method=RequestMethod.POST)
 	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
 //
 //		String rawPwd = "";
@@ -234,10 +241,64 @@ public class MemberController {
 		
 		memberService.customerJoin(member);
 		logger.info("customerJoin Service 성공");
-		
+
 		return "/member/login";
 		
 		
+	}
+	
+	/* 사업자 회원가입 */
+	@RequestMapping(value="businessJoin", method=RequestMethod.POST, headers = ("content-type=multipart/*"))
+	public String businessJoin(@ModelAttribute MemberDTO member, @ModelAttribute StoreDTO store, 
+			@RequestParam MultipartFile storeImg2, HttpServletRequest request, HttpSession session, RedirectAttributes rd) throws Exception{
+		
+		member.setMemPwd(passwordEncoder.encode(member.getMemPwd()));
+		System.out.println(member);
+		logger.info("join진입");
+		
+		
+		HashMap<String,Object> ceoRegist  = new HashMap<String,Object>();
+		ceoRegist.put("member", member);
+		ceoRegist.put("store", store);
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		
+		String filePath = root + "/uploadFiles";
+		
+		File mkdir = new File(filePath);
+		if(!mkdir.exists()) {
+			mkdir.mkdirs();
+		}
+		
+		String originFileName = storeImg2.getOriginalFilename();
+		String ext = originFileName.substring(originFileName.indexOf("."));
+		String savedName = UUID.randomUUID().toString().replace("-","") + ext;
+		
+		try {
+			storeImg2.transferTo(new File(filePath + "/" + savedName));
+			String fileName = "resources/uploadFiles/" + savedName;
+			ceoRegist.put("fileName", fileName);
+			
+			
+		} catch (IllegalStateException | IOException e) {
+			new File(filePath + "/" + savedName).delete();
+			e.printStackTrace();
+		}
+		
+		int result = memberService.businessJoin(ceoRegist);
+		logger.info("businessJoin Service 성공");
+		
+		if(result > 0) {
+			
+			rd.addFlashAttribute("message", "회원가입이 완료되었습니다.");
+		} else {
+			rd.addFlashAttribute("message","회원가입에 실패하였습니다.");
+			new File(filePath + "/" + savedName).delete();
+		} 
+		
+		return "redirect:login";
+	
+	
 	}
 	
 	
