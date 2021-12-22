@@ -82,7 +82,7 @@
 							</div>
                   		</li>
                    		<li>
-                    		<a href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 25px; margin-right: 5px; margin-bottom: 10px;" 
+                    		<a id="ck" href="${ pageContext.servletContext.contextPath }/owner/ownerMain"><img style="height: 25px; margin-right: 5px; margin-bottom: 10px;" 
                     		src="${ pageContext.servletContext.contextPath }/resources/images/ceoprofile.png">${ sessionScope.loginMember.ceo.store.storeName }</a>
                     	</li>
                     </c:if>
@@ -233,6 +233,16 @@
          $('#search').val(replace);
          $('#tags').css('display', 'none');
          $('#search').focus();
+        });
+        
+        $('#ck').on('click',function(){
+        	
+        	if(${ sessionScope.membership == null && sessionScope.membership == ""}){
+        		if(alert('이용권을 구매 후 사용하실 수 있습니다.')){
+        			location.href = '${ pageContext.servletContext.contextPath }/owner/ownerPay'
+        		}
+        	}
+        	
         });
 
         String.prototype.replaceAt=function(index, character) {

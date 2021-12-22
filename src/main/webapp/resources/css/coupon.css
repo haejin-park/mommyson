@@ -148,3 +148,16 @@
 	margin-top : 2px;
 	box-shadow : none;
 }
+.align th {
+	text-align: left;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.align td {
+	text-align: right;
+}
+.align tr{
+	 height: 50px;
+	
+}
