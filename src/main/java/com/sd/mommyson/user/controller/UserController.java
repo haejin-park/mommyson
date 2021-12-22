@@ -349,6 +349,23 @@ public class UserController {
 		return "user/userCustomerServiceCenterMTMQnAChange";
 	}
 	
+	/**
+	 * @author 양윤제
+	 * 삭제/수정
+	 * @return
+	 */
+	@PostMapping("ucc/MTMDel")
+	public String userCustomerServiceCenterMTMQnADel(HttpSession session, @RequestParam(required = false) Map<String,String> parameters, Model mv ) {
+		
+		if(parameters.get("delInfo") != null || !parameters.get("delInfo").isEmpty()) {
+			int postNo = Integer.parseInt(parameters.get("delInfo")); //삭제 할 1:1상담게시물
+			System.out.println("게시물 번호 : " + postNo);
+			
+		}
+		
+		return "user/userCustomerServiceCenterNoticeSelect";
+	}
+	
 	
 	/**@author 양윤제
 	 * @category 1:1상담내용 열람
@@ -389,6 +406,8 @@ public class UserController {
 		
 		return "user/userCustomerServiceCenterMTMQnADetail";
 	}
+	
+
 	
 	/**@author 양윤제
 	 * @category 공지사항 게시글 목룍 출력

@@ -70,6 +70,16 @@
   border: none;
   margin-left: 890px;
 }
+
+#delQusestion{
+  background-color: rgb(251, 158, 158);
+  color: white; 
+  width: 200px;  
+  border-radius: 2px; 
+  border: none;
+  margin-left: 890px;
+}
+
 #cnacel{
   background-color: gray; 
   color: white; 

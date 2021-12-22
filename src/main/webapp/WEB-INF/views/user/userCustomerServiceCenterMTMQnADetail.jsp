@@ -37,16 +37,43 @@
               <thead>
                 <tr>
                   <th id="tablecol1" scope="col">제목</th>
-                  <th id="tablecol2" scope="col">존재하지 않는 가게....</th>      
-                  <th id="tablecol3" scope="col">분류</th>        
+                  <th id="tablecol2" scope="col"><c:out value="${ requestScope.consultingCon.postTitle }"/></th>      
+                  <th id="tablecol3" scope="col">분류</th>
+                  <c:if test="${ requestScope.consultingCon.boardCode eq 18 || requestScope.consultingCon.boardCode eq 12 }">
                   <th id="tablecol4" scope="col">
-                    소비자
+                    	회원가입
                   </th>
+                  </c:if>        
+                  <c:if test="${ requestScope.consultingCon.boardCode eq 19 || requestScope.consultingCon.boardCode eq 13 }">
+                  <th id="tablecol4" scope="col">
+                    	결제/주문
+                  </th>
+                  </c:if>        
+                  <c:if test="${ requestScope.consultingCon.boardCode eq 20 || requestScope.consultingCon.boardCode eq 14 }">
+                  <th id="tablecol4" scope="col">
+                    	리뷰관리
+                  </th>
+                  </c:if>        
+                  <c:if test="${ requestScope.consultingCon.boardCode eq 21 || requestScope.consultingCon.boardCode eq 15 }">
+                  <th id="tablecol4" scope="col">
+                    	 이용문의
+                  </th>
+                  </c:if>        
+                  <c:if test="${ requestScope.consultingCon.boardCode eq 22 || requestScope.consultingCon.boardCode eq 16 }">
+                  <th id="tablecol4" scope="col">
+                    	불편관리
+                  </th>
+                  </c:if>        
+                  <c:if test="${ requestScope.consultingCon.boardCode eq 23 || requestScope.consultingCon.boardCode eq 17 }">
+                  <th id="tablecol4" scope="col">
+                    	기타
+                  </th>
+                  </c:if>        
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="4" class="textArea">이게 뭡니까?</td> 
+                  <td colspan="4" class="textArea"><c:out value="${ requestScope.consultingCon.postContent }"/></td> 
                 </tr>
                 
               </tbody>
@@ -55,24 +82,45 @@
           <!-- 첨부파일 부분 -->
           <div id="fileAttachment">
             <h4><strong>&nbsp;&nbsp;첨부이미지</strong></h4>
-            <form>          
+            <form> 
+                  <c:if test="${ requestScope.userFileImg[0].fileName eq null or requestScope.userFileImg[0].fileName eq '' }">
                   <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
                    ><img class="imgbtn1 img1" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  </c:if>
+                     
+                  <c:if test="${ requestScope.userFileImg[0].fileName ne null and requestScope.userFileImg[0].fileName ne '' }">
+                  <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
+                   ><img class="imgbtn1 img1" src="${ pageContext.servletContext.contextPath }/${ requestScope.userFileImg[0].fileName }"></button>
+                  </c:if>   
                  
+                  <c:if test = "${ requestScope.userFileImg[1].fileName eq null or requestScope.userFileImg[1].fileName eq '' }">
                   <button class="imgbtn2" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
                   ><img class="imgbtn2 img2" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  </c:if>   
+                  <c:if test = "${ requestScope.userFileImg[1].fileName ne null and requestScope.userFileImg[1].fileName ne '' }">
+                  <button class="imgbtn2" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
+                  ><img class="imgbtn2 img2" src="${ pageContext.servletContext.contextPath }/${ requestScope.userFileImg[1].fileName }"></button>
+                  </c:if>   
             
+                  <c:if test = "${ requestScope.userFileImg[2].fileName eq null or requestScope.userFileImg[2].fileName eq '' }">
                   <button class="imgbtn3" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
                   ><img class="imgbtn3 img3" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  </c:if>   
+                  <c:if test = "${ requestScope.userFileImg[2].fileName ne null and requestScope.userFileImg[2].fileName ne '' }">
+                  <button class="imgbtn3" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
+                  ><img class="imgbtn3 img3" src="${ pageContext.servletContext.contextPath }/${ requestScope.userFileImg[2].fileName }"></button>
+                  </c:if>   
             </form>
           </div>
           <br>
-          
+          <c:if test="${ requestScope.consultingCon.ansContent eq null or requestScope.consultingCon.ansContent eq '' }">
           <button id="sendQusestion">수정</button>
+          </c:if>
           </div>
         </div>
         
         <!-- 관리자 답변 -->
+        <c:if test="${ requestScope.consultingCon.ansContent ne null and requestScope.consultingCon.ansContent ne '' }">
         <div class="row">
           <div class="col-md-3">
                
@@ -88,7 +136,7 @@
             <br> 
             <table>
             <tr>
-            	<td></td>
+            	<td style="display: flex;"><c:out value="${ requestScope.consultingCon.ansContent }"/></td>
             </tr>
             </table>
           </div>
@@ -96,21 +144,70 @@
           <div id="fileAttachment">
             <h4><strong>&nbsp;&nbsp;첨부이미지</strong></h4>
             <form>          
+                  <c:if test="${ requestScope.managerFileImg[0].fileName eq null or requestScope.managerFileImg[0].fileName eq '' }">
                   <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
-                   ><img class="imgbtn1 img1" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                   ><img class="imgbtn1 img4" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  </c:if>
+                     
+                  <c:if test="${ requestScope.managerFileImg[0].fileName ne null and requestScope.managerFileImg[0].fileName ne '' }">
+                  <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
+                   ><img class="imgbtn1 img4" src="${ pageContext.servletContext.contextPath }/${ requestScope.managerFileImg[0].fileName }"></button>
+                  </c:if>   
                  
+                  <c:if test = "${ requestScope.managerFileImg[1].fileName eq null or requestScope.managerFileImg[1].fileName eq '' }">
                   <button class="imgbtn2" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
-                  ><img class="imgbtn2 img2" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  ><img class="imgbtn2 img5" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  </c:if>   
+                  <c:if test = "${ requestScope.managerFileImg[1].fileName ne null and requestScope.managerFileImg[1].fileName ne '' }">
+                  <button class="imgbtn2" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
+                  ><img class="imgbtn2 img5" src="${ pageContext.servletContext.contextPath }/${ requestScope.managerFileImg[1].fileName }"></button>
+                  </c:if>   
             
+                  <c:if test = "${ requestScope.managerFileImg[2].fileName eq null or requestScope.managerFileImg[2].fileName eq '' }">
                   <button class="imgbtn3" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
-                  ><img class="imgbtn3 img3" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  ><img class="imgbtn3 img6" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                  </c:if>   
+                  <c:if test = "${ requestScope.managerFileImg[2].fileName ne null and requestScope.managerFileImg[2].fileName ne '' }">
+                  <button class="imgbtn3" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
+                  ><img class="imgbtn3 img6" src="${ pageContext.servletContext.contextPath }/${ requestScope.managerFileImg[2].fileName }"></button>
+                  </c:if>
             </form>
           </div>
           <br>
-          <button id="sendQusestion">수정</button>
+          <button type="button" id="delQusestion" value="${ requestScope.consultingCon.postNo }" onclick="delQ();">삭제</button>
           </div>
         </div>
+     	   </c:if>
       </div>
+      <script>
+      /* $('#delQusestion').on('click', function () {
+          let delInfo = $(this).val();
+	         let delInfo = document.getElementById('delQusestion').value; 
+          console.log( $(this).val());
+      }); */
+      
+      function delQ() {
+      		  
+    	let delInfo = document.getElementById('delQusestion').value;
+    	console.log(delInfo);
+    	
+    	$.ajax({
+    		url: "${ pageContext.servletContext.contextPath }/user/ucc/MTMDel",
+    		method : "post",
+    		data : {
+    			delInfo :delInfo
+    		},
+    		success : function(data) {
+				alert("정상작동");
+			},
+			error : function(error) {
+				
+			}
+    		
+    	});
+		
+	  }
+      </script>
     </section>
    	<jsp:include page="../commons/footer.jsp"/>
   </body>

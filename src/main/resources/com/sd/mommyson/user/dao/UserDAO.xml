@@ -15,6 +15,7 @@
     	<result property="queNo" column="QUE_NO"/>
     	<result property="status" column="STATUS"/>
     	<result property="viewCnt" column="VIEW_CNT"/>
+    	<result property="ansContent" column="ANS_CONTENT"/>
     </resultMap>
     
     <resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -809,6 +810,7 @@
 			 		    JOIN BOARD_TBL D ON(D.BOARD_CODE = C.BOARD_CODE)
 			 		   WHERE (D.TYPE = 'userMtmConsulting' OR D.TYPE = 'userMtmConsulting')
 			 		   	 AND C.MEM_CODE = #{ searchCondition }
+			 		   	 AND C.STATUS = 'N'
 			 		   <if test="searchValue != null">
 			 		   	 AND C.POST_TITLE = #{ searchValue }
 			 		   </if>
