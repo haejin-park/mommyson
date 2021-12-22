@@ -198,6 +198,13 @@
     		<result column="TAG"/>
     	</collection>
     </resultMap>
+    
+    <resultMap type="com.sd.mommyson.user.dto.FileDTO" id="fileResultMap">
+    	<id property="fileCode" column="FILE_CODE"/>
+    	<result property="fileName" column="FILE_NAME"/>
+    	<result property="postNo" column="POST_NO"/>
+    	<result property="fileType" column="FILE_TYPE"/>
+    </resultMap>
 
     <!-- 공지사항  페이지수  -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -718,7 +725,8 @@
 		 , SYSDATE
 	    )
      </insert>
-     <!-- com.sd.mommyson.manager.dto.PostDTO -->
+     
+     <!-- 1:1상담 입력 -->
      <insert id="registMtmConFile" parameterType="hashmap">
 	    <selectKey keyProperty="postNo" resultType="int" order="BEFORE">
 	    	SELECT
@@ -741,4 +749,122 @@
      	, #{ fileType }
      	)	
      </insert>
+     
+     <!-- 1:1 상담내역 출력 -->
+     <!-- 1:1 상담 게시물 전체 숫자 출력 -->
+     <select id="selectMtmTotalCount" parameterType="hashmap" resultType="_int">
+     
+     	SELECT
+			   COUNT(*)
+		  FROM POST_TBL A
+		  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+		 WHERE (B.TYPE = 'userMtmConsulting' OR B.TYPE = 'OwnerMtmConsulting')
+		   AND A.MEM_CODE = #{ searchCondition }
+		   <if test="searchValue != null">
+		   AND A.POST_TITLE = #{ searchValue }
+		   </if>
+		  
+     
+     </select>
+     
+     <!-- 상담내역 게시물 -->
+     <select id="selectMtmConsulting" resultMap="postResultMap">
+     	SELECT
+     	  	   A.RNUM
+     		 , A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS
+			 , A.VIEW_CNT
+			 , A.ANS_CONTENT
+		 FROM (SELECT ROWNUM RNUM
+		 			, B.POST_NO
+		 			, B.BOARD_CODE
+			 		, B.POST_TITLE
+			 		, B.MEM_CODE
+			 		, B.POST_CONTENT
+			 		, B.POST_DATE
+			 		, B.ANS_STATUS
+			 		, B.QUE_NO
+			 		, B.STATUS
+			 		, B.VIEW_CNT
+			 		, B.ANS_CONTENT
+			 	FROM (SELECT C.POST_NO
+		 				   , C.BOARD_CODE
+			 			   , C.POST_TITLE
+			 			   , C.MEM_CODE
+			 			   , C.POST_CONTENT
+			 			   , C.POST_DATE
+			 			   , C.ANS_STATUS
+			 			   , C.QUE_NO
+			 			   , C.STATUS
+			 			   , C.VIEW_CNT
+			 			   , C.ANS_CONTENT
+			 		 	FROM POST_TBL C
+			 		    JOIN BOARD_TBL D ON(D.BOARD_CODE = C.BOARD_CODE)
+			 		   WHERE (D.TYPE = 'userMtmConsulting' OR D.TYPE = 'userMtmConsulting')
+			 		   	 AND C.MEM_CODE = #{ searchCondition }
+			 		   <if test="searchValue != null">
+			 		   	 AND C.POST_TITLE = #{ searchValue }
+			 		   </if>
+			 		   ORDER BY	C.POST_DATE DESC   
+			 			)B
+				 <![CDATA[
+				 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+			 	 )A
+		 <![CDATA[
+		 WHERE A.RNUM >= #{ startRow }
+		 ]]>		 	 	 
+     </select>
+     
+     <!-- 상담 내역 화면 출력  -->
+     <!-- 사용자 및 관리자 작성 상담내역 텍스트 부분 -->
+     <select id="selectConsultingCon" parameterType="hashmap" resultMap="postResultMap">
+     	SELECT
+		       A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS
+			 , A.VIEW_CNT
+			 , A.ANS_CONTENT
+		  FROM POST_TBL A	
+	     WHERE A.POST_NO = #{ postNo }
+	       AND A.MEM_CODE = #{ memCode }	
+     </select>
+     
+     <!-- 소비자 또는 사업자 첨부 이미지 파일 -->
+     <select id="selectConsumerImg" parameterType="_int" resultMap="fileResultMap">
+     	SELECT 
+		       A.FILE_CODE
+		 	 , A.FILE_NAME
+			 , A.POST_NO
+			 , A.FILE_TYPE
+		 FROM FILE_TBL A
+		WHERE (A.FILE_TYPE = 'owner' OR A.FILE_TYPE = 'user')
+		  AND A.POST_NO = #{ postNo }	 
+     </select>
+     <!-- 관리자 첨부 이미지 파일 -->
+     <select id="selectManagerImg" parameterType="_int" resultMap="fileResultMap">
+     	SELECT 
+		       A.FILE_CODE
+		 	 , A.FILE_NAME
+			 , A.POST_NO
+			 , A.FILE_TYPE
+		 FROM FILE_TBL A
+		WHERE A.FILE_TYPE = 'manager'
+		  AND A.POST_NO = #{ postNo }
+     </select>
+     
+     
     </mapper>

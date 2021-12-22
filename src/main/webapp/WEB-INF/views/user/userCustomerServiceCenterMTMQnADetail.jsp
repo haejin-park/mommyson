@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +54,47 @@
           </div>
           <!-- 첨부파일 부분 -->
           <div id="fileAttachment">
-            <h4><strong>&nbsp;&nbsp;첨부파일</strong></h4>
+            <h4><strong>&nbsp;&nbsp;첨부이미지</strong></h4>
+            <form>          
+                  <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
+                   ><img class="imgbtn1 img1" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+                 
+                  <button class="imgbtn2" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
+                  ><img class="imgbtn2 img2" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+            
+                  <button class="imgbtn3" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
+                  ><img class="imgbtn3 img3" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
+            </form>
+          </div>
+          <br>
+          
+          <button id="sendQusestion">수정</button>
+          </div>
+        </div>
+        
+        <!-- 관리자 답변 -->
+        <div class="row">
+          <div class="col-md-3">
+               
+          </div>
+
+          <div class="col-md-9">
+            <div id="userCouponHead">
+              <br>
+              <h5 style="border-bottom: 3px solid black"><strong>관리자 답변</strong></h5>
+            </div>
+            <!-- 작성테이블 -->
+            <div id="writeTable">
+            <br> 
+            <table>
+            <tr>
+            	<td></td>
+            </tr>
+            </table>
+          </div>
+          <!-- 첨부파일 부분 -->
+          <div id="fileAttachment">
+            <h4><strong>&nbsp;&nbsp;첨부이미지</strong></h4>
             <form>          
                   <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
                    ><img class="imgbtn1 img1" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>

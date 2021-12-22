@@ -26,6 +26,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,7 @@ import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
@@ -96,14 +98,79 @@ public class UserController {
 	
 	/**
 	 * @author 양윤제
-	 * @category1:1 상담내역
+	 * @category1:1 상담내역 출력
 	 */
 	@GetMapping("ucc/MTMConsult")
-	public String userCustomerServiceCenterMTMConsult() {
+	public String userCustomerServiceCenterMTMConsult(HttpSession session, Model mv, @RequestParam(required= false) Map<String,String> parameters) {
+		
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		
+		int memCode = memberInfo.getMemCode();
+		
+		String currentPage = parameters.get("currentPage");
+		
+		int pageNo = 1;
+		System.out.println("currnetPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		//searchCondition에 유저 코드를 넣어줌
+		String searchCondition = "" + memCode;
+		String searchValue = parameters.get("searchValue");
+		
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchValue : " + searchValue);
+		System.out.println("pageNo : " + pageNo);
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		System.out.println("searchMap : " + searchMap);
+		
+		int totalCount = userService.selectMtmTotalCount(searchMap);
+		System.out.println("total : " + totalCount);
+		
+
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 4;		//얘도 파라미터로 전달받아도 된다.
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+		
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("selectCriteria : " + selectCriteria);
+		
+		List<PostDTO> mtmConsultingSelect = userService.selectMtmConsulting(selectCriteria);
+		
+		System.out.println("mtmConsultingSelect :" + mtmConsultingSelect);
+		
+		mv.addAttribute("mtmConsultingSelect", mtmConsultingSelect);
+		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("paging", "mtm");
+		
 		
 		return "user/userCustomerServiceCenterMTMConsult";
 	}
 	
+	
+	/**
+	 * @author 양윤제
+	 * @return 1:1입력창 진입
+	 */
 	@GetMapping("ucc/MTMQnA")
 	public String userCustomerServiceCenterMTMQnA(HttpSession session) {
 		
@@ -115,7 +182,7 @@ public class UserController {
 	
 	/**
 	 * @author 양윤제
-	 * @category 1:1문의
+	 * @category 1:1문의 입력기능 수행
 	 */
 	@PostMapping("ucc/MTMQnA")
 	public String userCustomerServiceCenterMTMQnA(@RequestParam(required = false) List<MultipartFile> multiFiles, HttpServletRequest request, Model mv, HttpSession session) {
@@ -287,7 +354,38 @@ public class UserController {
 	 * @category 1:1상담내용 열람
 	 */
 	@GetMapping("ucc/MTMOpen")
-	public String userCustomerServiceCenterMTMQnADetail() {
+	public String userCustomerServiceCenterMTMQnADetail(HttpSession session, @RequestParam(required = false)Map<String,String> parameters, Model mv) {
+		
+		int postNo = Integer.parseInt(parameters.get("postNo"));
+		
+		System.out.println("postNo : " + postNo);
+		
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		
+		int memCode = memberInfo.getMemCode();
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("postNo", postNo);
+		searchMap.put("memCode", memCode);
+		
+		//포스트 내용 불러 오기
+		PostDTO consultingCon = userService.selectConsultingCon(searchMap);
+		
+		System.out.println("consultingCon : " + consultingCon);
+		
+		//포스트 첨부 이미지파일 출력(소비자, 사업자)
+		List<FileDTO> userFileImg = userService.selectConsumerImg(postNo);
+		
+		System.out.println("소비자, 사업자 파일 내용 : " + userFileImg);
+		
+		//포스트 첨부 이미지 파일 츌룍(관리자)
+		List<FileDTO> managerFileImg = userService.selectManagerImg(postNo);
+		
+		System.out.println("관리자 첨부 파일 내용 : " +  managerFileImg);
+		
+		mv.addAttribute("consultingCon", consultingCon);
+		mv.addAttribute("userFileImg", userFileImg);
+		mv.addAttribute("managerFileImg", managerFileImg);
 		
 		return "user/userCustomerServiceCenterMTMQnADetail";
 	}

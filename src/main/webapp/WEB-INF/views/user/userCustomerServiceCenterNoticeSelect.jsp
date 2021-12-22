@@ -69,7 +69,7 @@
               </table>
 
               <!-- 페이징 -->
-                  	<jsp:include page="../commons/userNoticePagination.jsp"></jsp:include>
+                  	<jsp:include page="../commons/userNoticePagination.jsp"/>
               <nav class="page_box" aria-label="Page navigation example">
                   <ul class="pagination">
                   <!--   <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li> -->

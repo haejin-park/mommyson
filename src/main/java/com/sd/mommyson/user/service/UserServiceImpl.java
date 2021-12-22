@@ -15,6 +15,7 @@ import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dao.UserDAO;
+import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
@@ -207,5 +208,43 @@ public class UserServiceImpl implements UserService{
 		int fileUploadResult = userDAO.registMtmConFile(fileInfo);
 		return fileUploadResult;
 	}
+
+	@Override
+	public int selectMtmTotalCount(Map<String, String> searchMap) {
+		int totalCount = userDAO.selectMtmTotalCount(searchMap);
+		return totalCount;
+	}
+
+	@Override
+	public List<PostDTO> selectMtmConsulting(SelectCriteria selectCriteria) {
+		
+		List<PostDTO> mtmConsultingSelect = userDAO.selectMtmConsulting(selectCriteria);
+		
+		return mtmConsultingSelect;
+	}
+
+
+	@Override
+	public PostDTO selectConsultingCon(Map<String, Object> searchMap) {
+
+		PostDTO consultingCon = userDAO.selectConsultingCon(searchMap);
+		return consultingCon;
+	}
+
+
+	@Override
+	public List<FileDTO> selectConsumerImg(int postNo) {
+		List<FileDTO> userFileImg = userDAO.selectConsumerImg(postNo);
+		return userFileImg;
+	}
+
+
+	@Override
+	public List<FileDTO> selectManagerImg(int postNo) {
+		List<FileDTO> managerFileImg = userDAO.selectManagerImg(postNo);
+		return managerFileImg;
+	}
+
+
 
 }

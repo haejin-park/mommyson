@@ -42,32 +42,39 @@
 	<script>
 	
 		let link ="";
+
+			
 		let fqaL = '${ requestScope.fqaList }';
-		let no="";
-		
-		if( no = fqaL[0].boardCode == '6') {
-			link = "${ pageContext.servletContext.contextPath }/user/ucc/memberJoinFqa";
+		if(fqaL != "" && fqaL != null) {
+			
+			if( fqaL[0].boardCode == '6') {
+				link = "${ pageContext.servletContext.contextPath }/user/ucc/memberJoinFqa";
+			}
+			
+			if(	fqaL[0].boardCode == '7') {
+				link = "${ pageContext.servletContext.contextPath }/user/ucc/paycheckFqa";
+			}
+			
+			if(	no = fqaL[0].boardCode == '8') {
+				link = "${ pageContext.servletContext.contextPath }/user/ucc/reviewFqa";
+			}
+			
+			if(	fqaL[0].boardCode == '9') {
+				link = "${ pageContext.servletContext.contextPath }/user/ucc/usingFqa";
+			}
+			
+			if(	fqaL[0].boardCode == '10') {
+				link = "${ pageContext.servletContext.contextPath }/user/ucc/inconFqa";
+			}
+			
+			if(	fqaL[0].boardCode == '11') {
+				link = "${ pageContext.servletContext.contextPath }/user/ucc/etcFqa";
+			}
+
 		}
-		
-		if(	no = fqaL[0].boardCode == '7') {
-			link = "${ pageContext.servletContext.contextPath }/user/ucc/paycheckFqa";
-		}
-		
-		if(	no = fqaL[0].boardCode == '8') {
-			link = "${ pageContext.servletContext.contextPath }/user/ucc/reviewFqa";
-		}
-		
-		if(	no = fqaL[0].boardCode == '9') {
-			link = "${ pageContext.servletContext.contextPath }/user/ucc/usingFqa";
-		}
-		
-		if(	no = fqaL[0].boardCode == '10') {
-			link = "${ pageContext.servletContext.contextPath }/user/ucc/inconFqa";
-		}
-		
-		if(	no = fqaL[0].boardCode == '11') {
-			link = "${ pageContext.servletContext.contextPath }/user/ucc/etcFqa";
-		}
+	 	if( "${ requestScope.paging }" === "mtm" ){
+			link = "${ pageContext.servletContext.contextPath }/user/ucc/MTMConsult";
+		} 
 		
 		
 		let searchText = "";
