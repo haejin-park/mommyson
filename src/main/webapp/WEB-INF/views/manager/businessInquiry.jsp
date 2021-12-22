@@ -61,14 +61,14 @@
 						<tr>
 							<td>${ num }</td>
 							<td>
-							<c:if test="${ bi.boardCode eq '6' }">회원가입</c:if>
-							<c:if test="${ bi.boardCode eq '7' }">결제주문</c:if>
-							<c:if test="${ bi.boardCode eq '8' }">리뷰관리</c:if>
-							<c:if test="${ bi.boardCode eq '9' }">이용문의</c:if>
-							<c:if test="${ bi.boardCode eq '10' }">불편관리</c:if>
-							<c:if test="${ bi.boardCode eq '11' }">기타</c:if>
+							<c:if test="${ bi.boardCode eq '18' }">회원가입</c:if>
+							<c:if test="${ bi.boardCode eq '19' }">결제주문</c:if>
+							<c:if test="${ bi.boardCode eq '20' }">리뷰관리</c:if>
+							<c:if test="${ bi.boardCode eq '21' }">이용문의</c:if>
+							<c:if test="${ bi.boardCode eq '22' }">불편관리</c:if>
+							<c:if test="${ bi.boardCode eq '23' }">기타</c:if>
 							</td>
-							<td><a href="${ pageContext.servletContext.contextPath }/manager/businessAnswer?queNo=${ bi.queNo }">${ bi.postTitle }</a></td>
+							<td><a href="${ pageContext.servletContext.contextPath }/manager/businessAnswer?postNo=${ bi.postNo }">${ bi.postTitle }</a></td>
 							<td>${ bi.member.memId }</td>
 							<td>${ bi.postDate }</td>
 							<td>

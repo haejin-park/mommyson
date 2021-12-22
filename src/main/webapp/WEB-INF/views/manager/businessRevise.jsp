@@ -27,7 +27,7 @@
             <div class="top_box">
                 <p>사업자 문의</p>
             </div>
-            <form action="${ pageContext.servletContext.contextPath }/manager/registBusinessAnswer" method="post" enctype="multipart/form-data">
+            <form action="${ pageContext.servletContext.contextPath }/manager/updateBusinessInquiry" method="post" encType="multipart/form-data">
             <c:set value="${ requestScope.businessQuestion }" var="bq"/>
                 <table class="table bd_write_header bd_bottom_line">
                     <colgroup>
@@ -80,7 +80,6 @@
                         </tr>
                     </thead>
                 </table>
-                
                 <input type="hidden" name="postNo" value="${ bq.postNo }">
                 
                 <!-- modal -->
@@ -90,80 +89,56 @@
                     </div>
                 </div>
                 <!-- modal -->
-                
-                 <!-- 미답변 상태일 시 보여줄 화면 -->
-                <c:if test='${ bq.ansStatus eq "W" }'>
-                <div class="top_box" style="margin-top: 20px;">
+				
+               <div class="top_box" style="margin-top: 20px;">
                     <p>답변 내용</p>
                 </div>
                 <div class="text_area2">
-                    <textarea name="ansContent" id=""></textarea>
-                </div>
-                <div class="top_box">
-                    <p>이미지 첨부</p>
-                </div>
-                <div class="change_photo" id="view_area1"><img class="img_size noEvent" id="view_img1" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
-                <div class="change_photo" id="view_area2"><img class="img_size noEvent" id="view_img2" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
-                <div class="change_photo" id="view_area3" style="margin-right:0;"><img class="img_size noEvent" id="view_img3" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
-                <div class="photo_size">이미지당 10MB이하, 최대 3개까지 등록 가능합니다.</div>
-                <div class="btn_box">
-                    <input type="submit" value="답변등록" class="btn write_btn" style="background-color: #F89E91;">
-                    <a href="javascript:history.back(-1)" class="btn cancle_btn" style="background-color: #BEBEBE;">목록으로</a>
-                </div>
-                
-                <!-- file area -->
-                <div class="fileArea">
-                    <input type="file" id="insert_img1" name="fileName1" onchange="loadImg(this,1)" accept="image/*">
-                    <input type="file" id="insert_img2" name="fileName2" onchange="loadImg(this,2)" accept="image/*">
-                    <input type="file" id="insert_img3" name="fileName3" onchange="loadImg(this,3)" accept="image/*">
-                </div>
-                <!-- file area -->
-                </c:if>
-                
-                </form>
-                
-                <!-- 답변 상태일 시 보여줄 화면 -->
-                <c:if test='${ bq.ansStatus eq "Y" }'>
-                <div class="top_box" style="margin-top: 20px;">
-                    <p>답변 내용</p>
-                </div>
-                <div class="text_area2">
-                    <textarea name="ansContent" id="" disabled><c:out value="${ bq.ansContent }"/></textarea>
+                    <textarea name="ansContent" id=""><c:out value="${ bq.ansContent }"/></textarea>
                 </div>
                 <div class="top_box">
                     <p>이미지 첨부</p>
                 </div>
                 <c:set value="${ requestScope.answerFileList }" var="answerImg"/>
                 <c:if test="${ !empty answerImg[0] }">
-                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/${ answerImg[0].fileName }"></div>
+                <div class="change_photo" id="view_area1"><img class="img_size" id="view_img1" src="${ pageContext.servletContext.contextPath }/${ answerImg[0].fileName }"></div>
                 </c:if>
                 <c:if test="${ empty answerImg[0] }">
-                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                <div class="change_photo" id="view_area1"><img class="img_size" id="view_img1" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
                 </c:if>
+                <input type="hidden" name="fileCode1" value="${ answerImg[0].fileCode }">
+                <input type="hidden" name="fileName" value="${ answerImg[0].fileName }">
                 
                 <c:if test="${ !empty answerImg[1] }">
-                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/${ answerImg[1].fileName }"></div>
+                <div class="change_photo" id="view_area2"><img class="img_size" id="view_img2" src="${ pageContext.servletContext.contextPath }/${ answerImg[1].fileName }"></div>
                 </c:if>
                 <c:if test="${ empty answerImg[1] }">
-                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                <div class="change_photo" id="view_area2"><img class="img_size" id="view_img2" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
                 </c:if>
+                <input type="hidden" name="fileCode3" value="${ answerImg[1].fileCode }">
                 
                 <c:if test="${ !empty answerImg[2] }">
-                <div class="change_photo" style="margin-right:0;"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/${ answerImg[2].fileName }"></div>
+                <div class="change_photo" id="view_area3" style="margin-right:0;"><img class="img_size" id="view_img3" src="${ pageContext.servletContext.contextPath }/${ answerImg[2].fileName }"></div>
                 </c:if>
                 <c:if test="${ empty answerImg[2] }">
-                <div class="change_photo" style="margin-right:0;"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                <div class="change_photo" id="view_area3" style="margin-right:0;"><img class="img_size" id="view_img3" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
                 </c:if>
+                <input type="hidden" name="fileCode4" value="${ answerImg[2].fileCode }">
                 
                 <div class="photo_size">이미지당 10MB이하, 최대 3개까지 등록 가능합니다.</div>
                 <div class="btn_box">
-                    <input type="button" value="수정하기" class="btn write_btn" style="background-color: #F89E91;" onclick="location.href='${ pageContext.servletContext.contextPath }/manager/businessRevise?postNo=${ bq.postNo }'">
-                    <a href="javascript:history.back(-1)" class="btn cancle_btn" style="background-color: #BEBEBE;">목록으로</a>
+                    <input type="submit" value="재등록" class="btn write_btn" style="background-color: #F89E91;">
+                    <a href="javascript:history.back(-1)" class="btn cancle_btn" style="background-color: #BEBEBE;">취소하기</a>
                 </div>
                 
-                
-				</c:if>
-				
+                 <!-- file area -->
+                <div class="fileArea">
+                    <input type="file" id="insert_img1" name="fileName1" onchange="loadImg(this,1)" accept="image/*">
+                    <input type="file" id="insert_img2" name="fileName2" onchange="loadImg(this,2)" accept="image/*">
+                    <input type="file" id="insert_img3" name="fileName3" onchange="loadImg(this,3)" accept="image/*">
+                </div>
+                <!-- file area -->
+            </form>
         </div>
     </div>
     
@@ -189,17 +164,6 @@
             $('.inquiry_img').attr("src",img);
             $('.inquiry_box').html(img);
             $('.inquiry_modal').show();
-        });
-        
-        $('.addEvent').click(function(){
-            let img = $(this).attr("src");
-            console.log(img);
-            
-            if(img != "${ pageContext.servletContext.contextPath }/resources/images/photo2.png"){ 
-	            $('.inquiry_img').attr("src",img);
-	            $('.inquiry_box').html(img);
-	            $('.inquiry_modal').show();
-            }
         });
 
         $('.inquiry_modal').click(function(e){

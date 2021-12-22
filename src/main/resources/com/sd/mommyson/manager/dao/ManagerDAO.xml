@@ -790,8 +790,14 @@
    	  <result property="ansContent" column="ANS_CONTENT"/>
    	  <association property="member" resultMap="memberResultMap"/>
    </resultMap>
+   
+   <resultMap id="imgFileResultMap" type="com.sd.mommyson.manager.dto.FileDTO">
+     <id property="fileCode" column="FILE_CODE"/>
+     <result property="fileName" column="FILE_NAME"/>
+     <result property="postNo" column="POST_NO"/>
+     <result property="fileType" column="FILE_TYPE"/>
+   </resultMap>
 
-  
    <!-- 공지사항 게시글 수 조회 -->
    <select id="selectNoticeTotalCount" resultType="_int">
    	  SELECT
@@ -1102,7 +1108,7 @@
    	      AND A.ANS_STATUS IN ('W','Y')
    	    </if>
    	    AND B.MEM_TYPE = 'ceo'
-   	    AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	    AND A.BOARD_CODE IN('18','19','20','21','22','23')
    	   </where>
    </select>
    
@@ -1169,7 +1175,7 @@
 			   	        AND A.ANS_STATUS IN('W','Y')
 			   	      </if>
 				        AND B.MEM_TYPE = 'ceo'
-				        AND A.BOARD_CODE IN('6','7','8','9','10','11')
+				        AND A.BOARD_CODE IN('18','19','20','21','22','23')
 				      </where>
 				      ORDER BY A.POST_DATE ASC)C
 		      <![CDATA[        
@@ -1180,6 +1186,63 @@
 		  WHERE D.RNUM >= #{ startRow } 
     	  ]]>
    </select>	
+
+   <!-- 공통 - 1:1 문의 게시글 조회 -->
+   <select id="selectQnaPost" resultMap="PostResultMap">
+     SELECT
+		    *
+	   FROM POST_TBL A
+	   JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+      WHERE A.POST_NO = #{ postNo }
+   </select>
+   
+   <!-- 사업자 - 1:1 문의 이미지 파일 조회 -->
+  <select id="selectBusinessImg" resultMap="imgFileResultMap">
+  	SELECT
+  		   *
+  	  FROM FILE_TBL A
+  	 WHERE A.POST_NO = #{ postNo }
+  	   AND A.FILE_TYPE = 'owner' 
+  </select>
+  
+  <!-- 관리자 - 1:1 문의 이미지 파일 조회 -->
+   <select id="selectAnswerImg" resultMap="imgFileResultMap">
+   	SELECT
+  	 	   *
+  	  FROM FILE_TBL A
+  	 WHERE A.POST_NO = #{ postNo }
+  	   AND A.FILE_TYPE = 'manager' 
+   </select>
+   
+    <!-- 사업자 - 1:1 문의 답변 등록-->
+   <update id="registBusinessAnswer" parameterType="hashmap">
+     UPDATE POST_TBL A
+        SET A.ANS_STATUS = 'Y',
+            A.ANS_CONTENT = #{ ansContent }
+      WHERE A.POST_NO = #{ postNo }
+    </update>
+  
+   <!-- 사업자 - 1:1 문의 파일 등록-->
+   <insert id="registBusinessFile" parameterType="hashmap">
+     INSERT INTO FILE_TBL A
+     (A.FILE_CODE, A.FILE_NAME, A.POST_NO, A.FILE_TYPE)
+     VALUES
+     (SEQ_FILE.NEXTVAL, #{ fileName }, #{ postNo }, 'manager')
+   </insert>
+
+   <!-- 사업자 - 1:1 문의 답변 파일 수정 -->
+   <update id="updateBusinessFile" parameterType="hashmap">
+    UPDATE FILE_TBL A
+       SET A.FILE_NAME = #{ fileName },
+     WHERE A.POST_NO = #{ postNo }, A.FILE_CODE = #{ fileCode }
+   </update>
+
+   <!-- 사업자 - 1:1 문의 답변 수정 -->
+   <update id="updateBusinessAnswer" parameterType="hashmap">
+    UPDATE POST_TBL A
+       SET A.ANS_CONTENT = #{ ansContent },
+     WHERE A.POST_NO = #{ postNo }
+   </update>
 
    <!-- 소비자 - 1:1문의 갯수 -->
    <select id="normalInquiryTotalCount" resultType="int">
@@ -1202,7 +1265,7 @@
    	      AND A.ANS_STATUS IN ('W','Y')
    	    </if>
    	      AND B.MEM_TYPE = 'user'
-   	      AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	      AND A.BOARD_CODE IN('12','13','14','15','16','17')
    	   </where>
    </select>
 
@@ -1269,7 +1332,7 @@
 			   	        AND A.ANS_STATUS IN('W','Y')
 			   	      </if>
 				        AND B.MEM_TYPE = 'user'
-				        AND A.BOARD_CODE IN('6','7','8','9','10','11')
+				        AND A.BOARD_CODE IN('12','13','14','15','16','17')
 				      </where>
 				      ORDER BY A.POST_DATE ASC)C
 		      <![CDATA[        
