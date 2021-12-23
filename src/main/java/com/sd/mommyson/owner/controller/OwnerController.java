@@ -1309,4 +1309,9 @@ public class OwnerController {
 
 	}
 	
+	@GetMapping("ownerQuit")
+	public void ownerQuit(Model model) {
+		
+	}
+	
 }
