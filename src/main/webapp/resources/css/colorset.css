@@ -9,7 +9,7 @@ a { text-decoration: none !important; color: inherit !important; }
 
 /* footer */
 .line { background-color: #C5C5C5; height: 1px; clear: right; }
-footer.at-container { border-top: 1px solid #C5C5C5; position: relative; padding-top: 20px; padding-bottom: 20px; margin-top: 160px; clear: right; }
+footer.at-container { position: relative; padding-top: 20px; padding-bottom: 20px; margin-top: 160px; clear: right; }
 footer .df_ul.ft_list {}
 footer .df_ul.ft_list li { float: left; }
 footer .df_ul.ft_list li a { font-size: 18px; line-height: 20px; color: #777;  }

@@ -61,7 +61,8 @@
 		                        <td>${ nm.nickname }</td>
 		                        <td>${ nm.email }</td>
 		                        <td>${ nm.enrollDate }</td>
-		                        <td class="totalPrice totalPrice<c:out value="${ vst.index }"/>"><input type="hidden" value="${ nm.user.totalPrice }"/> ${ nm.user.totalPrice }</td>
+		                        <c:set value="0" var="c"/>
+		                        <td class="totalPrice">${ nm.user.totalPrice[0] } <!-- <button type="button" onclick="totalPrice(this);">확인하기</button><span class="total"></span> --></td>
 		                        <td>${ nm.user.repCount }</td>
 		                        <td class="memberState">${ nm.isDeleted }</td>
 		                    </tr>
@@ -123,16 +124,33 @@
     		$(".memberState").text("정상")
     	}
 	    
-	    for(let i = 0; i < $('.totalPrice input').length; i++){
+	    /* function totalPrice(e){
+	    	
+	    	let getMemCode = e.parentElement.parentElement.firstElementChild.firstElementChild.value;
+	    	let price = e;
+	    	let result = e.nextElementSibling;
+	    	$.ajax({
+	    		url : '${ pageContext.servletContext.contextPath }/manager/totalPrice',
+	    		type : 'POST',
+	    		data : {
+	    			getMemCode : getMemCode
+	    		},
+	    		success : function(data){
+	    			$(price).css('display','none');
+	    			$(result).text(data + "원");
+	    		},
+	    		error : function(error){
+	    			console.log(error);
+	    		}
+	    	});
+	    } */
+	    
+	    /* for(let i = 0; i < $('.totalPrice input').length; i++){
 	    	let total = $('.totalPrice input');
 		    console.log(total[i].value);
 		    console.log('isNan : ', typeof total[i]);
 		    
-		    let totalV = total[i].value;
-		    const sum = totalV.reduce((a,b) => (a+b));
-		    console.log(sum);
-		    
-	    }
+	    } */
 	    
 	    /* const sum = num1.reduce((a,b) => (a+b));
 	    document.write('reduce : ', sum); */
@@ -147,13 +165,6 @@
 	    let result2 = result1.replace("[", "");
 	    let result3 = result2.replace("]", "");
 	    let totalResult = result3.split(",");
-	    
-	    console.log(total);
-	    console.log(result);
-	    console.log(result1);
-	    console.log(result2);
-	    console.log(result3);
-	    console.log(totalResult);
 	    
 	    let arr = [];
 	    let num = 0;

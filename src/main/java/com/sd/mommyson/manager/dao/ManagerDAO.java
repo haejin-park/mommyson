@@ -13,6 +13,7 @@ import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -145,5 +146,7 @@ public interface ManagerDAO {
 	int selectUserTotalCount(Map<String, Object> searchMap);
 
 	List<MemberDTO> selectUser(Pagination pagination);
+
+	List<OrderDTO> selectTotalPrice(int memCode);
 
 }

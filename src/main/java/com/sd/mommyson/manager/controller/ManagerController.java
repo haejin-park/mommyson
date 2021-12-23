@@ -39,6 +39,7 @@ import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -112,22 +113,24 @@ public class ManagerController {
 		}
 		
 		pagination.setSearchCondition("user");
-		
 		System.out.println("pagination : " + pagination);
-		
 		
 		List<MemberDTO> normalMemberList = managerService.selectUser(pagination);
 		System.out.println("리스트 확인 : " + normalMemberList);
 		
-//		Iterator<MemberDTO> a = normalMemberList.iterator();
-//		while(a.hasNext()) {
-//			MemberDTO str = a.next();
-//			List<Integer> arr = str.getUser().getTotalPrice();
-//			for(int b : arr) {
-//				System.out.println(b);
-//			}
-//		}
-		
+		List<Integer> testList = null;
+		for(MemberDTO mb : normalMemberList) {
+			int value = 0;
+			List<Integer> list = mb.getUser().getTotalPrice();
+			
+			for(int i : list) {
+				value += i;
+			}
+			testList = new ArrayList<>();
+			testList.add(value);
+			
+			mb.getUser().setTotalPrice(testList);
+		}
 		
 		
 		if(normalMemberList != null) {
@@ -138,6 +141,29 @@ public class ManagerController {
 		}
 		
 	}
+	
+//	@PostMapping(value = "totalPrice", produces = "application/json; charset=UTF-8")
+//	@ResponseBody
+//	public int totalPrice(@RequestParam("getMemCode") int memCode) {
+//		
+//		System.out.println(memCode);
+//		List<OrderDTO> totalPriceList = managerService.selectTotalPrice(memCode);
+//		System.out.println("totalPriceList : " + totalPriceList);
+//		System.out.println(totalPriceList.size());
+//		
+//		List<Integer> testList = null;
+//		int value = 0;
+//		for(int i = 0; i < totalPriceList.size(); i++) {
+//			
+//			OrderDTO result = totalPriceList.get(i);
+//			value += result.getTotalPrice();
+//		}
+//		
+//		System.out.println("value : " + value);
+//
+//		
+//		return value;
+//	}
 	
 	/* 회원삭제 */
 	/**

@@ -13,6 +13,7 @@ import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -185,6 +186,9 @@ public interface ManagerService {
 
 	/* 일반회원 조회 */
 	public List<MemberDTO> selectUser(Pagination pagination);
+
+	/* 일반회원 총 주문금액 조회 */
+	public List<OrderDTO> selectTotalPrice(int memCode);
 
 
 

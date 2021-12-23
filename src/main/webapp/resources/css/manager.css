@@ -110,7 +110,7 @@
 .total_container .board_container .tag_container .used_tag .tag_list li { display: flex; align-items: center; margin-bottom: 15px; }
 .total_container .board_container .tag_container .used_tag .tag_list li:last-child { margin-bottom: 0; }
 .total_container .board_container .tag_container .used_tag .tag_list li input[type=checkbox] { display: none; }
-.total_container .board_container .tag_container .used_tag .tag_list li input[type=checkbox] + label { width: 25px; height: 25px; border: 1px solid #868686; border-radius: 5px; margin-bottom: 0; }
+.total_container .board_container .tag_container .used_tag .tag_list li input[type=checkbox] + label { width: 25px; height: 25px; border: 1px solid #868686; border-radius: 5px; margin-bottom: 0; cursor: pointer; }
 .total_container .board_container .tag_container .used_tag .tag_list li input[type=checkbox]:checked + label { background: url('../images/check_img.png') center no-repeat; background-color: #F89E91; }
 .total_container .board_container .tag_container .used_tag .tag_list li span { font-size: 18px; line-height: 20px; color: #333; font-weight: 600; margin-left: 15px; }
 

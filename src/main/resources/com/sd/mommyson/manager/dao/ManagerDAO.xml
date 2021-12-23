@@ -151,6 +151,13 @@
 		<result property="status" column="STATUS"/>
 	</resultMap>
 	
+	<select id="selectTotalPrice" resultMap="orderResultMap">
+	    SELECT
+	           TOTAL_PRICE
+	      FROM ORDER_TBL
+	     WHERE MEM_CODE = #{ memCode }
+	</select>
+	
 	<select id="selectUserTotalCount" resultType="_int">
 	    SELECT
    	  	       COUNT(*)
@@ -215,7 +222,7 @@
 			  , C.IS_DELETED
 			  , C.REP_COUNT
 			  , C.TOTAL_PRICE
-			  , C.RV_CODE
+			  <!-- , C.RV_CODE -->
 		   FROM (SELECT 
 		                ROWNUM RNUM
 					  , B.MEM_CODE
@@ -231,7 +238,7 @@
 					  , B.IS_DELETED
 					  , B.REP_COUNT
 					  , B.TOTAL_PRICE
-					  , B.RV_CODE
+					  <!-- , B.RV_CODE -->
 				   FROM (SELECT 
 							   A.MEM_CODE
 							 , A.EMAIL
@@ -246,19 +253,19 @@
 							 , A.IS_DELETED
 							 , U.REP_COUNT
 							 , OD.TOTAL_PRICE
-							 , R.RV_CODE
+							 <!-- , R.RV_CODE -->
 						  FROM MEMBER_TBL A 
-						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
+						  JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
 						  LEFT JOIN ORDER_TBL OD ON (U.MEM_CODE = OD.MEM_CODE)
-						  LEFT JOIN REVIEW_TBL R ON (U.MEM_CODE = R.MEM_CODE)
+						  <!-- LEFT JOIN REVIEW_TBL R ON (U.MEM_CODE = R.MEM_CODE) -->
 						  <where>
 						  	A.IS_DELETED = 'N' AND
 						  	A.MEM_TYPE = 'user'
 						  	<if test='searchValue != null'>
-					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		AND (A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
 				   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
 				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
-					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
+					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%')
 					   	  	</if>
 						  </where>
 						 ORDER BY A.MEM_CODE DESC)B
