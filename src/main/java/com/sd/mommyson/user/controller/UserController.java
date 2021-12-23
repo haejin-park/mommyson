@@ -822,12 +822,13 @@ public class UserController {
 			userService.updateCart(order); // 장바구니에 상품이 0개이상이면 update 
 		}
 				
-		return "redirect:user/cart";
+		return "redirect:/user/cart";
 	
 	}
 	
 
 	/**
+	 * 장바구니 리스트 조회 
 	 * @author ShinHyungi, ParkHaejin
 	 * @param model
 	 * @param session
@@ -840,7 +841,7 @@ public class UserController {
 			System.out.println("member : " + member);
 			
 			List<CartDTO> cartList = userService.cartList(member);
-			
+						
 			HashMap<String,Object> map = new HashMap<String,Object>();
 			map.put("cartList", cartList); 
 			System.out.println("map : " + map);
@@ -850,24 +851,25 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
-	@PostMapping(value = "updateAmountAndPrice", produces = "text/plain; charset=UTF-8;")
-	@ResponseBody
-	public int updateAmount(@RequestParam("updateAmountAndPrice") int totalPrice, @RequestParam("stat") int amount, HttpSession session) {
-		
-		System.out.println("totalPrice : " + totalPrice);
-		
-		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
-		System.out.println("member : " + member);
-		
-		CartDTO dto = new CartDTO();
-		dto.setTotalPrice(totalPrice);
-		dto.setAmount(amount);
-		System.out.println("dto : " + dto);
-		int result = userService.updateAmountAndPrice(dto);
-		
-		return result;
-		
-	}
+	
+	
+//	@PostMapping(value = "updateAmountAndPrice", produces = "text/plain; charset=UTF-8;")
+//	@ResponseBody
+//	public int updateAmountAndPrice(@RequestParam("totalPrice") int totalPrice, @RequestParam("stat") int amount, HttpSession session) {
+//		
+//		System.out.println("totalPrice : " + totalPrice);
+//		
+//		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+//		System.out.println("member : " + member);
+//		
+//		CartDTO dto = new CartDTO();
+//		dto.setTotalPrice(totalPrice);
+//		dto.setAmount(amount);
+//		System.out.println("dto : " + dto);
+//		int result = userService.updateAmountAndPrice(dto);
+//		
+//		return result;
+//	}
 	
 	private int sum(int price) {
 		// TODO Auto-generated method stub

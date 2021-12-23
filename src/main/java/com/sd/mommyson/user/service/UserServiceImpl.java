@@ -180,11 +180,11 @@ public class UserServiceImpl implements UserService{
 
 
 	/* 장바구니 상품 수량 변경 update */
-	@Override
-	public int updateAmountAndPrice(CartDTO dto) {
-		// TODO Auto-generated method stub
-		return userDAO.updateAmountAndPrice(dto);
-	}
+//	@Override
+//	public int updateAmountAndPrice(CartDTO dto) {
+//		// TODO Auto-generated method stub
+//		return userDAO.updateAmountAndPrice(dto);
+//	}
 
 
 	@Override

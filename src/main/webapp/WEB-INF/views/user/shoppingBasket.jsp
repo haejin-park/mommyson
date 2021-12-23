@@ -25,24 +25,27 @@
     <img class=cart1 src="${ pageContext.servletContext.contextPath }/resources/images/cart1.png" >
     
  	<form method="post">
-	    <c:choose>
-	    	<c:when test="${ map.count == 0 }"> 장바구니가 비어있습니다. </c:when>
-	    	<c:otherwise>
-	    		<c:forEach var="row" items="${ map.cartList }" varStatus="i">
-				    
-				    <table id="table1">
-				      <tr id="tr1">
-				        <th><input type=checkbox id="all"></th>
-				        <th>가게 정보</th>
-				        <th>제품 정보</th>
-				        <th>제품 금액</th>
-				        <th>수량</th>
-				        <th>총 제품 금액</th>
-				      </tr>
-				      <tr id="tr2">
-				        <td><input type=checkbox name="checkbox"></td>
-				        <td><img src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
-				        <td><img src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
+	    <table id="table1">
+	      <tr id="tr1">
+	        <th><input type=checkbox id="all"></th>
+	        <th>가게 정보</th>
+	        <th>제품 정보</th>
+	        <th>제품 금액</th>
+	        <th>수량</th>
+	        <th>총 제품 금액</th>
+	      </tr>
+	      </table>
+	      
+			<c:choose>
+	    		<c:when test="${ map.count == 0 }"> 장바구니가 비어있습니다. </c:when>
+	    		<c:otherwise>
+	    			<c:forEach var="row" items="${ map.cartList }" varStatus="i">
+	    				<table  style="width: 80%; margin-left:10%; text-align: center; border :1px solid black;">	    				
+	    				<tr id="tr2">
+				        <td><input type=checkbox name="checkbox" value="${ row.totalPrice }"></td>
+				        
+				        <td id="storeImgTd" style="width: 18%;"><img id="storeImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
+				        <td id="sdImgTd"  style="padding-right: 12%;"><img id="sdImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
 				        <td><span id="price"><c:out value="${ row.price }"/></span></td>
 				        <td>
 				         	<div class="number">
@@ -51,35 +54,28 @@
 				            <a href="#" id="increaseQuantity"> + </a>
 				        	</div>
 				        </td>
-				        <td> <span id="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
-				      </tr>
-				    </table>
-				    
-				   	<div id="div1">
-					  <table id="table2">
-				        <tr>
-				          <th>가게별 총 제품 금액(배달시 배송비 별도)</th>
-				          <td id="totalAmountByStore"></td>
-				        </tr>
-				      </table>
-				    </div>
-				    
-				    <div id="div2">
-				      <table id="table3">
-				        <tr>
-				          <th>총 제품 금액 합계(배달 시 배송비 별도)</th>
-				          <td id="paymentAmount"></td>
-				        </tr>
-				      </table>
-				    </div>
-				    
-				    <br> 
-				    <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
-				    <br>  
-				   	<button id="selectDelete">선택삭제</button>		
-	 	    	</c:forEach> 
+				        <td><span id="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
+				      	</tr>
+				      	</table>
+			    </c:forEach> 
 	    	</c:otherwise>
-	    </c:choose>
+	    </c:choose>	      	
+
+	    <div id="div2">
+	      <table id="table3">
+	        <tr>
+	          <th>총 제품 금액 합계(배달 시 배송비 별도)</th>
+	          <td id="paymentAmount"></td>
+	        </tr>
+	      </table>
+	    </div>
+	    
+	    <br> 
+	    <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
+
+	    <br>  
+	   	<button id="selectDelete">선택삭제</button>		
+	 	    	
     </form>
    	<button id="package" onclick="gopay('pack')">방문포장</button>
    	<button id="delivery" onclick="gopay('deli')">배달예약</button>
@@ -87,14 +83,36 @@
     <jsp:include page="../commons/footer.jsp"/>
 
 	<script>
+
+	
+	
+	
 	  /* 전체 체크, 해제 */
-	  $("#all").on("change",function(){
+	  $("#all").click(function(){
 	        if($("#all").is(":checked")){
 	            $("input[name=checkbox]").prop("checked",true);
 	        } else {
 	            $("input[name=checkbox]").prop("checked",false);
 	        }
 	  });
+	  
+	  
+	  
+		/* 가게별 합계구하기 */
+
+		$("input:checkbox").click(function(){
+			
+			
+			let arr = 0;
+	        $("input[name=checkbox]:checked").each(function(item,value){
+	        	
+	        	arr += parseInt($(this).val());
+	        	
+	        });
+	         
+	        $("#paymentAmount").text(arr); 
+	        
+		});
 	  
 	  /* 주문번호 가지고 결제창으로 이동 */
 	  function gopay(str) {
@@ -110,93 +128,57 @@
 		  }
 	  }
 	  
-	  /* 수량 증감 */
-	 /*  $(function(){
-	    $('#decreaseQuantity').click(function(e){
-	      e.preventDefault();
-	      var stat = $('#numberUpDown').text();
-	      var num = parseInt(stat,10);
-	      num--;
-	      if(num < 0){
-	      	num = 0;
-	      }
-	      $('#numberUpDown').text(num);
-	    });
-	    
-	    $('#increaseQuantity').click(function(e){
-	      e.preventDefault();
-	      var stat = $('#numberUpDown').text();
-	      var num = parseInt(stat,10);
-	      num++;
-	      $('#numberUpDown').text(num);
-	  });
-	}); */
+
 	
 	/* 수량증감에따라 totalCount 변경 */
-/* 	  $("#amount").on("change",function(){
-        	
-            if($("#decreaseQuantity").is(":clicked")) {
-                $("#totalPrice").prop("#price"*"#amount");
-                
-            } else if($("#increaseQuantity").is(":clicked")) {
-                $("#totalPrice").prop("#price"*"#amount");
-            }
-        }); */
-        
+
         $(function(){
-        	
-            var price = $('#price').val();
-  	     	var totalPrice = $('#totalprice').val();
-  	     	var totalAmountByStore = $('#totalAmountByStore').val();
-  	     	var paymentAmount = $('#paymentAmount').val();
+           
+  	     	var stat = $('#numberUpDown').text();
+  	      	var num = parseInt(stat,10);
         	
     	    $('#decreaseQuantity').click(function(e){
     	      e.preventDefault();
-    	      var stat = $('#numberUpDown').text();
-    	      var num = parseInt(stat,10);
     	      
     	      num--;
     	      if(num < 0){
     	      	num = 0;
+    	      	
     	      }
+    	      
     	      $('#numberUpDown').text(num);
+    	       var price =$("#price").text();
+    	       var stat = $('#numberUpDown').text();
+     	       console.log(price); 
+			   console.log(stat);
+     	       var totalPrice = price * stat; 
+     	       $("#totalPrice").text(totalPrice);
+   
+    	    
     	    });
-    	    
-    	    
     	    
     	    $('#increaseQuantity').click(function(e){
     	      e.preventDefault();
-    	      var stat = $('#numberUpDown').text();
-    	      var num = parseInt(stat,10);
+    	      
     	      num++;
+    	      
     	      $('#numberUpDown').text(num);
+	   	       var price =$("#price").text();
+		       var stat = $('#numberUpDown').text();
+	 	       console.log(price); 
+			   console.log(stat);
+	 	       var totalPrice = price * stat; 
+	 	       $("#totalPrice").text(totalPrice);
+	   	
+    	      
     	  });
     	    
-  	       totalPrice = price * stat; 
-  	       paymentAmount = sum(totalPrice);
-  	       
-  	       $.ajax({
-  	    	   url : "${ pageContext.servletContext.contextPath }/user/updateAmount",
-  	    	   type : "post",
-  	    	   data : {
-  	    		 stat : stat,  
-  	    		 totalPrice : totalPrice
-  	    	   }, 
-  	    	   async:false,
-  	    	   success:function(data){
-  	    		   console.log("data : " + data);
-  	    	   },
-  	    	 
-  	    	   error:function(error){
-     			alert(error);
-  	    	   }
-     			
-  	       });
-  	       
-  	       
-    	});
-        
+    	    
+    	    
+    	});   
 	  
+	
+
 	</script>
 
 </body>
