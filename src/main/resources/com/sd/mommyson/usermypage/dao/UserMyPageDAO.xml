@@ -84,7 +84,8 @@
 				 		  JOIN COUPON_STORE_TBL E ON (C.CP_CODE = E.CP_CODE)
 				 		  JOIN STORE_TBL F ON (E.MEM_CODE= F.MEM_CODE)
 					 		   <where>
-							 	  D.USE_STATUS = 'N'				 		  
+							 	  D.USE_STATUS = 'N'
+							 	  AND D.MEM_CODE = #{ searchCondition }  				 		  
 					 		 	  <![CDATA[
 					 		 	  AND SYSDATE <= C.END_DATE
 					 		 	  ]]>
@@ -415,6 +416,18 @@
        JOIN STORE_TBL B ON(A.STORE_CODE=B.MEM_CODE) 
       WHERE A.MEM_CODE = #{ userCode }
 	 </select>
+	 <!-- 리뷰수정 -->
+	<update id="updateReview" parameterType="hashmap">
+	UPDATE
+		   REVIEW_TBL A
+	  SET	
+	   	   A.RV_IMG = #{ fileFolder, jdbcType=VARCHAR },		
+	       A.RV_CONTENT = #{ postContents, jdbcType=VARCHAR},
+	       A.RV_GRADE = #{ postGrade }
+	 WHERE A.RV_CODE = #{ rvCode }
+	   AND A.MEM_CODE = #{ memCode }	
+	</update>	
+	
 	
 	<insert id="insertReview">
 		INSERT

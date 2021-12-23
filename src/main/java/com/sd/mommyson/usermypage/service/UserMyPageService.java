@@ -53,6 +53,8 @@ public interface UserMyPageService {
 
 	ReviewDTO selectReviewInfo(int rvCode);
 
+	int updateReview(Map<String, Object> amendmentRv);
+
 
 
 }

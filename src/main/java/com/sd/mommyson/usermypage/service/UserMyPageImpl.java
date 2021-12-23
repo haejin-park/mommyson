@@ -169,6 +169,13 @@ public class UserMyPageImpl implements UserMyPageService {
 		return reviewInfo;
 	}
 
+	@Override
+	public int updateReview(Map<String, Object> amendmentRv) {
+
+		int result = userMyPageDAO.updateReview(amendmentRv);
+		return result;
+	}
+
 	
 
 }
