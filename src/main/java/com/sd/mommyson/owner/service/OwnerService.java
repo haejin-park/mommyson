@@ -121,6 +121,10 @@ public interface OwnerService {
 
 	public List<CpHistoryDTO> selectgiveList(Pagination pagination);
 
-	public long selectTotalPrice(String storeName);
+	public Map<String, Integer> selectTotalPrice(String storeName);
+
+	public Map<String, Integer> selectDelPrice(String storeName);
+
+	public int selectPickupPrice(String storeName);
 
 }

@@ -132,6 +132,10 @@ public interface OwnerDAO {
 
 	public int removeDcs(int sdCode);
 
-	public long selectTotalPrice(String storeName);
+	public Map<String, Integer> selectTotalPrice(String storeName);
+
+	public Map<String, Integer> selectDelPrice(String storeName);
+
+	public int selectPickupPrice(String storeName);
 
 }

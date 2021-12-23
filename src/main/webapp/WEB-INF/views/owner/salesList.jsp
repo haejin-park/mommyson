@@ -19,7 +19,7 @@
 	<jsp:include page="../commons/header.jsp"/>
 	
 	<div class="page-text" style="width: 1550px; margin: 0 auto;">
-        <br><h3 style="margin-left: 100px; font-weight: 900;">매출 내역</h3>
+        <br><h3 style="margin-left: 150px; font-weight: 900; font-size: 40px">매출 내역</h3>
         <hr>
     </div>
     <div class="body-all">
@@ -38,9 +38,16 @@
                         <td >배송비</td>
                     </tr>
                     <tr>
-                        <td > ㅇㅇㅇ</td>
-                        <td> ㅇㅇ</td>
-                        <td> ㅇㅇ</td>
+                    	<c:if test="${ requestScope.delPrice != null and !empty requestScope.delPrice }">
+                        <td>${ requestScope.delPrice.TOTALPRICE }원</td>
+                        <td>${ requestScope.delPrice.REAL }원</td>
+                        <td>${ requestScope.delPrice.DELCOST }원</td>
+                        </c:if>
+                        
+                        <c:if test="${ requestScope.delPrice == null and empty requestScope.delPrice }">
+                        <td colspan="3" style="font-weight: 700; font-size: 20px; padding-top : 70px;">등록된 주문이 없습니다.</td>
+                        </c:if>
+                        
                     </tr>
                 </thead>
                 </table><br>
@@ -52,9 +59,13 @@
                         <td colspan="3">주문금액(영업이익)</td>
                         </tr>
                         <tr>
-                            <td > ㅇㅇㅇ</td>
-                            <td> ㅇㅇ</td>
-                            <td> ㅇㅇ</td>
+                        	<c:if test="${ requestScope.pickupPrice != null and !empty requestScope.pickupPrice }">
+                            <td colspan="3">${ requestScope.pickupPrice }원</td>
+                            </c:if>
+                            
+                            <c:if test="${ requestScope.pickupPrice == null and empty requestScope.pickupPrice }">
+                            <td colspan="3">등록된 주문이 없습니다.</td>
+                            </c:if>
                         </tr>
                     </thead>            
             </table><br>   
@@ -69,9 +80,15 @@
                         <td>배송비</td>
                     </tr>
                     <tr>
-                        <td>ㅇㅇㅇ</td>
-                        <td> ㅇㅇ</td>
-                        <td> ㅇㅇ</td>
+                    	<c:if test="${ requestScope.totalPrice != null and !empty requestScope.totalPrice }">
+                        <td>${ requestScope.totalPrice.TOTALPRICE }원</td>
+                        <td>${ requestScope.totalPrice.REAL }원</td>
+                        <td>${ requestScope.totalPrice.DELCOST }원</td>
+                        </c:if>
+                        
+                        <c:if test="${ requestScope.totalPrice == null and empty requestScope.totalPrice }">
+                        <td colspan="3">등록된 주문이 없습니다.</td>
+                        </c:if>
                     </tr>
                 </thead>
             </table><br>

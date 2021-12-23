@@ -594,9 +594,23 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public long selectTotalPrice(String storeName) {
+	public Map<String, Integer> selectTotalPrice(String storeName) {
 
 		return ownerDAO.selectTotalPrice(storeName);
+	}
+
+	@Override
+	public Map<String, Integer> selectDelPrice(String storeName) {
+		
+		
+		return ownerDAO.selectDelPrice(storeName);
+	}
+
+	@Override
+	public int selectPickupPrice(String storeName) {
+
+		
+		return ownerDAO.selectPickupPrice(storeName);
 	}
 
 }

@@ -1244,20 +1244,34 @@ public class OwnerController {
 		} 
 	}
 	
-	
-	@GetMapping("salesDay")
-	public void salseDay(Model model) {
-		
-	}
-	
 	@GetMapping("salesList")
 	public void salesList(Model model) {
 		
-		MemberDTO member = (MemberDTO)model.getAttribute("logiMember");
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
 		
 		String storeName = member.getCeo().getStore().getStoreName();
 		
-		long totalPrice = ownerService.selectTotalPrice(storeName); 
+		// 하루 총 매출
+		Map<String,Integer> totalPrice = ownerService.selectTotalPrice(storeName);
+		
+		System.out.println("totalPrice : " + totalPrice);
+		
+		// 배달 총 매출
+		Map<String,Integer> delPrice = ownerService.selectDelPrice(storeName);
+		
+		System.out.println("delPrice : " + delPrice);
+		
+		// 포장 총 매출
+		int pickupPrice = ownerService.selectPickupPrice(storeName);
+		
+		model.addAttribute("totalPrice",totalPrice);
+		model.addAttribute("delPrice",delPrice);
+		model.addAttribute("pickupPrice",pickupPrice);
+		
+	}
+	
+	@GetMapping("salesDay")
+	public void salseDay(Model model) {
 		
 	}
 	

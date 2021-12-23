@@ -1275,12 +1275,50 @@
        ]]>
 	</select>
 	
-	<!-- 사업자 총 매출 -->
-	<select id="selectTotalPrice" resultType="_long">
+	<!-- 사업자 하루 총 매출 -->
+	<select id="selectTotalPrice" resultType="hashMap">
 		SELECT
-		       SUM(TOTAL_PRICE)
+		       D.totalPrice
+		     , D.delcost
+		     , D.totalprice - D.delcost AS real 
+		  FROM (SELECT
+		               SUM(A.TOTAL_PRICE) as totalPrice
+		             , (B.DEL_COST * (SELECT COUNT(ORDER_CODE) 
+		                               FROM ORDER_TBL 
+		                              WHERE ORDER_TYPE ='배달' 
+		                                AND STORE_NAME = #{ storeName } 
+		                                AND TO_DATE(ORDER_COMPLETE_TIME,'yyyy-MM-dd') = TO_DATE(SYSDATE,'yyyy-MM-dd')
+		                             )) AS delCost
+		             , B.DEL_COST                
+		          FROM ORDER_TBL A
+		          JOIN STORE_TBL B ON (A.STORE_NAME = B.STORE_NAME)
+		         WHERE A.STORE_NAME = #{ storeName }
+		           AND TO_DATE(A.ORDER_COMPLETE_TIME,'yyyy-MM-dd') = TO_DATE(SYSDATE,'yyyy-MM-dd')
+		         GROUP BY B.DEL_COST)D
+	</select>
+	
+	<!-- 사업자 하루 배달 총 매출 -->
+	<select id="selectDelPrice" resultType="hashMap">
+		SELECT
+		       SUM(A.TOTAL_PRICE) AS totalPrice
+		     , SUM(A.TOTAL_PRICE) - (B.DEL_COST * COUNT(A.ORDER_CODE)) AS real
+		     , (B.DEL_COST * COUNT(A.ORDER_CODE)) AS delCost  
+		  FROM ORDER_TBL A
+		  JOIN STORE_TBL B ON (A.STORE_NAME = B.STORE_NAME)
+		 WHERE A.STORE_NAME = #{ storeName } 
+		   AND TO_DATE(A.ORDER_COMPLETE_TIME,'yyyy-MM-dd') = TO_DATE(SYSDATE,'yyyy-MM-dd')
+		   AND A.ORDER_TYPE = '배달'
+		 GROUP BY B.DEL_COST
+	</select>
+	
+	<!-- 사업자 하루 포장 총 매출 -->
+	<select id="selectPickupPrice" resultType="_int">
+		SELECT
+		       SUM(TOTAL_PRICE) as totalPrice
 		  FROM ORDER_TBL
-		 WHERE STORE_NAME = #{ storeName }
+		 WHERE ORDER_TYPE ='포장' 
+		   AND STORE_NAME = #{ storeName }
+		   AND TO_DATE(ORDER_COMPLETE_TIME,'yyyy-MM-dd') = TO_DATE(SYSDATE,'yyyy-MM-dd')
 	</select>
 	
 </mapper>
