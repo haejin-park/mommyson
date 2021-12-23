@@ -58,7 +58,7 @@ public interface UserDAO {
 	List<CartDTO> cartList(MemberDTO member);
 
 	/* 방문포장 주문리스트 저장  */
-	int insertPackageOrderList(HashMap<String, Object> insertPackage);
+	int insertPackageOrderList(Map<String, Object> map);
 	
 	int insertReport(Map<String, Integer> reportInfo);
 
@@ -80,6 +80,7 @@ public interface UserDAO {
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
 
 
 

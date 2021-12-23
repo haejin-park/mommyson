@@ -43,15 +43,16 @@
 	    				<table  style="width: 80%; margin-left:10%; text-align: center; border :1px solid black;">	    				
 	    				<tr id="tr2">
 				        <td><input type="checkbox" name="checkbox" value="${ row.totalPrice }"></td>
-				        <input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/> <!-- 사업자멤코드  -->
+						<td style="display: none"><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
+				        <td style="display: none"><input type="hidden" name="storeName" value="${ row.storeName }"/></td>
 				        <td id="storeImgTd" style="width: 18%;"><img id="storeImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
 				        <td id="sdImgTd"  style="padding-right: 12%;"><img id="sdImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
 				        <td><span id="price"><c:out value="${ row.price }"/></span></td>
 				        <td>
 				         	<div class="number">
-				           	<a href="#" id="decreaseQuantity"> - </a>
-				            <span id="numberUpDown" name="amount"><c:out value="${ row.amount }"/></span>
-				            <a href="#" id="increaseQuantity"> + </a>
+					           	<a href="#" id="decreaseQuantity"> - </a>
+					            <span id="numberUpDown" name="amount"><c:out value="${ row.amount }"/></span>
+					            <a href="#" id="increaseQuantity"> + </a>
 				        	</div>
 				        </td>
 				        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
@@ -164,29 +165,28 @@
 
 	  
   	  /* 주문번호 가지고 결제창으로 이동 */
-  	  function gopay(str) {
+	function gopay(str) {
   		  let orderList = [];
   		  let storeCode = [];
-  		  let value = "";
+  		  let storeName = [];
   		  $("input:checkbox[name='checkbox']:checked").each(function() {
   			  orderList.push($(this).val());
-  			  
-  			  value = $(this).next().val();
-  			  console.log(value)
+  			  storeCode.push($(this).parent().next().children().val());
+  			  storeName.push($(this).parent().next().children().parent().next().children().val());
   	  	
   		 });
   		 
+  		  console.log(storeCode);
   		  
 	  		  if(str == "pack") {
-	  			 console.log(memCode);s
-	  			 // location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList +"&storeCode=" + memCode;
-	  			 
-	  			 
+	  			 console.log(memCode);
+	  			   location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList +"&storeCode=" + storeCode  + "&storeName=" + storeName; 
 	  			  return true;
 	  		  } else if(str == "deli") {
 	  			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList +"&storeCode=" + memCode;
 	  			  return true;
 	  		  }
+  		  
   		  
   	  }
   	  
