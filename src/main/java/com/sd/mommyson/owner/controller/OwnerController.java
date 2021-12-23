@@ -1252,9 +1252,11 @@ public class OwnerController {
 	@GetMapping("salesList")
 	public void salesList(Model model) {
 		
-		MemberDTO member = (MemberDTO)model.getAttribute("logiMember");
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
 		
 		String storeName = member.getCeo().getStore().getStoreName();
+		
+		
 		
 		long totalPrice = ownerService.selectTotalPrice(storeName); 
 		
