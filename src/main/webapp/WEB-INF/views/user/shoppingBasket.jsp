@@ -183,7 +183,7 @@
 	  			   location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList +"&storeCode=" + storeCode  + "&storeName=" + storeName; 
 	  			  return true;
 	  		  } else if(str == "deli") {
-	  			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList +"&storeCode=" + memCode;
+	  			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList +"&storeCode=" + storeCode  + "&storeName=" + storeName; 
 	  			  return true;
 	  		  }
   		  
