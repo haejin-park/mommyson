@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -851,25 +851,61 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
+	/*
+	 * 방문포장 주문리스트 저장
+	 * @author ShinHyungi, Parkhaejin
+	 * @param orderList
+	 */
+	@GetMapping("packagePay")
+	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList,@RequestParam(value="storeCode",required = false) int storeCode ) {
+		System.out.println("storeCode : " + storeCode);
+		
+		System.out.println("orderList : " + orderList);
+		System.out.println("orderList : " + orderList[0]);
+		System.out.println("orderList : " + orderList.length);
+		
+		List<Integer> packagePayList = new ArrayList<>();
+		
+		for(int i = 0; i < orderList.length; i++) {
+			packagePayList.add(orderList[i]);
+		}
+		
+		System.out.println("packagePayList : " + packagePayList);
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+		int memCode = member.getMemCode();
+		
+		System.out.println("memCode : " + memCode);
+		
+		HashMap<String, Object> insertPackage = new HashMap<String, Object>();
+		insertPackage.put("packagePayList", packagePayList);
+		insertPackage.put("memCode", memCode);
+		
+		int result = userService.insertPackageOrderList(insertPackage);
+		System.out.println("result : " + result);
+		if (result > 0 ) {
+			System.out.println("insertPackage Service 성공");
+		} else {
+			System.out.println("insertPackage Service 실패");
+		}
+		
+		return "redirect:/user/Paymentpackage";
+	}
+	
+	@PostMapping("Paymentpackage")
+	public String Paymentpackage(Model model, HttpSession session,@RequestParam(value = "orderList", required = false) int[] orderList ) {
+		
+		return "";
+	}
 	
 	
-//	@PostMapping(value = "updateAmountAndPrice", produces = "text/plain; charset=UTF-8;")
-//	@ResponseBody
-//	public int updateAmountAndPrice(@RequestParam("totalPrice") int totalPrice, @RequestParam("stat") int amount, HttpSession session) {
-//		
-//		System.out.println("totalPrice : " + totalPrice);
-//		
-//		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
-//		System.out.println("member : " + member);
-//		
-//		CartDTO dto = new CartDTO();
-//		dto.setTotalPrice(totalPrice);
-//		dto.setAmount(amount);
-//		System.out.println("dto : " + dto);
-//		int result = userService.updateAmountAndPrice(dto);
-//		
-//		return result;
-//	}
+	/**@author ShinHyungi
+	 * @param orderList
+	 */
+	@GetMapping("deliveryPay")
+	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[]) {
+		
+	}
 	
 	private int sum(int price) {
 		// TODO Auto-generated method stub
@@ -1170,21 +1206,7 @@ public class UserController {
 		return "user/store_page";
 	}
 	
-	/**@author ShinHyungi
-	 * @param orderList
-	 */
-	@GetMapping("packagePay")
-	public void packagePay(@RequestParam(value = "orderList", required = false) int orderList[]) {
-		
-	}
 	
-	/**@author ShinHyungi
-	 * @param orderList
-	 */
-	@GetMapping("deliveryPay")
-	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[]) {
-		
-	}
 	
 	/**@author ShinHyungi
 	 * @param sdCode

@@ -658,7 +658,6 @@
               , A.PRICE 
               , A.SD_IMG 
               , A.DISCOUNT_RATE 
-              , A.MEM_CODE 
               , S.STORE_NAME
               , S.STORE_IMG
               , C.AMOUNT
@@ -674,14 +673,29 @@
           
     </select> 
 
-<!-- 	<update id="updateAmountAndPrice">
-		UPDATE CART_TBL
-		   SET AMOUNT = AMOUNT + #{ amount }, 
-			   TOTAL_PRICE = TOTAL_PRICE + #{ totalPrice }
-		 WHERE MEM_CODE = #{ memCode }
-		   AND SD_CODE = #{ sdCode }	    
-	
-	</update> -->
+	<!-- 방문포장 주문리스트 저장 -->
+	<insert id="insertPackageOrderList">
+		INSERT 
+		  INTO ORDER_TBL
+		VALUES
+		  	(
+ 		     #{ memCode }
+ 		   , #{ packagePayList.totalPrice }
+ 		   , SEQ_ORDER_CODE.NEXTVAL
+ 		   , '포장'
+ 		   , null
+ 		   , null
+ 		   , null
+ 		   , #{ packagePayList.storeName }
+ 		   , 1
+ 		   , null
+ 		   , null
+ 		   , null
+ 		   , SYSDATE
+ 		   , #{ packagePayList.memCode }	  
+ 		     )
+	</insert>
+
 
     <insert id="insertReport">
     	INSERT

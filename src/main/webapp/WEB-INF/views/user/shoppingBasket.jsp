@@ -42,19 +42,19 @@
 	    			<c:forEach var="row" items="${ map.cartList }" varStatus="i">
 	    				<table  style="width: 80%; margin-left:10%; text-align: center; border :1px solid black;">	    				
 	    				<tr id="tr2">
-				        <td><input type=checkbox name="checkbox" value="${ row.totalPrice }"></td>
-				        
+				        <td><input type="checkbox" name="checkbox" value="${ row.totalPrice }"></td>
+				        <input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/> <!-- 사업자멤코드  -->
 				        <td id="storeImgTd" style="width: 18%;"><img id="storeImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
 				        <td id="sdImgTd"  style="padding-right: 12%;"><img id="sdImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
 				        <td><span id="price"><c:out value="${ row.price }"/></span></td>
 				        <td>
 				         	<div class="number">
 				           	<a href="#" id="decreaseQuantity"> - </a>
-				            <span id="numberUpDown"><c:out value="${ row.amount }"/></span>
+				            <span id="numberUpDown" name="amount"><c:out value="${ row.amount }"/></span>
 				            <a href="#" id="increaseQuantity"> + </a>
 				        	</div>
 				        </td>
-				        <td><span id="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
+				        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
 				      	</tr>
 				      	</table>
 			    </c:forEach> 
@@ -65,7 +65,7 @@
 	      <table id="table3">
 	        <tr>
 	          <th>총 제품 금액 합계(배달 시 배송비 별도)</th>
-	          <td id="paymentAmount"></td>
+	          <td id="paymentAmount" name="paymentAmount"></td>
 	        </tr>
 	      </table>
 	    </div>
@@ -77,6 +77,7 @@
 	   	<button id="selectDelete">선택삭제</button>		
 	 	    	
     </form>
+    
    	<button id="package" onclick="gopay('pack')">방문포장</button>
    	<button id="delivery" onclick="gopay('deli')">배달예약</button>
 	<br><br><br><br><br>
@@ -85,7 +86,52 @@
 	<script>
 
 	
-	
+	/* 수량증감에따라 totalCount 변경 */
+
+    $(function(){
+       
+	     	var stat = $('#numberUpDown').text();
+	      	var num = parseInt(stat,10);
+    	
+	    $('#decreaseQuantity').click(function(e){
+	      e.preventDefault();
+	      
+	      num--;
+	      if(num < 0){
+	      	num = 0;
+	      	
+	      }
+	      
+	      $('#numberUpDown').text(num);
+	       var price =$("#price").text();
+	       var stat = $('#numberUpDown').text();
+ 	       console.log(price); 
+		   console.log(stat);
+ 	       var totalPrice = price * stat; 
+ 	       $("#totalPrice").text(totalPrice);
+
+	    
+	    });
+	    
+	    $('#increaseQuantity').click(function(e){
+	      e.preventDefault();
+	      
+	      num++;
+	      
+	      $('#numberUpDown').text(num);
+   	       var price =$("#price").text();
+	       var stat = $('#numberUpDown').text();
+ 	       console.log(price); 
+		   console.log(stat);
+ 	       var totalPrice = price * stat; 
+ 	       $("#totalPrice").text(totalPrice);
+   	
+	      
+	  });
+	    
+	    
+	    
+	});  
 	
 	  /* 전체 체크, 해제 */
 	  $("#all").click(function(){
@@ -114,70 +160,36 @@
 	        
 		});
 	  
-	  /* 주문번호 가지고 결제창으로 이동 */
-	  function gopay(str) {
-		  let orderList = [];
-		  $("input:checkbox[name='checkbox']:checked").each(function(i, ival) {
-			  orderList.push($(this).val());
-	  	  });
-		  
-		  if(str == "pack") {
-			  location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList;
-		  } else if(str == "deli") {
-			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList;
-		  }
-	  }
-	  
 
-	
-	/* 수량증감에따라 totalCount 변경 */
 
-        $(function(){
-           
-  	     	var stat = $('#numberUpDown').text();
-  	      	var num = parseInt(stat,10);
-        	
-    	    $('#decreaseQuantity').click(function(e){
-    	      e.preventDefault();
-    	      
-    	      num--;
-    	      if(num < 0){
-    	      	num = 0;
-    	      	
-    	      }
-    	      
-    	      $('#numberUpDown').text(num);
-    	       var price =$("#price").text();
-    	       var stat = $('#numberUpDown').text();
-     	       console.log(price); 
-			   console.log(stat);
-     	       var totalPrice = price * stat; 
-     	       $("#totalPrice").text(totalPrice);
-   
-    	    
-    	    });
-    	    
-    	    $('#increaseQuantity').click(function(e){
-    	      e.preventDefault();
-    	      
-    	      num++;
-    	      
-    	      $('#numberUpDown').text(num);
-	   	       var price =$("#price").text();
-		       var stat = $('#numberUpDown').text();
-	 	       console.log(price); 
-			   console.log(stat);
-	 	       var totalPrice = price * stat; 
-	 	       $("#totalPrice").text(totalPrice);
-	   	
-    	      
-    	  });
-    	    
-    	    
-    	    
-    	});   
 	  
-	
+  	  /* 주문번호 가지고 결제창으로 이동 */
+  	  function gopay(str) {
+  		  let orderList = [];
+  		  let storeCode = [];
+  		  let value = "";
+  		  $("input:checkbox[name='checkbox']:checked").each(function() {
+  			  orderList.push($(this).val());
+  			  
+  			  value = $(this).next().val();
+  			  console.log(value)
+  	  	
+  		 });
+  		 
+  		  
+	  		  if(str == "pack") {
+	  			 console.log(memCode);s
+	  			 // location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList +"&storeCode=" + memCode;
+	  			 
+	  			 
+	  			  return true;
+	  		  } else if(str == "deli") {
+	  			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList +"&storeCode=" + memCode;
+	  			  return true;
+	  		  }
+  		  
+  	  }
+  	  
 
 	</script>
 

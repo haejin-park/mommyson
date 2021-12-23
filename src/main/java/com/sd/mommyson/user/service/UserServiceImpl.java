@@ -178,13 +178,12 @@ public class UserServiceImpl implements UserService{
 		return userDAO.cartList(member);
 	}
 
-
-	/* 장바구니 상품 수량 변경 update */
-//	@Override
-//	public int updateAmountAndPrice(CartDTO dto) {
-//		// TODO Auto-generated method stub
-//		return userDAO.updateAmountAndPrice(dto);
-//	}
+	
+	/* 방문포장 주문리스트 저장 */
+	@Override
+	public int insertPackageOrderList(HashMap<String, Object> insertPackage) {
+		return userDAO.insertPackageOrderList(insertPackage);		
+	}
 
 
 	@Override
