@@ -676,4 +676,9 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerDAO.selectTaxAdjustTotalCount(searchMap);
 	}
 
+	@Override
+	public List<TaxAdjustDTO> selectTaxList(List<String> list) {
+		return managerDAO.selectTaxList(list);
+	}
+
 }

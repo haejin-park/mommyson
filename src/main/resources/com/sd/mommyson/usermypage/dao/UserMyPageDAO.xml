@@ -104,7 +104,7 @@
     </select>
     
     <!-- 나의 주문내역  -->
-    <resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="myOrderResultMap">
+    <resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="myOrderResultMap"><!-- 필요한가?? -->
     	<id property="orderCode" column="ORDER_CODE"/>
     	<result property="memCode" column="MEM_CODE"/>
     	<result property="totalPrice" column="TOTAL_PRICE"/>
@@ -352,7 +352,7 @@
 		WHERE A.MEM_CODE = #{ searchCondition }
 		  AND A.IS_DELETED = 'N'
 		  <if test="searchValue != null">
-		  AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
+		  AND B.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
 		  </if>
 	</select>
 	
@@ -393,7 +393,7 @@
 				  WHERE C.MEM_CODE = #{ searchCondition }
 				  	AND C.IS_DELETED = 'N'
 				  <if test="searchValue != null">
-				    AND D.STORE_NAME = #{ searchValue }
+				    AND D.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 				  </if>
 				  	ORDER BY D.ORDER_RUQEUST_TIME DESC
 					)B
@@ -459,8 +459,60 @@
 	 	 WHERE B.STORE_CODE = (SELECT C.STORE_CODE FROM ORDER_TBL C WHERE C.ORDER_CODE = #{ orderCode })
 	</select>
 	 <!-- 리뷰삭제  -->
-	 <update id="">
+	 <update id="updateDelReview">
+		 UPDATE
+		 		REVIEW_TBL A
+		 	SET A.IS_DELETED = 'Y'
+		  WHERE	A.RV_CODE = #{ rvCodeDel }	
 	 </update>
+	 
+	 <!-- 리뷰 수정 페이지 출력 -->
+	 <select id="selectReviewInfo" parameterType="_int" resultMap="reviewResultMap">
+	 	SELECT
+	 		   A.MEM_CODE
+			 , A.ORDER_CODE
+			 , A.RV_IMG
+			 , A.RV_CONTENT
+			 , A.RV_GRADE
+			 , A.RV_CODE
+			 , A.MEM_ID
+			 , A.IS_DELETED
+	 	  FROM REVIEW_TBL A
+	 	 WHERE A.RV_CODE = #{ rvCode }	 
+	 </select>
+	 
+	 <resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap">
+	 	<id property="memCode" column="MEM_CODE"/>
+	 	<result property="email" column="EMAIL"/>
+	 	<result property="memPwd" column="MEM_PWD"/>
+	 	<result property="address" column="ADDRESS"/>
+	 	<result property="postCode" column="POST_CODE"/>
+	 	<result property="dAddress" column="D_ADDRESS"/>
+	 	<result property="phone" column="PHONE"/>
+	 	<result property="memType" column="MEM_TYPE"/>
+	 	<result property="locationCode" column="LOCATION_CODE"/>
+	 	<result property="nickname" column="NICKNAME"/>
+	 	<result property="memId" column="MEM_ID"/>
+	 	<result property="enrollDate" column="ENROLL_DATE"/>
+	 	<result property="isDeleted" column="IS_DELETED"/>
+	 </resultMap>
+	 
+	 <!-- 회원탈퇴 -->
+	 <!-- 현재 유저 신원확인 -->
+	 <select id="selectEncPwd" resultType="String">
+		 SELECT
+		 		A.MEM_PWD
+		  FROM MEMBER_TBL A
+		 WHERE A.MEM_ID = #{ memId }	
+	 </select>
+	 
+	 <update id="updateSignOut">
+	 	UPDATE
+	 		   MEMBER_TBL A
+	 	   SET A.IS_DELETED = 'Y'
+	 	 WHERE MEM_ID = #{ memId } 
+	 </update>
+	 
 	 
 </mapper>
     

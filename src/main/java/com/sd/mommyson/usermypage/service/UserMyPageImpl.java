@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
@@ -20,10 +22,12 @@ import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 public class UserMyPageImpl implements UserMyPageService {
 	
 	private UserMyPageDAO userMyPageDAO;
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserMyPageImpl( UserMyPageDAO userMyPageDAO) {
+	public UserMyPageImpl( UserMyPageDAO userMyPageDAO, BCryptPasswordEncoder passwordEncoder) {
 		this.userMyPageDAO = userMyPageDAO;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -124,5 +128,47 @@ public class UserMyPageImpl implements UserMyPageService {
 		int result = userMyPageDAO.updateOrderCancel(orderNo);
 		return result;
 	}
+
+	@Override
+	public int updateDelReview(int rvCodeDel) {
+		int result = userMyPageDAO.updateDelReview(rvCodeDel);
+		return result;
+	}
+
+	@Override
+	public int updateSignOut(MemberDTO memberInfo) {
+
+		int memberConfirmation = 0;
+		if(passwordEncoder.matches(memberInfo.getMemPwd(), userMyPageDAO.selectEncPwd(memberInfo))) {
+			
+			memberConfirmation = userMyPageDAO.updateSignOut(memberInfo);
+		}
+		return memberConfirmation;
+	}
+
+	@Override
+	public boolean selectMatchUserInfo(MemberDTO memberInfo) {
+		
+		boolean confirmationResult;
+		
+		if(passwordEncoder.matches(memberInfo.getMemPwd(), userMyPageDAO.selectEncPwd(memberInfo))) {
+			
+			confirmationResult = true;
+		} else {
+			confirmationResult = false;
+		}
+		
+		return confirmationResult;
+	}
+
+	@Override
+	public ReviewDTO selectReviewInfo(int rvCode) {
+		
+		ReviewDTO reviewInfo = userMyPageDAO.selectReviewInfo(rvCode);
+		
+		return reviewInfo;
+	}
+
+	
 
 }

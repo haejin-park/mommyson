@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +15,7 @@ import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dao.UserDAO;
 import com.sd.mommyson.user.dto.CartDTO;
+import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
@@ -228,8 +227,64 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	@Override
+	public int registMtmConsultingText(Map<String, Object> mtmConsulting) {
+
+		int result = userDAO.registMtmConsultingText(mtmConsulting);
+		return result;
+	}
 
 
+	@Override
+	public int registMtmConFile(Map<String, Object> fileInfo) {
+		int fileUploadResult = userDAO.registMtmConFile(fileInfo);
+		return fileUploadResult;
+	}
 
-	
+	@Override
+	public int selectMtmTotalCount(Map<String, String> searchMap) {
+		int totalCount = userDAO.selectMtmTotalCount(searchMap);
+		return totalCount;
+	}
+
+	@Override
+	public List<PostDTO> selectMtmConsulting(SelectCriteria selectCriteria) {
+		
+		List<PostDTO> mtmConsultingSelect = userDAO.selectMtmConsulting(selectCriteria);
+		
+		return mtmConsultingSelect;
+	}
+
+
+	@Override
+	public PostDTO selectConsultingCon(Map<String, Object> searchMap) {
+
+		PostDTO consultingCon = userDAO.selectConsultingCon(searchMap);
+		return consultingCon;
+	}
+
+
+	@Override
+	public List<FileDTO> selectConsumerImg(int postNo) {
+		List<FileDTO> userFileImg = userDAO.selectConsumerImg(postNo);
+		return userFileImg;
+	}
+
+
+	@Override
+	public List<FileDTO> selectManagerImg(int postNo) {
+		List<FileDTO> managerFileImg = userDAO.selectManagerImg(postNo);
+		return managerFileImg;
+	}
+
+
+	@Override
+	public int updateDelConsulting(int postNo) {
+		
+		int delResultdelResult = userDAO.updateDelConsulting(postNo);
+		
+		return delResultdelResult;
+	}
+
+
 }

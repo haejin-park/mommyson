@@ -11,6 +11,7 @@ import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
+import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserDAO {
@@ -81,13 +82,21 @@ public interface UserDAO {
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
 
+	int registMtmConsultingText(Map<String, Object> mtmConsulting);
 
+	int registMtmConFile(Map<String, Object> fileInfo);
+
+	int selectMtmTotalCount(Map<String, String> searchMap);
 	
+	List<PostDTO> selectMtmConsulting(SelectCriteria selectCriteria);
 
+	PostDTO selectConsultingCon(Map<String, Object> searchMap);
 
+	List<FileDTO> selectConsumerImg(int postNo);
 
+	List<FileDTO> selectManagerImg(int postNo);
 
-	
+	int updateDelConsulting(int postNo);
 
 
 }

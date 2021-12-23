@@ -1,9 +1,11 @@
 package com.sd.mommyson.manager.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,21 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -1960,4 +1977,170 @@ public class ManagerController {
 	/* 중개이용료 리스트 */
 	@GetMapping("taxDetailAdjustment")
 	public void taxDetailAdjustment() {}
+	
+	@PostMapping(value = "excel", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String excel(@RequestParam("codeList[]") String[] codeList) {
+		
+		String msg = "";
+		List<String> list = new ArrayList<String>();
+		for(String b : codeList) {
+			list.add(b);
+		}
+		
+		List<TaxAdjustDTO> taxList = managerService.selectTaxList(list);
+		System.out.println(taxList);
+		
+		// 엑셀 변환
+		//.xls 확장자 지원
+		HSSFWorkbook wb = null;
+		HSSFSheet sheet = null;
+		Row row = null;
+		Cell cell = null;
+		
+		//.xlsx 확장자 지원
+		XSSFWorkbook xssfWb = null; // .xlsx
+		XSSFSheet xssfSheet = null; // .xlsx
+		XSSFRow xssfRow = null; // .xlsx
+		XSSFCell xssfCell = null;// .xlsx
+		
+		try {
+			int rowNo = 0; // 행 갯수 
+			// 워크북 생성
+			xssfWb = new XSSFWorkbook();
+			xssfSheet = xssfWb.createSheet("전자세금계산서"); // 워크시트 이름
+			
+			//헤더용 폰트 스타일
+			XSSFFont font = xssfWb.createFont();
+			font.setFontName(HSSFFont.FONT_ARIAL); //폰트스타일
+			font.setFontHeightInPoints((short)14); //폰트크기
+			font.setBold(true); //Bold 유무
+			
+			//테이블 타이틀 스타일
+			CellStyle cellStyle_Title = xssfWb.createCellStyle();
+			
+			// 중간 컬럼
+			xssfSheet.setColumnWidth(3, (xssfSheet.getColumnWidth(3))+(short)2048); 
+			xssfSheet.setColumnWidth(4, (xssfSheet.getColumnWidth(4))+(short)2048);
+			xssfSheet.setColumnWidth(5, (xssfSheet.getColumnWidth(5))+(short)2048);
+			xssfSheet.setColumnWidth(8, (xssfSheet.getColumnWidth(8))+(short)2048);
+			xssfSheet.setColumnWidth(9, (xssfSheet.getColumnWidth(9))+(short)2048);
+			xssfSheet.setColumnWidth(12, (xssfSheet.getColumnWidth(12))+(short)2048);
+			
+			// 큰 컬럼
+			xssfSheet.setColumnWidth(1, (xssfSheet.getColumnWidth(1))+(short)4096); 
+			xssfSheet.setColumnWidth(7, (xssfSheet.getColumnWidth(7))+(short)4096); 
+			xssfSheet.setColumnWidth(10, (xssfSheet.getColumnWidth(10))+(short)4096); 
+			xssfSheet.setColumnWidth(11, (xssfSheet.getColumnWidth(11))+(short)4096); 
+			
+			cellStyle_Title.setFont(font); // cellStle에 font를 적용
+			cellStyle_Title.setAlignment(HorizontalAlignment.CENTER); // 정렬
+			
+			//셀병합
+			xssfSheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 8)); //첫행, 마지막행, 첫열, 마지막열( 0번째 행의 0~8번째 컬럼을 병합한다)
+			//타이틀 생성
+			xssfRow = xssfSheet.createRow(rowNo++); //행 객체 추가
+			xssfCell = xssfRow.createCell((short) 0); // 추가한 행에 셀 객체 추가
+			xssfCell.setCellStyle(cellStyle_Title); // 셀에 스타일 지정
+			xssfCell.setCellValue("전자세금계산서"); // 데이터 입력
+			
+			xssfRow = xssfSheet.createRow(rowNo++);  // 빈행 추가
+			
+			CellStyle cellStyle_Body = xssfWb.createCellStyle(); 
+			cellStyle_Body.setAlignment(HorizontalAlignment.CENTER); 
+
+			//테이블 스타일 설정
+			CellStyle cellStyle_Table_Center = xssfWb.createCellStyle();
+			cellStyle_Table_Center.setBorderTop(BorderStyle.THIN); //테두리 위쪽
+			cellStyle_Table_Center.setBorderBottom(BorderStyle.THIN); //테두리 아래쪽
+			cellStyle_Table_Center.setBorderLeft(BorderStyle.THIN); //테두리 왼쪽
+			cellStyle_Table_Center.setBorderRight(BorderStyle.THIN); //테두리 오른쪽
+			cellStyle_Table_Center.setAlignment(HorizontalAlignment.CENTER);
+			cellStyle_Table_Center.setFillForegroundColor(HSSFColor.AQUA.index);
+			
+			xssfRow = xssfSheet.createRow(rowNo++);
+			xssfCell = xssfRow.createCell((short) 0);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("전자(세금)계산서 종류"
+					+ "\n\r(01 일반, 02 명세용)");
+			xssfCell = xssfRow.createCell((short) 1);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("작성일자");
+			xssfCell = xssfRow.createCell((short) 2);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급자 등록번호"
+					+ "\n\r('-' 없이 입력)");
+			xssfCell = xssfRow.createCell((short) 3);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급자"
+					+ "\n\r종사업장번호");
+			xssfCell = xssfRow.createCell((short) 4);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급자 상호");
+			xssfCell = xssfRow.createCell((short) 5);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급자 성명");
+			xssfCell = xssfRow.createCell((short) 6);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급자 사업장주소");
+			xssfCell = xssfRow.createCell((short) 7);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급자 업태");
+			xssfCell = xssfRow.createCell((short) 8);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급자 이메일");
+			xssfCell = xssfRow.createCell((short) 8);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급받는자 등록번호"
+					+ "\n\r('-'없이 입력)");
+			xssfCell = xssfRow.createCell((short) 8);
+			xssfCell.setCellStyle(cellStyle_Table_Center);
+			xssfCell.setCellValue("공급받는자"
+					+ "\n\r종사업장번호");
+			
+			// 로우 생성
+			SimpleDateFormat sf = new SimpleDateFormat("yy/MM/dd");
+			Date date = new Date(System.currentTimeMillis());
+			String today = sf.format(date);
+			for(int i = 0; i < taxList.size(); i++) {
+				xssfSheet.addMergedRegion(new CellRangeAddress(rowNo, rowNo, 0, 1)); //첫행,마지막행,첫열,마지막열
+				xssfRow = xssfSheet.createRow(rowNo++); //헤더 01
+				xssfCell = xssfRow.createCell((short) 1);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(today);
+				xssfCell = xssfRow.createCell((short) 2);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getStoreNo());
+				xssfCell = xssfRow.createCell((short) 4);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getStoreName());
+				xssfCell = xssfRow.createCell((short) 5);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getCeoName());
+				xssfCell = xssfRow.createCell((short) 6);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getAddress());
+			}
+			
+			
+			String localFile = "C:\\download\\" + "전자세금계산서_" + today + ".xlsx";
+			
+			File file = new File(localFile);
+			FileOutputStream fos = null;
+			fos = new FileOutputStream(file);
+			xssfWb.write(fos);
+
+			if (xssfWb != null)	xssfWb.close();
+			if (fos != null) fos.close();
+			
+			//ctx.put("FILENAME", "입고상세출력_"+ mapList.get(0).get("PRINT_DATE"));
+			//if(file != null) file.deleteOnExit();
+		} catch(Exception e) {
+        	
+		} finally {
+			
+	    }
+		
+		return msg;
+	}
 }

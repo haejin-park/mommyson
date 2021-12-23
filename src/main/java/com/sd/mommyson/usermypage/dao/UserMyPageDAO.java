@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
@@ -43,5 +44,13 @@ public interface UserMyPageDAO {
 	List<HashMap<String, String>> selectMySdInfo(int userCode);
 
 	int updateOrderCancel(int orderNo);
+
+	int updateDelReview(int rvCodeDel);
+
+	String selectEncPwd(MemberDTO memberInfo);
+
+	int updateSignOut(MemberDTO memberInfo);
+
+	ReviewDTO selectReviewInfo(int rvCode);
 
 }

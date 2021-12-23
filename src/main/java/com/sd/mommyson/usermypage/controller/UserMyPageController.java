@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +22,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
@@ -38,14 +42,17 @@ import com.sd.mommyson.usermypage.service.UserMyPageService;
 
 @Controller
 @RequestMapping("/userMyPage/*")
+@SessionAttributes("loginMember")
 public class UserMyPageController {
 //양윤제
 	
 	private UserMyPageService userMyPageService;
+	private BCryptPasswordEncoder passwordEncorder;
 	
 	@Autowired
-	public UserMyPageController(UserMyPageService userMyPageService) {
+	public UserMyPageController(UserMyPageService userMyPageService, BCryptPasswordEncoder passwordEncorder) {
 		this.userMyPageService = userMyPageService;
+		this.passwordEncorder = passwordEncorder;
 	}
 	
 	/*주문내역*/
@@ -156,20 +163,74 @@ public class UserMyPageController {
 		
 	}
 	
-	/*개인정보변경*/
+	/*개인정보변경 신원확인*/
 	@GetMapping("userInfoChange")
-	public String userInfoChange( ) {
+	public String userInfoChange(HttpSession session) {
 		
 		
-		return "user_mypage/userChageUserInfo";
+		return "user_mypage/userChangeUserInfo1";
 	}
 	
-	/*회원탈퇴*/
+	/* 신원확인 프로세스 진입*/
+	@PostMapping(value = "userConfirmation")
+	@ResponseBody
+	public boolean signOutConfirmation(@ModelAttribute MemberDTO memberInfo, Model mv, HttpSession session) {
+			
+		System.out.println("사용자 신원확인 과정진입");
+		boolean confirmationResult = userMyPageService.selectMatchUserInfo(memberInfo);
+		
+		String message = "";
+
+		message = "" + confirmationResult;
+		System.out.println("message : " +  confirmationResult);
+			
+		
+		return confirmationResult; 
+	}
+	
+	/* 개인정보 변경 페이지 진입*/
+	@GetMapping("userInfoChange2")
+	public String userInfoChange2(HttpSession session, Model mv) {
+		
+		System.out.println("개인정보 변경 본 페이지 진입");
+		//현재 사용자 정보
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println("현재 사용자 정보 : " + memberInfo);
+		
+		
+		mv.addAttribute("memberInfo", memberInfo);
+	
+		
+		
+		
+		return "user_mypage/userChangeUserInfo2";
+	}
+	
+	/*회원탈퇴 페이지 이동*/
 	@GetMapping("userSignOut1")
 	public String userSingOut1( ) {
 		
 		
 		return "user_mypage/userSignOut1";
+	}
+	
+	
+	/*탈퇴처리과정*/
+	@PostMapping(value="useSignOutConfirmation", produces="text/plain; charset=UTF-8")
+	@ResponseBody
+	public String signOutConfirmation(@ModelAttribute MemberDTO memberInfo, Model mv, SessionStatus status) {
+		System.out.println("탈퇴처리과정진입");
+		int result = userMyPageService.updateSignOut(memberInfo);
+		
+		String message = "";
+
+		message = "" + result;
+		System.out.println("message : " +  message);
+		
+		if(result > 0) {
+			status.setComplete();
+		}
+	  return message;
 	}
 	
 	/*쿠폰함*/
@@ -463,12 +524,42 @@ public class UserMyPageController {
 		return "user_mypage/userReview";
 	}
 
-	/*리뷰 수정*/
+	/* 리뷰 수정페이지 출력 */
+	@GetMapping("amendmentReview")
+	public String amendmentReview(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model mv){
+		
+		String reviewCode = request.getParameter("rvCode");
+		System.out.println("reviewCode : " + reviewCode);
+		int rvCode = Integer.parseInt(reviewCode);
+		
+		ReviewDTO reviewInfo = userMyPageService.selectReviewInfo(rvCode);
+		
+		System.out.println("review 정보 : " + reviewInfo);
+		
+		mv.addAttribute("reviewInfo", reviewInfo);
+		
+		return "user_mypage/review_change";
+	}
+	
 	/*리뷰 삭제*/
 	@PostMapping("delReview")
-	public int deleteReview() {
+	public void deleteReview(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		return 0;
+		String reviewDelInfo = request.getParameter("rvCode");
+		int rvCodeDel = Integer.parseInt(reviewDelInfo);
+		System.out.println("리뷰 삭제 번호 " +rvCodeDel);
+		
+		int result = userMyPageService.updateDelReview(rvCodeDel);
+		
+		response.setContentType("text/plain; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		if(result >0 ) {
+			out.print("리뷰가 삭제 되었습니다.");
+		} else {
+			out.print("리뷰 삭제에 실패했습니다. 관리자에게 문의 하세요");
+		}
+		
+		return;
 	}
 	
 	/**@author ShinHyungi
