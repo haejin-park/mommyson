@@ -2119,7 +2119,7 @@ public class ManagerController {
 				xssfCell.setCellValue(taxList.get(i).getCeoName());
 				xssfCell = xssfRow.createCell((short) 6);
 				xssfCell.setCellStyle(cellStyle_Body);
-				xssfCell.setCellValue(taxList.get(i).get);
+				xssfCell.setCellValue(taxList.get(i).getAddress());
 			}
 			
 			
