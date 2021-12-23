@@ -1283,4 +1283,19 @@
 		 WHERE STORE_NAME = #{ storeName }
 	</select>
 	
+	<!-- 회원탈퇴 비밀번호 셀렉트 -->
+	<select id="selectEncPwd" resultType="String">
+		SELECT
+			   MEM_PWD
+		  FROM MEMBER_TBL
+		 WHERE MEM_CODE = #{ memCode }
+	</select>
+	
+	<!-- 회원탈퇴시 업데이트 -->
+	<update id="updateDeleteYN">
+		UPDATE MEMBER_TBL
+		   SET IS_DELETED = 'Y'
+		 WHERE MEM_CODE = #{ memCode }
+	</update>
+	
 </mapper>

@@ -1314,4 +1314,28 @@ public class OwnerController {
 		
 	}
 	
+	@PostMapping(value="ownerQuitGo", produces="text/plain; charset=UTF-8")
+	@ResponseBody
+	public String ownerQuitGo(@ModelAttribute("loginMember") MemberDTO member ,Model model, @RequestParam("memPwd") String memPwd) throws JsonProcessingException {
+		
+		int memCode = member.getMemCode();
+		
+		System.out.println("탈퇴갑니다");
+		
+		boolean originPwd = ownerService.selectOriginPwd(memCode,memPwd);
+		
+		int result = 0;
+		
+		if(originPwd == true) {
+			result = 1;
+		} else {
+			result = 0;
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		return mapper.writeValueAsString(result);
+		
+	}
+	
 }

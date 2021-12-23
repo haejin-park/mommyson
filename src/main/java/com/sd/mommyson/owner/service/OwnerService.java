@@ -123,4 +123,6 @@ public interface OwnerService {
 
 	public long selectTotalPrice(String storeName);
 
+	public boolean selectOriginPwd(int memCode, String memPwd);
+
 }

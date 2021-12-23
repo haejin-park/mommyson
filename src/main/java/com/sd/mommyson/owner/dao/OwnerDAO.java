@@ -133,5 +133,9 @@ public interface OwnerDAO {
 	public int removeDcs(int sdCode);
 
 	public long selectTotalPrice(String storeName);
+	
+	public int updateDeleteYN(int memCode);
+
+	public String selectEncPwd(int memCode);
 
 }
