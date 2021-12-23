@@ -78,7 +78,7 @@
         </table>
     <br><br>
     <div class="pay">
-        <p style="margin-left: 20px; font-weight: 700;">구매조건 확인 및 결제대행 서비스 약관 동의 &nbsp;&nbsp;<button style="border: none; background: 0;" id="btn1">보기</button></p>
+        <p style="font-weight: 700;">구매조건 확인 및 결제대행 서비스 약관 동의 &nbsp;&nbsp;<button style="border: none; background: 0;" id="btn1">보기</button></p>
         <div class="terms" id="div1">
             <span>
                 [전자금융거래 기본약관]
@@ -162,7 +162,7 @@
                 회사와 이용자간에 발생한 분쟁에 관한 관할은 민사소송법에서 정한 바에 따릅니다.</span>
                 
         </div>
-        <p  class="pay" style="margin: 50px 0 0 70px; font-weight: 700;">개인정보 수집 및 이용 동의 &nbsp;&nbsp;<button style="border: none; background: 0;" id="btn2">보기</button></p>
+        <p  class="pay" style="margin: 50px 0 0 ; font-weight: 700;">개인정보 수집 및 이용 동의 &nbsp;&nbsp;<button style="border: none; background: 0;" id="btn2">보기</button></p>
         <div class="terms" id="div2">
             <span>
                 [개인정보 수집 및 이용 동의]
@@ -269,9 +269,9 @@
                 
         </div> 
         <p style="margin: 50px 0 0 0; font-weight: 700;">위 내용을 확인하였으며, 회원 본인은 결제에 동의합니다.</p>
-        <p style="margin: 30px 0 0 140px; font-weight: 700;">동의하기 <input type="checkbox" id="check"></p>
+        <p style="margin-top : 30px;  text-align : center; font-weight: 700;">동의하기 <input type="checkbox" id="check"></p>
     </div>
-    <div style="margin: 80px 0 50px 800px;">
+    <div style="text-align: center;">
         <button class="payment">결제하기</button>
     </div>   
     
@@ -297,7 +297,7 @@
 	      	    IMP.request_pay({
 	      	    	pg : 'kakaopay',
 	      	        pay_method : 'card', //생략 가능
-	      	        merchant_uid: "${ requestScope.orderCode }" + 4, // 상점에서 관리하는 주문 번호 db에서 가져와야함
+	      	        merchant_uid: "${ requestScope.ownerInfo.memCode }" + new Date().toLocaleString(), 
 	      	        name : "${ requestScope.membership.msType }", // 상품명
 	      	        amount : totalPrice, 
 	      	        buyer_email : "${ requestScope.ownerInfo.email }",
@@ -310,7 +310,7 @@
 	      	    	
 	      	    	if( rsp.success ){
 		      	    	
-	      	    		location.href = ' ${ pageContext.servletContext.contextPath }/owner/kakaoPay?msCode=${ requestScope.membership.msCode }&msDate=${ requestScope.membership.msDate } ';
+	      	    		location.href = ' ${ pageContext.servletContext.contextPath }/owner/kakaoPay?msCode=${ requestScope.membership.msCode }&msDate=${ requestScope.membership.msDate }&msType=${ requestScope.membership.msType }&price=${ requestScope.membership.msPrice } ';
 	      	    		
 		      	    	} else {
 	      	    		//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우

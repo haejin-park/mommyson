@@ -6,7 +6,6 @@ import com.sd.mommyson.member.dto.MemberDTO;
 
 /**
  * @author junheekim
- *
  */
 public class PostDTO {
 	
@@ -22,7 +21,7 @@ public class PostDTO {
 	private int viewCnt;			// 조회수
 	private String ansContent;		// 답변 내용
 	private MemberDTO member;		
-
+	
 	public PostDTO() {
 		super();
 	}
@@ -147,5 +146,5 @@ public class PostDTO {
 				+ ", queNo=" + queNo + ", status=" + status + ", viewCnt=" + viewCnt + ", ansContent=" + ansContent
 				+ ", member=" + member + "]";
 	}
-	
+
 }

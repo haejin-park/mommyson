@@ -2,7 +2,11 @@ package com.sd.mommyson.owner.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +37,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.CpHistoryDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
 import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
@@ -44,7 +49,7 @@ import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/owner/*")
-@SessionAttributes({"loginMember","owner"})
+@SessionAttributes({"loginMember","owner","membership"})
 public class OwnerController {
 	
 	private OwnerService ownerService;
@@ -61,13 +66,51 @@ public class OwnerController {
 	
 	/* 사업자 마이페이지 메인화면 */
 	@GetMapping("ownerMain")
-	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member, Model model) {
+	public String ownerMypage(@ModelAttribute("loginMember") MemberDTO member, Model model) throws ParseException {
 		
 		MemberDTO owner = ownerService.selectOwner(member);
 		
 		System.out.println(owner);
 
 		model.addAttribute("owner", owner);
+		
+		MemberDTO members = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = members.getMemCode();
+		
+		Map<String, Object> memberShip = ownerService.selectMembershipInfo(memCode);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Calendar c1 = Calendar.getInstance(); 
+		
+		String dd = sdf.format(c1.getTime());
+		
+		java.util.Date today = sdf.parse(dd);
+		
+		String startDate = sdf.format(memberShip.get("START_DATE"));
+		String endDate = sdf.format(memberShip.get("END_DATE"));
+		
+		memberShip.put("startDate", startDate);
+		memberShip.put("endDate", endDate);
+		
+		model.addAttribute("membership",memberShip);
+		
+		List<ProductDTO> proList = ownerService.selectProdoucts(memCode);
+		
+		int status = 0;
+		
+		for(ProductDTO i : proList) {
+			
+			if(i.geteDate().before(today) && !i.getOrderableStatus().equals("X")) {
+				
+				 status += ownerService.modifyEDateStatus(i.getSdCode());
+				
+			}
+			
+		}
+		
+		System.out.println(status + "행 업데이트 성공!");
+		
 		
 		return "owner/ownerMain";
 	}
@@ -451,6 +494,9 @@ public class OwnerController {
 			System.out.println("조회실패...");
 		}
 		
+		// 알럿
+		model.addAttribute("message",model.getAttribute("message"));
+		
 		return "owner/review";	
 		
 	}
@@ -550,15 +596,43 @@ public class OwnerController {
 		System.out.println("productList : " + productList);
 		
 		if(productList != null) {
+			
 			model.addAttribute("pagination",pagenation);
 			model.addAttribute("productList", productList);
 			model.addAttribute("searchMap",searchMap);
+			
+			
 		} else {
 			System.out.println("조회실패");
 		}
 		
 	}
 
+	@PostMapping("giveCoupons")
+	public String giveCoupons(@RequestParam(value="cps",required = false) List<Integer> cpCode
+							, @RequestParam(value="chk",required = false) List<Integer> chkReview, RedirectAttributes ra) {
+		
+		if(chkReview != null && chkReview.size() > 0 && cpCode !=null && cpCode.size() > 0) {
+			
+			System.out.println("리뷰리스트드르르르를 chkR : " + chkReview);
+			System.out.println("줄 쿠폰 코드드드드드들 cps : " + cpCode);
+			
+			int registCoupon = ownerService.registCpToReview(chkReview,cpCode);
+			
+			if(registCoupon > 0 ) {
+				ra.addFlashAttribute("message","쿠폰 주기를 성공하였습니다.");
+				
+			}else {
+				ra.addFlashAttribute("message","쿠폰 주기를 실패하였습니다.");
+			}
+			
+		} else {
+			System.out.println("실패실패실패!!");
+		}
+		
+		return "redirect:review";
+	}
+	
 	@PostMapping("productManagement")
 	public String product(@RequestParam(value="sdCode", required = false ,defaultValue = "0") int sdCode, @RequestParam(value="deleteCode",required = false) List<Integer> deleteCode,
 			RedirectAttributes redirect) {
@@ -646,10 +720,10 @@ public class OwnerController {
 				
 				if(searchValue != null && !"".equals(searchValue)) {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
-					searchMap.put("pagenation", pagenation);
+					searchMap.put("pagination", pagenation);
 				} else {
 					pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
-					searchMap.put("pagenation", pagenation);
+					searchMap.put("pagination", pagenation);
 				}
 				
 				List<OrderDTO> orderList2 = ownerService.selectOrderList2(searchMap);
@@ -657,7 +731,7 @@ public class OwnerController {
 				System.out.println("orderList2 : " + orderList2);
 				
 				if(orderList2 != null) {
-					model.addAttribute("pagenation",pagenation);
+					model.addAttribute("pagination",pagenation);
 					model.addAttribute("orderList2", orderList2);
 					model.addAttribute("searchMap",searchMap);
 				} else {
@@ -712,11 +786,7 @@ public class OwnerController {
 		System.out.println("주문 내역 : " + orderList);
 		
 		model.addAttribute("pagination",pagination);
-		
-		/* 완료된 주문 페이지 처리 - 조건 있는 페이지 */
-		
 		model.addAttribute("orderList",orderList);
-//		model.addAttribute("orderList2",orderList2);
 		return "owner/order";
 	}
 
@@ -932,25 +1002,84 @@ public class OwnerController {
 	}
 	
 	@GetMapping("kakaoPay")
-	public String kakaoPay(Model model, @RequestParam(value="msCode") int msCode, @RequestParam(value="msDate") int msDate) {
+	public String kaakoapy(Model model, @RequestParam(value="msCode") int msCode, @RequestParam(value="msDate") int msDate, @RequestParam(value="msType") String msType, 
+			@RequestParam(value="price") String price, RedirectAttributes rd) {
 		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		String storeName = member.getCeo().getStore().getStoreName();
 		
 		System.out.println("카카오 페이로 넘겨받은 msCode : " + msCode);
 		System.out.println("카카오 페이로 넘겨받은 msDate : " + msDate);
+		System.out.println("카카오 페이로 넘겨받은 msType : " + msType);
+		System.out.println("카카오 페이로 넘겨받은 price : " + price);
+		System.out.println("사업자 이름 : " + storeName);
+
+		// 오늘 날짜 구하기
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		
-		MembershipAndStoreDTO memberShip = ownerService.selectMembershipAndStore(msCode);
+		Calendar c1 = Calendar.getInstance(); 
+		
+		String today = sdf.format(c1.getTime());
+		
+		System.out.println(today);
 		
 		
+		MembershipAndStoreDTO memberShip = ownerService.selectMembershipAndStore(memCode);
 		
-		return "/";
+		
+		Map<String, Object> info = new HashMap<String, Object>();
+		
+		info.put("msCode", msCode);
+		info.put("memCode", memCode);
+		info.put("msDate",msDate);
+		
+		Map<String, Object> successInfo = new HashMap<String, Object>();
+		successInfo.put("storeName",storeName);
+		successInfo.put("msType",msType);
+		successInfo.put("price",price);
+		successInfo.put("payDate",today);
+		
+		if(memberShip == null) {
+			
+			int insertMembership = ownerService.registMembership(info);
+			
+			if( insertMembership > 0 ) {
+				
+				rd.addFlashAttribute("successInfo",successInfo);
+				
+			} else {
+				
+				rd.addFlashAttribute("msg","결제에 실패하였습니다.");
+			}
+			
+		} else {
+			
+			info.put("dDay", memberShip.getEndDate());
+			
+			int extendMembership = ownerService.modifiyMembership(info); 
+			
+			if( extendMembership > 0 ) {
+				
+				rd.addFlashAttribute("successInfo",successInfo);
+				
+			} else {
+				
+				rd.addFlashAttribute("msg","결제에 실패하였습니다.");
+			}
+			
+		}
+		
+		return "redirect:paySuccess";
 		
 	}
 	
 	@GetMapping("paySuccess")
 	public void paySuccess(Model model) {
 		
+		model.getAttribute("successInfo");
+		
 	}
-	
 	
 	/* 판매 상품 변경 */
 	@GetMapping("modifyProduct")
@@ -1049,11 +1178,126 @@ public class OwnerController {
 		return "redirect:productManagement";
 	}
 	
+	/* 사업자 이용권 영수증 페이지 */
+	@GetMapping("receiptList")
+	public void receiptList (Model model, @RequestParam(value = "currentPage", required = false) String currentPage) {
+		
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int totalCount = ownerService.selectTotalReceipt(memCode);
+		
+		Pagination pagenation = null;
+		
+		int limit = 10;
+		int buttonAmount = 10;
+		
+		pagenation = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		map.put("pagination", pagenation);
+		map.put("memCode", memCode);
+	
+		List<Map<String, Object>> info = ownerService.selectMembershipInfoList(map);
+
+		model.addAttribute("info",info);
+		model.addAttribute("pagination",pagenation);
+			
+	}
+	
+	/* 영수증 출력 */
+	@GetMapping("receipt")
+	public void receipt(Model model, @RequestParam String payDate) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		
+		System.out.println("payDate : " + payDate);
+		
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memCode",memCode);
+		map.put("payDate",payDate);
+		
+		Map<String, Object> payInfo = ownerService.selectPayInfo(map);
+		
+		if(payInfo != null && !payInfo.isEmpty()) {
+			
+			model.addAttribute("payInfo",payInfo);
+		} 
+	}
+	
 	
 	@GetMapping("salesDay")
 	public void salseDay(Model model) {
 		
 	}
 	
+	@GetMapping("salesList")
+	public void salesList(Model model) {
+		
+	}
+	
+	// 쿠폰 발행 내역
+	@GetMapping("giveCouponLIst")
+	public void giveCouponLIst(@ModelAttribute("loginMember") MemberDTO member,  @RequestParam(value = "currentPage", required = false) String currentPage, Model model) {
+		
+		// SearchCondition 에 필요한 memCode 가져와주고
+		MemberDTO owner = ownerService.selectOwner(member);
+		int memCode = owner.getMemCode();
+		
+		System.out.println("멤버 코드 잘 오니~~~~ : " + memCode);
+		
+		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
+		// 현재 페이지
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		/* ==== 조건에 맞는 게시물 수 처리 ==== */
+		int totalCount = ownerService.selectgiveListTotalCount(memCode); // where 절에 storeName을 써야하니까 넘겨준다
+		
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		
+		Pagination pagination = null;
+		String searchCondition = String.valueOf(memCode);
+																	  					// 검색 조건이 없으니까  null 처리
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+		System.out.println("페이지 : " + pagination);
+		
+		List<CpHistoryDTO> givecpList = ownerService.selectgiveList(pagination); 
+		System.out.println("쿠폰 발행 내역 : " + givecpList);
+		
+		model.addAttribute("pagination",pagination);
+		model.addAttribute("givecpList",givecpList);
+
+	}
 	
 }

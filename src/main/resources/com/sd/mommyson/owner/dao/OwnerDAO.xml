@@ -179,6 +179,22 @@
 		<result property="msDate" column="MS_DATE"/>
 		<result property="msPrice" column="MS_PRICE"/>
 	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.MembershipAndStoreDTO" id="selectMembershipAndStoreResultMap">
+		<result property="memCode" column="MEM_CODE"/>
+		<result property="msCode" column="MS_CODE"/>
+		<result property="startDate" column="START_CODE"/>
+		<result property="endDate" column="END_DATE"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.CpHistoryDTO" id="cpHistoryResultMap">
+		<result property="cpNum" column="CP_NUM"/>
+		<result property="cpCode" column="CP_CODE"/>
+		<result property="giveDate" column="GIVE_DATE"/>
+		<result property="useStatus" column="USE_STATUS"/>
+		<result property="cpName" column="CP_NAME"/>
+    	<result property="nickName" column="NICKNAME"/>
+	</resultMap>
 		
 	<!-- 사업자 정보를 불러오는 쿼리 -->
 	<select id="selectOwner" resultMap="memberResultMap">
@@ -528,22 +544,22 @@
 		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 		  </if>
 		  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
-		  	AND EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+		  	AND EXPIRY_DATE BETWEEN #{ eDate } AND #{ eDate2 }
 		  </if>
 		  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
 		  	AND EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
 		  </if>
 		  <if test="eDate == null and eDate == '' and eDate2 != null and eDate2 != '' ">
-		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+		  	AND EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
 		  </if>
 		  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-		  	AND M_DATE IN (#{ mDate } , #{ mDate2 })
+		  	AND M_DATE BETWEEN #{ mDate } AND #{ mDate2 }
 		  </if>
 		  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
 		  	AND M_DATE <![CDATA[ <= ]]> #{ mDate }
 		  </if>
 		  <if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
-		  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
+		  	AND EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
 		  </if>
 		  <if test="status == 'Y'.toString() ">
 		  	AND ORDERABLE_STATUS = 'Y' 
@@ -584,7 +600,7 @@
 						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						  </if>
 						  <if test="eDate != null and eDate != '' and eDate2 != null and eDate2 != ''">
-						  	AND C.EXPIRY_DATE IN (#{ eDate } , #{ eDate2 })
+						  	AND C.EXPIRY_DATE BETWEEN #{ eDate } AND #{ eDate2 }
 						  </if>
 						  <if test="eDate != null and eDate != '' and eDate2 == null and eDate2 == '' ">
 						  	AND C.EXPIRY_DATE <![CDATA[ <= ]]> #{ eDate }
@@ -593,7 +609,7 @@
 						  	AND C.EXPIRY_DATE <![CDATA[ >= ]]> #{ eDate }
 						  </if>
 						  <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-						  	AND C.M_DATE IN (#{ mDate } , #{ mDate2 })
+						  	AND C.M_DATE BETWEEN #{ mDate } AND #{ mDate2 }
 						  </if>
 						  <if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
 						  	AND C.M_DATE <![CDATA[ <= ]]> #{ mDate }
@@ -656,6 +672,7 @@
 		  	AND SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 		  </if>
 		  AND DISCOUNT_RATE <![CDATA[ > ]]> 0
+		  AND ORDERABLE_STATUS = 'Y'
 		  AND MEM_CODE = #{ memCode }
 		</where>
 	</select>
@@ -688,6 +705,7 @@
 						  C.IS_DELETED = 'N' 
 						  AND C.DISCOUNT_RATE <![CDATA[ > ]]> 0
 						  AND D.DC_YN = 'Y'
+						  AND ORDERABLE_STATUS = 'Y'
 						  <if test="searchValue != null and searchValue != '' ">
 						  	AND C.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						  </if>
@@ -705,11 +723,25 @@
 		     , A.SD_NAME
 		     , A.PRICE
 		     , A.M_DATE 
+		     , A.EXPIRY_DATE
+		     , A.ORDERABLE_STATUS
 		  FROM PRODUCT_TBL A
 		 WHERE A.IS_DELETED = 'N' 
 		   AND A.MEM_CODE = #{ memCode }
 		   AND A.DISCOUNT_RATE <![CDATA[ = ]]> 0
+		   AND A.ORDERABLE_STATUS = 'Y'
 		 ORDER BY A.M_DATE DESC
+	</select>
+	
+	<!-- 유통기한이 지난 상품 가져오기 -->
+	<select id="selectProdoucts" resultMap="productResultMap">
+		SELECT 
+		       A.SD_CODE
+		     , A.EXPIRY_DATE
+		     , A.ORDERABLE_STATUS
+		  FROM PRODUCT_TBL A
+		 WHERE A.IS_DELETED = 'N' 
+		   AND A.MEM_CODE = #{ memCode }
 	</select>
 	
 	<!-- 할인 등록 쿼리문 -->
@@ -816,7 +848,8 @@
 		      , A.ORDER_TYPE
 		      , D.ORDER_STATUS
 		      , E.SD_NAME   
-		      , B.AMONT     
+		      , B.AMONT 
+		      , A.ORDER_COMPLETE_TIME    
 		  FROM ORDER_TBL A
 		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -855,37 +888,44 @@
 	 SELECT
 	 		COUNT(*)
 	   FROM ORDER_TBL A
+	   JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
+	   JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	 <where>
 			    A.STORE_NAME = #{ storeName }
 		    AND A.CODE = 3 OR A.CODE = 4
+	<if test="searchValue != null and searchValue != '' ">
+	  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
+	</if>
 	 <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-		  	AND A.ORDER_COMPLETE_TIME IN (#{ mDate } , #{ mDate2 })
+		  	AND A.ORDER_ACCEPT_TIME BETWEEN #{ mDate } AND #{ mDate2 }
 	</if>
 	<if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
-		  	AND A.ORDER_COMPLETE_TIME <![CDATA[ <= ]]> #{ mDate }
+		  	AND A.ORDER_ACCEPT_TIME <![CDATA[ <= ]]> #{ mDate }
 	</if>
 	<if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
-			AND A.ORDER_COMPLETE_TIME <![CDATA[ >= ]]> #{ mDate }
+			AND A.ORDER_ACCEPT_TIME <![CDATA[ >= ]]> #{ mDate }
 	</if>
 	 </where>
-	
 	</select>
 	
-	<!-- 주문페이지  완료된 주문 -->
+		<!-- 주문페이지  완료된 주문 -->
 	<select id="selectOrderList2" resultMap="orderResultMap">
 		SELECT
 		         G.RNUM
 		       , G.ORDER_COMPLETE_TIME
+		       , G.ORDER_ACCEPT_TIME 
                , G.ORDER_CODE
 		       , G.TOTAL_PRICE
                , G.NICKNAME
                , G.ORDER_TYPE 
                , G.ORDER_STATUS 
-               , G.SD_NAME
+               , G.SD_NAME 
                , G.AMONT 
+               , G.CODE
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_COMPLETE_TIME
+		            , F.ORDER_ACCEPT_TIME 
 	                , F.ORDER_CODE
 		            , F.TOTAL_PRICE
 	                , F.NICKNAME
@@ -893,15 +933,18 @@
                     , F.ORDER_STATUS 
                     , F.SD_NAME 
                     , F.AMONT
+                    , F.CODE 
 	            FROM (SELECT
 						        A.ORDER_COMPLETE_TIME
+						      , A.ORDER_ACCEPT_TIME  
 						      , A.ORDER_CODE
 						      , A.TOTAL_PRICE
 						      , C.NICKNAME
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
-						      , E.SD_NAME 
-						      , B.AMONT       
+						      , E.SD_NAME        
+						      , B.AMONT  
+						      , A.CODE     
 						  FROM ORDER_TBL A
 						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
@@ -909,20 +952,23 @@
 						  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	                    <where>
 		                    	    A.STORE_NAME = #{ storeName }
-			 				    AND A.CODE = 3 OR A.CODE = 4
+			 				    AND A.CODE IN (3 , 4)
 			 			<if test="searchValue != null and searchValue != '' ">
-						  		AND A.ORDER_CODE LIKE '%' ||  #{ searchValue } || '%'
+						  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						</if>
-						<if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
-							  	AND A.ORDER_COMPLETE_TIME IN (#{ mDate } , #{ mDate2 })
+						 <if test="mDate != null and mDate != '' and mDate2 != null and mDate2 != ''">
+							  	AND A.ORDER_ACCEPT_TIME BETWEEN #{ mDate } AND #{ mDate2 }
 						</if>
 						<if test="mDate != null and mDate != '' and mDate2 == null and mDate2 == '' ">
-							  	AND A.ORDER_COMPLETE_TIME <![CDATA[ <= ]]> #{ mDate }
+							  	AND A.ORDER_ACCEPT_TIME <![CDATA[ <= ]]> #{ mDate }
+						</if>
+						<if test="mDate == null and mDate == '' and mDate2 != null and mDate2 != '' ">
+								AND A.ORDER_ACCEPT_TIME <![CDATA[ >= ]]> #{ mDate }
 						</if>
 						</where>
-	                    ORDER BY A.ORDER_COMPLETE_TIME DESC ) F 
+	                    ORDER BY A.ORDER_ACCEPT_TIME DESC ) F 
 						) G
-			WHERE G.RNUM BETWEEN #{ pagenation.startRow } AND #{ pagenation.endRow }
+			WHERE G.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }
 	</select>
 	
 	<!-- 할인 삭제 쿼리문 -->
@@ -936,6 +982,13 @@
 			</foreach>
 		 </where> 
 	</update>
+	
+	<update id="removeDcs">
+			UPDATE DC_PRODUCT
+			   SET DC_YN = 'N'
+		 	 WHERE SD_CODE = #{ sdCode } 
+	</update>
+	
 	
 	<!-- 반찬 할인율 제거 쿼리문 -->
 	<update id="modifyDc">
@@ -1033,5 +1086,201 @@
 		, #{ tag }  	
 		) 
 	</insert>
+	
+	<!-- 사업자 이용권 여부 조회 쿼리문 -->
+	<select id="selectMembershipAndStore" resultMap="selectMembershipAndStoreResultMap">
+		SELECT
+			   START_DATE
+			 , END_DATE
+		  FROM MS_STORE_TBL	 
+		 WHERE MEM_CODE = #{ memCode } 
+		   AND EXTEND_YN = 'N'
+	</select>
+	
+	<!-- 이용권 등록 쿼리문 -->	
+	<insert id="registMembership">
+		INSERT 
+		  INTO MS_STORE_TBL
+		(
+		   MEM_CODE
+		 , MS_CODE
+		 , START_DATE
+		 , END_DATE
+		 , EXTEND_YN
+		 , PAY_DATE
+		 )
+		 VALUES
+		 (
+		    #{ memCode }
+		  , #{ msCode }
+		  , TO_DATE(#{ startDate },'YYYY-MM-DD')
+		  , TO_DATE(#{ endDate },'YYYY-MM-DD')
+		  , 'N'
+		  , TO_DATE(SYSDATE,'YYYY-MM-DD HH24:mi:ss')
+		 )
+	</insert>
+	
+	
+	<!-- 사업자 이용권 정보 가져오는 쿼리문 -->
+	<select id="selectMembershipInfo" resultType="hashMap">
+		SELECT
+		       A.MS_TYPE
+		     , B.START_DATE
+		     , B.END_DATE
+		  FROM MEMBERSHIP_TBL A
+		  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+		 WHERE B.MEM_CODE = #{ memCode }
+		   AND B.EXTEND_YN = 'N'
+	</select>
+	
+	<!-- 사업자 이용권 연장 여부 변경 쿼리문 -->
+	<update id="modifyExtendYn">
+		UPDATE MS_STORE_TBL 
+		   SET EXTEND_YN = 'Y'
+		 WHERE MEM_CODE = #{ memCode }   
+	</update>
+	
+	<!-- 영수증 총 갯수 구하는 쿼리문 -->
+	<select id="selectTotalReceipt" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM MEMBERSHIP_TBL A
+		  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+		  JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+		 WHERE B.MEM_CODE = #{ memCode }      
+	</select>
+
+	<!-- 사업자 영수증 출력을 위한 쿼리문 -->
+	<select id="selectMembershipInfoList" resultType="hashMap">
+		SELECT
+			   E.RNUM
+		     , E.MS_TYPE
+		     , E.MS_PRICE
+		     , E.START_DATE
+		     , E.PAY_DATE
+		     , E.STORE_NAME
+		  FROM (SELECT
+					   ROWNUM RNUM
+				     , D.MS_TYPE
+				     , D.MS_PRICE
+				     , D.START_DATE
+				     , D.PAY_DATE
+				     , D.STORE_NAME
+				  FROM (SELECT
+						       A.MS_TYPE
+						     , A.MS_PRICE
+						     , B.START_DATE
+						     , B.PAY_DATE
+						     , C.STORE_NAME
+						  FROM MEMBERSHIP_TBL A
+						  JOIN MS_STORE_TBL B ON (A.MS_CODE = B.MS_CODE)
+						  JOIN STORE_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+						 WHERE B.MEM_CODE = #{ memCode }) D ) E
+			WHERE E.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }		 
+	</select>	
+	
+	<!-- 사업자 이용권 영수증 정보 쿼리문 -->
+	<select id="selectPayInfo" resultType="hashMap">
+		SELECT
+		       A.STORE_NAME
+		     , B.STORE_NO
+		     , C.ADDRESS
+		     , C.D_ADDRESS
+		     , C.PHONE
+		     , D.PAY_DATE
+		     , E.MS_PRICE
+		  FROM STORE_TBL A 
+		  JOIN CEO_TBL B ON (A.MEM_CODE = B.MEM_CODE)
+		  JOIN MEMBER_TBL C ON (B.MEM_CODE = C.MEM_CODE)
+		  JOIN MS_STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
+		  JOIN MEMBERSHIP_TBL E ON (D.MS_CODE = E.MS_CODE)
+		 WHERE A.MEM_CODE = #{ memCode }
+		   AND TO_DATE(D.PAY_DATE,'yy-mm-dd') = #{ payDate } 
+	</select>	
+	
+	<!-- 유통기한 지난 상품 판매여부 변경 쿼리문 -->
+	<update id="modifyEDateStatus">
+		UPDATE PRODUCT_TBL
+		   SET ORDERABLE_STATUS = 'X',
+		       DISCOUNT_RATE = 0
+		 WHERE SD_CODE = #{ sdCode }   
+	</update>
+
+	<!-- 고객들에게 쿠폰 주기 -->
+	<insert id="registCpToReview">
+		INSERT
+		  INTO CP_HISTORY_TBL
+		(
+			CP_CODE
+		  , MEM_CODE
+		  , USE_STATUS
+		  , CP_NUM
+		  , GIVE_DATE
+		)
+		VALUES
+		(
+		  	#{ cpCode }
+		  , #{ review }
+		  , 'N'
+		  , SEQ_CP_NUM.NEXTVAL
+		  , default
+		)
+	</insert>
+	
+	<!-- 쿠폰 발행 내역  -->
+	<select id="selectgiveListTotalCount" resultType="_int">
+		SELECT
+		      COUNT(*)
+		 FROM CP_HISTORY_TBL A 
+	     JOIN COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
+	    WHERE B.MEM_CODE = #{ memCode }
+	</select>
+	
+	<select id="selectgiveList" resultMap="cpHistoryResultMap">
+		SELECT
+		         G.RNUM
+		       , G.CP_CODE
+		       , G.MEM_CODE
+		       , G.USE_STATUS
+		       , G.GIVE_DATE
+		       , G.NICKNAME
+		       , G.CP_NAME
+	     FROM (SELECT
+		              ROWNUM RNUM
+		            , E.CP_CODE
+			        , E.MEM_CODE
+			        , E.USE_STATUS
+			        , E.GIVE_DATE
+			        , E.NICKNAME
+			        , E.CP_NAME
+	            FROM (SELECT
+						        A.CP_CODE
+						      , A.MEM_CODE
+						      , A.USE_STATUS
+						      , A.GIVE_DATE
+						      , C.NICKNAME
+						      , D.CP_NAME
+						  FROM CP_HISTORY_TBL A 
+						  JOIN COUPON_STORE_TBL B ON (A.CP_CODE = B.CP_CODE)
+						  JOIN COUPON_TBL D ON (B.CP_CODE = D.CP_CODE) 
+						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		                 WHERE B.MEM_CODE = #{ searchCondition }
+			   	        ORDER BY A.GIVE_DATE DESC
+	                    )E
+	          <![CDATA[
+	          WHERE ROWNUM <= #{ endRow }
+	          ]]>)G
+	   <![CDATA[
+	  WHERE G.RNUM >= #{ startRow } 
+       ]]>
+	</select>
+	
+	<!-- 사업자 총 매출 -->
+	<select id="selectTotalPrice" resultType="_long">
+		SELECT
+		       SUM(TOTAL_PRICE)
+		  FROM ORDER_TBL
+		 WHERE STORE_NAME = #{ storeName }
+	</select>
 	
 </mapper>

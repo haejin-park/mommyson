@@ -36,8 +36,11 @@ public interface MemberService  {
 	/* 회원가입시 지역코드 조회 */
 	public String locationCode(String locationName);
 	
-	/* 사용자 회원가입 */
+	/* 소비자 회원가입 */
 	public int customerJoin(MemberDTO member) throws Exception;
+	
+	/* 사업자 회원가입 */
+	public int businessJoin(HashMap<String, Object> ceoRegist) throws Exception;
 	
 	/* 아이디 찾기 */
 	public String findIdCheck(MemberDTO mdto);
@@ -65,5 +68,7 @@ public interface MemberService  {
 	public int deleteNotice(int noticeCode);
 
 	public int selectCartCount(int memCode);
+
+
 
 }

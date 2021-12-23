@@ -1,15 +1,7 @@
 package com.sd.mommyson.user.controller;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,36 +11,34 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.filefilter.FalseFileFilter;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.member.dto.RTNoticeDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
 
+/**
+ * @author haejinpark
+ *
+ */
 @Controller
 //@SessionAttributes("")
 @RequestMapping("/user/*")
@@ -1090,36 +1080,93 @@ public class UserController {
 		return "user/userCustomerServiceOftenQuestionBase";
 	}
 	
-
-	
-	/**@author ShinHyungi
-	 * @return
-	 */
-	@GetMapping("cart")
-	public String cart() {
-		return "user/shoppingBasket";
-	}
-	
-	/**@author ShinHyungi
+	/**
+	 * 장바구니 상품 조회 & 상품 담기 
+	 * @author ShinHyungi, ParkHaejin
 	 * @param amount
 	 * @param sdCode
 	 * @param session
-	 * @return
+	 * @return "user/shoppingBasket"
 	 */
-	@PostMapping("cart")
-	public String addCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode, HttpSession session) {
+	@RequestMapping("insertCart")
+	public String insertCart(@RequestParam("amount") int amount, @RequestParam("sdCode") int sdCode, @RequestParam("price") int price, HttpSession session) {
+		
+		System.out.println("amount : " + amount);
+		System.out.println("sdCode : " + sdCode);
+		System.out.println("price : " + price);
+		
 		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
-		System.out.println(member);
-		Map<String, Integer> order = new HashMap<String, Integer>();
+		System.out.println("member :" + member);
+	
+		HashMap<String,Integer> order = new HashMap<String,Integer>();
 		order.put("sdCode", sdCode);
 		order.put("amount", amount);
 		order.put("memCode", member.getMemCode());
+		order.put("totalPrice", price*amount);
+		System.out.println("order : " + order);
 		
-		userService.insertShoppingBasket(order);
+		int count = userService.selectCountCart(order); 	//장바구니에 기존 상품이 있는지 조회 
+		System.out.println("count : " + count);
 		
+		if(count == 0) {
+			userService.insertCart(order); // 장바구니에 상품이 0개이면 insert  
+		} else {
+			userService.updateCart(order); // 장바구니에 상품이 0개이상이면 update 
+		}
+				
+		return "redirect:user/cart";
+	
+	}
+	
+
+	/**
+	 * @author ShinHyungi, ParkHaejin
+	 * @param model
+	 * @param session
+	 * @return "user/shoppingBasket"
+	 */
+	@GetMapping("cart")
+		public String cart(Model model,  HttpSession session) {
+			
+			MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+			System.out.println("member : " + member);
+			
+			List<CartDTO> cartList = userService.cartList(member);
+			
+			HashMap<String,Object> map = new HashMap<String,Object>();
+			map.put("cartList", cartList); 
+			System.out.println("map : " + map);
+			
+			model.addAttribute("map", map);
+			System.out.println("model : " + model);
 		return "user/shoppingBasket";
 	}
 	
+	@PostMapping(value = "updateAmountAndPrice", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public int updateAmount(@RequestParam("updateAmountAndPrice") int totalPrice, @RequestParam("stat") int amount, HttpSession session) {
+		
+		System.out.println("totalPrice : " + totalPrice);
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+		System.out.println("member : " + member);
+		
+		CartDTO dto = new CartDTO();
+		dto.setTotalPrice(totalPrice);
+		dto.setAmount(amount);
+		System.out.println("dto : " + dto);
+		int result = userService.updateAmountAndPrice(dto);
+		
+		return result;
+		
+	}
+	
+	private int sum(int price) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 	/**
 	 * @author ShinHyungi
 	 * @param mv
@@ -1564,4 +1611,6 @@ public class UserController {
 		
 		return result > 0? "삭제 완료" : "삭제 실패";
 	}
+	
+
 }

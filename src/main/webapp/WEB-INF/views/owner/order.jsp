@@ -101,12 +101,18 @@
 							<input type="hidden" name="orderCode" value="${ol.orderCode }">
 							<c:if test="${ ol.code eq 1 }">
 							<button type="submit" class="couponBtn" id="btn1" name="orderType" value="2">접수</button>
+								&nbsp;
+							<button type="submit" class="couponBtn" id="can1" name="orderType" value="3" style="background-color: #777777;">취소</button>
 							</c:if>
 							<c:if test="${ ol.code eq 2 }">
 							<button type="submit" class="couponBtn" id="btn2" name="orderType" value="4" style="background-color: #68BF6B;">완료</button>
-							</c:if>
 								&nbsp;
 							<button type="submit" class="couponBtn" id="can1" name="orderType" value="3" style="background-color: #777777;">취소</button>
+							</c:if>
+								
+							<c:if test="${ ol.code eq 3 }">
+							<h6>주문 취소</h6>
+							</c:if>
 							</form>
 							</td>
 							
@@ -116,7 +122,7 @@
 					</table>
 				</div>
 				<!-- 페이지네이션 -->
-				<div style="margin-left: 450px; position: relative; top: 400px;">
+				<div style="margin-left: 450px; position: relative; top: 200px;">
 				<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
 				</div>
 			</div>

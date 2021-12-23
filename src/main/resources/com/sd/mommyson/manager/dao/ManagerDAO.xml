@@ -790,8 +790,14 @@
    	  <result property="ansContent" column="ANS_CONTENT"/>
    	  <association property="member" resultMap="memberResultMap"/>
    </resultMap>
+   
+   <resultMap id="imgFileResultMap" type="com.sd.mommyson.manager.dto.FileDTO">
+     <id property="fileCode" column="FILE_CODE"/>
+     <result property="fileName" column="FILE_NAME"/>
+     <result property="postNo" column="POST_NO"/>
+     <result property="fileType" column="FILE_TYPE"/>
+   </resultMap>
 
-  
    <!-- 공지사항 게시글 수 조회 -->
    <select id="selectNoticeTotalCount" resultType="_int">
    	  SELECT
@@ -1090,7 +1096,7 @@
    	   <where>
    	    A.STATUS = 'N'
    	    <if test='searchValue != null'>
-   	      AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	      AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
    	    </if>
    	    <if test='searchCondition == "N"'>
    	      AND A.ANS_STATUS = 'W'
@@ -1102,7 +1108,7 @@
    	      AND A.ANS_STATUS IN ('W','Y')
    	    </if>
    	    AND B.MEM_TYPE = 'ceo'
-   	    AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	    AND A.BOARD_CODE IN('18','19','20','21','22','23')
    	   </where>
    </select>
    
@@ -1157,7 +1163,7 @@
 				      <where>
 				        A.STATUS = 'N'
 				      <if test='searchValue != null'>
-			   	        AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	        AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
 			   	      </if>
 			   	      <if test='searchCondition == "N"'>
 			   	        AND A.ANS_STATUS = 'W'
@@ -1169,7 +1175,7 @@
 			   	        AND A.ANS_STATUS IN('W','Y')
 			   	      </if>
 				        AND B.MEM_TYPE = 'ceo'
-				        AND A.BOARD_CODE IN('6','7','8','9','10','11')
+				        AND A.BOARD_CODE IN('18','19','20','21','22','23')
 				      </where>
 				      ORDER BY A.POST_DATE ASC)C
 		      <![CDATA[        
@@ -1181,6 +1187,63 @@
     	  ]]>
    </select>	
 
+   <!-- 공통 - 1:1 문의 게시글 조회 -->
+   <select id="selectQnaPost" resultMap="PostResultMap">
+     SELECT
+		    *
+	   FROM POST_TBL A
+	   JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+      WHERE A.POST_NO = #{ postNo }
+   </select>
+   
+   <!-- 사업자 - 1:1 문의 이미지 파일 조회 -->
+  <select id="selectBusinessImg" resultMap="imgFileResultMap">
+  	SELECT
+  		   *
+  	  FROM FILE_TBL A
+  	 WHERE A.POST_NO = #{ postNo }
+  	   AND A.FILE_TYPE = 'owner' 
+  </select>
+  
+  <!-- 관리자 - 1:1 문의 이미지 파일 조회 -->
+   <select id="selectAnswerImg" resultMap="imgFileResultMap">
+   	SELECT
+  	 	   *
+  	  FROM FILE_TBL A
+  	 WHERE A.POST_NO = #{ postNo }
+  	   AND A.FILE_TYPE = 'manager' 
+   </select>
+   
+    <!-- 사업자 - 1:1 문의 답변 등록-->
+   <update id="registBusinessAnswer" parameterType="hashmap">
+     UPDATE POST_TBL A
+        SET A.ANS_STATUS = 'Y',
+            A.ANS_CONTENT = #{ ansContent }
+      WHERE A.POST_NO = #{ postNo }
+    </update>
+  
+   <!-- 사업자 - 1:1 문의 파일 등록-->
+   <insert id="registBusinessFile" parameterType="hashmap">
+     INSERT INTO FILE_TBL A
+     (A.FILE_CODE, A.FILE_NAME, A.POST_NO, A.FILE_TYPE)
+     VALUES
+     (SEQ_FILE.NEXTVAL, #{ fileName }, #{ postNo }, 'manager')
+   </insert>
+
+   <!-- 사업자 - 1:1 문의 답변 파일 수정 -->
+   <update id="updateBusinessFile" parameterType="hashmap">
+    UPDATE FILE_TBL A
+       SET A.FILE_NAME = #{ fileName },
+     WHERE A.POST_NO = #{ postNo }, A.FILE_CODE = #{ fileCode }
+   </update>
+
+   <!-- 사업자 - 1:1 문의 답변 수정 -->
+   <update id="updateBusinessAnswer" parameterType="hashmap">
+    UPDATE POST_TBL A
+       SET A.ANS_CONTENT = #{ ansContent },
+     WHERE A.POST_NO = #{ postNo }
+   </update>
+
    <!-- 소비자 - 1:1문의 갯수 -->
    <select id="normalInquiryTotalCount" resultType="int">
      SELECT
@@ -1190,7 +1253,7 @@
    	   <where>
    	    A.STATUS = 'N'
    	    <if test='searchValue != null'>
-   	      AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+   	      AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
    	    </if>
    	    <if test='searchCondition == "N"'>
    	      AND A.ANS_STATUS = 'W'
@@ -1202,10 +1265,11 @@
    	      AND A.ANS_STATUS IN ('W','Y')
    	    </if>
    	      AND B.MEM_TYPE = 'user'
-   	      AND A.BOARD_CODE IN('6','7','8','9','10','11')
+   	      AND A.BOARD_CODE IN('12','13','14','15','16','17')
    	   </where>
    </select>
 
+   <!-- 소비자 - 1:1문의 리스트 -->
    <select id="selectNormalInquiry" resultMap="PostResultMap">
    	SELECT
 	    D.RNUM
@@ -1256,7 +1320,7 @@
 				      <where>
 				        A.STATUS = 'N'
 				      <if test='searchValue != null'>
-			   	        AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+			   	        AND (A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%' OR B.MEM_ID LIKE '%' ||  #{ searchValue } || '%')
 			   	      </if>
 			   	      <if test='searchCondition == "N"'>
 			   	        AND A.ANS_STATUS = 'W'
@@ -1268,7 +1332,7 @@
 			   	        AND A.ANS_STATUS IN('W','Y')
 			   	      </if>
 				        AND B.MEM_TYPE = 'user'
-				        AND A.BOARD_CODE IN('6','7','8','9','10','11')
+				        AND A.BOARD_CODE IN('12','13','14','15','16','17')
 				      </where>
 				      ORDER BY A.POST_DATE ASC)C
 		      <![CDATA[        
@@ -1288,4 +1352,110 @@
        	  AND IS_DELETED = 'N'
        	  AND MEM_TYPE = 'manager'
    </select>
+   
+   <resultMap type="com.sd.mommyson.manager.dto.TaxAdjustDTO" id="taxResultMap">
+       <id property="code" column="MS_STORE_CODE"/>
+       <result property="payDate" column="PAY_DATE"/>
+       <result property="msType" column="MS_TYPE"/>
+       <result property="msPrice" column="MS_PRICE"/>
+       <result property="ceoName" column="CEO_NAME"/>
+       <result property="storeName" column="STORE_NAME"/>
+       <result property="storeNo" column="STORE_NO"/>
+       <result property="email" column="EMAIL"/>
+       <result property="address" column="ADDEESS"/>
+   </resultMap>
+   
+   <select id="selectTaxAdjustListList" resultMap="taxResultMap">
+       SELECT
+    	       A.RNUM	
+    	     , A.MS_STORE_CODE
+			 , A.PAY_DATE
+			 , A.MS_PRICE
+			 , A.MS_TYPE
+			 , A.EMAIL
+			 , A.CEO_NAME
+			 , A.STORE_NO
+			 , A.STORE_NAME				
+		FROM (SELECT ROWNUM RNUM	
+				 , B.MS_STORE_CODE
+				 , B.PAY_DATE
+				 , B.MS_PRICE
+				 , B.MS_TYPE
+				 , B.EMAIL
+				 , B.CEO_NAME
+				 , B.STORE_NO
+				 , B.STORE_NAME
+			  FROM (SELECT
+			       	  	   A.MS_STORE_CODE
+			       	  	 , A.PAY_DATE
+			       	  	 , B.MS_PRICE
+			       	  	 , B.MS_TYPE
+			       	  	 , C.EMAIL
+			       	  	 , D.CEO_NAME
+			       	  	 , D.STORE_NO
+			       	  	 , E.STORE_NAME
+			       	  FROM MS_STORE_TBL A
+			       	  LEFT JOIN MEMBERSHIP_TBL B ON(A.MS_CODE = B.MS_CODE)
+			       	  LEFT JOIN MEMBER_TBL C ON(A.MEM_CODE = C.MEM_CODE)
+			       	  LEFT JOIN CEO_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+			       	  LEFT JOIN STORE_TBL E ON(D.MEM_CODE = E.MEM_CODE)
+                     <where>
+                     	C.IS_DELETED = 'N'
+                     	<if test="pagination.searchValue != null">
+                     	AND (D.CEO_NAME LIKE '%' || #{ pagination.searchValue } || '%'
+       	   				  OR E.STORE_NAME LIKE '%' || #{ pagination.searchValue } || '%') 
+                     	</if>
+                     	<if test="startDate != null and endDate != null">
+                     	AND	A.PAY_DATE BETWEEN #{ startDate } AND #{ endDate } 
+                     	</if>
+                     </where>
+                     ORDER BY A.PAY_DATE DESC
+						  ) B
+				  <![CDATA[
+				  WHERE ROWNUM <= #{ pagination.endRow }
+				  ]]>
+				  ) A
+	 	   WHERE A.RNUM >= #{ pagination.startRow }
+   </select>
+   
+   <select id="selectTaxAdjustTotalCount" resultType="_int">
+       SELECT
+       		  COUNT(*)
+       	 FROM MS_STORE_TBL A
+       	 JOIN MEMBER_TBL B ON(A.MEM_CODE = B.MEM_CODE)
+       	 JOIN CEO_TBL C ON(B.MEM_CODE = C.MEM_CODE)
+       	 JOIN STORE_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+       	WHERE B.IS_DELETED = 'N'
+       	<if test="searchValue != null">
+       	  AND (C.CEO_NAME LIKE '%' || #{ searchValue } || '%'
+       	   OR D.STORE_NAME LIKE '%' || #{ searchValue } || '%')
+       	</if>
+       	<if test="startDate != null and endDate != null">
+       	  AND A.PAY_DATE BETWEEN #{ startDate } AND #{ endDate }
+       	</if>
+   </select>
+   
+   <select id="selectTaxList" resultMap="taxResultMap">
+       SELECT
+       	  	  A.MS_STORE_CODE
+       	  	, A.PAY_DATE
+       	  	, B.MS_PRICE
+       	  	, B.MS_TYPE
+       	  	, C.EMAIL
+       	  	, CONCAT(CONCAT(C.ADDRESS,' '),C.D_ADDRESS) AS ADDRESS
+       	  	, D.CEO_NAME
+       	  	, D.STORE_NO
+       	  	, E.STORE_NAME
+       	 FROM MS_STORE_TBL A
+         LEFT JOIN MEMBERSHIP_TBL B ON(A.MS_CODE = B.MS_CODE)
+       	 LEFT JOIN MEMBER_TBL C ON(A.MEM_CODE = C.MEM_CODE)
+       	 LEFT JOIN CEO_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+       	 LEFT JOIN STORE_TBL E ON(D.MEM_CODE = E.MEM_CODE)
+       	WHERE MS_STORE_CODE IN (
+       	<foreach collection="list" item="code" separator=",">
+       	#{ code }
+       	</foreach>
+       	)
+   </select>
+   
 </mapper>

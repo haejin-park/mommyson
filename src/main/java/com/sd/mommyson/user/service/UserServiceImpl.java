@@ -1,9 +1,8 @@
 package com.sd.mommyson.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dao.UserDAO;
+import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -148,9 +148,41 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	/* 장바구니 상품 조회  */
 	@Override
-	public void insertShoppingBasket(Map<String, Integer> order) {
-		userDAO.insertShoppingBasket(order);
+	public int selectCountCart(HashMap<String, Integer> order) {
+		return userDAO.selectCountCart(order);
+	}
+	
+	/* 장바구니에 상품 insert  */
+	@Override
+	public void insertCart(HashMap<String, Integer> order) {
+		 userDAO.insertCart(order);
+		
+	}
+
+
+	/* 장바구니에 상품 update */
+	@Override
+	public void updateCart(HashMap<String, Integer> order) {
+		userDAO.updateCart(order);
+		
+	}
+
+	
+	/* 장바구니 목록 조회 */
+	@Override
+	public List<CartDTO> cartList(MemberDTO member) {
+		// TODO Auto-generated method stub
+		return userDAO.cartList(member);
+	}
+
+
+	/* 장바구니 상품 수량 변경 update */
+	@Override
+	public int updateAmountAndPrice(CartDTO dto) {
+		// TODO Auto-generated method stub
+		return userDAO.updateAmountAndPrice(dto);
 	}
 
 
@@ -253,7 +285,6 @@ public class UserServiceImpl implements UserService{
 		
 		return delResultdelResult;
 	}
-
 
 
 }

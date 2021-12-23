@@ -6,6 +6,7 @@ import java.util.Map;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.CouponDTO;
+import com.sd.mommyson.owner.dto.CpHistoryDTO;
 import com.sd.mommyson.owner.dto.DCProduct;
 import com.sd.mommyson.owner.dto.MembershipAndStoreDTO;
 import com.sd.mommyson.owner.dto.MembershipDTO;
@@ -96,6 +97,30 @@ public interface OwnerService {
 
 	public int updateProduct(Map<String, Object> productInfo);
 
-	public MembershipAndStoreDTO selectMembershipAndStore(int msCode);
+	public MembershipAndStoreDTO selectMembershipAndStore(int memCode);
+
+	public int registMembership(Map<String, Object> info);
+
+	public Map<String, Object> selectMembershipInfo(int memCode);
+
+	public int modifiyMembership(Map<String, Object> info);
+
+	public List<Map<String, Object>> selectMembershipInfoList(Map<String, Object> map);
+
+	public int selectTotalReceipt(int memCode);
+
+	public Map<String, Object> selectPayInfo(Map<String, Object> map);
+
+	public int modifyEDateStatus(int sdCode);
+
+	public List<ProductDTO> selectProdoucts(int memCode);
+	
+	public int registCpToReview(List<Integer> chkReview, List<Integer> cpCode);
+
+	public int selectgiveListTotalCount(int memCode);
+
+	public List<CpHistoryDTO> selectgiveList(Pagination pagination);
+
+	public long selectTotalPrice(String storeName);
 
 }

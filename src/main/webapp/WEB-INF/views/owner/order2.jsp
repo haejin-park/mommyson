@@ -12,10 +12,7 @@
 		href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
 		integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
 		crossorigin="anonymous">
-	<script
-		src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
@@ -63,19 +60,21 @@
    				</div><br><br>
    						
 				<table class="table table" style="width: 1050px;">
-					<thead style="background-color: #EDEDED;">
+					<thead style="background-color: #EDEDED; width: 1050px;">
 						<tr>
 							<th scope="col">주문 번호</th>
 							<th scope="col">주문일</th>
 							<th scope="col">고객명</th>
 							<th scope="col">주문상품</th>
+							<th scope="col">주문상태</th>
+							
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${ orderList2 }" var="ol">
 							<tr>
 								<th scope="row">${ ol.orderCode }</th>
-								<td>${ ol.completeTime }</td>
+								<td>${ ol.acceptTime }</td>
 								<td>${ ol.memberDTO.nickname }</td>
 								
 								<td  style="vertical-align: baseline ;">
@@ -96,13 +95,19 @@
 								</button>
 								</td>
 								
+								<c:if test="${ ol.code eq 4 }">
+								<td>완료</td>
+								</c:if>
+								<c:if test="${ ol.code eq 3 }">
+								<td>취소</td>
+								</c:if>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				</div>
 			</div>
-				<div style="position: relative; top: 200px;">
+				<div style="position: relative; top: 100px;">
 				<!-- 페이지네이션 -->
 				<jsp:include page="../commons/ownerPaging.jsp"/>
 				</div>
@@ -125,7 +130,7 @@
 	          <table class="table table" id="orderDetail" style="width: 700px; text-align: center;">
 	          <thead>
               <tr>
-                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 수락 일자</th>
+                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 완료 날짜</th>
                 <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 번호</th>
                 <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">고객명</th>
                 <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 유형</th>
@@ -183,7 +188,7 @@
 				
 				/* 변수 선언 부분 */
 					$tr = $("<tr>");
-					$orderTime = $("<td>").text(data.acceptTime);
+					$orderTime = $("<td>").text(data.completeTime);
 					$orderNum = $("<td>").text(data.orderInfoDTO.orderCode);
 					$customer = $("<td>").text(data.memberDTO.nickname);
 					$ordertype = $("<td>").text(data.orderType);
