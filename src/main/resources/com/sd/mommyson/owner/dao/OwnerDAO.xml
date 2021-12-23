@@ -1321,4 +1321,62 @@
 		   AND TO_DATE(ORDER_COMPLETE_TIME,'yyyy-MM-dd') = TO_DATE(SYSDATE,'yyyy-MM-dd')
 	</select>
 	
+	<!-- 사업자 일별 매출 쿼리문 -->
+	<select id="selectTotalDailySalse" resultType="_int" parameterType="hashMap">
+		SELECT 
+		      COUNT(*)
+		  FROM (SELECT
+				       TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD') AS PAYDATE
+				     , SUM(TOTAL_PRICE) AS totalPrice
+				  FROM ORDER_TBL 
+				 WHERE STORE_NAME = #{ storeName } 
+				 GROUP BY TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD')) A
+		  LEFT JOIN pickupPrice pic ON (A.payDate = pic.pickupDate)
+		  LEFT JOIN DelPrice del ON (A.payDate = del.delDate)
+		<where>
+			<if test="date1 != null and date1 != '' ">
+				A.PAYDATE BETWEEN #{ date1 } AND #{ date2 } 
+			</if>
+		</where>  
+		 ORDER BY A.PAYDATE DESC
+	</select>
+	
+	
+	<!-- 사업자 일별 매출 쿼리문 -->
+	<select id="selectDailySales" resultType="hashMap" parameterType="hashMap">
+	   SELECT     
+	       	   C.RNUM
+			 , C.PAYDATE
+		     , C.TOTALPRICE
+		     , C.PICKUPPRICE
+		     , C.DELPRICE  
+		  FROM (SELECT
+					   ROWNUM RNUM
+					 , B.PAYDATE
+				     , B.TOTALPRICE
+				     , B.PICKUPPRICE
+				     , B.DELPRICE  
+				  FROM (SELECT 
+						       A.PAYDATE
+						     , A.TOTALPRICE
+						     , pic.PICKUPPRICE
+						     , del.DELPRICE
+						  FROM (SELECT
+								       TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD') AS PAYDATE
+								     , SUM(TOTAL_PRICE) AS totalPrice
+								  FROM ORDER_TBL 
+								 WHERE STORE_NAME = #{ storeName }
+								 GROUP BY TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD')) A
+						  LEFT JOIN pickupPrice pic ON (A.PAYDATE = pic.PICKUPDATE)
+						  LEFT JOIN DelPrice del ON (A.PAYDATE = del.DELDATE)
+						  <where>
+							<if test="date1 != null and date1 != '' ">
+								A.PAYDATE BETWEEN #{ date1 } AND #{ date2 } 
+							</if>
+						  </where>
+						 ORDER BY A.PAYDATE DESC) B 
+						 ) C
+			WHERE C.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }			 
+	</select>
+	
 </mapper>

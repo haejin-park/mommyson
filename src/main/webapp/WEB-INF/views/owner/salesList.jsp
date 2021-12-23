@@ -93,7 +93,7 @@
                 </thead>
             </table><br>
             <div style="float: right;">
-            <button type="button"  id="couponBtn" style="height: 30px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salesDay'">일별 매출</button>
+            <button type="button"  id="couponBtn" style="height: 30px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salesDay?storeName=${  requestScope.storeName }'">일별 매출</button>
           	<button id="couponBtn" style="height: 30px; margin-left: 20px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salesMonth'">월별 매출</button>
             </div>
 			

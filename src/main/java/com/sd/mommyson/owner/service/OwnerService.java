@@ -127,4 +127,8 @@ public interface OwnerService {
 
 	public int selectPickupPrice(String storeName);
 
+	public List<Map<String, Object>> selectDailySales(Map<String, Object> map);
+
+	public int selectTotalDailySalse(Map<String, Object> map);
+
 }

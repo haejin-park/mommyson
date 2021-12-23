@@ -1243,6 +1243,7 @@ public class OwnerController {
 		} 
 	}
 	
+	/* 정산 메인페이지 */
 	@GetMapping("salesList")
 	public void salesList(Model model) {
 		
@@ -1266,12 +1267,57 @@ public class OwnerController {
 		model.addAttribute("totalPrice",totalPrice);
 		model.addAttribute("delPrice",delPrice);
 		model.addAttribute("pickupPrice",pickupPrice);
-		
 	}
 	
+	/* 일별 매출 */
 	@GetMapping("salesDay")
-	public void salseDay(Model model) {
+	public void salseDay(Model model, @RequestParam(value = "currentPage", required = false) String currentPage,
+			@RequestParam(value="date1",required = false) String date1, @RequestParam(value="date2",required = false) String date2) {
 		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		
+		String storeName = member.getCeo().getStore().getStoreName();
+		
+		System.out.println("storeName : " + storeName);
+		System.out.println("date1 : " + date1);
+		System.out.println("date2 : " + date2);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("storeName", storeName);
+		map.put("date1", date1);
+		map.put("date2", date2);
+		
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		int totalCount = ownerService.selectTotalDailySalse(map);
+		
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		
+		Pagination pagination = null;
+		
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		map.put("pagination", pagination);
+		System.out.println("페이지 : " + pagination);
+		
+		List<Map<String,Object>> dailySales  = ownerService.selectDailySales(map);
+		
+		model.addAttribute("dailySales",dailySales);
+		model.addAttribute("pagination",pagination);
+		model.addAttribute("map",map);
 	}
 	
 	// 쿠폰 발행 내역
