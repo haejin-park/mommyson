@@ -2111,7 +2111,7 @@ public class ManagerController {
 			}
 			
 			
-			String localFile = "C:\\download\\" + "전자세금계산서" + ".xlsx";
+			String localFile = "C:\\download\\" + "전자세금계산서_" + today + ".xlsx";
 			
 			File file = new File(localFile);
 			FileOutputStream fos = null;
