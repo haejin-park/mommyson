@@ -1362,6 +1362,7 @@
        <result property="storeName" column="STORE_NAME"/>
        <result property="storeNo" column="STORE_NO"/>
        <result property="email" column="EMAIL"/>
+       <result property="address" column="ADDEESS"/>
    </resultMap>
    
    <select id="selectTaxAdjustListList" resultMap="taxResultMap">
@@ -1441,6 +1442,7 @@
        	  	, B.MS_PRICE
        	  	, B.MS_TYPE
        	  	, C.EMAIL
+       	  	, CONCAT(CONCAT(C.ADDRESS,' '),C.D_ADDRESS) AS ADDRESS
        	  	, D.CEO_NAME
        	  	, D.STORE_NO
        	  	, E.STORE_NAME

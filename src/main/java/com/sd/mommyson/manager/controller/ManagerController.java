@@ -2102,12 +2102,24 @@ public class ManagerController {
 			SimpleDateFormat sf = new SimpleDateFormat("yy/MM/dd");
 			Date date = new Date(System.currentTimeMillis());
 			String today = sf.format(date);
-			for(TaxAdjustDTO item : taxList) {
+			for(int i = 0; i < taxList.size(); i++) {
 				xssfSheet.addMergedRegion(new CellRangeAddress(rowNo, rowNo, 0, 1)); //첫행,마지막행,첫열,마지막열
 				xssfRow = xssfSheet.createRow(rowNo++); //헤더 01
 				xssfCell = xssfRow.createCell((short) 1);
 				xssfCell.setCellStyle(cellStyle_Body);
 				xssfCell.setCellValue(today);
+				xssfCell = xssfRow.createCell((short) 2);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getStoreNo());
+				xssfCell = xssfRow.createCell((short) 4);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getStoreName());
+				xssfCell = xssfRow.createCell((short) 5);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getCeoName());
+				xssfCell = xssfRow.createCell((short) 6);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).get);
 			}
 			
 			
