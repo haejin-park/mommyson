@@ -80,4 +80,6 @@ public interface UserService {
 	List<FileDTO> selectConsumerImg(int postNo);
 
 	List<FileDTO> selectManagerImg(int postNo);
+
+	int updateDelConsulting(int postNo);
 }

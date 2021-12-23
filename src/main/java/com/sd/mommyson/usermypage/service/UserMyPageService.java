@@ -49,4 +49,10 @@ public interface UserMyPageService {
 
 	int updateSignOut(MemberDTO memberInfo);
 
+	boolean selectMatchUserInfo(MemberDTO memberInfo);
+
+	ReviewDTO selectReviewInfo(int rvCode);
+
+
+
 }

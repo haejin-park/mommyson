@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +23,12 @@
                 <div class="sub_box">
                     <h3>사진</h3>
                     <div id="review_pic">
-                        <img src="${ pageContext.servletContext.contextPath }/resources/images/no-image.png" id="review_img">
+                   		<c:if test="${ requestScope.reviewInfo.img eq null or requestScope.reviewInfo.img eq ''}">
+                        	<img src="${ pageContext.servletContext.contextPath }/resources/images/no-image.png" id="review_img">
+                   		</c:if>
+                        <c:if test="${ requestScope.reviewInfo.img ne null and requestScope.reviewInfo.img ne ''}">
+                           <img src="${ pageContext.servletContext.contextPath }/${ requestScope.reviewInfo.img }" id="review_img" style="width: 400px;">
+                       	</c:if>
                     </div>
                     <div style="padding-top: 200px;">
                         <button type="button" class="pink_btn" data-toggle="modal" data-target="#exampleModal">
@@ -115,8 +121,15 @@
                     </div>
                     <div></div>
                     <script>
+	                    /* $(document).ready(function() {
+	                        $('#star_box > button').val(${ requestScope.reviewInfo.grade });
+	                    }); */
+	                    /* $('#star_box > button').val(${ requestScope.reviewInfo.grade }); */
+	                    
+	                    
                         $('#star_box > button').on('click',function(e) {
                             // e.currentTarget.nextAll().css('color','lightgray');
+                            
                             console.log(e.currentTarget);
                             $(event.currentTarget).nextAll().children().css('color','lightgray');
                             $(event.currentTarget).children().css('color','EFCA45');
@@ -128,7 +141,7 @@
                 <div class="sub_box" style="margin-bottom: 100px;">
                     <div style="display: flex; justify-content: space-between; width: 100%;">
                         <h3>내용</h3>
-                        <textarea name="contents" id="contents" cols="90" rows="10" placeholder="리뷰를 작성해주세요!" style="resize: none; padding: 10px;"></textarea>
+                        <textarea name="contents" id="contents" cols="90" rows="10" placeholder="리뷰를 작성해주세요!" style="resize: none; padding: 10px;">${requestScope.reviewInfo.content }</textarea>
                     </div>
                 </div>
                 <div class="sub_box" style="margin-bottom: 100px; align-items: center; width: 36%;">

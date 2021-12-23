@@ -163,21 +163,57 @@ public class UserMyPageController {
 		
 	}
 	
-	/*개인정보변경*/
+	/*개인정보변경 신원확인*/
 	@GetMapping("userInfoChange")
-	public String userInfoChange( ) {
+	public String userInfoChange(HttpSession session) {
 		
 		
-		return "user_mypage/userChageUserInfo";
+		return "user_mypage/userChangeUserInfo1";
 	}
 	
-	/*회원탈퇴*/
+	/* 신원확인 프로세스 진입*/
+	@PostMapping(value = "userConfirmation")
+	@ResponseBody
+	public boolean signOutConfirmation(@ModelAttribute MemberDTO memberInfo, Model mv, HttpSession session) {
+			
+		System.out.println("사용자 신원확인 과정진입");
+		boolean confirmationResult = userMyPageService.selectMatchUserInfo(memberInfo);
+		
+		String message = "";
+
+		message = "" + confirmationResult;
+		System.out.println("message : " +  confirmationResult);
+			
+		
+		return confirmationResult; 
+	}
+	
+	/* 개인정보 변경 페이지 진입*/
+	@GetMapping("userInfoChange2")
+	public String userInfoChange2(HttpSession session, Model mv) {
+		
+		System.out.println("개인정보 변경 본 페이지 진입");
+		//현재 사용자 정보
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println("현재 사용자 정보 : " + memberInfo);
+		
+		
+		mv.addAttribute("memberInfo", memberInfo);
+	
+		
+		
+		
+		return "user_mypage/userChangeUserInfo2";
+	}
+	
+	/*회원탈퇴 페이지 이동*/
 	@GetMapping("userSignOut1")
 	public String userSingOut1( ) {
 		
 		
 		return "user_mypage/userSignOut1";
 	}
+	
 	
 	/*탈퇴처리과정*/
 	@PostMapping(value="useSignOutConfirmation", produces="text/plain; charset=UTF-8")
@@ -490,10 +526,17 @@ public class UserMyPageController {
 
 	/* 리뷰 수정페이지 출력 */
 	@GetMapping("amendmentReview")
-	public String amendmentReview(HttpSession session, HttpServletRequest request, HttpServletResponse response){
+	public String amendmentReview(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model mv){
 		
 		String reviewCode = request.getParameter("rvCode");
 		System.out.println("reviewCode : " + reviewCode);
+		int rvCode = Integer.parseInt(reviewCode);
+		
+		ReviewDTO reviewInfo = userMyPageService.selectReviewInfo(rvCode);
+		
+		System.out.println("review 정보 : " + reviewInfo);
+		
+		mv.addAttribute("reviewInfo", reviewInfo);
 		
 		return "user_mypage/review_change";
 	}

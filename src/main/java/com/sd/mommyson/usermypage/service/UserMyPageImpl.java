@@ -146,4 +146,29 @@ public class UserMyPageImpl implements UserMyPageService {
 		return memberConfirmation;
 	}
 
+	@Override
+	public boolean selectMatchUserInfo(MemberDTO memberInfo) {
+		
+		boolean confirmationResult;
+		
+		if(passwordEncoder.matches(memberInfo.getMemPwd(), userMyPageDAO.selectEncPwd(memberInfo))) {
+			
+			confirmationResult = true;
+		} else {
+			confirmationResult = false;
+		}
+		
+		return confirmationResult;
+	}
+
+	@Override
+	public ReviewDTO selectReviewInfo(int rvCode) {
+		
+		ReviewDTO reviewInfo = userMyPageDAO.selectReviewInfo(rvCode);
+		
+		return reviewInfo;
+	}
+
+	
+
 }

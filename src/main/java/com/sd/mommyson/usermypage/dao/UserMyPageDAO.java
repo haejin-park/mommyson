@@ -51,4 +51,6 @@ public interface UserMyPageDAO {
 
 	int updateSignOut(MemberDTO memberInfo);
 
+	ReviewDTO selectReviewInfo(int rvCode);
+
 }

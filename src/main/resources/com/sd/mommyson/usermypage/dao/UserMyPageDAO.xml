@@ -466,6 +466,21 @@
 		  WHERE	A.RV_CODE = #{ rvCodeDel }	
 	 </update>
 	 
+	 <!-- 리뷰 수정 페이지 출력 -->
+	 <select id="selectReviewInfo" parameterType="_int" resultMap="reviewResultMap">
+	 	SELECT
+	 		   A.MEM_CODE
+			 , A.ORDER_CODE
+			 , A.RV_IMG
+			 , A.RV_CONTENT
+			 , A.RV_GRADE
+			 , A.RV_CODE
+			 , A.MEM_ID
+			 , A.IS_DELETED
+	 	  FROM REVIEW_TBL A
+	 	 WHERE A.RV_CODE = #{ rvCode }	 
+	 </select>
+	 
 	 <resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap">
 	 	<id property="memCode" column="MEM_CODE"/>
 	 	<result property="email" column="EMAIL"/>
@@ -495,8 +510,7 @@
 	 	UPDATE
 	 		   MEMBER_TBL A
 	 	   SET A.IS_DELETED = 'Y'
-	 	 WHERE MEM_ID = #{ memId } 		
-	 
+	 	 WHERE MEM_ID = #{ memId } 
 	 </update>
 	 
 	 

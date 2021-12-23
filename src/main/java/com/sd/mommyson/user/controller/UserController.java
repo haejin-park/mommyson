@@ -361,6 +361,8 @@ public class UserController {
 			int postNo = Integer.parseInt(parameters.get("delInfo")); //삭제 할 1:1상담게시물
 			System.out.println("게시물 번호 : " + postNo);
 			
+			int delResult = userService.updateDelConsulting(postNo);
+			
 		}
 		
 		return "user/userCustomerServiceCenterNoticeSelect";

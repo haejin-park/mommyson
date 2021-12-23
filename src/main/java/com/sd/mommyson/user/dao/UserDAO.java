@@ -81,5 +81,7 @@ public interface UserDAO {
 
 	List<FileDTO> selectManagerImg(int postNo);
 
+	int updateDelConsulting(int postNo);
+
 
 }

@@ -40,22 +40,22 @@
               <label>새비밀번호 확인</label><input type="password">
             </div>
             <div class="changeUserInfo">
-              <label>이름</label><input type="text" name="name">
+              <label>이름</label><input type="text" name="name" value="${ requestScope.memberInfo.user.name }">
             </div>
             <div class="changeUserInfo">
-              <label>닉네임</label><input type="text" name="nickname">
+              <label>닉네임</label><input type="text" name="nickname" value="${ requestScope.memberInfo.nickname }">
             </div>
             <div class="changeUserInfo">
-              <label>이메일</label><input type="email" name="email">
+              <label>이메일</label><input type="email" name="email" value="${ requestScope.memberInfo.email }">
             </div>
             <div class="changeUserInfo">
-              <label>우편번호</label><input type="text" name="zipcode">
+              <label>우편번호</label><input type="text" name="zipcode" value="${ requestScope.memberInfo.postCode }">
             </div>
             <div class="changeUserInfo">
-              <label>주소</label><input type="text" name="address">
+              <label>주소</label><input type="text" name="address" value="${ requestScope.memberInfo.address }">
             </div>
             <div class="changeUserInfo">
-              <label>상세주소</label><input type="text" name="datailAdress">
+              <label>상세주소</label><input type="text" name="datailAdress" value="${ requestScope.memberInfo.dAddress }">
             </div>
             <div id="confirmInfobtn">
               <button type="submit">&nbsp;&nbsp;확 &nbsp;&nbsp; 인</button>

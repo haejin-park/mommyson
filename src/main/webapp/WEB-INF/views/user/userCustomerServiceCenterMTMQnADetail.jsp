@@ -115,6 +115,7 @@
           <br>
           <c:if test="${ requestScope.consultingCon.ansContent eq null or requestScope.consultingCon.ansContent eq '' }">
           <button id="sendQusestion">수정</button>
+          <button type="button" id="delQusestion1" value="${ requestScope.consultingCon.postNo }" onclick="delQ();">삭제</button>
           </c:if>
           </div>
         </div>
@@ -198,10 +199,12 @@
     			delInfo :delInfo
     		},
     		success : function(data) {
-				alert("정상작동");
+				alert("상담게시글이 삭제 되었습니다.");
+				location.replace("${ pageContext.servletContext.contextPath }/user/ucc/MTMConsult");
 			},
 			error : function(error) {
-				
+				alert("삭제에 실패했습니니다. 관리자에게 문의하세요.");
+				location.replace("${ pageContext.servletContext.contextPath }/user/ucc/MTMConsult");
 			}
     		
     	});

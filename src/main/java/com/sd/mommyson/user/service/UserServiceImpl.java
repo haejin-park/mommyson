@@ -246,5 +246,14 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	@Override
+	public int updateDelConsulting(int postNo) {
+		
+		int delResultdelResult = userDAO.updateDelConsulting(postNo);
+		
+		return delResultdelResult;
+	}
+
+
 
 }

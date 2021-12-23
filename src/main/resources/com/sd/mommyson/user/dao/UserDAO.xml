@@ -842,6 +842,7 @@
 			 , A.ANS_CONTENT
 		  FROM POST_TBL A	
 	     WHERE A.POST_NO = #{ postNo }
+	       AND A.STATUS = 'N'
 	       AND A.MEM_CODE = #{ memCode }	
      </select>
      
@@ -853,7 +854,7 @@
 			 , A.POST_NO
 			 , A.FILE_TYPE
 		 FROM FILE_TBL A
-		WHERE (A.FILE_TYPE = 'owner' OR A.FILE_TYPE = 'user')
+		WHERE (A.FILE_TYPE = 'owner' OR A.FILE_TYPE = 'user')	
 		  AND A.POST_NO = #{ postNo }	 
      </select>
      <!-- 관리자 첨부 이미지 파일 -->
@@ -868,5 +869,12 @@
 		  AND A.POST_NO = #{ postNo }
      </select>
      
+     <!-- 게시물 삭제 -->
+     <update id="updateDelConsulting" parameterType="_int">
+     UPDATE
+     		POST_TBL A
+        SET A.STATUS = 'Y'
+      WHERE A.POST_NO = #{ postNo }	
+     </update>
      
     </mapper>
