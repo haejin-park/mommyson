@@ -57,7 +57,6 @@
 		<association property="user" resultMap="userResultMap"/>
 		<association property="ceo" resultMap="ceoResultMap"/>
 		<association property="manager" resultMap="managerResultMap"/>
-
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.EmailCodeDTO" id="emailCodeResultMap">
@@ -105,6 +104,7 @@
 			 , A.NICKNAME
 			 , A.MEM_ID
 			 , A.ENROLL_DATE
+			 , A.IS_DELETED
 			 , B.NAME
 			 , B.REP_COUNT
 			 , C.MEM_CODE
@@ -266,6 +266,48 @@
 		SELECT * FROM DUAL
 	</insert>
 	
+	<!-- 사업자 회원가입 -->
+ 	<insert id="businessJoin" parameterType="hashmap">
+		INSERT ALL
+		  INTO MEMBER_TBL
+		VALUES
+		( 
+   		  SEQ_MEM_CODE.NEXTVAL
+		, #{ member.email }
+		, #{ member.memPwd }
+		, #{ member.address }
+		, #{ member.postCode }
+		, #{ member.dAddress }
+		, #{ member.phone }
+		, 'ceo'
+		, #{ member.locationCode }
+		, null
+		, #{ member.memId }
+		, SYSDATE	
+		, 'N'	
+		)
+		INTO CEO_TBL 
+		VALUES
+		( 
+		  SEQ_MEM_CODE.CURRVAL
+		, #{ member.ceo.account }
+		, #{ member.ceo.no }
+		, #{ member.ceo.name }
+		)
+		INTO STORE_TBL
+		VALUES
+		(
+  		  #{ store.storeName }
+		, #{ fileName }
+		, null
+		, null
+		, null
+		, null
+		, SEQ_MEM_CODE.CURRVAL
+		,'Y'
+		)
+		SELECT * FROM DUAL
+	</insert>
 	
 	<!-- 사용자 회원가입 성공하면 MEMBER_TBL 에서 가장 최근에 저장된 code 조회 -->
  	<select id="selectCode" resultType="_int">
@@ -396,6 +438,7 @@
     	  JOIN STORE_TBL B ON(A.MEM_CODE = B.MEM_CODE)
     	 WHERE A.ORDERABLE_STATUS = 'Y'
     	   AND A.IS_DELETED = 'N'
+    	   AND A.EXPIRY_DATE <![CDATA[ >=  ]]> SYSDATE
 	</select>
 	
 	<select id="selectHotKeywordList" resultMap="tagResultMap">

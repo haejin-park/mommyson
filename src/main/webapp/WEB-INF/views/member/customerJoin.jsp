@@ -38,21 +38,29 @@
             <br>
             <input type="password" class="pwd1" name="memPwd" id="pwd1" placeholder=" 비밀번호(알파벳,숫자,특수기호!@#$%^*+=- 를 혼합 4~12글자)"
              style=" height:40px;width:440px;border-radius: 9px;">
-           	<br><br>
+        	<br>
+           	<span id="pwd1CheckResult"></span>
+            <br>
             <input type="password" class="pwd2"  id="pwd2" placeholder=" 비밀번호 확인"
              style=" height:40px;width:440px;border-radius: 9px;">
            	<br>
-           	<span id="pwdCheckResult"></span>
+           	<span id="pwd2CheckResult"></span>
             <br>
             <input type="text" class="input1" name="user.name" id="name" placeholder=" 이름(한글 2글자 이상)"
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
+            <br>
+           	<span id="nameCheckResult"></span>
+            <br>
             <input type="text" class="input1" name=nickname id="nickname" placeholder=" 닉네임"
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
+            <br>
+           	<span id="nickNameCheckResult"></span>
+            <br>
             <input type="text" class="input1" name="phone" id="phone" placeholder=" 전화번호(올바른 형식으로 9~11자리 숫자)"
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
+            <br>
+           	<span id="phoneCheckResult"></span>
+            <br>
             <input type="email" class="email" name="email" id="email" placeholder=" 이메일주소(@ 포함)"
             style=" height: 40px;  width: 440px; border-radius: 9px;">
             <button type="button" name="emailChk" id="emailChk" onclick="emailChk1()" 
@@ -74,12 +82,14 @@
             <br><br>
             <input type="text" class="input1" name="address" id="address1" placeholder=" 주소" readonly
              style=" height:40px;width:440px;border-radius: 9px;">
-            <button type="button" id="button" onclick="locationCode1()">지역코드</button>
+            <button type="button" id="button" onclick="locationCode1()">'구' 저장</button>
             <input type="hidden" name="locationCode" id="locationCode" value="N" > 
             <br><br>
             <input type="text" class="input1" name="dAddress" id="address2" placeholder=" 상세주소" required
              style=" height:40px;width:440px;border-radius: 9px;">
-            <br><br>
+            <br>
+           	<span id="address2CheckResult"></span>
+            <br>
         
             <!-- 모달 띄우기 -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" id="terms" value ="N" onclick="terms1()">약관 보기</button> 
@@ -143,7 +153,7 @@
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; 
             <button type="submit" id="joinButton" style="height:40px; width:100px; border-radius: 9px; background-color:rgb(247, 170, 145);">가입하기</button>
             <button type="reset" id="goJoin">취소하기</button>
             <br><br>
@@ -151,9 +161,11 @@
         </div>
     </div>
     <jsp:include page="../commons/footer.jsp"/>
+
+		
     <script> 
-     
-     /*  회원가입 정규식 */
+    
+     	/*  회원가입 정규식 */
         function validate(){
             var id = document.getElementById("id");
             var pwd1 = document.getElementById("pwd1");
@@ -348,26 +360,28 @@
 
      
         
-        /* 비밀번호 입력 여부 확인 알럿 & 정규식 확인 */
+         /* 비밀번호 입력 여부 확인 알럿 & 정규식 확인 */
          $("#pwd1").blur(function(){
         	var inputPwd = $("#pwd1").val();
        		var regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/;
        		var result = regex.exec(inputPwd);
-
+       		 var pwd1CheckResult = $("#pwd1CheckResult");
        		
        			if(inputPwd == ""){
-       				alert("비밀번호를 입력해주세요.");
-	        		return false;
+       				pwd1CheckResult.html("비밀번호를 입력해주세요.");
+ 	        		pwd1CheckResult.attr("class", "incorrect");
+ 	        		return false;
        				
        			} else {
-       				
-       				if(result != null){
-	        			return true;
-	        			
-	        		} else {
-	        			alert("비밀번호 형식이 올바르지 않습니다. 비밀번호는 알파벳과 특수기호 !@#$%^*+=- 와 숫자를 혼합하여 4~12글자를 작성해주세요 ");
-	        			return false;
-	        		}
+       				 if(result != null){
+ 	        			pwd1CheckResult.html("");
+ 		        		return true;
+ 	        			
+ 	        		} else {
+ 	        			pwd1CheckResult.html("비밀번호 형식이 올바르지 않습니다. 비밀번호는 알파벳과 특수기호 !@#$%^*+=- 와 숫자를 혼합하여 4~12글자를 작성해주세요 ");
+ 	        			pwd1CheckResult.attr("class", "incorrect");
+ 	        			return false;
+ 	        		} 
        				
        			}	
         	}); 
@@ -379,43 +393,49 @@
        	 
        	 var inputPwd1 = $("#pwd1").val();
        	 var inputPwd2 = $("#pwd2").val();
-    	 var pwdCheckResult = $("#pwdCheckResult");
+    	 	 var pwd2CheckResult = $("#pwd2CheckResult");
        	 
        	 if(inputPwd2 == "") {
- 			alert("비밀번호를 확인해주세요.");
+       		pwd2CheckResult.html("비밀번호를 확인해주세요.");
+       		pwd2CheckResult.attr("class", "incorrect");
  			return false;
  			
        	 }	else {
        		 
-	        	if(inputPwd1 != inputPwd2){
-	        		pwdCheckResult.html("비밀번호가 일치하지않습니다. 비밀번호를 동일하게 입력해주세요.");
-	        		pwdCheckResult.attr("class", "incorrect");
-	        		return false;
-	        		
-	        	} else {
-	        		pwdCheckResult.html("비밀번호가 일치합니다.");
-	        		pwdCheckResult.attr("class", "correct");
-	        		return true;
-	        	}
+ 	        	if(inputPwd1 == inputPwd2){
+ 	        		pwd2CheckResult.html("비밀번호가 일치합니다.");
+ 	        		pwd2CheckResult.attr("class", "correct");
+ 	        		return true;
+ 	        		
+ 	        	} else {
+ 	        		pwd2CheckResult.html("비밀번호가 일치하지않습니다. 비밀번호를 동일하게 입력해주세요.");
+ 	        		pwd2CheckResult.attr("class", "incorrect");
+ 	        		return false;
+ 	        	}
        		 }	
        }); 
+        
         
         /* 이름 입력 여부 확인 알럿 & 정규식 알럿 */
         $("#name").blur(function(){
         	var inputName = $("#name").val();
         	var regex = /^[가-힣]{2,}$/;
         	var result = regex.exec(inputName);
+        	var nameCheckResult = $("#nameCheckResult")
         	
         	if(inputName == ""){
-        		alert("이름을 입력해주세요.");
+        		nameCheckResult.html("이름을 입력해주세요.");
+        		nameCheckResult.attr("class", "incorrect");
         		return false;
         	} else {
         		
         		if(result != null) {
+        	  		nameCheckResult.html("");
         			return true;
         			
         		} else {
-        			alert("이름 형식이 올바르지 않습니다. 이름은 한글로 2글자 이상 입력해주세요. ");
+        			nameCheckResult.html("이름 형식이 올바르지 않습니다. 대표자명은 한글로 2글자 이상 입력해주세요. ");
+        			nameCheckResult.attr("class", "incorrect");
         		 	return false;
         		}
         	}
@@ -426,36 +446,46 @@
        /* 닉네임 입력 여부 확인 알럿 */
        $("#nickname").blur(function(){
     	   var inputNickname = $("#nickname").val();
+    	   var nickNameCheckResult = $("#nickNameCheckResult");
     	   
     	   if(inputNickname == "") {
-    			alert("닉네임을 입력해주세요.");
+    		   nickNameCheckResult.html("닉네임을 입력해주세요.");
+    		   nickNameCheckResult.attr("class", "incorrect");
         		return false;
+        		
+    	   } else {
+    		   nickNameCheckResult.html("");
+			    return true;
     	   }
        });
         
         
-        /* 전화번호 정규식 알럿 */
-        $("#phone").blur(function(){
-        	var inputPhone = $("#phone").val();
-        	var regex = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
-        	var result = regex.exec(inputPhone);
-        	var phoneCheckResult = $("#phoneCheckResult");  
-        		
-        		if(inputPhone == ""){
-        			alert("전화번호를 입력해주세요.");
-        			return false;
-        	
-        		} else {
-        			
-        			if(result != null) {
-        				return true;
-        			} else {
-        				alert("전화번호 형식이 올바르지 않습니다. 올바른 형식으로 9~11자리 숫자를 입력해주세요.");
-        				return false;
-        			} 
-        		}
-        	
-       	 	});
+       /* 전화번호 정규식 알럿 */
+       $("#phone").blur(function(){
+       	var inputPhone = $("#phone").val();
+       	var regex = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+       	var result = regex.exec(inputPhone);
+       	var phoneCheckResult = $("#phoneCheckResult");  
+       		
+       		if(inputPhone == ""){
+       			phoneCheckResult.html("전화번호를 입력해주세요.");
+       			phoneCheckResult.attr("class","incorrect");
+       			return false;
+       	
+       		} else {
+       			
+       			if(result != null) {
+       				phoneCheckResult.html("");
+       				return true;
+       			} else {
+       				phoneCheckResult.html("전화번호 형식이 올바르지 않습니다. 올바른 형식으로 9~11자리 숫자를 입력해주세요.");
+       				phoneCheckResult.attr("class","incorrect");
+       				return false;
+       			} 
+       		}
+       	
+      	 });
+       
        
         /* 이메일 입력 여부 확인 & 정규식 확인 */
         $("#email").blur(function(){
@@ -662,7 +692,24 @@
 	    }
 
 		
-        /* 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선택 */ 
+	    /* 상세주소 입력 여부 확인 알럿 */
+        $("#address2").blur(function(){
+        	var inputAdress2 = $("#address2").val();
+        	var address2CheckResult = $("#address2CheckResult");
+        	
+        	if(inputAdress2 == ""){
+        		address2CheckResult.html("상세주소를 입력해주세요.");
+        		address2CheckResult.attr("class", "incorrect");
+        		return false;
+        	} else {
+       			address2CheckResult.html("");
+       		 	return true;
+        	}
+        	
+        });
+	    
+	    
+		/* 약관 전체 동의 체크 박스를 선택하면 전체 체크 박스가 선택 */ 
         $("#all").on("change",function(){
         	
             if($("#all").is(":checked")){
@@ -702,7 +749,7 @@
 		$(document).ready(function(){
 			
 			$("#joinButton").click(function(){
-				$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin2");
+				$("#join_form").attr("action", "${ pageContext.servletContext.contextPath }/member/customerJoin");
 				$("#join_form").submit();
 				
 			});

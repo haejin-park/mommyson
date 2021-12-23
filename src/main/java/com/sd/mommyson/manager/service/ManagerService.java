@@ -5,15 +5,14 @@ import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.CategoryDTO;
+import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
-import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
-import com.sd.mommyson.user.dto.ReportDTO;
-import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface ManagerService {
 
@@ -119,6 +118,27 @@ public interface ManagerService {
 	/* 사업자 - 1:1 문의 리스트 */
 	public List<PostDTO> selectBusinessInquiry(Pagination pagination);
 
+	/* 사업자 - 1:1 문의 게시글 조회  */
+	public PostDTO selectBusinessPost(int postNo);
+
+	/* 사업자 - 1:1 문의 이미지 파일 조회 */
+	public List<FileDTO> selectBusinessImg(int postNo);
+	
+	/* 관리자 - 1:1 문의 이미지 파일 조회 */
+	public List<FileDTO> selectAnswerImg(int postNo);
+	
+	/* 관리자 - 1:1 문의 답변 답변 파일 등록 */
+	public int registBusinessFile(Map<String, Object> registFile);
+	
+	/* 관리자 - 1:1 문의 답변 답변 등록 */
+	public int registBusinessAnswer(Map<String, Object> registInfo);
+	
+	/* 관리자 - 1:1 문의 답변 파일 수정 */
+	public int updateBusinessFile(Map<String, Object> updateFile);
+
+	/* 관리자 - 1:1 문의 답변 수정 */
+	public int updateBusinessAnswer(Map<String, Object> updateInfo);
+
 	/* 소비자 - 1:1 문의 총 갯수 */
 	public int normalInquiryTotalCount(Map<String, String> searchMap);
 
@@ -167,5 +187,8 @@ public interface ManagerService {
 	/* 미사용 카테고리로 등록 */
 	public int updateUnUseCategory(List<String> unUseCategoryCodeList);
 
+	public List<TaxAdjustDTO> selectTaxAdjustListList(Map<String, Object> map);
+
+	public int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
 }

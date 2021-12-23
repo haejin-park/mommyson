@@ -52,7 +52,7 @@
 	
 
 	<!-- interceptor 등록 -->
-	<beans:bean id="NoticeInterceptor" class="com.sd.mommyson.common.NoticeInterceptor"/>
+	<beans:bean id="NoticeInterceptor" class="com.sd.mommyson.common.NoticeInterceptor"/> 
 	<interceptors> 
 		<interceptor> 
 			<mapping path="/*"/> 
@@ -61,5 +61,5 @@
 			<beans:ref bean="NoticeInterceptor"/> 
 		</interceptor> 
 	</interceptors>
-	
+
 </beans:beans>
