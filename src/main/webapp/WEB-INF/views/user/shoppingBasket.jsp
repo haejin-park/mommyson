@@ -186,7 +186,7 @@
 			$(function(e){
 				if (str == "pack") {
 					console.log(memCode);
-					if ($(".checkbox").is(":checked") != null) {
+					if ($(".checkbox").is(":checked") != null && $(".checkbox").is(":checked")  != 0) {
 						location.href = '${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList
 										+ "&storeCode=" + storeCode
 										+ "&storeName=" + storeName;
@@ -199,7 +199,7 @@
 
 				} else if (str == "deli") {
 					console.log(memCode);
-					if ($(".checkbox").is(":checked") != null) {
+					if ($(".checkbox").is(":checked") != null && $(".checkbox").is(":checked")  != 0) {
 						location.href = '${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList
 										+ "&storeCode=" + storeCode
 										+ "&storeName=" + storeName;
