@@ -57,10 +57,16 @@ public interface UserDAO {
 	
 	/* 장바구니 목록 조회 */
 	List<CartDTO> cartList(MemberDTO member);
-	
-	/* 장바구니 상품 수량 변경 update */
-	int updateAmountAndPrice(CartDTO dto);
 
+	/* 장바구니 리스트 삭제 */
+	int deleteCartList(HashMap<String, Object> deleteCartProduct);
+
+	/* 방문포장 주문리스트 저장  */
+	int insertPackageOrderList(Map<String, Object> map);
+	
+	/* 배달 주문리스트 저장  */
+	int insertDeliveryOrderList(Map<String, Object> map);
+	
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);
@@ -74,7 +80,6 @@ public interface UserDAO {
 	List<PostDTO> selectRecentNotice();
 
 	List<PostDTO> selectOftenFqa();
-
 
 	Integer insertJJIMplus(Map<String, Integer> map);
 
