@@ -42,6 +42,13 @@
     	</collection>
     </resultMap>
     
+    <!-- 12-24 승우 -->
+    <!-- <resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+    	<id property="memCode" column="MEM_CODE"/>
+    </resultMap>
+    
+    <select id="selectDeliveryOrder"></select> -->
+    
     <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT

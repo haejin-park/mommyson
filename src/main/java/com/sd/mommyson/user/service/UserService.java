@@ -9,6 +9,7 @@ import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserService {
@@ -59,11 +60,13 @@ public interface UserService {
 
 	List<PostDTO> selectOftenFqa();
 
-
 	Integer insertJJIMplus(Map<String, Integer> map);
 
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
+	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

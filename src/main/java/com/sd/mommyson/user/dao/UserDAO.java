@@ -9,6 +9,7 @@ import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserDAO {
@@ -65,5 +66,7 @@ public interface UserDAO {
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

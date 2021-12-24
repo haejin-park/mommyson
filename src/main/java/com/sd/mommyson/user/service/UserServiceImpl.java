@@ -15,6 +15,7 @@ import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dao.UserDAO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Service
@@ -192,5 +193,16 @@ public class UserServiceImpl implements UserService{
 	public Integer deleteJJIMplus(Map<String, Integer> map) {
 		return userDAO.deleteJJIMplus(map);
 	}
+
+
+	/**
+	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
+	 * @author leeseungwoo
+	 */
+//	@Override
+//	public List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap) {
+//		
+//		return userDAO.selectDeliveryOrder(orderMap);
+//	}
 
 }
