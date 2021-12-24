@@ -174,6 +174,14 @@
 	          </thead>
             <tbody></tbody>
           </table>
+          <table class="table table" id="phone" style="width: 700px; text-align: center;">
+	          <thead>
+              <tr>
+                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문자 번호</th>
+              </tr>
+	          </thead>
+            <tbody></tbody>
+          </table>
 	          <br><br>
 	        </div>
 	        <div class="modal-footer">
@@ -224,6 +232,8 @@
 					$tr.append($customer);
 					$tr.append($ordertype);
 					$table.append($tr);
+					
+					
     			}
       		});
     	
@@ -249,6 +259,26 @@
 				}
     		}
       		});
+    	
+    	$.ajax({
+    		url : '${ pageContext.servletContext.contextPath }/owner/order',
+    		type : 'post',
+    		data : { orderCode : orderCode },
+    		success : function(data){
+    			console.log(data);
+
+				const $table = $("#phone tbody");
+				$table.html("");
+				
+				/* 변수 선언 부분 */
+					$tr = $("<tr>");
+					$phone = $("<td>").text(data.phone);
+					
+					$tr.append($phone);
+					$table.append($tr);
+    		}
+      		});
+    	
     	  });
         });
     

@@ -752,8 +752,6 @@ public class OwnerController {
 		
 		// 주문 접수 가져오기
 		
-//		List<OrderDTO> orderList2 = ownerService.selectOrderList2(storeName);
-		
 		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
 		// 현재 페이지
 		int pageNo = 1;

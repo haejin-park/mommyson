@@ -112,6 +112,7 @@
 		<result property="code" column="CODE"/>
 		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
 		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
+		<result property="phone" column="PHONE" jdbcType="VARCHAR" />
 		<association property="memberDTO" resultMap="memberResultMap"/>
 		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
 		<association property="acceptDTO" resultMap="acceptResultMap"/>
@@ -130,7 +131,6 @@
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="sdCode" column="SD_CODE"/>
 		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
 		<result property="storeName" column="STORE_NAME"/>
 	</resultMap>
 	
@@ -855,12 +855,13 @@
 		      , D.ORDER_STATUS
 		      , E.SD_NAME   
 		      , B.AMONT 
-		      , A.ORDER_COMPLETE_TIME    
+		      , A.ORDER_COMPLETE_TIME 
+		      , A.PHONE
 		  FROM ORDER_TBL A
-		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+		  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
 		  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-		  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+		  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 		 WHERE A.ORDER_CODE = #{ orderCode }
 	
 	</select>
@@ -931,6 +932,7 @@
                , G.SD_NAME 
                , G.AMONT 
                , G.CODE
+               , G.PHONE
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_COMPLETE_TIME
@@ -943,6 +945,7 @@
                     , F.SD_NAME 
                     , F.AMONT
                     , F.CODE 
+                    , F.PHONE
 	            FROM (SELECT
 						        A.ORDER_COMPLETE_TIME
 						      , A.ORDER_ACCEPT_TIME  
@@ -953,7 +956,8 @@
 						      , D.ORDER_STATUS
 						      , E.SD_NAME        
 						      , B.AMONT  
-						      , A.CODE     
+						      , A.CODE    
+						      , A.PHONE 
 						  FROM ORDER_TBL A
 						  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 						  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
