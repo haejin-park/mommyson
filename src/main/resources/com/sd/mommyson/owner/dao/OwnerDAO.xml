@@ -782,7 +782,9 @@
 			   COUNT(*)
 		  FROM ORDER_TBL A
 		 WHERE A.STORE_NAME = #{ storeName }
-		   AND A.CODE = 1 OR A.CODE = 2
+		   AND A.CODE IN ( 1, 2 )
+		   AND A.ORDER_ACCEPT_TIME IS NOT NULL
+		   AND TO_CHAR(A.ORDER_ACCEPT_TIME,'YY/MM/DD') = TO_CHAR(SYSDATE,'YY/MM/DD')
 	</select>
 	
 	<!-- 주문페이지 주문 접수  -->
@@ -820,14 +822,15 @@
 						      , E.SD_NAME 
 						      , B.AMONT       
 						  FROM ORDER_TBL A
-						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+						  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+						  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
 						  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-						  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+						  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	                    <where>
 		                    	A.STORE_NAME = #{ searchCondition }
-			 				AND A.CODE = 1 OR A.CODE = 2
-			 				<!-- AND TO DATE(A.ORDER_ACCEPT_TIME,'YYYYMMDD') = TO DATE(SYSDATE,'YYYYMMDD') 오늘날짜만 조건 넣어야해-->
+			 				AND A.CODE IN (1 , 2)
+			 				AND A.ORDER_ACCEPT_TIME IS NOT NULL
+			 				AND TO_CHAR(A.ORDER_ACCEPT_TIME,'YY/MM/DD') = TO_CHAR(SYSDATE,'YY/MM/DD')
 			   	        </where>
 			   	        ORDER BY A.ORDER_ACCEPT_TIME DESC
 	                    )F
@@ -862,7 +865,7 @@
 	<!-- 주문 수락 -->
 	<update id="acceptModifyOrder">
 		UPDATE ORDER_TBL
-		   SET ORDER_ACCEPT_TIME = SYSDATE
+		   SET ORDER_RUQEUST_TIME = SYSDATE
 		     , CODE = #{ orderType }
 		 WHERE ORDER_CODE = #{ orderCode }
 	</update>
@@ -888,11 +891,14 @@
 	 SELECT
 	 		COUNT(*)
 	   FROM ORDER_TBL A
-	   JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-	   JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+	   LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+	  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+	  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
+	  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	 <where>
 			    A.STORE_NAME = #{ storeName }
-		    AND A.CODE = 3 OR A.CODE = 4
+		    AND A.CODE IN (3 , 4)
+		    AND A.ORDER_ACCEPT_TIME IS NOT NULL
 	<if test="searchValue != null and searchValue != '' ">
 	  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 	</if>
@@ -946,13 +952,14 @@
 						      , B.AMONT  
 						      , A.CODE     
 						  FROM ORDER_TBL A
-						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+						  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+						  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
 						  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-						  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+						  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	                    <where>
 		                    	    A.STORE_NAME = #{ storeName }
 			 				    AND A.CODE IN (3 , 4)
+			 				    AND A.ORDER_ACCEPT_TIME IS NOT NULL
 			 			<if test="searchValue != null and searchValue != '' ">
 						  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						</if>

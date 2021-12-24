@@ -774,8 +774,8 @@ public class OwnerController {
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = ownerService.selectOrderListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
 		
-		int limit = 15; //페이지당 글 갯수
-		int buttonAmount =  15;//페이징 버튼의 갯수
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
 		
 		Pagination pagination = null;
 		String searchCondition = storeName;
