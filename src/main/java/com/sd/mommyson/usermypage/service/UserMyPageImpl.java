@@ -178,8 +178,8 @@ public class UserMyPageImpl implements UserMyPageService {
 	}
 
 	@Override
-	public List<Integer> selectCeoCode(int cpCode) {
-		 List<Integer> ceoCode = userMyPageDAO.selectCeoCode(cpCode);
+	public int selectCeoCode(int cpCode) {
+		 int ceoCode = userMyPageDAO.selectCeoCode(cpCode);
 		return ceoCode;
 	}
 

@@ -296,14 +296,14 @@ public class UserMyPageController {
 		List<CouponHistoryDTO> myCouponList = userMyPageService.selectMyCouponList(selectCriteria);
 		
 		System.out.println("나의 쿠폰 : " + myCouponList);
-		
+		System.out.println("myCouponList사이즈 : " + myCouponList.size());
 		List<Integer> ceoCode = new ArrayList<>();
 		for(int i = 0; i < myCouponList.size(); i++) {
 			
 //			System.out.println("ceoCode 찾기 위한 변수 : " + myCouponList.get(i).getCpCode());
 //			ceoCode.add(myCouponList.get(i).getCpCode());
-			
-			ceoCode = userMyPageService.selectCeoCode(myCouponList.get(i).getCouponInfo().getCpCode());
+			int ceoNum = userMyPageService.selectCeoCode(myCouponList.get(i).getCouponInfo().getCpCode());
+			ceoCode.add(ceoNum);
 			
 			System.out.println("ceoCode : " + ceoCode);
 			
