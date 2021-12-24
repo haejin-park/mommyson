@@ -21,6 +21,7 @@
 <body>
   	<jsp:include page="../commons/header.jsp"></jsp:include>
     <br>
+    
       <div id="information">
         <h3>주문자정보</h3>
         <br><br>
@@ -51,9 +52,6 @@
           </tr>
       </table>
       <br>  
-
-
-      
       <div id="div2">
         <table id="table2">
           <tr id="tr3">
@@ -75,7 +73,7 @@
       <br><br>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
       <button type="reset" id="goShoppingBasket">취소하기</button>
-      <script>
+     <!--  <script>
       	$('#pay').on('click',function() {
       		let name = $('#name').val();
       		let phone = $('#phone').val();
@@ -93,7 +91,7 @@
       	        buyer_tel : phone,
       	        buyer_addr : '서울특별시 강남구 삼성동',
       	        buyer_postcode : '123-456',
-      	        m_redirect_url : '${ pageContext.servletContext.contextPage }/user/payComplete?orderCode=${ requestScope.orderCode }&totalPrice=' + totalPrice
+      	        m_redirect_url : '${ pageContext.servletContext.contextPath }/user/payComplete?orderCode=${ requestScope.orderCode }&totalPrice=' + totalPrice
       	    },  function(rsp) {
       	      if ( !rsp.success ) {
       	    	//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
@@ -103,8 +101,10 @@
       	        alert(msg);
       	      }
       		});
-      	})
-      </script>
+      	});
+      	
+      	
+      </script> -->
     
 <!--       결제하기 Modal
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

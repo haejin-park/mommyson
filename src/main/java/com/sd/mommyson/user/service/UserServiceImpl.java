@@ -178,12 +178,38 @@ public class UserServiceImpl implements UserService{
 		return userDAO.cartList(member);
 	}
 
-
-	/* 장바구니 상품 수량 변경 update */
+	
+	/* 방문포장 주문리스트 저장 */
 	@Override
-	public int updateAmountAndPrice(CartDTO dto) {
-		// TODO Auto-generated method stub
-		return userDAO.updateAmountAndPrice(dto);
+	public int insertPackageOrderList(HashMap<String, Object> insertPackage) {
+		
+		int result = 0;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Integer> price = (List<Integer>)insertPackage.get("packagePayList");
+		
+		int[] storeCode = (int[])insertPackage.get("storeCode");
+		
+		String[] storeName = (String[])insertPackage.get("storeName");
+		
+		for(int i = 0; i< price.size(); i++) {
+			
+			map.put("price", price.get(i));
+			map.put("storeCode",storeCode[i]);
+			map.put("storeName", storeName[i]);
+			map.put("memCode", insertPackage.get("memCode"));
+			
+			int success = userDAO.insertPackageOrderList(map);
+			
+			if(success > 0) {
+				result += 1;
+			}
+			
+		}
+		
+		
+		return result;		
 	}
 
 

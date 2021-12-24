@@ -653,33 +653,50 @@
     
     <!-- 장바구니 목록 조회 -->
     <select id="cartList" resultMap="cartResultMap">
-    	SELECT
+   	SELECT
                 A.SD_CODE
               , A.SD_NAME
               , A.PRICE 
               , A.SD_IMG 
               , A.DISCOUNT_RATE 
-              , A.MEM_CODE 
               , S.STORE_NAME
               , S.STORE_IMG
               , C.AMOUNT
               , C.CART_CODE
               , C.TOTAL_PRICE
+              , S.MEM_CODE
            FROM CART_TBL C
            LEFT JOIN MEMBER_TBL M ON(C.MEM_CODE = M.MEM_CODE)
            LEFT JOIN PRODUCT_TBL A ON(A.SD_CODE = C.SD_CODE)
            LEFT JOIN STORE_TBL S ON(A.MEM_CODE = S.MEM_CODE)
           WHERE C.MEM_CODE = #{ memCode }
+       ORDER BY C.MEM_CODE 
+          
     </select> 
 
-	<update id="updateAmountAndPrice">
-		UPDATE CART_TBL
-		   SET AMOUNT = AMOUNT + #{ amount }, 
-			   TOTAL_PRICE = TOTAL_PRICE + #{ totalPrice }
-		 WHERE MEM_CODE = #{ memCode }
-		   AND SD_CODE = #{ sdCode }	    
-	
-	</update>
+	<!-- 방문포장 주문리스트 저장 -->
+	<insert id="insertPackageOrderList">
+		INSERT 
+		  INTO ORDER_TBL
+		VALUES
+		  	(
+ 		     #{ memCode }
+ 		   , #{ price }
+ 		   , SEQ_ORDER_CODE.NEXTVAL
+ 		   , '포장'
+ 		   , null
+ 		   , null
+ 		   , null
+ 		   , #{ storeName }
+ 		   , 1
+ 		   , null
+ 		   , null
+ 		   , null
+ 		   , SYSDATE
+ 		   , #{ storeCode }	  
+ 		     )
+	</insert>
+
 
     <insert id="insertReport">
     	INSERT
