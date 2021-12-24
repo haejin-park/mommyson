@@ -303,7 +303,7 @@ public class UserMyPageController {
 //			System.out.println("ceoCode 찾기 위한 변수 : " + myCouponList.get(i).getCpCode());
 //			ceoCode.add(myCouponList.get(i).getCpCode());
 			
-			ceoCode = userMyPageService.selectCeoCode(myCouponList.get(i).getCouponInfo().getStore().getMemCode());
+			ceoCode = userMyPageService.selectCeoCode(myCouponList.get(i).getCouponInfo().getCpCode());
 			
 			System.out.println("ceoCode : " + ceoCode);
 			
