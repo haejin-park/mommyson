@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
+import com.sd.mommyson.usermypage.dto.CouponHistoryDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
 import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 
@@ -16,7 +18,7 @@ public interface UserMyPageService {
 
 	int selectMycouponNo(Map<String, String> searchMap);
 
-	List<CouponDTO> selectMyCouponList(SelectCriteria selectCriteria);
+	List<CouponHistoryDTO> selectMyCouponList(SelectCriteria selectCriteria);
 
 	int selectMyOrderNum(Map<String, String> searchMap);
 
@@ -43,5 +45,19 @@ public interface UserMyPageService {
 	List<HashMap<String, String>> selectMySdInfo(int userCode);
 
 	int updateOrderCancel(int orderNo);
+
+	int updateDelReview(int rvCodeDel);
+
+	int updateSignOut(MemberDTO memberInfo);
+
+	boolean selectMatchUserInfo(MemberDTO memberInfo);
+
+	ReviewDTO selectReviewInfo(int rvCode);
+
+	int updateReview(Map<String, Object> amendmentRv);
+
+	int selectCeoCode(int cpCode);
+
+
 
 }

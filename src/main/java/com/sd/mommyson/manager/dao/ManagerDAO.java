@@ -4,14 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
+import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -132,5 +136,47 @@ public interface ManagerDAO {
 	int updateUseCategory(List<String> useCategoryCodeList);
 
 	int updateUnUseCategory(List<String> unUseCategoryCodeList);
+
+	PostDTO selectQnaPost(int postNo);
+
+	List<FileDTO> selectBusinessImg(int postNo);
+
+	List<FileDTO> selectAnswerImg(int postNo);
+
+	int modifyInquiry(Map<String, Object> modifyInfo);
+
+	int registBusinessFile(Map<String, Object> registfile);
+
+	int registBusinessAnswer(Map<String, Object> registInfo);
+
+	int updateBusinessFile(Map<String, Object> updateFile);
+
+	int updateBusinessAnswer(Map<String, Object> updateInfo);
+
+	List<TaxAdjustDTO> selectTaxAdjustListList(Map<String, Object> map);
+
+	int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
+
+	List<TaxAdjustDTO> selectTaxList(List<String> list);
+
+	List<FileDTO> selectNormalImg(int postNo);
+
+	int registNormalFile(Map<String, Object> registfile);
+
+	int registNormalAnswer(Map<String, Object> registInfo);
+	
+	List<BannerDTO> selectBanner();
+
+	BannerDTO selectBannerEditView(int bnCode);
+
+	int updateBanner(Map<String, Object> bnMap);
+
+	int deleteBanner(List<String> chkBannerList);
+
+	int selectUserTotalCount(Map<String, Object> searchMap);
+
+	List<MemberDTO> selectUser(Pagination pagination);
+
+	List<OrderDTO> selectTotalPrice(int memCode);
 
 }

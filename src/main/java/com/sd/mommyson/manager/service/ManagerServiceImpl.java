@@ -1,7 +1,5 @@
 package com.sd.mommyson.manager.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,18 +8,18 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
+import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
 import com.sd.mommyson.manager.dto.PostDTO;
+import com.sd.mommyson.manager.dto.TaxAdjustDTO;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
-
-import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
-import com.sd.mommyson.user.dto.ReportDTO;
-import com.sd.mommyson.user.dto.ReviewDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -411,6 +409,81 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	/**
+	 * 사업자 - 1:1 문의 게시글 조회
+	 * @author junheekim
+	 */
+	@Override
+	public PostDTO selectBusinessPost(int postNo) {
+		
+		return managerDAO.selectQnaPost(postNo);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 게시글 이미지 파일 조회
+	 * @author junheekim
+	 */
+	@Override
+	public List<FileDTO> selectBusinessImg(int postNo) {
+		
+		return managerDAO.selectBusinessImg(postNo);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 답변 이미지 파일 조회
+	 * @author junheekim
+	 */
+	@Override
+	public List<FileDTO> selectAnswerImg(int postNo) {
+		
+		return managerDAO.selectAnswerImg(postNo);
+	}
+	
+	/**
+	 * 사업자 - 1:1 문의 답변 파일 등록
+	 * @author junheekim
+	 */
+	@Override
+	public int registBusinessFile(Map<String, Object> registfile) {
+
+		return managerDAO.registBusinessFile(registfile);
+	}
+	
+	/**
+	 * 사업자 - 1:1 문의 답변 등록
+	 * @author junheekim
+	 */
+	@Override
+	public int registBusinessAnswer(Map<String, Object> registInfo) {
+
+		return managerDAO.registBusinessAnswer(registInfo);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 답변 파일 수정
+	 * @author junheekim
+	 */
+	@Override
+	public int updateBusinessFile(Map<String, Object> updateFile) {
+
+		int result = managerDAO.updateBusinessFile(updateFile);
+		
+		return result;
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 답변 수정
+	 * @author junheekim
+	 */
+	@Override
+	public int updateBusinessAnswer(Map<String, Object> updateInfo) {
+
+		int result = managerDAO.updateBusinessAnswer(updateInfo);
+		
+		return result;
+	}
+
+	
+	/**
 	 * 소비자 - 1:1 문의 총 갯수
 	 * @author junheekim
 	 */
@@ -429,6 +502,58 @@ public class ManagerServiceImpl implements ManagerService {
 		
 		return managerDAO.selectNormalInquiry(pagination);
 	}
+
+	/**
+	 * 소비자 - 1:1 문의 게시글 조회
+	 * @author junheekim
+	 */
+	@Override
+	public PostDTO selectNormalPost(int postNo) {
+		
+		return managerDAO.selectQnaPost(postNo);
+	}
+
+
+	/**
+	 * 소비자 - 1:1 문의 게시글 이미지 파일 조회
+	 * @author junheekim
+	 */
+	@Override
+	public List<FileDTO> selectNormalImg(int postNo) {
+		
+		return managerDAO.selectNormalImg(postNo);
+	}
+	
+	/**
+	 * 사업자 - 1:1 문의 답변 파일 등록
+	 * @author junheekim
+	 */
+	@Override
+	public int registNormalFile(Map<String, Object> registfile) {
+		
+		return managerDAO.registNormalFile(registfile);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 답변 등록
+	 * @author junheekim
+	 */
+	@Override
+	public int registNormalAnswer(Map<String, Object> registInfo) {
+		
+		return managerDAO.registNormalAnswer(registInfo);
+	}
+
+	
+	/**
+	 * 배너조회
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<BannerDTO> selectBanner() {
+		
+		return managerDAO.selectBanner();
+	}
 	
 	/** 
 	 * 배너추가
@@ -437,7 +562,43 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public int insertBannerAdd(Map<String, Object> bnMap) {
 		
-		return managerDAO.insertBannerAdd(bnMap);
+		int result = managerDAO.insertBannerAdd(bnMap);
+		
+		return result;
+	}
+	
+	/**
+	 * 배너수정 페이지
+	 * @author leeseungwoo 
+	 */
+	@Override
+	public BannerDTO selectBannerEditView(int bnCode) {
+		
+		return managerDAO.selectBannerEditView(bnCode);
+	}
+	
+	/**
+	 * 배너수정
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateBanner(Map<String, Object> bnMap) {
+		
+		int result = managerDAO.updateBanner(bnMap);
+		
+		return result;
+	}
+	
+	/**
+	 * 배너삭제
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int deleteBanner(List<String> chkBannerList) {
+		
+		int result = managerDAO.deleteBanner(chkBannerList);
+		
+		return result;
 	}
 
 	/**
@@ -594,6 +755,48 @@ public class ManagerServiceImpl implements ManagerService {
 		int result = managerDAO.updateUnUseCategory(unUseCategoryCodeList);
 		
 		return result;
+	}
+
+	@Override
+	public List<TaxAdjustDTO> selectTaxAdjustListList(Map<String, Object> map) {
+		return managerDAO.selectTaxAdjustListList(map);
+	}
+
+	@Override
+	public int selectTaxAdjustTotalCount(Map<String, Object> searchMap) {
+		return managerDAO.selectTaxAdjustTotalCount(searchMap);
+	}
+
+	@Override
+	public List<TaxAdjustDTO> selectTaxList(List<String> list) {
+		return managerDAO.selectTaxList(list);
+	}
+	/**
+	 * 일반회원 인원수
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int selectUserTotalCount(Map<String, Object> searchMap) {
+		
+		return managerDAO.selectUserTotalCount(searchMap);
+	}
+
+	/**
+	 * 일반회원 조회
+	 */
+	@Override
+	public List<MemberDTO> selectUser(Pagination pagination) {
+		
+		return managerDAO.selectUser(pagination);
+	}
+
+	/**
+	 * 일반회원 총 주문금액 조회
+	 */
+	@Override
+	public List<OrderDTO> selectTotalPrice(int memCode) {
+		
+		return managerDAO.selectTotalPrice(memCode);
 	}
 
 

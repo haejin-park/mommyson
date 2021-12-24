@@ -72,8 +72,12 @@ public class MemberController {
 		if(loginMember == null) {
 			message = "회원정보와 일치하지 않습니다.";
 		} else {
-			message = "main";
-			model.addAttribute("loginMember", loginMember);
+			if(loginMember.getIsDeleted().equals("Y")) {
+				message = "회원탈퇴 처리된 계정입니다.";
+			} else {
+				message = "main";
+				model.addAttribute("loginMember", loginMember);
+			}
 		}
 
 		return message;

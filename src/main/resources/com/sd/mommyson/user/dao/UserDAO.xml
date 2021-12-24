@@ -12,9 +12,10 @@
     	<result property="postContent" column="POST_CONTENT"/>
     	<result property="postDate" column="POST_DATE"/>
     	<result property="ansStatus" column="ANS_STATUS"/>
-    	<result property="questionNo" column="QUE_NO"/>
+    	<result property="queNo" column="QUE_NO"/>
     	<result property="status" column="STATUS"/>
     	<result property="viewCnt" column="VIEW_CNT"/>
+    	<result property="ansContent" column="ANS_CONTENT"/>
     </resultMap>
     
     <resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -62,6 +63,12 @@
 		<result property="sdImg" column="SD_IMG"/>
     </resultMap>
     
+    <!-- 12-24 승우 -->
+    <!-- <resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+    	<id property="memCode" column="MEM_CODE"/>
+    </resultMap>
+    
+    <select id="selectDeliveryOrder"></select> -->
     
     <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
@@ -218,6 +225,13 @@
     	<collection property="tagList" ofType="java.lang.String" javaType="list">
     		<result column="TAG"/>
     	</collection>
+    </resultMap>
+    
+    <resultMap type="com.sd.mommyson.user.dto.FileDTO" id="fileResultMap">
+    	<id property="fileCode" column="FILE_CODE"/>
+    	<result property="fileName" column="FILE_NAME"/>
+    	<result property="postNo" column="POST_NO"/>
+    	<result property="fileType" column="FILE_TYPE"/>
     </resultMap>
 
     <!-- 공지사항  페이지수  -->
@@ -592,6 +606,7 @@
     		 , A.ORDERABLE_STATUS
     	  FROM PRODUCT_TBL A
     	 WHERE A.IS_DELETED = 'N'
+    	   AND A.EXPIRY_DATE <![CDATA[ >=  ]]> SYSDATE
     	   AND A.MEM_CODE = #{ memCode }
     </select>
     
@@ -683,26 +698,26 @@
 
 	<!-- 방문포장 주문리스트 저장 -->
 	<insert id="insertPackageOrderList">
-		INSERT 
-		  INTO ORDER_TBL
-		VALUES
-		  	(
- 		     #{ memCode }
- 		   , #{ totalPrice }
- 		   , SEQ_ORDER_CODE.NEXTVAL
- 		   , '포장'
- 		   , null
- 		   , null
- 		   , null
- 		   , #{ storeName }
- 		   , 1
- 		   , null
- 		   , null
- 		   , null
- 		   , SYSDATE
- 		   , #{ storeCode }	  
- 		     )
-	</insert>
+      INSERT 
+        INTO ORDER_TBL
+      VALUES
+         (
+            #{ memCode }
+          , #{ price }
+          , SEQ_ORDER_CODE.NEXTVAL
+          , '포장'
+          , null
+          , null
+          , null
+          , #{ storeName }
+          , 1
+          , null
+          , null
+          , null
+          , SYSDATE
+          , #{ storeCode }     
+          )
+   </insert>
 
 	<insert id="insertDeliveryOrderList">
 		INSERT
@@ -776,6 +791,7 @@
          <where>
            	A.IS_DELETED = 'N'
            	AND A.ORDERABLE_STATUS = 'Y'
+           	AND A.EXPIRY_DATE <![CDATA[ >=  ]]> SYSDATE
       		<if test="searchCondition == null">
    				AND T.TAG IN 
 			    <foreach collection="searchValue" item="item" index="index" separator="," open="(" close=")">
@@ -814,4 +830,253 @@
     	WHERE MEM_CODE = #{ memCode }
     	  AND CEO_CODE = #{ storeCode }
     </delete>
+    
+     <insert id="registMtmConsultingText" parameterType="hashmap">
+	    INSERT
+	       	INTO POST_TBL A
+	    (
+	       A.POST_NO
+		 , A.BOARD_CODE
+		 , A.POST_TITLE
+		 , A.MEM_CODE
+		 , A.POST_CONTENT
+		 , A.POST_DATE
+	    )
+	    VALUES
+	    (
+	       SEQ_POST.NEXTVAL
+		 , #{ boardCode }
+		 , #{ mtmTitle }
+		 , #{ memCode }
+		 , #{ mtmContents }
+		 , SYSDATE
+	    )
+     </insert>
+     
+     <!-- 1:1상담 입력 -->
+     <insert id="registMtmConFile" parameterType="hashmap">
+	    <selectKey keyProperty="postNo" resultType="int" order="BEFORE">
+	    	SELECT
+	    		   SEQ_POST.CURRVAL
+	    	  FROM DUAL	   
+	    </selectKey>	
+     	INSERT
+     		INTO FILE_TBL A
+     	(
+     	  FILE_CODE
+		, A.FILE_NAME
+		, A.POST_NO
+		, A.FILE_TYPE
+     	)
+     	VALUES
+     	(
+     	  SEQ_FILE.NEXTVAL
+     	, #{ fileLocation }
+     	, #{ postNo }
+     	, #{ fileType }
+     	)	
+     </insert>
+     
+     <!-- 1:1 상담내역 출력 -->
+     <!-- 1:1 상담 게시물 전체 숫자 출력 -->
+     <select id="selectMtmTotalCount" parameterType="hashmap" resultType="_int">
+     
+     	SELECT
+			   COUNT(*)
+		  FROM POST_TBL A
+		  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
+		 WHERE (B.TYPE = 'userMtmConsulting' OR B.TYPE = 'OwnerMtmConsulting')
+		   AND A.MEM_CODE = #{ searchCondition }
+		   <if test="searchValue != null">
+		   AND A.POST_TITLE = #{ searchValue }
+		   </if>
+		  
+     
+     </select>
+     
+     <!-- 상담내역 게시물 -->
+     <select id="selectMtmConsulting" resultMap="postResultMap">
+     	SELECT
+     	  	   A.RNUM
+     		 , A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS
+			 , A.VIEW_CNT
+			 , A.ANS_CONTENT
+		 FROM (SELECT ROWNUM RNUM
+		 			, B.POST_NO
+		 			, B.BOARD_CODE
+			 		, B.POST_TITLE
+			 		, B.MEM_CODE
+			 		, B.POST_CONTENT
+			 		, B.POST_DATE
+			 		, B.ANS_STATUS
+			 		, B.QUE_NO
+			 		, B.STATUS
+			 		, B.VIEW_CNT
+			 		, B.ANS_CONTENT
+			 	FROM (SELECT C.POST_NO
+		 				   , C.BOARD_CODE
+			 			   , C.POST_TITLE
+			 			   , C.MEM_CODE
+			 			   , C.POST_CONTENT
+			 			   , C.POST_DATE
+			 			   , C.ANS_STATUS
+			 			   , C.QUE_NO
+			 			   , C.STATUS
+			 			   , C.VIEW_CNT
+			 			   , C.ANS_CONTENT
+			 		 	FROM POST_TBL C
+			 		    JOIN BOARD_TBL D ON(D.BOARD_CODE = C.BOARD_CODE)
+			 		   WHERE (D.TYPE = 'userMtmConsulting' OR D.TYPE = 'userMtmConsulting')
+			 		   	 AND C.MEM_CODE = #{ searchCondition }
+			 		   	 AND C.STATUS = 'N'
+			 		   <if test="searchValue != null">
+			 		   	 AND C.POST_TITLE = #{ searchValue }
+			 		   </if>
+			 		   ORDER BY	C.POST_DATE DESC   
+			 			)B
+				 <![CDATA[
+				 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+			 	 )A
+		 <![CDATA[
+		 WHERE A.RNUM >= #{ startRow }
+		 ]]>		 	 	 
+     </select>
+     
+     <!-- 상담 내역 화면 출력  -->
+     <!-- 사용자 및 관리자 작성 상담내역 텍스트 부분 -->
+     <select id="selectConsultingCon" parameterType="hashmap" resultMap="postResultMap">
+     	SELECT
+		       A.POST_NO
+			 , A.BOARD_CODE
+			 , A.POST_TITLE
+			 , A.MEM_CODE
+			 , A.POST_CONTENT
+			 , A.POST_DATE
+			 , A.ANS_STATUS
+			 , A.QUE_NO
+			 , A.STATUS
+			 , A.VIEW_CNT
+			 , A.ANS_CONTENT
+		  FROM POST_TBL A	
+	     WHERE A.POST_NO = #{ postNo }
+	       AND A.STATUS = 'N'
+	       AND A.MEM_CODE = #{ memCode }	
+     </select>
+     
+     <!-- 소비자 또는 사업자 첨부 이미지 파일 -->
+     <select id="selectConsumerImg" parameterType="_int" resultMap="fileResultMap">
+     	SELECT 
+		       A.FILE_CODE
+		 	 , A.FILE_NAME
+			 , A.POST_NO
+			 , A.FILE_TYPE
+		 FROM FILE_TBL A
+		WHERE (A.FILE_TYPE = 'owner' OR A.FILE_TYPE = 'user')	
+		  AND A.POST_NO = #{ postNo }	 
+     </select>
+     <!-- 관리자 첨부 이미지 파일 -->
+     <select id="selectManagerImg" parameterType="_int" resultMap="fileResultMap">
+     	SELECT 
+		       A.FILE_CODE
+		 	 , A.FILE_NAME
+			 , A.POST_NO
+			 , A.FILE_TYPE
+		 FROM FILE_TBL A
+		WHERE A.FILE_TYPE = 'manager'
+		  AND A.POST_NO = #{ postNo }
+     </select>
+     
+     <!-- 게시물 삭제 -->
+     <update id="updateDelConsulting" parameterType="_int">
+     UPDATE
+     		POST_TBL A
+        SET A.STATUS = 'Y'
+      WHERE A.POST_NO = #{ postNo }	
+     </update>
+     
+    <select id="selectLastOrderCode" resultType="_int">
+    	SELECT SEQ_ORDER_CODE.CURRVAL FROM DUAL
+    </select>
+    
+    <select id="selectOrderList" resultType="hashmap" parameterType="list">
+    	SELECT
+    		   A.ORDER_CODE
+    		 , A.TOTAL_PRICE
+    		 , B.STORE_IMG
+    		 , B.STORE_NAME
+    		 , B.MEM_CODE AS STORE_CODE
+    	  FROM ORDER_TBL A
+    	  LEFT JOIN STORE_TBL B ON(A.STORE_CODE = B.MEM_CODE)
+    	 WHERE A.ORDER_CODE IN (
+    	 <foreach collection="list" item="item" separator=",">
+    	 	#{ item }
+    	 </foreach>
+    	 )
+    </select>
+    
+    <resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
+		<id property="cpCode" column="CP_CODE"/>
+		<result property="cpNum" column="CP_NUM"/>
+		<result property="cpName" column="CP_NAME"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="disWon" column="DISCOUNT_WON"/>
+		<result property="endDate" column="END_DATE"/>
+		<result property="dCcon" column="DC_CONDITION"/>
+		<result property="storeCode" column="STORE_CODE"/>
+	</resultMap>
+    
+    <select id="selectCouponList" resultMap="couponResultMap">
+    	SELECT
+    		   A.CP_CODE
+    		 , A.CP_NUM
+    		 , B.CP_NAME
+    		 , B.START_DATE
+    		 , B.DISCOUNT_WON
+    		 , B.END_DATE
+    		 , B.DC_CONDITION
+    		 , C.MEM_CODE AS STORE_CODE
+    	  FROM CP_HISTORY_TBL A
+    	  LEFT JOIN COUPON_TBL B ON(A.CP_CODE = B.CP_CODE)
+    	  LEFT JOIN COUPON_STORE_TBL C ON(B.CP_CODE = C.CP_CODE)
+    	 WHERE SYSDATE BETWEEN B.START_DATE AND B.END_DATE
+    	   AND A.USE_STATUS = 'N'
+    	   AND A.MEM_CODE = #{ memCode }
+    </select>
+    
+    <delete id="deleteOrder" parameterType="list">
+    	DELETE FROM ORDER_TBL
+    	 WHERE ORDER_CODE IN (
+    	 <foreach collection="list" separator="," item="item">
+    	 	#{ item }
+    	 </foreach>
+    	 )
+    </delete>
+    
+    <update id="updateOrder" parameterType="hashmap">
+    	UPDATE ORDER_TBL
+    	   SET TOTAL_PRICE = #{ totalPrice },
+    	       ORDER_RUQEUST_TIME = TO_DATE(SYSDATE,'YYYY-MM-DD HH24:mi:ss'),
+    	       PHONE = #{ phone },
+    	       TAKE_TIME = #{ time }
+    	 WHERE ORDER_CODE = #{ orderCode }
+    </update>
+    
+    <update id="updateCouponStatus" parameterType="list">
+    	UPDATE CP_HISTORY_TBL
+    	   SET USE_STATUS = 'Y'
+    	 WHERE CP_NUM IN (
+    	 <foreach collection="list" separator="," item="item">
+    	 	#{ item }
+    	 </foreach>
+    	 )
+    </update>
     </mapper>

@@ -65,6 +65,7 @@
 							<th scope="col">주문 번호</th>
 							<th scope="col">고객명</th>
 							<th scope="col">주문 유형</th>
+							<th scope="col">픽업 시간</th>
 							<th scope="col">주문 상품</th>
 							<th scope="col">접수 상태</th>
 
@@ -77,7 +78,14 @@
 							<td>${ ol.orderCode }</td>
 							<td>${ ol.memberDTO.nickname }</td>
 							<td>${ ol.orderType }</td>
-							
+							<td>
+							<c:if test="${ ol.orderType eq '배달'}">
+							X
+							</c:if>
+							<c:if test="${ ol.orderType eq '포장'}">
+							${ ol.takeTime }
+							</c:if>
+							</td>
 							<td  style="vertical-align: baseline ;">
 							<button type="button" value="${ ol.orderCode }" class="detailOD" data-toggle="modal" data-target="#exampleModal" 
 							style="height: 40px; border: none; background: none; color: black;">
@@ -101,12 +109,18 @@
 							<input type="hidden" name="orderCode" value="${ol.orderCode }">
 							<c:if test="${ ol.code eq 1 }">
 							<button type="submit" class="couponBtn" id="btn1" name="orderType" value="2">접수</button>
+								&nbsp;
+							<button type="submit" class="couponBtn" id="can1" name="orderType" value="3" style="background-color: #777777;">취소</button>
 							</c:if>
 							<c:if test="${ ol.code eq 2 }">
 							<button type="submit" class="couponBtn" id="btn2" name="orderType" value="4" style="background-color: #68BF6B;">완료</button>
-							</c:if>
 								&nbsp;
 							<button type="submit" class="couponBtn" id="can1" name="orderType" value="3" style="background-color: #777777;">취소</button>
+							</c:if>
+								
+							<c:if test="${ ol.code eq 3 }">
+							<h6>주문 취소</h6>
+							</c:if>
 							</form>
 							</td>
 							
@@ -116,7 +130,7 @@
 					</table>
 				</div>
 				<!-- 페이지네이션 -->
-				<div style="margin-left: 450px; position: relative; top: 400px;">
+				<div style="margin-left: 450px; position: relative; top: 200px;">
 				<jsp:include page="../commons/pagingWithoutSearch.jsp"/>
 				</div>
 			</div>
@@ -156,6 +170,14 @@
               <tr>
                 <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문 상품</th>
                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">수량</th>
+              </tr>
+	          </thead>
+            <tbody></tbody>
+          </table>
+          <table class="table table" id="phone" style="width: 700px; text-align: center;">
+	          <thead>
+              <tr>
+                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문자 번호</th>
               </tr>
 	          </thead>
             <tbody></tbody>
@@ -210,6 +232,8 @@
 					$tr.append($customer);
 					$tr.append($ordertype);
 					$table.append($tr);
+					
+					
     			}
       		});
     	
@@ -235,6 +259,26 @@
 				}
     		}
       		});
+    	
+    	$.ajax({
+    		url : '${ pageContext.servletContext.contextPath }/owner/order',
+    		type : 'post',
+    		data : { orderCode : orderCode },
+    		success : function(data){
+    			console.log(data);
+
+				const $table = $("#phone tbody");
+				$table.html("");
+				
+				/* 변수 선언 부분 */
+					$tr = $("<tr>");
+					$phone = $("<td>").text(data.phone);
+					
+					$tr.append($phone);
+					$table.append($tr);
+    		}
+      		});
+    	
     	  });
         });
     

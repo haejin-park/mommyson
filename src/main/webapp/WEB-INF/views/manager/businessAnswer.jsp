@@ -27,7 +27,8 @@
             <div class="top_box">
                 <p>사업자 문의</p>
             </div>
-            <form action="">
+            <form action="${ pageContext.servletContext.contextPath }/manager/registBusinessAnswer" method="post" enctype="multipart/form-data">
+            <c:set value="${ requestScope.businessQuestion }" var="bq"/>
                 <table class="table bd_write_header bd_bottom_line">
                     <colgroup>
                         <col width="10%"/>
@@ -39,35 +40,48 @@
                         <tr>
                             <th class="green_area">제목</th>
                             <td colspan="3">
-                               결제가 안돼요
+                               <c:out value="${ bq.postTitle }"/>
                             </td>
                         </tr>
                         <tr>
                             <th class="green_area">아이디</th>
                             <td>
-                                user01
+                               <c:out value="${ bq.member.memId }"/>
                             </td>
                             <th class="green_area">작성일</th>
                             <td>
-                                2021-12-11
+                               <c:out value="${ bq.postDate }"/> 
                             </td>
                         </tr>
                         <tr style="height: auto; vertical-align: middle;">
                             <th class="green_area">내용</th>
                             <td colspan="3">
-                                카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ 카카오페이 창이 안떠요ㅠㅠ
+                            	<c:out value="${ bq.postContent }"/>
                             </td>
                         </tr>
+                        <c:set value="${ requestScope.ImgFileList }" var="imgList"/>
                         <tr style="height: auto; vertical-align: middle; border-bottom: 0;">
                             <th class="green_area">이미지</th>
                             <td colspan="3">
-                               <div class="fix_photo"><img class="fixImg" id="onImg1" src="${ pageContext.servletContext.contextPath }/resources/images/sample.png"></div>
-                               <div class="fix_photo"><img class="fixImg" id="onImg2" src="${ pageContext.servletContext.contextPath }/resources/images/photo.png"></div>
-                               <div class="fix_photo"><img class="fixImg" id="onImg3" src="${ pageContext.servletContext.contextPath }/resources/images/photo.png"></div>
+                            <c:if test="${ !empty imgList }">
+                               <div class="fix_photo"><img class="fixImg" id="onImg1" src="${ pageContext.servletContext.contextPath }/${ imgList[0].fileName }"></div>
+                               <c:if test="${ !empty imgList[1] }">
+                               <div class="fix_photo"><img class="fixImg" id="onImg2" src="${ pageContext.servletContext.contextPath }/${ imgList[1].fileName }"></div>
+                               </c:if>
+                               <c:if test="${ !empty imgList[2] }">
+                               <div class="fix_photo"><img class="fixImg" id="onImg3" src="${ pageContext.servletContext.contextPath }/${ imgList[2].fileName }"></div>
+                               </c:if>
+                            </c:if>
+                               
+                            <c:if test="${ empty imgList }">
+                               <a>미첨부</a>
+                            </c:if>
                             </td>
                         </tr>
                     </thead>
                 </table>
+                
+                <input type="hidden" name="postNo" value="${ bq.postNo }">
                 
                 <!-- modal -->
                 <div class="inquiry_modal">
@@ -77,34 +91,79 @@
                 </div>
                 <!-- modal -->
                 
+                 <!-- 미답변 상태일 시 보여줄 화면 -->
+                <c:if test='${ bq.ansStatus eq "W" }'>
                 <div class="top_box" style="margin-top: 20px;">
                     <p>답변 내용</p>
                 </div>
                 <div class="text_area2">
-                    <textarea name="" id="" placeholder="내용을 작성해주세요." required></textarea>
+                    <textarea name="ansContent" id=""></textarea>
                 </div>
                 <div class="top_box">
                     <p>이미지 첨부</p>
                 </div>
-                <div class="change_photo" id="view_area1"><img class="img_size" id="view_img1" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
-                <div class="change_photo" id="view_area2"><img class="img_size" id="view_img2" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
-                <div class="change_photo" id="view_area3" style="margin-right:0;"><img class="img_size" id="view_img3" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                <div class="change_photo" id="view_area1"><img class="img_size noEvent" id="view_img1" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                <div class="change_photo" id="view_area2"><img class="img_size noEvent" id="view_img2" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                <div class="change_photo" id="view_area3" style="margin-right:0;"><img class="img_size noEvent" id="view_img3" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
                 <div class="photo_size">이미지당 10MB이하, 최대 3개까지 등록 가능합니다.</div>
                 <div class="btn_box">
-                    <input type="submit" value="답변하기" class="btn write_btn" style="background-color: #F89E91;">
-                    <a href="noticeSelect.html" class="btn cancle_btn" style="background-color: #BEBEBE;">목록으로</a>
+                    <input type="submit" value="답변등록" class="btn write_btn" style="background-color: #F89E91;">
+                    <a href="javascript:history.back(-1)" class="btn cancle_btn" style="background-color: #BEBEBE;">목록으로</a>
                 </div>
                 
-                 <!-- file area -->
+                <!-- file area -->
                 <div class="fileArea">
-                    <input type="file" id="insert_img1" name="insert_img1" onchange="loadImg(this,1)" accept="image/*">
-                    <input type="file" id="insert_img2" name="insert_img2" onchange="loadImg(this,2)" accept="image/*">
-                    <input type="file" id="insert_img3" name="insert_img3" onchange="loadImg(this,3)" accept="image/*">
+                    <input type="file" id="insert_img1" name="fileName1" onchange="loadImg(this,1)" accept="image/*">
+                    <input type="file" id="insert_img2" name="fileName2" onchange="loadImg(this,2)" accept="image/*">
+                    <input type="file" id="insert_img3" name="fileName3" onchange="loadImg(this,3)" accept="image/*">
                 </div>
                 <!-- file area -->
-
-            </form>
-            
+                </c:if>
+                
+                </form>
+                
+                <!-- 답변 상태일 시 보여줄 화면 -->
+                <c:if test='${ bq.ansStatus eq "Y" }'>
+                <div class="top_box" style="margin-top: 20px;">
+                    <p>답변 내용</p>
+                </div>
+                <div class="text_area2">
+                    <textarea name="ansContent" id="" disabled><c:out value="${ bq.ansContent }"/></textarea>
+                </div>
+                <div class="top_box">
+                    <p>이미지 첨부</p>
+                </div>
+                <c:set value="${ requestScope.answerFileList }" var="answerImg"/>
+                <c:if test="${ !empty answerImg[0] }">
+                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/${ answerImg[0].fileName }"></div>
+                </c:if>
+                <c:if test="${ empty answerImg[0] }">
+                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                </c:if>
+                
+                <c:if test="${ !empty answerImg[1] }">
+                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/${ answerImg[1].fileName }"></div>
+                </c:if>
+                <c:if test="${ empty answerImg[1] }">
+                <div class="change_photo"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                </c:if>
+                
+                <c:if test="${ !empty answerImg[2] }">
+                <div class="change_photo" style="margin-right:0;"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/${ answerImg[2].fileName }"></div>
+                </c:if>
+                <c:if test="${ empty answerImg[2] }">
+                <div class="change_photo" style="margin-right:0;"><img class="img_size addEvent" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
+                </c:if>
+                
+                <div class="photo_size">이미지당 10MB이하, 최대 3개까지 등록 가능합니다.</div>
+                <div class="btn_box">
+                    <input type="button" value="수정하기" class="btn write_btn" style="background-color: #F89E91;" onclick="location.href='${ pageContext.servletContext.contextPath }/manager/businessRevise?postNo=${ bq.postNo }'">
+                    <a href="javascript:history.back(-1)" class="btn cancle_btn" style="background-color: #BEBEBE;">목록으로</a>
+                </div>
+                
+                
+				</c:if>
+				
         </div>
     </div>
     
@@ -124,10 +183,19 @@
 	 <!-- modal  -->     
      <script>
 
-        $('.fixImg').click(function(){
+/*         $('.fixImg').click(function(){
             let img = $(this).attr("src");
             
-            if(img != "${ pageContext.servletContext.contextPath }/resources/images/photo.png"){ 
+            $('.inquiry_img').attr("src",img);
+            $('.inquiry_box').html(img);
+            $('.inquiry_modal').show();
+        }); */
+        
+        $('.addEvent').click(function(){
+            let img = $(this).attr("src");
+            console.log(img);
+            
+            if(img != "${ pageContext.servletContext.contextPath }/resources/images/photo2.png"){ 
 	            $('.inquiry_img').attr("src",img);
 	            $('.inquiry_box').html(img);
 	            $('.inquiry_modal').show();
@@ -142,21 +210,22 @@
 
 	<!-- file image -->
     <script>
-        const $viewArea1 = document.getElementById("view_area1");
-        const $viewArea2 = document.getElementById("view_area2");
-        const $viewArea3 = document.getElementById("view_area3");
-
-        $viewArea1.onclick = function(){
-            document.getElementById("insert_img1").click();
-        }
-        $viewArea2.onclick = function(){
-            document.getElementById("insert_img2").click();
-        }
-        $viewArea3.onclick = function(){
-            document.getElementById("insert_img3").click();
-        }
+        
+        $("#view_area1").click(function(){
+        	$("#insert_img1").click();
+        })
+        
+        $("#view_area2").click(function(){
+        	$("#insert_img2").click();
+        })
+        
+        $("#view_area3").click(function(){
+        	$("#insert_img3").click();
+        })
+        
 
         function loadImg(value, num){
+        	
             if(value.files && value.files[0]){
                 const reader = new FileReader();
                 /* 읽기동작이 성공적으로 로드되었을 때 작동하는 함수 */

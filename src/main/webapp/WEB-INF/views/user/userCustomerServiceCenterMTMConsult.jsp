@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/user/userMTMConsult.css">
   <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
   <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/user/userMyPageSideBar.css">
-  <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/user/userMTMConsult.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -32,6 +33,7 @@
             <br>
             <table class="table table">
               <thead style="background-color: #EDEDED;">
+              
                 <tr>
                   <th id="tablecol1" scope="col">번호</th>
                   <th id="tablecol2" scope="col">문의유형</th><!-- 제품 이미지 -->        
@@ -41,41 +43,52 @@
                 </tr>
               </thead>
               <tbody>
+              <c:forEach var="mtmQ" items="${ requestScope.mtmConsultingSelect }">
                 <tr>
-                  <td>1</td>
-                  <td>소비자</td>
-                  <td>업데이트가 되지 않네요</td>
-                  <td>2021-11-29</td>
-                  <td>Y</td>
+                  <td><c:out value="${ mtmQ.postNo }"/></td>
+                  <!--  -->
+                  <c:if test="${ mtmQ.boardCode eq 18 || mtmQ.boardCode eq 12 }">
+                  <td>회원가입</td>
+                  </c:if>
+                  <c:if test="${ mtmQ.boardCode eq 19 || mtmQ.boardCode eq 13 }">
+                  <td>결제/주문 </td>
+                  </c:if>
+                  <c:if test="${ mtmQ.boardCode eq 20 || mtmQ.boardCode eq 14 }">
+                  <td>리뷰관리</td>
+                  </c:if>
+                  <c:if test="${ mtmQ.boardCode eq 21 || mtmQ.boardCode eq 15 }">
+                  <td>이용문의</td>
+                  </c:if>
+                  <c:if test="${ mtmQ.boardCode eq 22 || mtmQ.boardCode eq 16 }">
+                  <td>불편관리</td>
+                  </c:if>
+                  <c:if test="${ mtmQ.boardCode eq 23 || mtmQ.boardCode eq 17 }">
+                  <td>기타</td>
+                  </c:if>
+                  <!--  -->
+                  <td><c:out value="${ mtmQ.postTitle }"/></td>
+                  <td><c:out value="${ mtmQ.postDate }"/></td>
+                  <c:if test="${ mtmQ.ansStatus eq 'Y' }">
+                  <td><b>답변 완료</b></td>
+                  </c:if>
+                  <c:if test="${ mtmQ.ansStatus eq 'W' || mtmQ.ansStatus eq 'N' }">
+                  <td><h6><b>답변 <br>대기중</b></h6></td>
+                  </c:if>
                 </tr>
+              </c:forEach>
                 
               </tbody>
             </table>
 
              <!-- 페이징 -->
-             <nav class="page_box" aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item"><a class="page-link-num" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&lt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">1</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">2</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">3</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">4</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">5</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">6</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">7</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">8</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">9</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">10</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&gt;</a></li>
-                <li class="page-item"><a class="page-link-num" href="#">&raquo;</a></li>
-              </ul>
-              <ul>
+                <jsp:include page="../commons/userFqaPagination.jsp"/>
+            
+              <form action="${ pageContext.servletContext.contextPath }/user/ucc/MTMQnA" method="get" style="margin-left: 300px">
+              	  <input type="hidden" name="currentPage" value="1">
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
-                  <input type="text" class="searchtext" placeholder="찾고싶은 가게 이름을 입력해주세요"></li>
-                  <button type="submit" class="searchbutton">검색하기</button></li>
-               </ul>
-            </nav>
+                  <input type="text" name="searchValue" class="searchtext" placeholder="찾고자 하는 상담 제목을 입력해주세요">
+              </form>
+            
             
           </div>
         </div>
@@ -87,6 +100,19 @@
                 $('#sidebar').toggleClass('active');
             });
         });
+      if(document.getElementsByTagName("td")) {
+    	  
+    	  const $tds =$('td');
+    	  for(let i = 0; i < $tds.length; i++) {
+    		  $tds[i].onclick = function () {
+    			let postNo = this.parentNode.children[0].innerText;
+    			console.log(postNo);
+    			location.href = "${ pageContext.servletContext.contextPath }/user/ucc/MTMOpen?postNo=" + postNo;
+    			//경로수정요함
+			}
+    	  }
+      }
+     	
     </script>
 	<jsp:include page="../commons/footer.jsp"/>
   </body>

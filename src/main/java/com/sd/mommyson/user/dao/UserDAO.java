@@ -8,9 +8,12 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
+import com.sd.mommyson.user.dto.FileDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserDAO {
@@ -80,26 +83,40 @@ public interface UserDAO {
 
 	List<PostDTO> selectOftenFqa();
 
-
 	Integer insertJJIMplus(Map<String, Integer> map);
 
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
 
-
-
-
-
-
-
-
+	int registMtmConsultingText(Map<String, Object> mtmConsulting);
 	
+	Integer selectLastOrderCode();
 
+	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
 
+	List<CouponDTO> selectCouponList(int memCode);
 
+	void deleteOrder(List<Integer> orderCodeList);
 
+	int updateOrder(Map<String, Object> map);
+
+	int updateCouponStatus(List<Integer> list2);
+
+	int registMtmConFile(Map<String, Object> fileInfo);
+
+	int selectMtmTotalCount(Map<String, String> searchMap);
 	
+	List<PostDTO> selectMtmConsulting(SelectCriteria selectCriteria);
 
+	PostDTO selectConsultingCon(Map<String, Object> searchMap);
+
+	List<FileDTO> selectConsumerImg(int postNo);
+
+	List<FileDTO> selectManagerImg(int postNo);
+
+	int updateDelConsulting(int postNo);
+
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

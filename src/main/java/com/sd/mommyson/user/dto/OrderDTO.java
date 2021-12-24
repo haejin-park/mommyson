@@ -13,14 +13,14 @@ public class OrderDTO {
 	private int totalPrice;
 	private int orderCode;
 	private String orderType;
-	private Date takeTime;
+	private String takeTime;
 	private String address;
 	private String phone;
 	private String storeName;
 	private int code;			// 상태코드 (1 : 주문접수중  2: 주문수락  3: 주문취소  4: 주문완료  )
 	private String acceptTime;
 	private Date cancleTime;
-	private Date completeTime;
+	private String completeTime;
 	private Date requestTime;
 	private OrderInfoDTO orderInfoDTO;
 	private MemberDTO memberDTO;
@@ -37,8 +37,8 @@ public class OrderDTO {
 	}
 
 
-	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
-			String phone, String storeName, int code, String acceptTime, Date cancleTime, Date completeTime,
+	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, String takeTime, String address,
+			String phone, String storeName, int code, String acceptTime, Date cancleTime, String completeTime,
 			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO, List<String> product,
 			List<ProductDTO> productDTO, List<OrderInfoDTO> orderAmount, StoreDTO storeInfo) {
 		super();
@@ -105,12 +105,12 @@ public class OrderDTO {
 	}
 
 
-	public Date getTakeTime() {
+	public String getTakeTime() {
 		return takeTime;
 	}
 
 
-	public void setTakeTime(Date takeTime) {
+	public void setTakeTime(String takeTime) {
 		this.takeTime = takeTime;
 	}
 
@@ -175,12 +175,12 @@ public class OrderDTO {
 	}
 
 
-	public Date getCompleteTime() {
+	public String getCompleteTime() {
 		return completeTime;
 	}
 
 
-	public void setCompleteTime(Date completeTime) {
+	public void setCompleteTime(String completeTime) {
 		this.completeTime = completeTime;
 	}
 
@@ -275,6 +275,4 @@ public class OrderDTO {
 				+ ", productDTO=" + productDTO + ", orderAmount=" + orderAmount + ", storeInfo=" + storeInfo + "]";
 	}
 
-
-	
 }
