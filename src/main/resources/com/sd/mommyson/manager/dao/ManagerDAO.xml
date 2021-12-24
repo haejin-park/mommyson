@@ -1233,14 +1233,15 @@
    <!-- 사업자 - 1:1 문의 답변 파일 수정 -->
    <update id="updateBusinessFile" parameterType="hashmap">
     UPDATE FILE_TBL A
-       SET A.FILE_NAME = #{ fileName },
-     WHERE A.POST_NO = #{ postNo }, A.FILE_CODE = #{ fileCode }
+       SET A.FILE_NAME = #{ fileName }
+     WHERE A.POST_NO = #{ postNo }
+       AND A.FILE_CODE = #{ fileCode }
    </update>
 
    <!-- 사업자 - 1:1 문의 답변 수정 -->
    <update id="updateBusinessAnswer" parameterType="hashmap">
     UPDATE POST_TBL A
-       SET A.ANS_CONTENT = #{ ansContent },
+       SET A.ANS_CONTENT = #{ ansContent }
      WHERE A.POST_NO = #{ postNo }
    </update>
 

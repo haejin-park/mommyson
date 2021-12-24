@@ -210,21 +210,22 @@
 
 	<!-- file image -->
     <script>
-        const $viewArea1 = document.getElementById("view_area1");
-        const $viewArea2 = document.getElementById("view_area2");
-        const $viewArea3 = document.getElementById("view_area3");
-
-        $viewArea1.onclick = function(){
-            document.getElementById("insert_img1").click();
-        }
-        $viewArea2.onclick = function(){
-            document.getElementById("insert_img2").click();
-        }
-        $viewArea3.onclick = function(){
-            document.getElementById("insert_img3").click();
-        }
+        
+        $("view_area1").click(function(){
+        	$("#insert_img1").click();
+        })
+        
+        $("view_area2").click(function(){
+        	$("#insert_img2").click();
+        })
+        
+        $("view_area3").click(function(){
+        	$("#insert_img3").click();
+        })
+        
 
         function loadImg(value, num){
+        	debugger;
             if(value.files && value.files[0]){
                 const reader = new FileReader();
                 /* 읽기동작이 성공적으로 로드되었을 때 작동하는 함수 */

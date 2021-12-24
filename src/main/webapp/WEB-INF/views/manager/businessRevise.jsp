@@ -107,7 +107,6 @@
                 <div class="change_photo" id="view_area1"><img class="img_size" id="view_img1" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
                 </c:if>
                 <input type="hidden" name="fileCode1" value="${ answerImg[0].fileCode }">
-                <input type="hidden" name="fileName" value="${ answerImg[0].fileName }">
                 
                 <c:if test="${ !empty answerImg[1] }">
                 <div class="change_photo" id="view_area2"><img class="img_size" id="view_img2" src="${ pageContext.servletContext.contextPath }/${ answerImg[1].fileName }"></div>
@@ -115,7 +114,7 @@
                 <c:if test="${ empty answerImg[1] }">
                 <div class="change_photo" id="view_area2"><img class="img_size" id="view_img2" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
                 </c:if>
-                <input type="hidden" name="fileCode3" value="${ answerImg[1].fileCode }">
+                <input type="hidden" name="fileCode2" value="${ answerImg[1].fileCode }">
                 
                 <c:if test="${ !empty answerImg[2] }">
                 <div class="change_photo" id="view_area3" style="margin-right:0;"><img class="img_size" id="view_img3" src="${ pageContext.servletContext.contextPath }/${ answerImg[2].fileName }"></div>
@@ -123,7 +122,7 @@
                 <c:if test="${ empty answerImg[2] }">
                 <div class="change_photo" id="view_area3" style="margin-right:0;"><img class="img_size" id="view_img3" src="${ pageContext.servletContext.contextPath }/resources/images/photo2.png"></div>
                 </c:if>
-                <input type="hidden" name="fileCode4" value="${ answerImg[2].fileCode }">
+                <input type="hidden" name="fileCode3" value="${ answerImg[2].fileCode }">
                 
                 <div class="photo_size">이미지당 10MB이하, 최대 3개까지 등록 가능합니다.</div>
                 <div class="btn_box">
@@ -174,9 +173,9 @@
 
 	<!-- file image -->
     <script>
-        const $viewArea1 = document.getElementById("view_area1");
-        const $viewArea2 = document.getElementById("view_area2");
-        const $viewArea3 = document.getElementById("view_area3");
+        let $viewArea1 = document.getElementById("view_area1");
+        let $viewArea2 = document.getElementById("view_area2");
+        let $viewArea3 = document.getElementById("view_area3");
 
         $viewArea1.onclick = function(){
             document.getElementById("insert_img1").click();

@@ -1008,7 +1008,7 @@ public class ManagerController {
 	@PostMapping("updateBusinessInquiry")
 	public String updateBusinessInquiry(HttpServletRequest request, HttpSession session, @RequestParam(value = "postNo", required = false) int postNo, @RequestParam(value = "ansContent", required = false) String ansContent, RedirectAttributes ra
 			, @RequestParam(value = "fileName1", required = false) MultipartFile fileName1, @RequestParam(value = "fileName2", required = false) MultipartFile fileName2, @RequestParam(value = "fileName3", required = false) MultipartFile fileName3
-			, @RequestParam(value = "fileCode1", required = false) int fileCode1, @RequestParam(value = "fileCode2", required = false) int fileCode2, @RequestParam(value = "fileCode3", required = false) int fileCode3) {
+			, @RequestParam(value = "fileCode1", defaultValue = "0") int fileCode1, @RequestParam(value = "fileCode2", defaultValue = "0") int fileCode2, @RequestParam(value = "fileCode3", defaultValue = "0") int fileCode3) {
 
 		Map<String, Object> updateInfo = new HashMap<>();
 		List<MultipartFile> imgFiles = new ArrayList<MultipartFile>();
@@ -1020,6 +1020,7 @@ public class ManagerController {
 		imgFiles.add(fileName3);
 
 		System.out.println("이미지 체크 : " + imgFiles);
+		System.out.println("코드 1 : " + fileCode1 + "코드 2 : " + fileCode2 +"코드 3 : " + fileCode3);
 
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
@@ -1030,39 +1031,46 @@ public class ManagerController {
 			mkdir.mkdirs();
 		}
 
-		Map<String, Object> updateFile = new HashMap<>();
-		updateFile.put("postNo",postNo);
 
 		int result = 0;
 		if(!imgFiles.isEmpty()) {
-
-			for(int i = 0; i < imgFiles.size(); i++) {
-
-				if(imgFiles.get(i).getOriginalFilename() != "") {
-					
+			
+			for(int i = 0; i < 3; i++) {
+				Map<String, Object> updateFile = new HashMap<>();
+				updateFile.put("postNo",postNo);
+				
+				System.out.println(imgFiles.get(i).getOriginalFilename() != "" && imgFiles.get(i).getOriginalFilename() != null);
+				
+				if(imgFiles.get(i).getOriginalFilename() != "" && imgFiles.get(i).getOriginalFilename() != null) {
 					String originFileName = imgFiles.get(i).getOriginalFilename();
 					String ext = originFileName.substring(originFileName.indexOf("."));
 					String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
 
-					if(i == 0) {
+						
+					if(i == 0 && fileCode1 > 0) {
+						System.out.println("첫번째 코드");
 						updateFile.put("fileCode", fileCode1);
-					}
-					if(i == 1) {
+					}else if(i == 1  && fileCode2 > 0) {
+						System.out.println("두번째 코드");
 						updateFile.put("fileCode", fileCode2);
-					}
-					if(i == 2) {
+					}else if(i == 2  && fileCode3 > 0) {
+						System.out.println("세번째 코드");
 						updateFile.put("fileCode", fileCode3);
+					} else {
+						updateFile.putIfAbsent("fileCode", 0);
 					}
-
+					
 					try {
 						imgFiles.get(i).transferTo(new File(filePath + "/" + savedName));
-
+						
 						String fileName = "resources/uploadFiles/" + savedName;
-
 						updateFile.put("fileName", fileName);
-
-						result = managerService.updateBusinessFile(updateFile);
-
+						
+						if(updateFile.get("fileCode").equals(0)) {
+							result = managerService.registBusinessFile(updateFile);
+						} else {
+							result = managerService.updateBusinessFile(updateFile);
+						}
 
 					} catch (IllegalStateException | IOException e) {
 
@@ -1070,7 +1078,7 @@ public class ManagerController {
 
 						e.printStackTrace();
 					}
-				}
+				} 
 			}
 		}
 
