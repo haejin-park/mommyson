@@ -74,7 +74,7 @@
             </table>
             <c:out value="${ requestScope.productInfo[0].ORDER_CODE }"/>
             <script>
-									
+            										
 				if(document.getElementsByClassName("del")) {
 					const $button =$('.del');
 

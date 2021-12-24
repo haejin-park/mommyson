@@ -12,7 +12,7 @@ public class CouponDTO {
 	private Date endDate;
 	private int dCcon;
 	private StoreDTO store;
-	private CouponHistoryDTO cpHistory;
+	/* private CouponHistoryDTO cpHistory; */
 	
 	public CouponDTO() {
 		super();
@@ -29,7 +29,7 @@ public class CouponDTO {
 		this.endDate = endDate;
 		this.dCcon = dCcon;
 		this.store = store;
-		this.cpHistory = cpHistory;
+//		this.cpHistory = cpHistory;
 	}
 
 
@@ -44,13 +44,12 @@ public class CouponDTO {
 		this.store = store;
 	}
 
-	public CouponHistoryDTO getCpHistory() {
-		return cpHistory;
-	}
-
-	public void setCpHistory(CouponHistoryDTO cpHistory) {
-		this.cpHistory = cpHistory;
-	}
+	/*
+	 * public CouponHistoryDTO getCpHistory() { return cpHistory; }
+	 * 
+	 * public void setCpHistory(CouponHistoryDTO cpHistory) { this.cpHistory =
+	 * cpHistory; }
+	 */
 
 	public int getCpCode() {
 		return cpCode;
@@ -103,8 +102,15 @@ public class CouponDTO {
 	@Override
 	public String toString() {
 		return "CouponDTO [cpCode=" + cpCode + ", cpName=" + cpName + ", startDate=" + startDate + ", disWon=" + disWon
-				+ ", endDate=" + endDate + ", dCcon=" + dCcon + ", store=" + store + ", cpHistory=" + cpHistory + "]";
+				+ ", endDate=" + endDate + ", dCcon=" + dCcon + ", store=" + store + "]";
 	}
+
+	/*
+	 * @Override public String toString() { return "CouponDTO [cpCode=" + cpCode +
+	 * ", cpName=" + cpName + ", startDate=" + startDate + ", disWon=" + disWon +
+	 * ", endDate=" + endDate + ", dCcon=" + dCcon + ", store=" + store +
+	 * ", cpHistory=" + cpHistory + "]"; }
+	 */
 
 
 	

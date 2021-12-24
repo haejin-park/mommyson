@@ -15,6 +15,7 @@ import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dao.UserMyPageDAO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
+import com.sd.mommyson.usermypage.dto.CouponHistoryDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
 import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 
@@ -38,9 +39,9 @@ public class UserMyPageImpl implements UserMyPageService {
 	}
 
 	@Override
-	public List<CouponDTO> selectMyCouponList(SelectCriteria selectCriteria) {
+	public List<CouponHistoryDTO> selectMyCouponList(SelectCriteria selectCriteria) {
 		
-		List<CouponDTO> myCouponList = userMyPageDAO.selectMyCouponList(selectCriteria);
+		List<CouponHistoryDTO> myCouponList = userMyPageDAO.selectMyCouponList(selectCriteria);
 		
 		return myCouponList;
 	}
@@ -168,6 +169,21 @@ public class UserMyPageImpl implements UserMyPageService {
 		
 		return reviewInfo;
 	}
+
+	@Override
+	public int updateReview(Map<String, Object> amendmentRv) {
+
+		int result = userMyPageDAO.updateReview(amendmentRv);
+		return result;
+	}
+
+	@Override
+	public int selectCeoCode(int cpCode) {
+		 int ceoCode = userMyPageDAO.selectCeoCode(cpCode);
+		return ceoCode;
+	}
+
+
 
 	
 

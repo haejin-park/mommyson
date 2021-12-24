@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer.MvcMatchersAuthorizedUrl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,7 @@ import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
+import com.sd.mommyson.usermypage.dto.CouponHistoryDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
 import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 import com.sd.mommyson.usermypage.service.UserMyPageService;
@@ -291,10 +293,24 @@ public class UserMyPageController {
 		
 		System.out.println("selectCriteria : " + selectCriteria);
 		
-		List<CouponDTO> myCouponList = userMyPageService.selectMyCouponList(selectCriteria);
+		List<CouponHistoryDTO> myCouponList = userMyPageService.selectMyCouponList(selectCriteria);
 		
 		System.out.println("나의 쿠폰 : " + myCouponList);
-		
+		System.out.println("myCouponList사이즈 : " + myCouponList.size());
+		List<Integer> ceoCode = new ArrayList<>();
+		for(int i = 0; i < myCouponList.size(); i++) {
+			
+//			System.out.println("ceoCode 찾기 위한 변수 : " + myCouponList.get(i).getCpCode());
+//			ceoCode.add(myCouponList.get(i).getCpCode());
+			int ceoNum = userMyPageService.selectCeoCode(myCouponList.get(i).getCouponInfo().getCpCode());
+			ceoCode.add(ceoNum);
+			
+			System.out.println("ceoCode : " + ceoCode);
+			
+//			ceoCode.add(ceoNum);
+		}
+		System.out.println("ceoCode : " + ceoCode);
+		mv.addAttribute("ceoCode", ceoCode);
 		mv.addAttribute("myCouponList", myCouponList);
 		mv.addAttribute("selectCriteria", selectCriteria);
 		mv.addAttribute("Paging", "uer_coupon_warehouse");//페이지네이션 해당값
@@ -541,6 +557,88 @@ public class UserMyPageController {
 		return "user_mypage/review_change";
 	}
 	
+	//리뷰 파일업로드 및 수정한 데이터 등록
+	@PostMapping("amendmentReview")
+	public String updateReview(HttpSession session, @RequestParam(required = false) Map<String,String> parameters, @RequestParam(required = false) MultipartFile singleFile, HttpServletRequest request, Model mv) {
+		
+		String message ="";
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		int memCode = memberInfo.getMemCode();
+//		String reviewImg = parameters.get("reviewImg");
+		int postGrade = Integer.parseInt(parameters.get("postGrade"));
+		String postContents = parameters.get("contents");
+		String rvCode = parameters.get("reviewCode");
+		int orderNo = Integer.parseInt(parameters.get("orderNo"));
+				
+		System.out.println("memCode : " + memCode);
+//		System.out.println("reviewImg : " + reviewImg);
+		System.out.println("reviewImg : " + postGrade);
+		System.out.println("postContents : " + postContents);
+		System.out.println("rvCode : " + rvCode);
+		System.out.println("orderNo : " + orderNo);
+		
+		Map<String, Object> amendmentRv = new HashMap<>();
+//		amendmentRv.put("reviewImg", reviewImg);
+		amendmentRv.put("postGrade", postGrade);
+		amendmentRv.put("postContents", postContents);
+		amendmentRv.put("rvCode", rvCode);
+		amendmentRv.put("memCode", memCode);
+		
+		System.out.println("리뷰수정 맵 내용 : " + amendmentRv);
+		
+		
+		
+		//이미지 파일 갱신(업로드)
+		
+		System.out.println("singleFile : " + singleFile);
+		
+		if(!singleFile.isEmpty() && singleFile != null) {
+			
+		
+			/* 파일을 저장할 경로 설정 */
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			
+			System.out.println("root : " + root);//경로 확인
+			
+			String filePath = root + "\\uploadFiles"; //이폴더에 넣겠다.
+			
+			File mkdir = new File(filePath);//경로가 없으면 추가 시켜주겠다. mkdir
+			if(!mkdir.exists()) {
+				mkdir.mkdirs();//없으면 경로에 폴더 생성  없으면 mkdirs 하위 여러개 만들어줌, mkdir은 하나
+			}
+			
+			/* 파일명 변경 처리 이름명 같은거 제거 */
+			String originFileName = singleFile.getOriginalFilename();
+			String ext = originFileName.substring(originFileName.lastIndexOf("."));//확장자명가져오겠다. "."마지막 껄 찾겠다.
+			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;//uuid ""-빈값으로 만들어주고 위에 확장자를 붙여줄거다.
+			
+			/* 파일을 저장한다. */
+			
+			amendmentRv.put("fileFolder", "resources/uploadFiles/" + savedName);
+			try {
+				singleFile.transferTo(new File(filePath + "\\" +savedName));
+				System.out.println("파일 저장 경로 확인  : " + filePath + "\\" +savedName);
+				message = "정상적으로 수정되어졌습니다.";
+				mv.addAttribute("message", message);
+			} catch (IllegalStateException | IOException e) {
+				/* 실패 시 파일 삭제*/
+				new File(filePath + "\\" + savedName).delete();//문제시 파일삭제
+				message = "문제가 발생했습니다.";
+				mv.addAttribute("message", message);
+				e.printStackTrace();
+			}//변경된파일이름으로 저장하겠다.
+			
+		} else {
+			amendmentRv.put("fileFolder", parameters.get("emergencyPath"));
+		}
+		
+		int result = userMyPageService.updateReview(amendmentRv);
+		
+		System.out.println("result : " + result);
+		
+		return  "redirect:userReview";
+	}
+	
 	/*리뷰 삭제*/
 	@PostMapping("delReview")
 	public void deleteReview(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -561,6 +659,7 @@ public class UserMyPageController {
 		
 		return;
 	}
+	
 	
 	/**@author ShinHyungi
 	 * @param orderCode

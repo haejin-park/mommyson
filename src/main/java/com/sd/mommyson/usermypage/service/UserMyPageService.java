@@ -10,6 +10,7 @@ import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
+import com.sd.mommyson.usermypage.dto.CouponHistoryDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
 import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 
@@ -17,7 +18,7 @@ public interface UserMyPageService {
 
 	int selectMycouponNo(Map<String, String> searchMap);
 
-	List<CouponDTO> selectMyCouponList(SelectCriteria selectCriteria);
+	List<CouponHistoryDTO> selectMyCouponList(SelectCriteria selectCriteria);
 
 	int selectMyOrderNum(Map<String, String> searchMap);
 
@@ -52,6 +53,10 @@ public interface UserMyPageService {
 	boolean selectMatchUserInfo(MemberDTO memberInfo);
 
 	ReviewDTO selectReviewInfo(int rvCode);
+
+	int updateReview(Map<String, Object> amendmentRv);
+
+	int selectCeoCode(int cpCode);
 
 
 
