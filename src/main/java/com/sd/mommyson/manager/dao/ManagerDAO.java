@@ -157,4 +157,10 @@ public interface ManagerDAO {
 
 	List<TaxAdjustDTO> selectTaxList(List<String> list);
 
+	List<FileDTO> selectNormalImg(int postNo);
+
+	int registNormalFile(Map<String, Object> registfile);
+
+	int registNormalAnswer(Map<String, Object> registInfo);
+
 }

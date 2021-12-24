@@ -127,10 +127,10 @@ public interface ManagerService {
 	/* 관리자 - 1:1 문의 이미지 파일 조회 */
 	public List<FileDTO> selectAnswerImg(int postNo);
 	
-	/* 관리자 - 1:1 문의 답변 답변 파일 등록 */
+	/* 관리자 - 1:1 문의 답변 파일 등록 */
 	public int registBusinessFile(Map<String, Object> registFile);
 	
-	/* 관리자 - 1:1 문의 답변 답변 등록 */
+	/* 관리자 - 1:1 문의 답변 등록 */
 	public int registBusinessAnswer(Map<String, Object> registInfo);
 	
 	/* 관리자 - 1:1 문의 답변 파일 수정 */
@@ -145,6 +145,18 @@ public interface ManagerService {
 	/* 소비자 - 1:1 문의 리스트 */
 	public List<PostDTO> selectNormalInquiry(Pagination pagination);
 
+	/* 소비자 - 1:1 문의 게시글 조회  */
+	public PostDTO selectNormalPost(int postNo);
+
+	/* 소비자 - 1:1 문의 이미지 파일 조회 */
+	public List<FileDTO> selectNormalImg(int postNo);
+	
+	/* 관리자 - 1:1 문의 답변 파일 등록 */
+	public int registNormalFile(Map<String, Object> registfile);
+
+	/* 관리자 - 1:1 문의 답변 등록 */
+	public int registNormalAnswer(Map<String, Object> registInfo);
+	
 	/* 배너추가 */
 	public int insertBannerAdd(Map<String, Object> bnMap);
 

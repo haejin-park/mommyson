@@ -1025,7 +1025,7 @@ public class ManagerController {
 	@PostMapping("updateBusinessInquiry")
 	public String updateBusinessInquiry(HttpServletRequest request, HttpSession session, @RequestParam(value = "postNo", required = false) int postNo, @RequestParam(value = "ansContent", required = false) String ansContent, RedirectAttributes ra
 			, @RequestParam(value = "fileName1", required = false) MultipartFile fileName1, @RequestParam(value = "fileName2", required = false) MultipartFile fileName2, @RequestParam(value = "fileName3", required = false) MultipartFile fileName3
-			, @RequestParam(value = "fileCode1", required = false) int fileCode1, @RequestParam(value = "fileCode2", required = false) int fileCode2, @RequestParam(value = "fileCode3", required = false) int fileCode3) {
+			, @RequestParam(value = "fileCode1", defaultValue = "0") int fileCode1, @RequestParam(value = "fileCode2", defaultValue = "0") int fileCode2, @RequestParam(value = "fileCode3", defaultValue = "0") int fileCode3) {
 
 		Map<String, Object> updateInfo = new HashMap<>();
 		List<MultipartFile> imgFiles = new ArrayList<MultipartFile>();
@@ -1037,6 +1037,7 @@ public class ManagerController {
 		imgFiles.add(fileName3);
 
 		System.out.println("이미지 체크 : " + imgFiles);
+		System.out.println("코드 1 : " + fileCode1 + "코드 2 : " + fileCode2 +"코드 3 : " + fileCode3);
 
 		String root = request.getSession().getServletContext().getRealPath("resources");
 
@@ -1047,39 +1048,46 @@ public class ManagerController {
 			mkdir.mkdirs();
 		}
 
-		Map<String, Object> updateFile = new HashMap<>();
-		updateFile.put("postNo",postNo);
 
 		int result = 0;
 		if(!imgFiles.isEmpty()) {
-
-			for(int i = 0; i < imgFiles.size(); i++) {
-
-				if(imgFiles.get(i).getOriginalFilename() != "") {
-					
+			
+			for(int i = 0; i < 3; i++) {
+				Map<String, Object> updateFile = new HashMap<>();
+				updateFile.put("postNo",postNo);
+				
+				System.out.println(imgFiles.get(i).getOriginalFilename() != "" && imgFiles.get(i).getOriginalFilename() != null);
+				
+				if(imgFiles.get(i).getOriginalFilename() != "" && imgFiles.get(i).getOriginalFilename() != null) {
 					String originFileName = imgFiles.get(i).getOriginalFilename();
 					String ext = originFileName.substring(originFileName.indexOf("."));
 					String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
 
-					if(i == 0) {
+						
+					if(i == 0 && fileCode1 > 0) {
+						System.out.println("첫번째 코드");
 						updateFile.put("fileCode", fileCode1);
-					}
-					if(i == 1) {
+					}else if(i == 1  && fileCode2 > 0) {
+						System.out.println("두번째 코드");
 						updateFile.put("fileCode", fileCode2);
-					}
-					if(i == 2) {
+					}else if(i == 2  && fileCode3 > 0) {
+						System.out.println("세번째 코드");
 						updateFile.put("fileCode", fileCode3);
+					} else {
+						updateFile.putIfAbsent("fileCode", 0);
 					}
-
+					
 					try {
 						imgFiles.get(i).transferTo(new File(filePath + "/" + savedName));
-
+						
 						String fileName = "resources/uploadFiles/" + savedName;
-
 						updateFile.put("fileName", fileName);
-
-						result = managerService.updateBusinessFile(updateFile);
-
+						
+						if(updateFile.get("fileCode").equals(0)) {
+							result = managerService.registBusinessFile(updateFile);
+						} else {
+							result = managerService.updateBusinessFile(updateFile);
+						}
 
 					} catch (IllegalStateException | IOException e) {
 
@@ -1087,7 +1095,7 @@ public class ManagerController {
 
 						e.printStackTrace();
 					}
-				}
+				} 
 			}
 		}
 
@@ -1177,13 +1185,131 @@ public class ManagerController {
 
 	/**
 	 * @author junheekim
-	 * @category 사업자 - 1:1 질문 게시글 조회
+	 * @category 소비자 - 1:1 질문 게시글 조회
 	 */
 	@GetMapping("normalAnswer")
-	public void normalAnswer() {
+	public void normalAnswer(Model model, @RequestParam(value = "postNo", required = false) int postNo) {
+
+		/* 내용 조회 */
+		PostDTO NormalQuestion = managerService.selectNormalPost(postNo);
+		/* 파일리스트 조회 - 질문자 */
+		List<FileDTO> ImgFileList = new ArrayList<FileDTO>();
+		ImgFileList = managerService.selectNormalImg(postNo);
+		System.out.println("이미지 파일1 : " + ImgFileList);
+
+		/* 파일리스트 조회 - 답변자 */
+		List<FileDTO> answerFileList = managerService.selectAnswerImg(postNo);
+		System.out.println("이미지 파일2 : " + answerFileList);
+
+		if(NormalQuestion != null) {
+			model.addAttribute("NormalQuestion", NormalQuestion);
+			model.addAttribute("ImgFileList", ImgFileList);
+			model.addAttribute("answerFileList", answerFileList);
+		} else {
+			System.out.println("사업자 1:1 문의 게시글 조회에 실패했습니다.");
+		}
 
 	}
 
+	/**
+	 * @author junheekim
+	 * @category 소비자 - 1:1 질문 답변 등록
+	 */
+	@PostMapping("registNormalAnswer")
+	public String registNormalAnswer(HttpServletRequest request, HttpSession session, @RequestParam(value = "postNo", required = false) int postNo, @RequestParam(value = "ansContent", required = false) String ansContent, RedirectAttributes ra
+			, @RequestParam(value = "fileName1", required = false) MultipartFile fileName1, @RequestParam(value = "fileName2", required = false) MultipartFile fileName2, @RequestParam(value = "fileName3", required = false) MultipartFile fileName3) {
+
+		Map<String, Object> registInfo = new HashMap<>();
+		List<MultipartFile> imgFiles = new ArrayList<MultipartFile>();
+		registInfo.put("ansContent",ansContent);
+		registInfo.put("postNo",postNo);
+
+		if(fileName1.getOriginalFilename() != "") {
+			imgFiles.add(fileName1);
+		}
+		if(fileName2.getOriginalFilename() != "") {
+			imgFiles.add(fileName2);
+		}
+		if(fileName3.getOriginalFilename() != "") {
+			imgFiles.add(fileName3);
+		}
+
+		System.out.println("이미지 체크 : " + imgFiles);
+		String root = request.getSession().getServletContext().getRealPath("resources");
+
+		String filePath = root + "/uploadFiles";
+
+		File mkdir = new File(filePath);
+		if(!mkdir.exists()) {
+			mkdir.mkdirs();
+		}
+
+		Map<String, Object> registfile = new HashMap<>();
+		registfile.put("postNo",postNo);
+
+		int result = 0;
+		if(!imgFiles.isEmpty()) {
+
+			for(int i = 0; i < imgFiles.size(); i++) {
+
+				System.out.println(i);
+				String originFileName = imgFiles.get(i).getOriginalFilename();
+				String ext = originFileName.substring(originFileName.indexOf("."));
+				String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+
+				try {
+					imgFiles.get(i).transferTo(new File(filePath + "/" + savedName));
+
+					String fileName = "resources/uploadFiles/" + savedName;
+
+					registfile.put("fileName", fileName);
+
+					result = managerService.registNormalFile(registfile);
+
+
+				} catch (IllegalStateException | IOException e) {
+
+					new File(filePath + "/" + savedName).delete();
+
+					e.printStackTrace();
+				}
+
+			}
+		}
+
+		int result2 = managerService.registNormalAnswer(registInfo);
+
+		if(result > 0 && result2 > 0) {
+			ra.addFlashAttribute("message","답변등록이 완료되었습니다.");
+		} else {
+			ra.addFlashAttribute("message","답변등록에 실패하였습니다.");
+		}
+
+		return "redirect:/manager/normalAnswer?postNo=" + postNo;
+	}
+
+
+	/**
+	 * @author junheekim
+	 * @category 소비자 - 1:1 질문 답변 수정 페이지
+	 */
+	@GetMapping("normalRevise")
+	public void normalRevise(Model model, @RequestParam(value = "postNo", required = false) int postNo) {
+		/* 내용 조회 */
+		PostDTO NormalQuestion = managerService.selectNormalPost(postNo);
+		/* 파일리스트 조회 - 질문자 */
+		List<FileDTO> ImgFileList = new ArrayList<FileDTO>();
+		ImgFileList = managerService.selectNormalImg(postNo);
+
+		/* 파일리스트 조회 - 답변자 */
+		List<FileDTO> answerFileList = managerService.selectAnswerImg(postNo);
+
+		model.addAttribute("NormalQuestion", NormalQuestion);
+		model.addAttribute("ImgFileList", ImgFileList);
+		model.addAttribute("answerFileList", answerFileList);
+
+	}
+	
 	/* 리뷰 신고 현황 */
 	/**
 	 * @param model
