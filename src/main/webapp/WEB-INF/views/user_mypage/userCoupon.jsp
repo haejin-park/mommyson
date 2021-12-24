@@ -38,18 +38,18 @@
                 <tr>
                   <th id="tablecol1" scope="col">가게</th>
                   <th id="tablecol2" scope="col">쿠폰내용</th>
-                  <th id="tablecol3" scope="col">할인율</th>
+                  <th id="tablecol3" scope="col">할인금액</th>
                 </tr>
               </thead>
               <tbody>
               	<c:forEach var="myCoupon" items="${ requestScope.myCouponList }">
 	                <tr>
-	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myCoupon.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
-	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.cpName }"/></td>
-	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.disWon }"/></td>
-	                  <input type="hidden" value = "${ myCoupon.store.memCode }">
-	     
+	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myCoupon.couponInfo.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
+	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.cpName }"/></td>
+	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.disWon }"/></td>
+	                  <input type="hidden" value = "${ myCoupon.couponInfo.store.memCode }">
 	                </tr>
+					  <c:out value="${ myCoupon.couponInfo.store.memCode }"/>
               	</c:forEach>
               </tbody>
 
@@ -61,6 +61,8 @@
           		for(let i = 0; i < $tds.length; i++) {
           			$tds[i].onclick = function() {
 						let StoreAddress = this.parentNode.children[3].value;
+						
+						
 						location.href = "${ pageContext.servletContext.contextPath }/user/storepage?memCode=" + StoreAddress;
 						console.log(StoreAddress);
           				

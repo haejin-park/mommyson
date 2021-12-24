@@ -296,6 +296,7 @@ public class UserMyPageController {
 		
 		System.out.println("나의 쿠폰 : " + myCouponList);
 		
+		
 		mv.addAttribute("myCouponList", myCouponList);
 		mv.addAttribute("selectCriteria", selectCriteria);
 		mv.addAttribute("Paging", "uer_coupon_warehouse");//페이지네이션 해당값
