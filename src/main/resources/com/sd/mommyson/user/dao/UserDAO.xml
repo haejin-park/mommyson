@@ -852,4 +852,14 @@
     	       TAKE_TIME = #{ time }
     	 WHERE ORDER_CODE = #{ orderCode }
     </update>
+    
+    <update id="updateCouponStatus" parameterType="list">
+    	UPDATE CP_HISTORY_TBL
+    	   SET USE_STATUS = 'Y'
+    	 WHERE CP_NUM IN (
+    	 <foreach collection="list" separator="," item="item">
+    	 	#{ item }
+    	 </foreach>
+    	 )
+    </update>
     </mapper>

@@ -291,6 +291,12 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	@Override
+	public int updateCouponStatus(List<Integer> list2) {
+		return userDAO.updateCouponStatus(list2);
+	}
+
+
 
 
 

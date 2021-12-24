@@ -1321,7 +1321,7 @@ public class UserController {
 	 */
 	@GetMapping("payComplete")
 	public String payComplete(RedirectAttributes model, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
-			@RequestParam("phone") String phone, @RequestParam("time") String time) {
+			@RequestParam("phone") String phone, @RequestParam("time") String time, @RequestParam("couponCodes") int[] couponCodes) {
 		
 		System.out.println(orderCodes[0]);
 		List<Map<String, Object>> list = new ArrayList<>();
@@ -1335,11 +1335,23 @@ public class UserController {
 			map.put("time",time);
 			list.add(map);
 		}
+		// 쿠폰 사용 완료 표시
+		List<Integer> list2 = new ArrayList<>();
+		for(int c : couponCodes) {
+			list2.add(c);
+		}
 		
 		int result = userService.updateOrder(list);
+		int result2 = 0;
+		if(!list2.isEmpty()) {
+			result2 = userService.updateCouponStatus(list2);
+		}
 		
 		if(result > 0) {
 			model.addAttribute("message", "업데이트 성공");
+			if(result2 > 0) {
+				System.out.println("쿠폰 업뎃 완료~");
+			}
 		} else {
 			model.addAttribute("message", "업데이트 실패");
 		}

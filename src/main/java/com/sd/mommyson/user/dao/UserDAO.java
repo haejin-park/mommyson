@@ -92,6 +92,8 @@ public interface UserDAO {
 
 	int updateOrder(Map<String, Object> map);
 
+	int updateCouponStatus(List<Integer> list2);
+
 
 
 

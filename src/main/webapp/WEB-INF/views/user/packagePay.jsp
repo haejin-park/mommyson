@@ -117,7 +117,8 @@
           		$('#totalPrice').val(total);
       		}
       	})
-      
+      	
+      	// 결제 로직
       	$('#pay').on('click',function() {
       		if($('#phone').val() == '' || $('#time').val() == '') {
       			alert('주문 정보를 모두 기입해주세요!');
@@ -161,7 +162,7 @@
           	        alert(msg);
           	      } else {
           	    	  alert('결제 완료!');
-          	    	  location.href='${ pageContext.servletContext.contextPath }/user/payComplete?orderCodes=' + orderCodes + '&totalPrice=' + totalPrice + '&phone=' + phone + '&time=' + takeTime;
+          	    	  location.href='${ pageContext.servletContext.contextPath }/user/payComplete?orderCodes=' + orderCodes + '&totalPrice=' + totalPrice + '&phone=' + phone + '&time=' + takeTime + '&couponCodes=' + couponCodes;
           	      }
           		});
       		}

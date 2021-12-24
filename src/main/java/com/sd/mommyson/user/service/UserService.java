@@ -90,6 +90,8 @@ public interface UserService {
 
 	int updateOrder(List<Map<String, Object>> list);
 
+	int updateCouponStatus(List<Integer> list2);
+
 
 
 
