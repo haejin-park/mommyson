@@ -96,6 +96,7 @@
 		<result property="code" column="CODE"/>
 		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
 		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
+		<result property="takeTime" column="TAKE_TIME" jdbcType="VARCHAR"/>
 		<association property="memberDTO" resultMap="memberResultMap"/>
 		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
 		<association property="acceptDTO" resultMap="acceptResultMap"/>
@@ -128,7 +129,6 @@
 		<result property="amount" column="AMONT"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="sdCode" column="SD_CODE"/>
-		<result property="takeTime" column="TAKE_TIME"/>
 		<result property="address" column="ADDRESS"/>
 		<result property="phone" column="PHONE"/>
 		<result property="storeName" column="STORE_NAME"/>
@@ -800,6 +800,7 @@
                , G.ORDER_STATUS 
                , G.SD_NAME 
                , G.AMONT
+               , G.TAKE_TIME
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_ACCEPT_TIME
@@ -811,6 +812,7 @@
                     , F.ORDER_STATUS 
                     , F.SD_NAME 
                     , F.AMONT
+                    , F.TAKE_TIME
 	            FROM (SELECT
 						        A.ORDER_ACCEPT_TIME
 						      , A.ORDER_CODE
@@ -820,7 +822,8 @@
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
 						      , E.SD_NAME 
-						      , B.AMONT       
+						      , B.AMONT
+						      , a.TAKE_TIME       
 						  FROM ORDER_TBL A
 						  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 						  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
