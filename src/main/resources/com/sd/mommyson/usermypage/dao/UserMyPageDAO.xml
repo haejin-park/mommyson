@@ -107,9 +107,8 @@
 	 ]]>	 	 
     </select>
     
-    <select id="selectCeoCode" parameterType="_int">
+    <select id="selectCeoCode" parameterType="_int" resultType="_int">
     SELECT
-    	   A.CP_CODE
     	   C.MEM_CODE
       FROM COUPON_TBL A
       JOIN COUPON_STORE_TBL B ON(B.CP_CODE = A.CP_CODE)  

@@ -37,6 +37,7 @@ import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.usermypage.dto.CouponDTO;
+import com.sd.mommyson.usermypage.dto.CouponHistoryDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
 import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 import com.sd.mommyson.usermypage.service.UserMyPageService;
@@ -292,7 +293,7 @@ public class UserMyPageController {
 		
 		System.out.println("selectCriteria : " + selectCriteria);
 		
-		List<CouponDTO> myCouponList = userMyPageService.selectMyCouponList(selectCriteria);
+		List<CouponHistoryDTO> myCouponList = userMyPageService.selectMyCouponList(selectCriteria);
 		
 		System.out.println("나의 쿠폰 : " + myCouponList);
 		
@@ -302,7 +303,7 @@ public class UserMyPageController {
 //			System.out.println("ceoCode 찾기 위한 변수 : " + myCouponList.get(i).getCpCode());
 //			ceoCode.add(myCouponList.get(i).getCpCode());
 			
-			ceoCode = userMyPageService.selectCeoCode(myCouponList.get(i).getCpCode());
+			ceoCode = userMyPageService.selectCeoCode(myCouponList.get(i).getCouponInfo().getStore().getMemCode());
 			
 			System.out.println("ceoCode : " + ceoCode);
 			
