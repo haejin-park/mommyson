@@ -47,11 +47,11 @@
 	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myCoupon.couponInfo.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.cpName }"/></td>
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.disWon }"/></td>
-	                  <c:forEach var="banchanStore" items="${requestScope.ceoCode[colist.index]}" varStatus="banchanlist">
+	                  <%-- <c:forEach var="banchanStore" items="${requestScope.ceoCode}" varStatus="banchanlist"> --%>
 	                  
-	                  <input type="hidden" value="${ banchanStore }">				
-					  <c:out value="${ banchanStore }"/>
-	                  </c:forEach>
+	                  <input type="hidden" value="${ requestScope.ceoCode[colist.index] }">				
+					  <c:out value="${ requestScope.ceoCode[colist.index] }"/>
+	                  <%-- </c:forEach> --%>
 	                </tr>
               	</c:forEach>             	
              
