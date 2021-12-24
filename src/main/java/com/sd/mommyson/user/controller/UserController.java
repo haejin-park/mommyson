@@ -903,7 +903,7 @@ public class UserController {
 			System.out.println("insertPackage Service 실패");
 		}
 		
-		return "redirect:paymentPackage";
+		return "redirect:/user/paymentPackage";
 	}
 	
 	/**
