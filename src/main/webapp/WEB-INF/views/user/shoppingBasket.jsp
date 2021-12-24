@@ -41,22 +41,22 @@
 	    		<c:otherwise>
 	    			<c:forEach var="row" items="${ map.cartList }" varStatus="i">
 	    				<table  style="width: 80%; margin-left:10%; text-align: center; border :1px solid black;">	    				
-	    				<tr id="tr2">
-				        <td><input type="checkbox" name="checkbox" id="checkbox" value="${ row.totalPrice }"></td><input type="hidden" id="checkboxHd" value="N">
-						<td style="display: none"><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
-				        <td style="display: none"><input type="hidden" name="storeName" value="${ row.storeName }"/></td>
-				        <td id="storeImgTd" style="width: 18%;"><img id="storeImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
-				        <td id="sdImgTd"  style="padding-right: 12%;"><img id="sdImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
-				        <td><span id="price"><c:out value="${ row.price }"/></span></td>
-				        <td>
-				         	<div class="number">
-					           	<a href="#" id="decreaseQuantity"> - </a>
-					            <span id="numberUpDown" name="amount"><c:out value="${ row.amount }"/></span>
-					            <a href="#" id="increaseQuantity"> + </a>
-				        	</div>
-				        </td>
-				        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
-				      	</tr>
+		    				<tr id="tr2">
+						        <td><input type="checkbox" class="checkbox" name="checkbox" id="checkbox" value="${ row.totalPrice }"><input type="hidden" class="checkboxHd" value="N"></td>
+								<td><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
+						        <td><input type="hidden" name="storeName" value="${ row.storeName }"/></td>
+						        <td id="storeImgTd" style="width: 18%;"><img id="storeImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
+						        <td id="sdImgTd"  style="padding-right: 12%;"><img id="sdImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
+						        <td><span id="price"><c:out value="${ row.price }"/></span></td>
+						        <td>
+						         	<div class="number">
+							           	<a href="#" id="decreaseQuantity"> - </a>
+							            <span id="numberUpDown" name="amount"><c:out value="${ row.amount }"/></span>
+							            <a href="#" id="increaseQuantity"> + </a>
+						        	</div>
+						        </td>
+						        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
+					      	</tr>
 				      	</table>
 			    </c:forEach> 
 	    	</c:otherwise>
@@ -75,7 +75,7 @@
 	    <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
 
 	    <br>  
-	   	<button id="selectDelete" onclick="selectDelete1(product)">선택삭제</button>		
+	   	<input type ="button" id="selectDelete" onclick="selectDelete1(product)" value="선택삭제">	
 	 	    	
     </form>
     
@@ -162,10 +162,6 @@
 		});
 	  
 		
-	
-	/* 장바구니 행 삭제 */
-	document.querySelectorAll('.')
-		
 	  
   	  /* 주문번호 가지고 결제창으로 이동 */
 
@@ -190,8 +186,8 @@
 			$(function(e){
 				if (str == "pack") {
 					console.log(memCode);
-					if ($("#checkbox").is(":checked")) {
-						$("#checkboxHd").val() == 'Y';
+					if ($(".checkbox").is(":checked")) {
+						$(".checkboxHd").val() == 'Y';
 						location.href = '${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList
 										+ "&storeCode=" + storeCode
 										+ "&storeName=" + storeName;
@@ -204,8 +200,8 @@
 
 				} else if (str == "deli") {
 					console.log(memCode);
-					if ($("#checkbox").is(":checked")) {
-						$("#checkboxHd").val() == 'Y';
+					if ($(".checkbox").is(":checked")) {
+						$(".checkboxHd").val() == 'Y';
 						location.href = '${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList
 										+ "&storeCode=" + storeCode
 										+ "&storeName=" + storeName;
@@ -220,7 +216,7 @@
 			});	
 		}
 	
-		function del(str) {
+ 		function del(str) {
 			let deleteList = [];
 		
 			$("input:checkbox[name='checkbox']:checked").each(function(){ 
@@ -242,7 +238,7 @@
 				
 			});
 				
-		}
+		} 
 		
 	</script>
 

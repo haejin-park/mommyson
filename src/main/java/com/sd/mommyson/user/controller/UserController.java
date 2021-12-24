@@ -864,7 +864,6 @@ public class UserController {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
 		int memCode = member.getMemCode();
-		
 		System.out.println("memCode : " + memCode);
 		
 		System.out.println("deleteList : " + deleteList);
