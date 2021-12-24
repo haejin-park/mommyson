@@ -296,7 +296,20 @@ public class UserMyPageController {
 		
 		System.out.println("나의 쿠폰 : " + myCouponList);
 		
-		
+		List<Integer> ceoCode = new ArrayList<>();
+		for(int i = 0; i < myCouponList.size(); i++) {
+			
+//			System.out.println("ceoCode 찾기 위한 변수 : " + myCouponList.get(i).getCpCode());
+//			ceoCode.add(myCouponList.get(i).getCpCode());
+			
+			ceoCode = userMyPageService.selectCeoCode(myCouponList.get(i).getCpCode());
+			
+			System.out.println("ceoCode : " + ceoCode);
+			
+//			ceoCode.add(ceoNum);
+		}
+		System.out.println("ceoCode : " + ceoCode);
+		mv.addAttribute("ceoCode", ceoCode);
 		mv.addAttribute("myCouponList", myCouponList);
 		mv.addAttribute("selectCriteria", selectCriteria);
 		mv.addAttribute("Paging", "uer_coupon_warehouse");//페이지네이션 해당값

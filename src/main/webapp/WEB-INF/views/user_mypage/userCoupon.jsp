@@ -47,10 +47,13 @@
 	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myCoupon.couponInfo.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.cpName }"/></td>
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.disWon }"/></td>
-	                  <input type="hidden" value = "${ myCoupon.couponInfo.store.memCode }">
+	                 
 	                </tr>
-					  <c:out value="${ myCoupon.couponInfo.store.memCode }"/>
               	</c:forEach>
+				<c:forEach var="banchanStore" items="${requestScope.ceoCode}">
+					  <c:out value="${ banchanStore }"/>				
+				</c:forEach>              	
+             
               </tbody>
 
             </table>

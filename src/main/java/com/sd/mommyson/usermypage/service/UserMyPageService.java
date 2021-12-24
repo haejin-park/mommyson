@@ -55,6 +55,8 @@ public interface UserMyPageService {
 
 	int updateReview(Map<String, Object> amendmentRv);
 
+	List<Integer> selectCeoCode(int cpCode);
+
 
 
 }

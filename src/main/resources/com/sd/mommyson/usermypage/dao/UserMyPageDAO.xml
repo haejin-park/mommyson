@@ -107,6 +107,17 @@
 	 ]]>	 	 
     </select>
     
+    <select id="selectCeoCode" parameterType="_int">
+    SELECT
+    	   A.CP_CODE
+    	   C.MEM_CODE
+      FROM COUPON_TBL A
+      JOIN COUPON_STORE_TBL B ON(B.CP_CODE = A.CP_CODE)  
+      JOIN STORE_TBL C ON(C.MEM_CODE = B.MEM_CODE)
+     WHERE A.CP_CODE =#{ cpCode }	   
+    	   
+    </select>
+    
     <!-- 나의 주문내역  -->
     <resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="myOrderResultMap"><!-- 필요한가?? -->
     	<id property="orderCode" column="ORDER_CODE"/>

@@ -176,6 +176,12 @@ public class UserMyPageImpl implements UserMyPageService {
 		return result;
 	}
 
+	@Override
+	public int selectCeoCode(int cpCode) {
+		int ceoNum = userMyPageDAO.selectCeoCode(cpCode);
+		return ceoNum;
+	}
+
 	
 
 }
