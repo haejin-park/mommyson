@@ -914,13 +914,6 @@ public class UserController {
 		return "user/packagePay";
 	}
 	
-	@GetMapping("paymentPackage")
-	public String Paymentpackage(Model model, HttpSession session,@RequestParam(value = "orderList", required = false) int[] orderList ) {
-		
-		
-		return "user/packagePay";
-	}
-	
 	
 	/**@author ShinHyungi
 	 * @param orderList
