@@ -102,5 +102,8 @@ public interface UserService {
 	List<FileDTO> selectManagerImg(int postNo);
 
 	int updateDelConsulting(int postNo);
+	
+	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

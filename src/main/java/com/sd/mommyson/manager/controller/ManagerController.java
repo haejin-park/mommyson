@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -42,7 +43,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.BannerDTO;
@@ -56,6 +56,9 @@ import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
+import com.sd.mommyson.user.dto.ReportDTO;
+import com.sd.mommyson.user.dto.ReviewDTO;
 
 @Controller
 @RequestMapping("/manager/*")
@@ -110,8 +113,9 @@ public class ManagerController {
 		System.out.println("searchMap : " + searchMap);
 
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
-		int totalCount = managerService.selectNormalMemberTotalCount(searchMap);
 
+		int totalCount = managerService.selectUserTotalCount(searchMap);
+		
 		System.out.println("totalInquiryBoardCount : " + totalCount);
 
 		int limit = 10;
@@ -129,11 +133,24 @@ public class ManagerController {
 		pagination.setSearchCondition("user");
 
 		System.out.println("pagination : " + pagination);
-
-
-		List<MemberDTO> normalMemberList = managerService.selectMember(pagination);
+		
+		List<MemberDTO> normalMemberList = managerService.selectUser(pagination);
 		System.out.println("리스트 확인 : " + normalMemberList);
-
+		
+		List<Integer> testList = null;
+		for(MemberDTO mb : normalMemberList) {
+			int value = 0;
+			List<Integer> list = mb.getUser().getTotalPrice();
+			
+			for(int i : list) {
+				value += i;
+			}
+			testList = new ArrayList<>();
+			testList.add(value);
+			
+			mb.getUser().setTotalPrice(testList);
+		}
+		
 		if(normalMemberList != null) {
 			model.addAttribute("pagination", pagination);
 			model.addAttribute("normalMemberList", normalMemberList);
@@ -143,6 +160,30 @@ public class ManagerController {
 
 	}
 
+	
+//	@PostMapping(value = "totalPrice", produces = "application/json; charset=UTF-8")
+//	@ResponseBody
+//	public int totalPrice(@RequestParam("getMemCode") int memCode) {
+//		
+//		System.out.println(memCode);
+//		List<OrderDTO> totalPriceList = managerService.selectTotalPrice(memCode);
+//		System.out.println("totalPriceList : " + totalPriceList);
+//		System.out.println(totalPriceList.size());
+//		
+//		List<Integer> testList = null;
+//		int value = 0;
+//		for(int i = 0; i < totalPriceList.size(); i++) {
+//			
+//			OrderDTO result = totalPriceList.get(i);
+//			value += result.getTotalPrice();
+//		}
+//		
+//		System.out.println("value : " + value);
+//
+//		
+//		return value;
+//	}
+	
 	/* 회원삭제 */
 	/**
 	 * @param deleteMember
@@ -1631,26 +1672,174 @@ public class ManagerController {
 		return result? "1" : "2";
 	}
 
-	/* 배너설정 */
+	
+	/**
+	 * 배너조회
+	 * @param model
+	 * @author leeseungwoo
+	 */
 	@GetMapping("bannerManage")
-	public void bannerManage() {}
-
-	/* 배너추가 */
+	public void bannerManage(Model model) {
+		
+		List<BannerDTO> bannerList = managerService.selectBanner();
+		System.out.println("bannerList : " + bannerList);
+		
+		model.addAttribute("bannerList", bannerList);
+	}
+	
+	/* 배너추가 페이지 */
 	@GetMapping("bannerAdd")
-	public String bannerAdd(@ModelAttribute BannerDTO banner, Model model) {
-
+	public void bannerAdd() {}
+	
+	/**
+	 * 배너추가
+	 * @param banner
+	 * @param bnImg
+	 * @param request
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping("bannerinsert")
+	public String bannerinsert(@ModelAttribute BannerDTO banner, @RequestParam MultipartFile bnImgs
+							   , HttpServletRequest request) {
+		System.out.println("들어옴");
+		System.out.println("banner : " + banner);
 		Map<String, Object> bnMap = new HashMap<>();
-		//		bnMap.put("bnCode", banner.getBnCode());
-		bnMap.put("bnName", banner.getBnName());
-		bnMap.put("bnImg", banner.getBnImg());
-		bnMap.put("bnStatus", banner.getBnStatus());
-		bnMap.put("bnOrder", banner.getBnOrder());
-
+		bnMap.put("banner", banner);
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String filePath = root + "/uploadFiles";
+		
+		File mkdir = new File(filePath);
+		if(!mkdir.exists()) {
+			mkdir.mkdirs();
+		}
+		
+		String orginFileName = bnImgs.getOriginalFilename();
+		String ext = orginFileName.substring(orginFileName.indexOf("."));
+		String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+		
+		try {
+			bnImgs.transferTo(new File(filePath + "/" + savedName));
+			
+			String fileName = "resources/uploadFiles/" + savedName;
+			System.out.println("fileName : " + fileName);
+			bnMap.put("bnImg", fileName);
+			
+			
+		} catch (IllegalStateException | IOException e) {
+			new File(filePath + "/" + savedName).delete();	
+			e.printStackTrace();
+		}
+		
 		int result = managerService.insertBannerAdd(bnMap);
-
+		
+		if(result > 0) {
+			System.out.println("배너등록성공");
+		} else {
+			System.out.println("배너등록실패");
+			new File(filePath + "/" + savedName).delete();
+		}
+		
+		return "redirect:bannerManage";
+	}
+	
+	/**
+	 * 배너 수정 페이지
+	 * @param model
+	 * @param bnCode
+	 * @author leeseungwoo
+	 */
+	@GetMapping("bannerEditView")
+	public void bannerEditView(Model model, @RequestParam(value = "bnCode", required = false) int bnCode) {
+		
+		BannerDTO bannerList = managerService.selectBannerEditView(bnCode);
+		model.addAttribute("bannerList", bannerList);
+	}
+	
+	/**
+	 * 배너 수정
+	 * @param banner
+	 * @param bnImgs
+	 * @param request
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping("bannerEdit")
+	public String bannerEdit(@ModelAttribute BannerDTO banner, @RequestParam MultipartFile bnImgs
+			   , HttpServletRequest request) {
+		
+		System.out.println("들어옴");
+		System.out.println("banner : " + banner);
+		Map<String, Object> bnMap = new HashMap<>();
+		bnMap.put("banner", banner);
+		System.out.println("bnImgs : " + bnImgs);
+		
+		if(!bnImgs.isEmpty()) {
+			
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			String filePath = root + "/uploadFiles";
+			
+			File mkdir = new File(filePath);
+			if(!mkdir.exists()) {
+				mkdir.mkdirs();
+			}
+			
+			String orginFileName = bnImgs.getOriginalFilename();
+			String ext = orginFileName.substring(orginFileName.indexOf("."));
+			String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+			
+			try {
+				bnImgs.transferTo(new File(filePath + "/" + savedName));
+				
+				String fileName = "resources/uploadFiles/" + savedName;
+				System.out.println("fileName : " + fileName);
+				bnMap.put("bnImg", fileName);
+				
+				
+			} catch (IllegalStateException | IOException e) {
+				new File(filePath + "/" + savedName).delete();	
+				e.printStackTrace();
+			}
+			
+		}
+		
+		int result = managerService.updateBanner(bnMap);
+		
+		if(result > 0) {
+			System.out.println("배너수정성공");
+		} else {
+			System.out.println("배너수정실패");
+		}
+		
 		return "redirect:bannerManage";
 	}
 
+	/**
+	 * 배너삭제
+	 * @param bnCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "deleteBanner", produces = "text/plain; charset=UTF-8;")
+	@ResponseBody
+	public String deleteBanner(@RequestParam("chkBanner[]") String[] bnCode) {
+		
+		List<String> chkBannerList = new ArrayList<>();
+		for(String bc : bnCode) {
+			chkBannerList.add(bc);
+		}
+		
+		int result = managerService.deleteBanner(chkBannerList);
+		if(result > 0) {
+			System.out.println("배너 삭제 성공");
+		} else {
+			System.out.println("배너 삭제 실패");
+		}
+		
+		return result > 0? "1" : "2";
+	}
+	
 	/**
 	 * 사용중인 태그 조회
 	 * 핫 키워드 조회

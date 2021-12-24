@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
 </head>
 <body>
+	<div style="height: 1px; background-color:#C5C5C5; position:relative; top: 160px;"></div>
     <footer class="at-container">
         <ul class="df_ul ft_list">
             <li>

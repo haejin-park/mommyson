@@ -63,7 +63,7 @@
 		                        <td>${ nm.email }</td>
 		                        <td>${ nm.enrollDate }</td>
 		                        <td>${ nm.ceo.store.storeName }</td>
-		                        <td></td>
+		                        <td>${ nm.ceo.store.membershipAndStore.membership.msType }</td>
 		                        <td>
 		                        	<a href="javascript:void(0);" onclick="clickDetailInfo(this);" data-toggle="modal" data-target="#exampleModal">[상세보기]</a>
 	                        	</td>
@@ -131,10 +131,10 @@
                     <h3 class="modal_title">결제내역</h3>
                     <table border="1">
                         <colgroup>
-                            <col width=""/>
-                            <col width=""/>
-                            <col width=""/>
-                            <col width=""/>
+                            <col width="20%"/>
+                            <col width="30%"/>
+                            <col width="20%"/>
+                            <col width="30%"/>
                         </colgroup>
                         <tbody>
                             <tr>
@@ -208,10 +208,10 @@
      				ceoEmail.text(data.email);
      				ceoStore.text(data.ceo.store.storeName);
      				ceoAddress.text(data.address);
-     				ceoPaymentDay.text();
-     				ceoBuyItem.text();
-     				ceoExpiryDate.text();
-     				ceoPaymentPrice.text();
+     				ceoPaymentDay.text((new Date(data.ceo.store.membershipAndStore.startDate)).toLocaleDateString());
+     				ceoBuyItem.text(data.ceo.store.membershipAndStore.membership.msType);
+     				ceoExpiryDate.text((new Date(data.ceo.store.membershipAndStore.endDate)).toLocaleDateString());
+     				ceoPaymentPrice.text(data.ceo.store.membershipAndStore.membership.msPrice);
      				ceoPaymentAllPrice.text();
      			},
      			error : function(error){

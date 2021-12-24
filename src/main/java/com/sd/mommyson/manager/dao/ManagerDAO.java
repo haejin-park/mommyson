@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
@@ -14,6 +15,7 @@ import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.UserDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReportDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
@@ -162,5 +164,19 @@ public interface ManagerDAO {
 	int registNormalFile(Map<String, Object> registfile);
 
 	int registNormalAnswer(Map<String, Object> registInfo);
+	
+	List<BannerDTO> selectBanner();
+
+	BannerDTO selectBannerEditView(int bnCode);
+
+	int updateBanner(Map<String, Object> bnMap);
+
+	int deleteBanner(List<String> chkBannerList);
+
+	int selectUserTotalCount(Map<String, Object> searchMap);
+
+	List<MemberDTO> selectUser(Pagination pagination);
+
+	List<OrderDTO> selectTotalPrice(int memCode);
 
 }

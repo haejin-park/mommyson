@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dao.ManagerDAO;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
@@ -18,6 +19,7 @@ import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -543,6 +545,16 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	
+	/**
+	 * 배너조회
+	 * @author leeseungwoo
+	 */
+	@Override
+	public List<BannerDTO> selectBanner() {
+		
+		return managerDAO.selectBanner();
+	}
+	
 	/** 
 	 * 배너추가
 	 * @author leeseungwoo
@@ -550,7 +562,43 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public int insertBannerAdd(Map<String, Object> bnMap) {
 		
-		return managerDAO.insertBannerAdd(bnMap);
+		int result = managerDAO.insertBannerAdd(bnMap);
+		
+		return result;
+	}
+	
+	/**
+	 * 배너수정 페이지
+	 * @author leeseungwoo 
+	 */
+	@Override
+	public BannerDTO selectBannerEditView(int bnCode) {
+		
+		return managerDAO.selectBannerEditView(bnCode);
+	}
+	
+	/**
+	 * 배너수정
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int updateBanner(Map<String, Object> bnMap) {
+		
+		int result = managerDAO.updateBanner(bnMap);
+		
+		return result;
+	}
+	
+	/**
+	 * 배너삭제
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int deleteBanner(List<String> chkBannerList) {
+		
+		int result = managerDAO.deleteBanner(chkBannerList);
+		
+		return result;
 	}
 
 	/**
@@ -723,5 +771,33 @@ public class ManagerServiceImpl implements ManagerService {
 	public List<TaxAdjustDTO> selectTaxList(List<String> list) {
 		return managerDAO.selectTaxList(list);
 	}
+	/**
+	 * 일반회원 인원수
+	 * @author leeseungwoo
+	 */
+	@Override
+	public int selectUserTotalCount(Map<String, Object> searchMap) {
+		
+		return managerDAO.selectUserTotalCount(searchMap);
+	}
+
+	/**
+	 * 일반회원 조회
+	 */
+	@Override
+	public List<MemberDTO> selectUser(Pagination pagination) {
+		
+		return managerDAO.selectUser(pagination);
+	}
+
+	/**
+	 * 일반회원 총 주문금액 조회
+	 */
+	@Override
+	public List<OrderDTO> selectTotalPrice(int memCode) {
+		
+		return managerDAO.selectTotalPrice(memCode);
+	}
+
 
 }

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>배너관리 추가</title>
+    <title>배너수정 페이지</title>
 </head>
 <body>
     <header class="manager_header at-container">
@@ -21,7 +21,7 @@
         
         <div class="board_container">
             <h2>배너 관리</h2>
-            <form action="${ pageContext.servletContext.contextPath }/manager/bannerinsert" method="POST" enctype="multipart/form-data" onsubmit="return bnstatus();">
+            <form action="${ pageContext.servletContext.contextPath }/manager/bannerEdit" method="POST" enctype="multipart/form-data" onsubmit="return bnstatus2();">
                 <table class="table bd_write_header banner_write">
                     <colgroup>
                         <col width="15%"/>
@@ -29,35 +29,37 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th>번호(순서)</th>
+                        	<th style="display: none;"><input type="hidden" name="bnCode" value="${ bannerList.bnCode }"/></th>
+                            <th>번호(순서)<input type="hidden" value="${ bannerList.bnOrder }" id="cate"/></th>
                             <td>
                                 <select name="bnOrder" id="">
-                                    <option value=1>1</option>
-                                    <option value=2>2</option>
-                                    <option value=3>3</option>
-                                    <option value=4>4</option>
-                                    <option value=5>5</option>
-                                    <option value=6>6</option>
-                                    <option value=7>7</option>
+                                    <option value=1 id="one">1</option>
+                                    <option value=2 id="two">2</option>
+                                    <option value=3 id="three">3</option>
+                                    <option value=4 id="four">4</option>
+                                    <option value=5 id="five">5</option>
+                                    <option value=6 id="six">6</option>
+                                    <option value=7 id="seven">7</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <th>제목</th>
                             <td>
-                                <input type="text" name="bnName" id="" placeholder="제목을 입력해주세요.">
+                                <input type="text" name="bnName" id="" value="${ bannerList.bnName }">
                             </td>
                         </tr>
                         <tr>
                             <th>배너 이미지 첨부</th>
                             <td>
                                 <input type="file" name="bnImgs" id="choiceFile">
-                                <label for="choiceFile" class="file_label">파일선택</label>
+                                <label for="choiceFile" class="file_label">${ bannerList.bnImg }</label>
                             </td>
                         </tr>
                         <tr>
                             <th>사용여부</th>
                             <td>
+                            	<input type="hidden" value="${ bannerList.bnStatus }" id="bnStatus">
                                 <label for="">사용함</label>
                                 <input type="radio" name="bnStatus" id="useTrue" value="Y">
                                 <label for="">사용안함</label>
@@ -78,15 +80,37 @@
 
     <script>
     
-    $("#homeSubmenu5").addClass("show");
-    $("#homeSubmenu5 > li:first-child > a").attr("style","color: #F89E91 !important");
+	    $("#homeSubmenu5").addClass("show");
+	    $("#homeSubmenu5 > li:first-child > a").attr("style","color: #F89E91 !important");
     
         $("#choiceFile").on('change',function(){
             let fileName = $("#choiceFile").val();
             $(".file_label").text(fileName);
         });
         
-        function bnstatus(){
+        let cate = $('#cate').val();
+    	
+    	switch(cate){
+	    	case '1': $("#one").prop('selected', true); break;
+	    	case '2': $("#two").prop('selected', true); break;
+	    	case '3': $("#three").prop('selected', true); break;
+	    	case '4': $("#four").prop('selected', true); break;
+	    	case '5': $("#five").prop('selected', true); break;
+	    	case '6': $("#six").prop('selected', true); break;
+	    	case '7': $("#seven").prop('selected', true); break;
+	    	
+    		default: break;
+    	}
+    	
+    	let bnStatus = $('#bnStatus').val();
+    	
+    	switch(bnStatus){
+	    	case "Y" : $('#useTrue').prop('checked', true); break;
+	    	case "N" : $('#useFalse').prop('checked', true); break;
+	    	default : break;
+    	}
+    	
+        function bnstatus2(){
         	$("input:radio:not(:checked)").attr("disabled");
         	return true;
         }

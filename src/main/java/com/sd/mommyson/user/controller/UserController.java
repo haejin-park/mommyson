@@ -26,7 +26,6 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
-import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
@@ -1561,6 +1560,41 @@ public class UserController {
 	}
 	
 	
+	/**
+	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
+	 * @param orderList
+	 * @param session
+	 * @param model
+	 * @author leeseungwoo
+	 */
+	@GetMapping("deliveryPay")
+	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[], HttpSession session, Model model) {
+		
+		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println("member : " + member);
+		
+		Map<String, Integer> orderMap = new HashMap<>();
+		orderMap.put("member", member.getMemCode());
+		
+//		List<OrderDTO> deliveryOrderList = userService.selectDeliveryOrder(orderMap);
+//		if(deliveryOrderList != null) {
+//			model.addAttribute("deliveryOrderList", deliveryOrderList);
+//		} else {
+//			System.out.println("조회 실패");
+//		}
+	}
+	
+	/**
+	 * 배달 예약 주문 결제 진행
+	 * @return
+	 */
+	@PostMapping("deliveryPay")
+	public String deliveryPayTry() {
+		
+		
+		
+		return "";
+	}
 	
 	/**@author ShinHyungi
 	 * @param sdCode

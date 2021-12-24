@@ -12,6 +12,7 @@ import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.FileDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserDAO {
@@ -103,5 +104,6 @@ public interface UserDAO {
 
 	int updateDelConsulting(int postNo);
 
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

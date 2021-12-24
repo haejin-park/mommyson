@@ -8,15 +8,17 @@ public class MembershipAndStoreDTO {
 	private int msCode;
 	private Date startDate;
 	private Date endDate;
+	private MembershipDTO membership;
 	
 	public MembershipAndStoreDTO() {}
 
-	public MembershipAndStoreDTO(int memCode, int msCode, Date startDate, Date endDate) {
+	public MembershipAndStoreDTO(int memCode, int msCode, Date startDate, Date endDate, MembershipDTO membership) {
 		super();
 		this.memCode = memCode;
 		this.msCode = msCode;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.membership = membership;
 	}
 
 	public int getMemCode() {
@@ -51,9 +53,19 @@ public class MembershipAndStoreDTO {
 		this.endDate = endDate;
 	}
 
+	public MembershipDTO getMembership() {
+		return membership;
+	}
+
+	public void setMembership(MembershipDTO membership) {
+		this.membership = membership;
+	}
+
 	@Override
 	public String toString() {
 		return "MembershipAndStoreDTO [memCode=" + memCode + ", msCode=" + msCode + ", startDate=" + startDate
-				+ ", endDate=" + endDate + "]";
+				+ ", endDate=" + endDate + ", membership=" + membership + "]";
 	}
+
+	
 }
