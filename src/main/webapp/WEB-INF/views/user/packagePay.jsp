@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -25,8 +27,6 @@
       <div id="information">
         <h3>주문자정보</h3>
         <br><br>
-        <input type="text" class="input1" id="name" placeholder=" 이름을 입력해주세요">
-        <br><br>
         <input type="text" class="input1" id="phone" placeholder=" 전화번호를 입력해주세요">
       </div>
       <br>
@@ -39,17 +39,23 @@
             <th>쿠폰</th>
             <th>예약시간</th>
           </tr>
-          <tr id="tr2">
-            <td><img class=restaurantLogo001 src="${ pageContext.servletContext.contextPath }/resources/images/restaurantLogo001.png"><br>찜닭최고</td>
-            <td>10,000원</td>
-            <td>
-              <select>
-                <option value="1">쿠폰을선택하세요</option>
-                <option value="2">회원가입기념10%할인</option>
-              </select>
-            </td>
-            <td><input type="time" name="time" id="time"></td>
-          </tr>
+          <c:forEach items="${ requestScope.orderList }" var="order">
+	          <tr id="tr2">
+	            <td><input type="hidden" id="orderCode" value="${ order.ORDER_CODE }"><img class=restaurantLogo001 src="${ pageContext.servletContext.contextPath }/${ order.STORE_IMG }"><br><c:out value="${ order.STORE_NAME }"/></td>
+	            <td><div style="display: inline-flex;"><p id="price"><fmt:formatNumber value="${ order.TOTAL_PRICE }"/></p> 원</div></td>
+	            <td>
+	              <select id="coupons">
+	                <option value="0">쿠폰을선택하세요</option>
+	                <c:forEach items="${ requestScope.couponList }" var="c">
+	                <c:if test="${ order.STORE_CODE == c.storeCode }">
+	                	<option id="${ c.cpNum }" value="${ c.disWon }"><c:out value="${ c.cpName }"/></option>
+	                </c:if>
+	                </c:forEach>
+	              </select>
+	            </td>
+	            <td><input type="time" name="time" id="time"></td>
+	          </tr>
+          </c:forEach>
       </table>
       <br>  
       <div id="div2">
@@ -62,46 +68,107 @@
           <th>결제 금액</th>
           </tr>
           <tr>
-            <td id="tr4">10,000원</td>
+            <td id="tr4"><div style="display: inline-flex;"><p id="productPrice"></p> 원</div></td>
             <td> - </td>
-            <td>1,000원</td>
+            <td><div style="display: inline-flex;"><p id="discountWon">0</p>원</div></td>
             <td> = </td>
-            <td id="paymentAmount"><input type="number" id="totalPrice" value="9000" disabled="disabled" style="background: white; width: 80px; border: none;">원</td>
+            <td id="paymentAmount"><input type="number" id="totalPrice" value="9000" disabled="disabled" style="background: white; width: 85px; border: none;">원</td>
           </tr>
         </table>  
       </div>
       <br><br>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
+<<<<<<< HEAD
       <button type="reset" id="goShoppingBasket">취소하기</button>
 <<<<<<< HEAD
      <!--  <script>
 =======
       <!-- <script>
 >>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
+=======
+      <button type="button" id="goShoppingBasket">취소하기</button>
+      <script>
+      	// 금액 뿌려주기
+      	$(function() {
+      		let prices = 0;
+      		$('#price').each(function(index,val) {
+      			prices += parseInt($('#price').text().replace(',',''));
+      		})
+      		
+      		$('#productPrice').text(prices);
+      		
+      		$('#totalPrice').val(prices);
+      	})
+      	
+      	// 취소 시 order_tbl 데이터 삭제
+      	$('#goShoppingBasket').on('click',function() {
+      		let orderCodes = [];
+      		$('#orderCode').each(function(index, val) {
+      			orderCodes.push($(this).val());
+      		})
+      		location.href='${ pageContext.servletContext.contextPath }/user/payCancle?orderCodes=' + orderCodes;
+      	})
+      	
+      	// 쿠폰 적용 스크립트
+      	$('select').on('change',function() {
+      		let coupon = parseInt($(this).val());
+      		let price = parseInt($('#price').text().replace(',',''));
+      		if(price <= coupon) {
+      			alert('할인금액은 제품금액보다 클 수 없습니다.');
+      		} else {
+      			let discountWon = 0;
+          		$('select option:selected').each(function(index,val) {
+          			discountWon += parseInt($(this).val());
+          		})
+          		$('#discountWon').text(discountWon);
+          		let total = parseInt($('#productPrice').text()) - discountWon;
+          		$('#totalPrice').val(total);
+      		}
+      	})
+      	
+      	// 결제 로직
+>>>>>>> 9c5167aa6f5d955964c6aeb35bd160be704c0373
       	$('#pay').on('click',function() {
-      		let name = $('#name').val();
-      		let phone = $('#phone').val();
-      		let totalPrice = $('#totalPrice').val();
-      		var IMP = window.IMP; 
-      	    IMP.init('imp43692691'); 
-      	    IMP.request_pay({
-      	    	pg : 'kakaopay',
-      	        pay_method : 'card', //생략 가능
-      	        merchant_uid: "${ requestScope.orderCode }", // 상점에서 관리하는 주문 번호 db에서 가져와야함
-      	        name : '포장예약 결제',
-      	        amount : totalPrice,
-      	        buyer_email : 'iamport@siot.do',
-      	        buyer_name : name,
-      	        buyer_tel : phone,
-      	        buyer_addr : '서울특별시 강남구 삼성동',
-      	        buyer_postcode : '123-456',
-      	        m_redirect_url : '${ pageContext.servletContext.contextPath }/user/payComplete?orderCode=${ requestScope.orderCode }&totalPrice=' + totalPrice
-      	    },  function(rsp) {
-      	      if ( !rsp.success ) {
-      	    	//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
-      	        var msg = '오류로 인하여 결제가 시작되지 못하였습니다.';
-      	        msg += '에러내용 : ' + rsp.error_msg;
+      		if($('#phone').val() == '' || $('#time').val() == '') {
+      			alert('주문 정보를 모두 기입해주세요!');
+      		} else {
+      			let name = $('#name').val();
+          		let phone = $('#phone').val();
+          		let totalPrice = [];
+          		$('#price').each(function(index,val) {
+          			totalPrice.push($('#price').text().replace(',',''));
+          		})
+          		let payPrice = $('#totalPrice').val();
+          		let takeTime = $('#time').val();
+          		let orderCodes = [];
+          		$('#orderCode').each(function(index, val) {
+          			orderCodes.push($(this).val());
+          		})
+          		let couponCodes = [];
+          		$('select option:selected').each(function(index) {
+          			couponCodes.push($(this).attr('id'));
+          		})
+          		var IMP = window.IMP; 
+          	    IMP.init('imp43692691'); 
+          	    IMP.request_pay({
+          	    	pg : 'kakaopay',
+          	        pay_method : 'card', //생략 가능
+          	        merchant_uid: "${ requestScope.orderCodes[0] }", // 상점에서 관리하는 주문 번호 db에서 가져와야함
+          	        name : '포장예약 결제',
+          	        amount : payPrice,
+          	        buyer_email : 'iamport@siot.do',
+          	        buyer_name : name,
+          	        buyer_tel : phone,
+          	        buyer_addr : '서울특별시 강남구 삼성동',
+          	        buyer_postcode : '123-456',
+          	        m_redirect_url : ''
+          	    },  function(rsp) {
+          	      if ( !rsp.success ) {
+          	    	//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
+          	        var msg = '오류로 인하여 결제가 시작되지 못하였습니다.';
+          	        msg += '에러내용 : ' + rsp.error_msg;
 
+<<<<<<< HEAD
       	        alert(msg);
       	      }
       		});
@@ -113,6 +180,19 @@
       	})
 >>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
       </script> -->
+=======
+          	        alert(msg);
+          	      } else {
+          	    	  alert('결제 완료!');
+          	    	  location.href='${ pageContext.servletContext.contextPath }/user/payComplete?orderCodes=' + orderCodes + '&totalPrice=' + totalPrice + '&phone=' + phone + '&time=' + takeTime + '&couponCodes=' + couponCodes;
+          	      }
+          		});
+      		}
+      	});
+      	
+      	
+      </script>
+>>>>>>> 9c5167aa6f5d955964c6aeb35bd160be704c0373
     
 <!--       결제하기 Modal
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

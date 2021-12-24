@@ -8,6 +8,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
@@ -59,7 +60,7 @@ public interface UserService {
 	List<CartDTO> cartList(MemberDTO member);
 	
 	/* 방문포장 주문리스트 저장 */
-	int insertPackageOrderList(HashMap<String, Object> insertPackage);
+	Map<String,Object> insertPackageOrderList(HashMap<String, Object> insertPackage);
 
 	/* 배달 주문리스트 저장  */
 	int insertDeliveryOrderList(HashMap<String, Object> insertDelivery);
@@ -88,6 +89,17 @@ public interface UserService {
 	Integer deleteJJIMplus(Map<String, Integer> map);
 
 	int registMtmConsultingText(Map<String, Object> mtmConsulting);
+
+	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
+
+	List<CouponDTO> selectCouponList(int memCode);
+
+	void deleteOrder(List<Integer> orderCodeList);
+
+	int updateOrder(List<Map<String, Object>> list);
+
+	int updateCouponStatus(List<Integer> list2);
+
 
 	int registMtmConFile(Map<String, Object> fileInfo);
 

@@ -1,5 +1,6 @@
 package com.sd.mommyson.user.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dao.UserDAO;
@@ -174,7 +176,6 @@ public class UserServiceImpl implements UserService{
 	/* 장바구니 목록 조회 */
 	@Override
 	public List<CartDTO> cartList(MemberDTO member) {
-		// TODO Auto-generated method stub
 		return userDAO.cartList(member);
 	}
 
@@ -194,38 +195,41 @@ public class UserServiceImpl implements UserService{
 	
 	
 	/* 방문포장 주문리스트 저장 */
-	@Override
-	public int insertPackageOrderList(HashMap<String, Object> insertPackage) {
-		
-		int result = 0;
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		List<Integer> totalPrice = (List<Integer>)insertPackage.get("packagePayList");
-		
-		int[] storeCode = (int[])insertPackage.get("storeCode");
-		
-		String[] storeName = (String[])insertPackage.get("storeName");
-		
-		for(int i = 0; i< totalPrice.size(); i++) {
-			
-			map.put("totalPrice", totalPrice.get(i));
-			map.put("storeCode",storeCode[i]);
-			map.put("storeName", storeName[i]);
-			map.put("memCode", insertPackage.get("memCode"));
-			
-			int success = userDAO.insertPackageOrderList(map);
-			
-			if(success > 0) {
-				result += 1;
-			}
-			
-		}
-		
-		
-		return result;		
-	}
+	   @Override
+	   public Map<String,Object> insertPackageOrderList(HashMap<String, Object> insertPackage) {
+	      
+	      int result = 0;
+	      
+	      Map<String, Object> map = new HashMap<String, Object>();
+	      
+	      List<Integer> price = (List<Integer>)insertPackage.get("packagePayList");
+	      
+	      int[] storeCode = (int[])insertPackage.get("storeCode");
+	      
+	      String[] storeName = (String[])insertPackage.get("storeName");
+	      List<Integer> orderCodes = new ArrayList<>();
+	      for(int i = 0; i< price.size(); i++) {
+	         
+	         map.put("price", price.get(i));
+	         map.put("storeCode",storeCode[i]);
+	         map.put("storeName", storeName[i]);
+	         map.put("memCode", insertPackage.get("memCode"));
+	         
+	         int success = userDAO.insertPackageOrderList(map);
+	         orderCodes.add(userDAO.selectLastOrderCode());
+	         if(success > 0) {
+	            result += 1;
+	         }
+	         
+	      }
+	      Map<String,Object> resultMap = new HashMap<>();
+	      resultMap.put("result", result);
+	      resultMap.put("orderCodes", orderCodes);
+	      
+	      return resultMap;      
+	   }
 
+	
 	/* 배달 주문리스트 저장 */
 	@Override
 	public int insertDeliveryOrderList(HashMap<String, Object> insertDelivery) {
@@ -304,14 +308,52 @@ public class UserServiceImpl implements UserService{
 	public int registMtmConsultingText(Map<String, Object> mtmConsulting) {
 
 		int result = userDAO.registMtmConsultingText(mtmConsulting);
+	
 		return result;
 	}
+		
+	@Override	
+	public List<Map<String, String>> selectOrderList(List<Integer> orderCodes) {
+		return userDAO.selectOrderList(orderCodes);
+	}
 
+
+	@Override
+	public List<CouponDTO> selectCouponList(int memCode) {
+		return userDAO.selectCouponList(memCode);
+	}
+
+
+	@Override
+	public void deleteOrder(List<Integer> orderCodeList) {
+		userDAO.deleteOrder(orderCodeList);
+	}
+
+
+	/**@author ShinHyungi
+	 * order_tbl 반복문 돌며 update
+	 */
+	@Override
+	public int updateOrder(List<Map<String, Object>> list) {
+		
+		int result = 0;
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+			result += userDAO.updateOrder(list.get(i));
+		}
+		System.out.println("service 들어옴 -----------------------" + result);
+		return result;
+	}
 
 	@Override
 	public int registMtmConFile(Map<String, Object> fileInfo) {
 		int fileUploadResult = userDAO.registMtmConFile(fileInfo);
 		return fileUploadResult;
+	}
+	
+	@Override
+	public int updateCouponStatus(List<Integer> list2) {
+		return userDAO.updateCouponStatus(list2);
 	}
 
 	@Override

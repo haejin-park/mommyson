@@ -2,6 +2,8 @@ package com.sd.mommyson.user.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
@@ -1143,7 +1148,6 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
-	
 	/**
 	 * @author ParkHaejin
 	 * @param model
@@ -1166,6 +1170,7 @@ public class UserController {
 		
 		for(int i = 0; i < deleteList.length; i++) {
 			deleteCartList.add(deleteList[i]); 
+	
 		}
 		
 		System.out.println("deleteCartList : " + deleteCartList);
@@ -1185,9 +1190,6 @@ public class UserController {
 		
 		return "redirect:/user/cart";
 	}
-	
-	
-	
 	
 	/**
 	 * 배달 버튼 누르면 장바구니 정보 insert 
@@ -1243,7 +1245,6 @@ public class UserController {
 		}
 		
 		return "redirect:/user/paymentDelivery";
-		
 		
 	}
 	
@@ -1685,15 +1686,43 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("payComplete")
-	public String payComplete(@RequestParam("orderCode") int orderCode, @RequestParam("totalPrice") int totalPrice) {
+	public String payComplete(RedirectAttributes model, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
+			@RequestParam("phone") String phone, @RequestParam("time") String time, @RequestParam("couponCodes") int[] couponCodes) {
 		
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("orderCode",orderCode);
-		map.put("totalPrice",totalPrice);
+		System.out.println(orderCodes[0]);
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = null;
+		for(int i = 0; i < orderCodes.length; i++) {
+			map = new HashMap<>();
+			map.put("orderCode",orderCodes[i]);
+			map.put("totalPrice",totalPrice[i]);
+			System.out.println(orderCodes[i] + " : " + totalPrice[i]);
+			map.put("phone",phone);
+			map.put("time",time);
+			list.add(map);
+		}
+		// 쿠폰 사용 완료 표시
+		List<Integer> list2 = new ArrayList<>();
+		for(int c : couponCodes) {
+			list2.add(c);
+		}
 		
-//		int result = userService.updateOrder(map);
+		int result = userService.updateOrder(list);
+		int result2 = 0;
+		if(!list2.isEmpty()) {
+			result2 = userService.updateCouponStatus(list2);
+		}
 		
-		return "user/cart";
+		if(result > 0) {
+			model.addAttribute("message", "업데이트 성공");
+			if(result2 > 0) {
+				System.out.println("쿠폰 업뎃 완료~");
+			}
+		} else {
+			model.addAttribute("message", "업데이트 실패");
+		}
+		
+		return "redirect:cart";
 	}
 	
 	/**@author ShinHyungi
@@ -1730,6 +1759,19 @@ public class UserController {
 		Integer result = userService.deleteJJIMplus(map);
 		
 		return result > 0? "삭제 완료" : "삭제 실패";
+	}
+	
+	@GetMapping("payCancle")
+	public String orderCancle(@RequestParam("orderCodes") int[] orderCodes) {
+		
+		List<Integer> orderCodeList = new ArrayList<>();
+		for(int i : orderCodes) {
+			orderCodeList.add(i);
+		}
+		
+		userService.deleteOrder(orderCodeList);
+		
+		return "redirect:cart";
 	}
 	
 
