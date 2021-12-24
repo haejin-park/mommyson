@@ -853,10 +853,56 @@ public class UserController {
 	
 	
 	/**
+	 * @author ParkHaejin
+	 * @param model
+	 * @param session
+	 * @param deleteList
+	 * @return "user/shoppingBasket"
+	 */
+	@GetMapping("deleteCart")
+	public String deleteCart(Model model, HttpSession session, @RequestParam(value = "deleteList", required = false) int[] deleteList){
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		
+		System.out.println("memCode : " + memCode);
+		
+		System.out.println("deleteList : " + deleteList);
+		System.out.println("deleteList : " + deleteList[0]);
+		System.out.println("deleteList : " + deleteList.length);
+		
+		List<Integer> deleteCartList = new ArrayList<>();
+		
+		for(int i = 0; i < deleteList.length; i++) {
+			deleteCartList.add(deleteList[i]); 
+		}
+		
+		System.out.println("deleteCartList : " + deleteCartList);
+		
+		HashMap<String,Object> deleteCartProduct = new HashMap<String,Object>();
+		deleteCartProduct.put("deleteCartList", deleteCartList);
+		deleteCartProduct.put("memCode", memCode);
+		
+		int result = userService.deleteCartList(deleteCartProduct);
+		System.out.println("result : " + result);
+		
+		if(result > 0) {
+			System.out.println("deleteCartList Service성공");
+		} else {
+			System.out.println("deleteCartList Service실패");
+		}
+		
+		return "user/shoppingBasket";
+	}
+	
+	/**
 	 * 방문포장 버튼 누르면 장바구니 정보 insert 
 	 * @author ShinHyungi, ParkHaejin, KimJuhwan
 	 * @param model
 	 * @param session
+	 * @param orderList
+	 * @param storeCode
+	 * @param storeName
 	 * @return "redirect:paymentPackage"
 	 */
 	@GetMapping("packagePay")
@@ -911,6 +957,7 @@ public class UserController {
 	 * @author ParkHaejin
 	 * @param model
 	 * @param session
+	 * @param orderList
 	 * @return "user/packagePay"
 	 */
 	@GetMapping("paymentPackage")
@@ -924,9 +971,12 @@ public class UserController {
 	
 	/**
 	 * 배달 버튼 누르면 장바구니 정보 insert 
-	 * @author ShinHyungi, ParkHaejin 
+	 * @author ParkHaejin 
 	 * @param model
 	 * @param session
+	 * @param orderList
+	 * @param storeCode
+	 * @param storeName
 	 * @return "redirect:/paymentDelivery"	 
 	 * */
 	@GetMapping("deliveryPay")
@@ -982,6 +1032,7 @@ public class UserController {
 	 * @author ParkHaejin
 	 * @param model
 	 * @param session
+	 * @param orderList
 	 * @return "user/packagePay"
 	 */
 	@GetMapping("paymentDelivery")

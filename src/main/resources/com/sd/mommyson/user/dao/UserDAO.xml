@@ -672,6 +672,14 @@
        ORDER BY C.MEM_CODE 
           
     </select> 
+    
+    <delete id ="deleteCartList">
+    	DELETE 
+    	  FROM CART_TBL A
+    	 WHERE A.MEM_CODE = #{ memCode }
+    	   AND A.SD_CODE = #{ sdCode }  
+    </delete>
+    
 
 	<!-- 방문포장 주문리스트 저장 -->
 	<insert id="insertPackageOrderList">

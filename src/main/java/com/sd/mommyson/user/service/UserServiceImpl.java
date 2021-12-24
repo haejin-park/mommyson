@@ -178,6 +178,20 @@ public class UserServiceImpl implements UserService{
 		return userDAO.cartList(member);
 	}
 
+	/* 장바구니 리스트 삭제 */
+	@Override
+	public int deleteCartList(HashMap<String, Object> deleteCartProduct) {
+
+		int result = 0;
+		
+		int success = userDAO.deleteCartList(deleteCartProduct);
+		
+		if(success > 0) {
+			result += 1;
+		}
+		return result;
+	}
+	
 	
 	/* 방문포장 주문리스트 저장 */
 	@Override
@@ -212,7 +226,7 @@ public class UserServiceImpl implements UserService{
 		return result;		
 	}
 
-
+	/* 배달 주문리스트 저장 */
 	@Override
 	public int insertDeliveryOrderList(HashMap<String, Object> insertDelivery) {
 
@@ -284,7 +298,6 @@ public class UserServiceImpl implements UserService{
 	public Integer deleteJJIMplus(Map<String, Integer> map) {
 		return userDAO.deleteJJIMplus(map);
 	}
-
 
 
 

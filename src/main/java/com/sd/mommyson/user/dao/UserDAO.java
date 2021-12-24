@@ -57,6 +57,9 @@ public interface UserDAO {
 	/* 장바구니 목록 조회 */
 	List<CartDTO> cartList(MemberDTO member);
 
+	/* 장바구니 리스트 삭제 */
+	int deleteCartList(HashMap<String, Object> deleteCartProduct);
+
 	/* 방문포장 주문리스트 저장  */
 	int insertPackageOrderList(Map<String, Object> map);
 	
@@ -83,6 +86,7 @@ public interface UserDAO {
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
 
 
 

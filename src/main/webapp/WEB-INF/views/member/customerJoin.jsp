@@ -732,12 +732,12 @@
         
       	/* 약관 체크 박스 클릭 안내 */
       	$(function(){
-      		$('#joinButton').click(function(){
+      		$('#joinButton').click(function(e){
       			if($('#all').is(":checked") && $('#checkbox').is(":checked")){
       				$("#allHd").val() == 'Y'
       			} else {	
       				alert('약관 전체 동의를 클릭해 주세요. ');
-      				return false;
+      				e.preventDefault();
       			}
       			
       		});
