@@ -137,4 +137,6 @@ public interface OwnerService {
 
 	public List<Map<String, Object>> selectMonth(String storeName);
 
+	public boolean selectOriginPwd(int memCode, String memPwd);
+
 }

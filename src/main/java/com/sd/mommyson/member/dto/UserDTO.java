@@ -2,6 +2,7 @@ package com.sd.mommyson.member.dto;
 
 import java.util.List;
 
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public class UserDTO {
@@ -9,15 +10,17 @@ public class UserDTO {
 	private String memCode;
 	private String name;
 	private int repCount;
+	private List<Integer> totalPrice;
 	private List<ReviewDTO> review;
 	
 	public UserDTO() {}
 
-	public UserDTO(String memCode, String name, int repCount, List<ReviewDTO> review) {
+	public UserDTO(String memCode, String name, int repCount, List<Integer> totalPrice, List<ReviewDTO> review) {
 		super();
 		this.memCode = memCode;
 		this.name = name;
 		this.repCount = repCount;
+		this.totalPrice = totalPrice;
 		this.review = review;
 	}
 
@@ -45,6 +48,14 @@ public class UserDTO {
 		this.repCount = repCount;
 	}
 
+	public List<Integer> getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(List<Integer> totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	public List<ReviewDTO> getReview() {
 		return review;
 	}
@@ -55,7 +66,9 @@ public class UserDTO {
 
 	@Override
 	public String toString() {
-		return "UserDTO [memCode=" + memCode + ", name=" + name + ", repCount=" + repCount + ", review=" + review + "]";
+		return "UserDTO [memCode=" + memCode + ", name=" + name + ", repCount=" + repCount + ", totalPrice="
+				+ totalPrice + ", review=" + review + "]";
 	}
 
+	
 }

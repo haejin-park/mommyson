@@ -96,6 +96,7 @@
 		<result property="code" column="CODE"/>
 		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
 		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
+		<result property="takeTime" column="TAKE_TIME" jdbcType="VARCHAR"/>
 		<association property="memberDTO" resultMap="memberResultMap"/>
 		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
 		<association property="acceptDTO" resultMap="acceptResultMap"/>
@@ -111,6 +112,7 @@
 		<result property="code" column="CODE"/>
 		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
 		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
+		<result property="phone" column="PHONE" jdbcType="VARCHAR" />
 		<association property="memberDTO" resultMap="memberResultMap"/>
 		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
 		<association property="acceptDTO" resultMap="acceptResultMap"/>
@@ -128,9 +130,7 @@
 		<result property="amount" column="AMONT"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="sdCode" column="SD_CODE"/>
-		<result property="takeTime" column="TAKE_TIME"/>
 		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
 		<result property="storeName" column="STORE_NAME"/>
 	</resultMap>
 	
@@ -782,7 +782,9 @@
 			   COUNT(*)
 		  FROM ORDER_TBL A
 		 WHERE A.STORE_NAME = #{ storeName }
-		   AND A.CODE = 1 OR A.CODE = 2
+		   AND A.CODE IN ( 1, 2 )
+		   AND A.ORDER_ACCEPT_TIME IS NOT NULL
+		   AND TO_CHAR(A.ORDER_ACCEPT_TIME,'YY/MM/DD') = TO_CHAR(SYSDATE,'YY/MM/DD')
 	</select>
 	
 	<!-- 주문페이지 주문 접수  -->
@@ -798,6 +800,7 @@
                , G.ORDER_STATUS 
                , G.SD_NAME 
                , G.AMONT
+               , G.TAKE_TIME
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_ACCEPT_TIME
@@ -809,6 +812,7 @@
                     , F.ORDER_STATUS 
                     , F.SD_NAME 
                     , F.AMONT
+                    , F.TAKE_TIME
 	            FROM (SELECT
 						        A.ORDER_ACCEPT_TIME
 						      , A.ORDER_CODE
@@ -818,16 +822,18 @@
 						      , A.ORDER_TYPE
 						      , D.ORDER_STATUS
 						      , E.SD_NAME 
-						      , B.AMONT       
+						      , B.AMONT
+						      , a.TAKE_TIME       
 						  FROM ORDER_TBL A
-						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+						  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+						  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
 						  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-						  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+						  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	                    <where>
 		                    	A.STORE_NAME = #{ searchCondition }
-			 				AND A.CODE = 1 OR A.CODE = 2
-			 				<!-- AND TO DATE(A.ORDER_ACCEPT_TIME,'YYYYMMDD') = TO DATE(SYSDATE,'YYYYMMDD') 오늘날짜만 조건 넣어야해-->
+			 				AND A.CODE IN (1 , 2)
+			 				AND A.ORDER_ACCEPT_TIME IS NOT NULL
+			 				AND TO_CHAR(A.ORDER_ACCEPT_TIME,'YY/MM/DD') = TO_CHAR(SYSDATE,'YY/MM/DD')
 			   	        </where>
 			   	        ORDER BY A.ORDER_ACCEPT_TIME DESC
 	                    )F
@@ -849,12 +855,13 @@
 		      , D.ORDER_STATUS
 		      , E.SD_NAME   
 		      , B.AMONT 
-		      , A.ORDER_COMPLETE_TIME    
+		      , A.ORDER_COMPLETE_TIME 
+		      , A.PHONE
 		  FROM ORDER_TBL A
-		  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-		  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+		  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+		  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
 		  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-		  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+		  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 		 WHERE A.ORDER_CODE = #{ orderCode }
 	
 	</select>
@@ -862,7 +869,7 @@
 	<!-- 주문 수락 -->
 	<update id="acceptModifyOrder">
 		UPDATE ORDER_TBL
-		   SET ORDER_ACCEPT_TIME = SYSDATE
+		   SET ORDER_RUQEUST_TIME = SYSDATE
 		     , CODE = #{ orderType }
 		 WHERE ORDER_CODE = #{ orderCode }
 	</update>
@@ -888,11 +895,14 @@
 	 SELECT
 	 		COUNT(*)
 	   FROM ORDER_TBL A
-	   JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-	   JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+	   LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+	  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+	  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
+	  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	 <where>
 			    A.STORE_NAME = #{ storeName }
-		    AND A.CODE = 3 OR A.CODE = 4
+		    AND A.CODE IN (3 , 4)
+		    AND A.ORDER_ACCEPT_TIME IS NOT NULL
 	<if test="searchValue != null and searchValue != '' ">
 	  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 	</if>
@@ -922,6 +932,7 @@
                , G.SD_NAME 
                , G.AMONT 
                , G.CODE
+               , G.PHONE
 	     FROM (SELECT
 		              ROWNUM RNUM
 		            , F.ORDER_COMPLETE_TIME
@@ -934,6 +945,7 @@
                     , F.SD_NAME 
                     , F.AMONT
                     , F.CODE 
+                    , F.PHONE
 	            FROM (SELECT
 						        A.ORDER_COMPLETE_TIME
 						      , A.ORDER_ACCEPT_TIME  
@@ -944,15 +956,17 @@
 						      , D.ORDER_STATUS
 						      , E.SD_NAME        
 						      , B.AMONT  
-						      , A.CODE     
+						      , A.CODE    
+						      , A.PHONE 
 						  FROM ORDER_TBL A
-						  JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
-						  JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
+						  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
+						  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
 						  LEFT JOIN ORDER_INFO_TBL B ON (A.ORDER_CODE = B.ORDER_CODE)
-						  JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
+						  LEFT JOIN PRODUCT_TBL E ON (B.SD_CODE = E.SD_CODE)
 	                    <where>
 		                    	    A.STORE_NAME = #{ storeName }
 			 				    AND A.CODE IN (3 , 4)
+			 				    AND A.ORDER_ACCEPT_TIME IS NOT NULL
 			 			<if test="searchValue != null and searchValue != '' ">
 						  		AND E.SD_NAME LIKE '%' ||  #{ searchValue } || '%'
 						</if>
@@ -1473,5 +1487,20 @@
 						 ) C
 			WHERE C.RNUM BETWEEN 1 AND 5
 	</select>
+	
+	<!-- 회원탈퇴 비밀번호 셀렉트 -->
+	<select id="selectEncPwd" resultType="String">
+		SELECT
+			   MEM_PWD
+		  FROM MEMBER_TBL
+		 WHERE MEM_CODE = #{ memCode }
+	</select>
+	
+	<!-- 회원탈퇴시 업데이트 -->
+	<update id="updateDeleteYN">
+		UPDATE MEMBER_TBL
+		   SET IS_DELETED = 'Y'
+		 WHERE MEM_CODE = #{ memCode }
+	</update>
 	
 </mapper>

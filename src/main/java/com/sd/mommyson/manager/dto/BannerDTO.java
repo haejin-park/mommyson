@@ -66,6 +66,6 @@ public class BannerDTO {
 		return "BannerDTO [bnCode=" + bnCode + ", bnName=" + bnName + ", bnImg=" + bnImg + ", bnStatus=" + bnStatus
 				+ ", bnOrder=" + bnOrder + "]";
 	}
-	
+
 	
 }

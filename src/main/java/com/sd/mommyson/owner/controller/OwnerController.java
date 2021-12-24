@@ -752,8 +752,6 @@ public class OwnerController {
 		
 		// 주문 접수 가져오기
 		
-//		List<OrderDTO> orderList2 = ownerService.selectOrderList2(storeName);
-		
 		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
 		// 현재 페이지
 		int pageNo = 1;
@@ -774,8 +772,8 @@ public class OwnerController {
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = ownerService.selectOrderListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
 		
-		int limit = 15; //페이지당 글 갯수
-		int buttonAmount =  15;//페이징 버튼의 갯수
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
 		
 		Pagination pagination = null;
 		String searchCondition = storeName;
@@ -1391,7 +1389,6 @@ public class OwnerController {
 		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
 		
 		String storeName = member.getCeo().getStore().getStoreName();
-		
 		System.out.println("storeName : " + storeName);
 		System.out.println("date1 : " + date1);
 		System.out.println("date2 : " + date2);
@@ -1481,6 +1478,35 @@ public class OwnerController {
 		model.addAttribute("pagination",pagination);
 		model.addAttribute("givecpList",givecpList);
 
+	}
+	
+	@GetMapping("ownerQuit")
+	public void ownerQuit(Model model) {
+		
+	}
+	
+	@PostMapping(value="ownerQuitGo", produces="text/plain; charset=UTF-8")
+	@ResponseBody
+	public String ownerQuitGo(@ModelAttribute("loginMember") MemberDTO member ,Model model, @RequestParam("memPwd") String memPwd) throws JsonProcessingException {
+		
+		int memCode = member.getMemCode();
+		
+		System.out.println("탈퇴갑니다");
+		
+		boolean originPwd = ownerService.selectOriginPwd(memCode,memPwd);
+		
+		int result = 0;
+		
+		if(originPwd == true) {
+			result = 1;
+		} else {
+			result = 0;
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		return mapper.writeValueAsString(result);
+		
 	}
 	
 }

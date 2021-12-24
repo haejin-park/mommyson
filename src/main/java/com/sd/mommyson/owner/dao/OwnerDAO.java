@@ -132,6 +132,10 @@ public interface OwnerDAO {
 
 	public int removeDcs(int sdCode);
 
+	public int updateDeleteYN(int memCode);
+
+	public String selectEncPwd(int memCode);
+	
 	public Map<String, Integer> selectTotalPrice(String storeName);
 
 	public Map<String, Integer> selectDelPrice(String storeName);

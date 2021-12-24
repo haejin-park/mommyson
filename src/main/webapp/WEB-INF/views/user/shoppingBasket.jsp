@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>장바구니</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -41,6 +41,24 @@
 	    		<c:otherwise>
 	    			<c:forEach var="row" items="${ map.cartList }" varStatus="i">
 	    				<table  style="width: 80%; margin-left:10%; text-align: center; border :1px solid black;">	    				
+<<<<<<< HEAD
+		    				<tr id="tr2">
+						        <td><input type="checkbox" class="checkbox" name="checkbox" id="checkbox" value="${ row.totalPrice }"><input type="hidden" class="checkboxHd" value="${ row.cartCode }"></td>
+								<td><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
+						        <td><input type="hidden" name="storeName" value="${ row.storeName }"/></td>
+						        <td id="storeImgTd" style="width: 18%;"><img id="storeImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
+						        <td id="sdImgTd"  style="padding-right: 12%;"><img id="sdImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
+						        <td><span id="price"><c:out value="${ row.price }"/></span></td>
+						        <td>
+						         	<div class="number">
+							           	<a href="#" id="decreaseQuantity"> - </a>
+							            <span id="numberUpDown" name="amount"><c:out value="${ row.amount }"/></span>
+							            <a href="#" id="increaseQuantity"> + </a>
+						        	</div>
+						        </td>
+						        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
+					      	</tr>
+=======
 	    				<tr id="tr2">
 				        <td><input type="checkbox" name="checkbox" value="${ row.totalPrice }"></td>
 				        <td style="display: none"><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
@@ -58,6 +76,7 @@
 				        </td>
 				        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
 				      	</tr>
+>>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
 				      	</table>
 			    </c:forEach> 
 	    	</c:otherwise>
@@ -76,7 +95,7 @@
 	    <p id="p1">쿠폰으로 추가 할인 받으세요!</p>
 
 	    <br>  
-	   	<button id="selectDelete">선택삭제</button>		
+	   	<button type="button" id="selectDelete" onclick="selectDelete1('product')">선택삭제</button>	
 	 	    	
     </form>
     
@@ -162,10 +181,11 @@
 	        
 		});
 	  
-
-
+		
 	  
   	  /* 주문번호 가지고 결제창으로 이동 */
+<<<<<<< HEAD
+=======
   	  function gopay(str) {
   		  let orderList = [];
   		  let storeCode = [];
@@ -190,7 +210,81 @@
   		  
   	  }
   	  
+>>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
 
+		function gopay(str) {
+			let orderList = [];
+			let storeCode = [];
+			let storeName = [];
+			$("input:checkbox[name='checkbox']:checked")
+					.each(
+							function() {
+								orderList.push($(this).val());
+								storeCode.push($(this).parent().next()
+										.children().val());
+								storeName.push($(this).parent().next()
+										.children().parent().next().children()
+										.val());
+
+							});
+
+			console.log(storeCode);
+			
+			$(function(e){
+				if (str == "pack") {
+					console.log(memCode);
+					if ($(".checkbox").is(":checked") != null && $(".checkbox").is(":checked")  != 0) {
+						location.href = '${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList
+										+ "&storeCode=" + storeCode
+										+ "&storeName=" + storeName;
+						return true;
+					} else {
+						alert("결제할 상품을 클릭해주세요.");
+						e.preventDefault();
+					}
+				
+
+				} else if (str == "deli") {
+					console.log(memCode);
+					if ($(".checkbox").is(":checked") != null && $(".checkbox").is(":checked")  != 0) {
+						location.href = '${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList
+										+ "&storeCode=" + storeCode
+										+ "&storeName=" + storeName;
+						return true;
+						
+					} else {
+						alert("결제할 상품을 클릭해주세요.");
+						e.preventDefault();
+					}
+	
+				}
+			});	
+		}
+	
+ 		function selectDelete1(str) {
+			let deleteList = [];
+		
+			$("input:checkbox[name='checkbox']:checked").each(function(){ 
+				deleteList.push($(this).next().val());
+				
+			});
+		
+			console.log(deleteList);
+			
+			$(function(e){
+				if(str == "product") {
+					location.href = '${ pageContext.servletContext.contextPath }/user/deleteCart?deleteList=' + deleteList;
+					return true;
+							
+				} else {
+					alert("삭제할 상품을 삭제해주세요.");
+					e.preventDefault();
+				}
+				
+			});
+				
+		} 
+		
 	</script>
 
 </body>

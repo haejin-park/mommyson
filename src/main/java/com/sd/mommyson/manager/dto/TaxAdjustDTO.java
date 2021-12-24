@@ -12,11 +12,12 @@ public class TaxAdjustDTO {
 	private String storeName;
 	private String storeNo;
 	private String email;
+	private String address;
 	
 	public TaxAdjustDTO() {}
 
 	public TaxAdjustDTO(int code, Date payDate, String msType, String msPrice, String ceoName, String storeName,
-			String storeNo, String email) {
+			String storeNo, String email, String address) {
 		super();
 		this.code = code;
 		this.payDate = payDate;
@@ -26,6 +27,7 @@ public class TaxAdjustDTO {
 		this.storeName = storeName;
 		this.storeNo = storeNo;
 		this.email = email;
+		this.address = address;
 	}
 
 	public int getCode() {
@@ -92,12 +94,22 @@ public class TaxAdjustDTO {
 		this.email = email;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	@Override
 	public String toString() {
 		return "TaxAdjustDTO [code=" + code + ", payDate=" + payDate + ", msType=" + msType + ", msPrice=" + msPrice
 				+ ", ceoName=" + ceoName + ", storeName=" + storeName + ", storeNo=" + storeNo + ", email=" + email
-				+ "]";
+				+ ", address=" + address + "]";
 	}
+
+	
 
 	
 }

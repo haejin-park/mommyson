@@ -55,8 +55,7 @@
                   </td>
               
                   <td style="padding-top: 40px;">
-                    <button class="urBtn">삭제</button>
-                    <input type="hidden" name=storeCode value="${ recommend.memCode }">
+                    <button class="urBtn" value="${ recommend.memCode }">삭제</button>
                   </td>
                 </tr>
                 </c:forEach>
@@ -81,7 +80,7 @@
               		const $delbutton =$('button');
         			for(let i = 0; i < $delbutton.length; i++) {
         				$delbutton[i].onclick = function() {
-        				 	let	earseButton = this.nextSibling.nextSibling.value;
+        				 	let	earseButton = this.value;
         				 	console.log(earseButton);
         				 	$.ajax({
         				 		url : "${ pageContext.servletContext.contextPath }/userMyPage/delRecommend",
@@ -116,6 +115,7 @@
                <ul style="display: flex; flex-direction: row; justify-content: center; align-items: baseline;">
                   <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                   <form action="${ pageContext.servletContext.contextPath }/userMyPage/userRecommendStore" method="get">
+	              <input type="hidden" name="currentPage" value="1">
                   <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 가게 이름을 입력해주세요">
                   <button type="submit" class="searchbutton">검색하기</button>
                   </form>

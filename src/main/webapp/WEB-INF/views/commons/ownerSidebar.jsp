@@ -147,7 +147,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#">탈퇴하기</a>
+                            <a href="${ pageContext.servletContext.contextPath }/owner/ownerQuit">탈퇴하기</a>
                         </li>
                         <hr>
                         <li>

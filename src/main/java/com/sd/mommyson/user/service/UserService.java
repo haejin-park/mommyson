@@ -8,9 +8,11 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
+import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserService {
@@ -58,7 +60,13 @@ public interface UserService {
 	List<CartDTO> cartList(MemberDTO member);
 	
 	/* 방문포장 주문리스트 저장 */
-	int insertPackageOrderList(HashMap<String, Object> insertPackage);
+	Map<String,Object> insertPackageOrderList(HashMap<String, Object> insertPackage);
+
+	/* 배달 주문리스트 저장  */
+	int insertDeliveryOrderList(HashMap<String, Object> insertDelivery);
+	
+	/* 장바구니 리스트 삭제  */
+	int deleteCartList(HashMap<String, Object> deleteCartProduct);
 	
 	int insertReport(Map<String, Integer> reportInfo);
 
@@ -74,20 +82,40 @@ public interface UserService {
 
 	List<PostDTO> selectOftenFqa();
 
-
 	Integer insertJJIMplus(Map<String, Integer> map);
 
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
 
+	int registMtmConsultingText(Map<String, Object> mtmConsulting);
+
+	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
+
+	List<CouponDTO> selectCouponList(int memCode);
+
+	void deleteOrder(List<Integer> orderCodeList);
+
+	int updateOrder(List<Map<String, Object>> list);
+
+	int updateCouponStatus(List<Integer> list2);
 
 
+	int registMtmConFile(Map<String, Object> fileInfo);
+
+	int selectMtmTotalCount(Map<String, String> searchMap);
+
+	List<PostDTO> selectMtmConsulting(SelectCriteria selectCriteria);
+
+	PostDTO selectConsultingCon(Map<String, Object> searchMap);
+
+	List<FileDTO> selectConsumerImg(int postNo);
+
+	List<FileDTO> selectManagerImg(int postNo);
+
+	int updateDelConsulting(int postNo);
 	
-
-
-
-
-
+	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

@@ -13,7 +13,7 @@ public class OrderDTO {
 	private int totalPrice;
 	private int orderCode;
 	private String orderType;
-	private Date takeTime;
+	private String takeTime;
 	private String address;
 	private String phone;
 	private String storeName;
@@ -37,7 +37,7 @@ public class OrderDTO {
 	}
 
 
-	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, Date takeTime, String address,
+	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, String takeTime, String address,
 			String phone, String storeName, int code, String acceptTime, Date cancleTime, String completeTime,
 			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO, List<String> product,
 			List<ProductDTO> productDTO, List<OrderInfoDTO> orderAmount, StoreDTO storeInfo) {
@@ -105,12 +105,12 @@ public class OrderDTO {
 	}
 
 
-	public Date getTakeTime() {
+	public String getTakeTime() {
 		return takeTime;
 	}
 
 
-	public void setTakeTime(Date takeTime) {
+	public void setTakeTime(String takeTime) {
 		this.takeTime = takeTime;
 	}
 
@@ -274,7 +274,5 @@ public class OrderDTO {
 				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product
 				+ ", productDTO=" + productDTO + ", orderAmount=" + orderAmount + ", storeInfo=" + storeInfo + "]";
 	}
-	
-	
 
 }

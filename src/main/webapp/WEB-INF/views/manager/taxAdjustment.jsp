@@ -41,7 +41,7 @@
                     </script>
                 </div>
                 <div class="top_box">
-                    <input type="button" value="엑셀변환" style="background-color: #F89E91;">
+                    <input type="button" id="excel" value="엑셀변환" style="background-color: #F89E91;">
                 </div>
             <table class="table board_table">
                 <colgroup>
@@ -58,7 +58,7 @@
                 </colgroup>
                 <thead style="background-color: #EDEDED;">
                     <tr>
-                        <th><input type="checkbox" name="ch1" id="chk_all"></th>
+                        <th><input type="checkbox" name="ch2" id="chk_all"></th>
                         <th>결제일자</th>
                         <th>타입</th>
                         <th>공급가액</th>
@@ -73,7 +73,7 @@
                 <tbody>
                     <c:forEach items="${ requestScope.taxAdjustList }" var="tax">
                     <tr>
-                        <td scope="row"><input type="checkbox" name="ch1"></td>
+                        <td scope="row"><input type="checkbox" name="ch1" value="${ tax.code }"></td>
                         <td>${ tax.payDate }</td>
                         <td>${ tax.msType }</td>
                         <td><fmt:formatNumber value="${ tax.msPrice * 0.9 }"/></td>
@@ -87,6 +87,26 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <script>
+            	$('#excel').on('click',function() {
+            		let codeList = [];
+            		$('input:checkbox[name=ch1]:checked').each(function(index,item) {
+            			codeList.push($(this).val());
+            		})
+            		
+            		$.ajax({
+            			url: '${ pageContext.servletContext.contextPath }/manager/excel',
+            			type: 'post',
+            			data: {
+            				codeList : codeList
+            			},
+            			success: function(data) {
+            				
+            			}
+            		});
+            		
+            	})
+            </script>
             <p style="float: right; color: gray">작성일자는 결제일자가 포함된 달의 다음달 10일까지 입니다!</p>
             
             <jsp:include page="../commons/paging.jsp"/>
