@@ -8,6 +8,7 @@ import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
@@ -80,6 +81,16 @@ public interface UserDAO {
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
+	Integer selectLastOrderCode();
+
+	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
+
+	List<CouponDTO> selectCouponList(int memCode);
+
+	void deleteOrder(List<Integer> orderCodeList);
+
+	int updateOrder(Map<String, Object> map);
 
 
 

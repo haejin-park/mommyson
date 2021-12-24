@@ -1,5 +1,7 @@
 package com.sd.mommyson.user.controller;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.manager.common.Pagination;
 import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
@@ -852,7 +857,7 @@ public class UserController {
 	}
 	
 	@GetMapping("packagePay")
-	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList, @RequestParam(value="storeCode",required = false) int[] storeCode
+	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderPrice, @RequestParam(value="storeCode",required = false) int[] storeCode
 			, @RequestParam String[] storeName) {
 
 		for(int sc : storeCode) {
@@ -863,15 +868,15 @@ public class UserController {
 			System.out.println("storeName : " + storeName);
 		}
 		
-		System.out.println("orderList : " + orderList);
-		System.out.println("orderList : " + orderList[0]);
-		System.out.println("orderList : " + orderList.length);
+		System.out.println("orderPrice : " + orderPrice);
+		System.out.println("orderPrice : " + orderPrice[0]);
+		System.out.println("orderPrice : " + orderPrice.length);
 		
 		
 		List<Integer> packagePayList = new ArrayList<>();
 		
-		for(int i = 0; i < orderList.length; i++) {
-			packagePayList.add(orderList[i]);
+		for(int i = 0; i < orderPrice.length; i++) {
+			packagePayList.add(orderPrice[i]);
 		}
 		
 		System.out.println("packagePayList : " + packagePayList);
@@ -887,15 +892,26 @@ public class UserController {
 		insertPackage.put("storeCode", storeCode);
 		insertPackage.put("storeName", storeName);
 		
-		int result = userService.insertPackageOrderList(insertPackage);
+		Map<String,Object> result = userService.insertPackageOrderList(insertPackage);
 		System.out.println("result : " + result);
-		if (result > 0 ) {
+		if ((int)result.get("result") > 0 ) {
 			System.out.println("insertPackage Service 성공");
 		} else {
 			System.out.println("insertPackage Service 실패");
 		}
 		
-		return "redirect:paymentPackage";
+		// 주문 내역 및 쿠폰 가져오기
+		List<Integer> orderCodes =  (List<Integer>) result.get("orderCodes");
+		List<Map<String, String>> orderList = userService.selectOrderList(orderCodes); 
+		model.addAttribute("orderList", orderList);
+		List<CouponDTO> couponList = userService.selectCouponList(member.getMemCode());
+		model.addAttribute("couponList", couponList);
+		
+		for(CouponDTO c : couponList) {
+			System.out.println("coupon : " + c);
+		}
+		
+		return "user/packagePay";
 	}
 	
 	@GetMapping("paymentPackage")
@@ -1304,15 +1320,31 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("payComplete")
-	public String payComplete(@RequestParam("orderCode") int orderCode, @RequestParam("totalPrice") int totalPrice) {
+	public String payComplete(RedirectAttributes model, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
+			@RequestParam("phone") String phone, @RequestParam("time") String time) {
 		
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("orderCode",orderCode);
-		map.put("totalPrice",totalPrice);
+		System.out.println(orderCodes[0]);
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = null;
+		for(int i = 0; i < orderCodes.length; i++) {
+			map = new HashMap<>();
+			map.put("orderCode",orderCodes[i]);
+			map.put("totalPrice",totalPrice[i]);
+			System.out.println(orderCodes[i] + " : " + totalPrice[i]);
+			map.put("phone",phone);
+			map.put("time",time);
+			list.add(map);
+		}
 		
-//		int result = userService.updateOrder(map);
+		int result = userService.updateOrder(list);
 		
-		return "user/cart";
+		if(result > 0) {
+			model.addAttribute("message", "업데이트 성공");
+		} else {
+			model.addAttribute("message", "업데이트 실패");
+		}
+		
+		return "redirect:cart";
 	}
 	
 	/**@author ShinHyungi
@@ -1349,6 +1381,19 @@ public class UserController {
 		Integer result = userService.deleteJJIMplus(map);
 		
 		return result > 0? "삭제 완료" : "삭제 실패";
+	}
+	
+	@GetMapping("payCancle")
+	public String orderCancle(@RequestParam("orderCodes") int[] orderCodes) {
+		
+		List<Integer> orderCodeList = new ArrayList<>();
+		for(int i : orderCodes) {
+			orderCodeList.add(i);
+		}
+		
+		userService.deleteOrder(orderCodeList);
+		
+		return "redirect:cart";
 	}
 	
 
