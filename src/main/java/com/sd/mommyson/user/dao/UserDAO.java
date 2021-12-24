@@ -60,6 +60,9 @@ public interface UserDAO {
 	/* 방문포장 주문리스트 저장  */
 	int insertPackageOrderList(Map<String, Object> map);
 	
+	/* 배달 주문리스트 저장  */
+	int insertDeliveryOrderList(Map<String, Object> map);
+	
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);
@@ -80,6 +83,8 @@ public interface UserDAO {
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
+
 
 
 

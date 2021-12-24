@@ -59,6 +59,9 @@ public interface UserService {
 	
 	/* 방문포장 주문리스트 저장 */
 	int insertPackageOrderList(HashMap<String, Object> insertPackage);
+
+	/* 배달 주문리스트 저장  */
+	int insertDeliveryOrderList(HashMap<String, Object> insertDelivery);
 	
 	int insertReport(Map<String, Integer> reportInfo);
 
@@ -80,6 +83,8 @@ public interface UserService {
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
+
+
 
 
 

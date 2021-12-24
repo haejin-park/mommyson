@@ -680,7 +680,7 @@
 		VALUES
 		  	(
  		     #{ memCode }
- 		   , #{ price }
+ 		   , #{ totalPrice }
  		   , SEQ_ORDER_CODE.NEXTVAL
  		   , '포장'
  		   , null
@@ -695,6 +695,29 @@
  		   , #{ storeCode }	  
  		     )
 	</insert>
+
+	<insert id="insertDeliveryOrderList">
+		INSERT
+		  INTO ORDER_TBL
+		VALUES 
+			( 
+		     #{ memCode }
+		   , #{ totalPrice }
+		   , SEQ_ORDER_CODE.NEXTVAL
+		   , '배달'
+		   , null
+		   , null
+		   , null
+		   , #{ storeName }
+		   , 1
+		   , null
+		   , null
+		   , null
+		   , SYSDATE
+		   , #{ storeCode }
+			)
+	</insert>
+
 
 
     <insert id="insertReport">

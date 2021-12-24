@@ -187,15 +187,15 @@ public class UserServiceImpl implements UserService{
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		List<Integer> price = (List<Integer>)insertPackage.get("packagePayList");
+		List<Integer> totalPrice = (List<Integer>)insertPackage.get("packagePayList");
 		
 		int[] storeCode = (int[])insertPackage.get("storeCode");
 		
 		String[] storeName = (String[])insertPackage.get("storeName");
 		
-		for(int i = 0; i< price.size(); i++) {
+		for(int i = 0; i< totalPrice.size(); i++) {
 			
-			map.put("price", price.get(i));
+			map.put("totalPrice", totalPrice.get(i));
 			map.put("storeCode",storeCode[i]);
 			map.put("storeName", storeName[i]);
 			map.put("memCode", insertPackage.get("memCode"));
@@ -210,6 +210,38 @@ public class UserServiceImpl implements UserService{
 		
 		
 		return result;		
+	}
+
+
+	@Override
+	public int insertDeliveryOrderList(HashMap<String, Object> insertDelivery) {
+
+		int result = 0;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Integer> totalPrice = (List<Integer>)insertDelivery.get("deliveryPayList");
+		
+		int[] storeCode = (int[])insertDelivery.get("storeCode");
+		
+		String[] storeName = (String[])insertDelivery.get("storeName");
+		
+		for(int i = 0; i < totalPrice.size(); i++) {
+			map.put("totalPrice", totalPrice.get(i));
+			map.put("storeCode", storeCode[i]);
+			map.put("storeName", storeName[i]);
+			map.put("memCode", insertDelivery.get("memCode"));
+			
+			int success = userDAO.insertDeliveryOrderList(map);
+			
+			if(success > 0) {
+				result += 1;
+			}
+		
+		
+		}
+		
+		return result;
 	}
 
 

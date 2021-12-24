@@ -851,22 +851,35 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
+	
+	/**
+	 * 방문포장 버튼 누르면 장바구니 정보 insert 
+	 * @author ShinHyungi, ParkHaejin, KimJuhwan
+	 * @param model
+	 * @param session
+	 * @return "redirect:paymentPackage"
+	 */
 	@GetMapping("packagePay")
-	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList, @RequestParam(value="storeCode",required = false) int[] storeCode
-			, @RequestParam String[] storeName) {
-
-		for(int sc : storeCode) {
-			System.out.println("storeCode : " + sc);
-		}
+	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList, 
+			@RequestParam(value="storeCode",required = false) int[] storeCode, @RequestParam String[] storeName) {
 		
-		for(String st : storeName) {
-			System.out.println("storeName : " + storeName);
-		}
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+		int memCode = member.getMemCode();
+		
+		System.out.println("memCode : " + memCode);
 		
 		System.out.println("orderList : " + orderList);
 		System.out.println("orderList : " + orderList[0]);
 		System.out.println("orderList : " + orderList.length);
 		
+		for(int sc : storeCode) {
+			System.out.println("storeCode : " + sc);
+		}
+		
+		for(String sn : storeName) {
+			System.out.println("storeName : " + sn);
+		}
 		
 		List<Integer> packagePayList = new ArrayList<>();
 		
@@ -875,11 +888,6 @@ public class UserController {
 		}
 		
 		System.out.println("packagePayList : " + packagePayList);
-		
-		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
-		int memCode = member.getMemCode();
-		
-		System.out.println("memCode : " + memCode);
 		
 		HashMap<String, Object> insertPackage = new HashMap<String, Object>();
 		insertPackage.put("packagePayList", packagePayList);
@@ -898,20 +906,87 @@ public class UserController {
 		return "redirect:paymentPackage";
 	}
 	
+	/**
+	 * 방문포장 주문자 정보,결제  
+	 * @author ParkHaejin
+	 * @param model
+	 * @param session
+	 * @return "user/packagePay"
+	 */
 	@GetMapping("paymentPackage")
-	public String Paymentpackage(Model model, HttpSession session,@RequestParam(value = "orderList", required = false) int[] orderList ) {
+	public String paymentPackage(Model model, HttpSession session,@RequestParam(value = "orderList", required = false) int[] orderList ) {
 		
 		
 		return "user/packagePay";
 	}
 	
+
 	
-	/**@author ShinHyungi
-	 * @param orderList
-	 */
+	/**
+	 * 배달 버튼 누르면 장바구니 정보 insert 
+	 * @author ShinHyungi, ParkHaejin 
+	 * @param model
+	 * @param session
+	 * @return "redirect:/paymentDelivery"	 
+	 * */
 	@GetMapping("deliveryPay")
-	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[]) {
+	public String deliveryPay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList, 
+			@RequestParam(value="storeCode",required = false) int[] storeCode, @RequestParam String[] storeName) {
+
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+		int memCode = member.getMemCode();
 		
+		System.out.println("memCode : " + memCode);
+		
+		System.out.println("orderList : " + orderList);
+		System.out.println("orderList : " + orderList[0]);
+		System.out.println("orderList : " + orderList.length);
+		
+		for(int sc : storeCode) {
+			System.out.println("storeCode : " + sc);
+		}
+		
+		for(String sn : storeName) {
+			System.out.println("storeName : " + sn);
+		}
+		
+		List<Integer> deliveryPayList = new ArrayList<>();
+		
+		for(int i = 0; i < orderList.length; i++) {
+			deliveryPayList.add(orderList[i]);
+		}
+		
+		System.out.println("deliveryPayList : " + deliveryPayList);
+		
+		HashMap<String, Object> insertDelivery = new HashMap<String, Object>();
+		insertDelivery.put("deliveryPayList", deliveryPayList);
+		insertDelivery.put("memCode", memCode);
+		insertDelivery.put("storeCode", storeCode);
+		insertDelivery.put("storeName", storeName);
+		
+		int result = userService.insertDeliveryOrderList(insertDelivery);
+		System.out.println("result : " + result);
+		if (result > 0 ) {
+			System.out.println("insertDelivery Service 성공");
+		} else {
+			System.out.println("insertDelivery Service 실패");
+		}
+		
+		return "redirect:/user/paymentDelivery";
+		
+		
+	}
+	
+	/**
+	 * 배달 주문자 정보,결제  
+	 * @author ParkHaejin
+	 * @param model
+	 * @param session
+	 * @return "user/packagePay"
+	 */
+	@GetMapping("paymentDelivery")
+	public String paymentDelivery(Model model, HttpSession session, @RequestParam(value="orderList", required = false) int[] orderList) {
+		return "user/deliveryPay";
 	}
 	
 	private int sum(int price) {
