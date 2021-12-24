@@ -119,9 +119,9 @@
                 return false;
             }
 
-            var reg = /^[0-9]+/g;
+            var reg = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
             if(!reg.test(phone.value)) {
-                alert("전화번호는 숫자만 입력할 수 있습니다.")
+                alert("전화번호 형식이 올바르지 않습니다. 올바른 형식으로 9~11자리 숫자를 입력해주세요.")
                 phone.focus();
                 return false;
             }
@@ -178,7 +178,7 @@
     const $goShoppingBasket = document.getElementById("goShoppingBasket");
 
       $goShoppingBasket.onclick = function() {
-      location.href = "${ pageContext.servletContext.contextPath }/cart";
+      location.href = "${ pageContext.servletContext.contextPath }/user/cart";
     }
     </script>
 

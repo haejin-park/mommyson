@@ -133,46 +133,53 @@
     <jsp:include page="../commons/footer.jsp"/>
     
     <script>
-    function validate(){
-      var name = document.getElementById("name");
-      var phone = document.getElementById("phone");
-      
+	    function validate(){
+	      var name = document.getElementById("name");
+	      var phone = document.getElementById("phone");
+	      
+	
+	      if(name.value == ""){
+	          alert("이름을 입력해주세요.")
+	          name.focus()
+	          return false;
+	      }
+	
+	      if(!chk(/^[가-힣]{2,}$/,name,"이름은 한글로 2글자 이상을 넣으세요")){
+	          return false;
+	      }
+	      
+	      if(phone.value == ""){
+	          alert("전화번호를 입력해주세요.")
+	          phone.focus()
+	          return false;
+	      }
+	
+	      var reg = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+	      if(!reg.test(phone.value)) {
+	          alert("전화번호 형식이 올바르지 않습니다. 올바른 형식으로 9~11자리 숫자를 입력해주세요.")
+	          phone.focus();
+	          return false;
+	      }
+	
+	    function chk(re, ele, msg){
+	      if(!re.test(ele.value)){
+	              alert(msg);
+	              ele.select();
+	              return false;
+	          }
+	          return true;
+	      }
+	
+	    }
+	    
+	</script>
+    <script>
+    const $goShoppingBasket = document.getElementById("goShoppingBasket");
 
-      if(name.value == ""){
-          alert("이름을 입력해주세요.")
-          name.focus()
-          return false;
-      }
-
-      if(!chk(/^[가-힣]{2,}$/,name,"이름은 한글로 2글자 이상을 넣으세요")){
-          return false;
-      }
-      
-      if(phone.value == ""){
-          alert("전화번호를 입력해주세요.")
-          phone.focus()
-          return false;
-      }
-
-      var reg = /^[0-9]+/g;
-      if(!reg.test(phone.value)) {
-          alert("전화번호는 숫자만 입력할 수 있습니다.")
-          phone.focus();
-          return false;
-      }
-
-    function chk(re, ele, msg){
-      if(!re.test(ele.value)){
-              alert(msg);
-              ele.select();
-              return false;
-          }
-          return true;
-      }
-
+      $goShoppingBasket.onclick = function() {
+      location.href = "${ pageContext.servletContext.contextPath }/user/cart";
     }
-</script>
-
+    </script>
 <!-- <script>
 
   /* 방문 포장 모달창 */
