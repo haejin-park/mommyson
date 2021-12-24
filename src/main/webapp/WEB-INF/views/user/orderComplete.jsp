@@ -18,116 +18,17 @@
 </head>
 
 <body>
-  <header class="header">
-    <div class="headerTop">
-      <div class="headerBody">
-        <a href="#"><img src="../../resources/images/mainlogo.png" style="width: 300px;"></a>
-        <br><br><br>
-          <div class="bodyLeft">
-              <ul class="df_ul headerItem" style=" margin-left: 1150px;">
-                <li>
-                  <a href="#">장바구니</a>
-                </li>
-                <li>
-                  <a  href="#">로그인</a>
-                </li>
-                <li >
-                  <a href="#">회원가입</a>
-                </li>
-                <li >
-                  <a  href="#"><img src="../../resources/images/bell.png"></a>
-                </li>
-            </ul>
-        </div>
-      </div>
-    </div>  
-  </header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width: 1550px; margin: 0 auto;">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" style="margin-left: 50px; font-weight: 700; color: black">
-                전체 카테고리
-              </a>
-          <div class="dropdown-menu">
-              <div class="dropdown-content" aria-labelledby="navbarDropdown">
-                  <div class="row">
-                      <div class="col-2">
-                      <a href="#">무침</a>
-                      <a href="#">볶음</a>
-                      <a href="#">조림</a>
-                      <a href="#">김치/젓갈</a>
-                      </div>
-                      <div class="col-1"></div>
-                      <div class="col-2">
-                      <a href="#">전/생선</a>
-                      <a href="#">국/찌개/탕</a>
-                      <a href="#">메인요리</a>
-                      <a href="#">곡류/양념</a>
-                      </div>
-                      <div class="col-1"></div>
-                      <div class="col-2">
-                      <a href="#">어린이 반찬</a>
-                      <a href="#">부모님 반찬</a>
-                      <a href="#">제철 반찬</a>
-                      </div>
-                      <div class="col-1"></div>
-                      <div class="col-2">
-                      <a href="#">대용량 반찬</a>
-                      <a href="#">묶음 반찬</a>
-                      <a href="#">냉동 반찬</a>
-                      <a href="#">할인 반찬</a>
-                      </div>
-                  </div>
-              </div>
-          </div> 
-          </li>
-          <a href="#home" style="margin-left: 100px;">오늘의 추천</a>
-          <a href="#news">우리동네 인기 맛집</a>
-          <a href="#news">오늘 할인</a>
-          <a href="#news">이벤트</a>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" id="#\search" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
-    </nav>
-  <!-- 태그 div -->
-  <div id="tags" style="display: none;">
-      <div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
-        <input type="button" class="tag" value="#무침">
-        <input type="button" class="tag" value="#볶음">
-        <input type="button" class="tag" value="#조림">
-        <input type="button" class="tag" value="#김치/절임/젓갈">
-        <input type="button" class="tag" value="#전/생선">
-      </div>
-      <div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
-       <input type="button" class="tag" value="#국/찌개/탕">
-       <input type="button" class="tag" value="#메인요리">
-       <input type="button" class="tag" value="#곡류/양념">
-       <input type="button" class="tag" value="#매콤한">
-       <input type="button" class="tag" value="#달콤한">
-      </div>
-      <div style="display: flex; justify-content: space-between; width: 100%; margin: 10px;">
-       <input type="button" class="tag" value="#얼큰한">
-       <input type="button" class="tag" value="#톡쏘는">
-       <input type="button" class="tag" value="#짭짤한">
-       <input type="button" class="tag" value="#시원한">
-       <input type="button" class="tag" value="#부드러운">
-      </div>
-    </div>
+<jsp:include page="../commons/header.jsp"/>
     <br><br><br>
 
     <form>
     <h3 id="orderComplete">주문완료</h3>
-    </div>
     <br>
     <div id="div">
       <p id="p">주문이 성공적으로 완료되었습니다.</p>
       <br>
-      <button id="myPage"><a href="userTotalOrderList.html">주문내역</a></button>
-      <button id="customerCare"><a href="userCustomerServiceCenterMTMQnA.html">1:1문의</a></button>
+      <button id="myOrderList">주문내역</button>
+      <button id="customerCare">1:1문의</a></button>
     </div>
     <br><br>
 
@@ -137,27 +38,27 @@
     <table id="table1">  
         <tr>
             <th colspan="1">이름</td>
-            <td colspan="3">이승우</td>
+            <td colspan="3" value="${ name }">이승우</td>
         </tr>
         <tr>    
             <th>예약 시간</td>
-            <td>10:30</td>
+            <td value="${ requestTime }">10:30</td>
         </tr>
         <tr>    
             <th>연락처</td>
-            <td>01095773259</td>
+            <td value="${ phone }">01095773259</td>
         </tr>
         <tr>
             <th>우편번호</th>
-            <td>12345</td>
+            <td value="${ postCode }">12345</td>
         </tr>
         <tr>
             <th>주소</th>
-            <td>서울시 광진구 중곡동 18-118</td>
+            <td value="${ address }">서울시 광진구 중곡동 18-118</td>
         </tr>
         <tr>
             <th>상세주소</th>
-            <td>502호</td> 
+            <td value="${ dAddress }">502호</td> 
         </tr>
     </table>
     <br>
@@ -167,46 +68,34 @@
     <br>    
     <table id="table2">  
         <tr>
-            <th id="restaurantInformation">가게정보</th>
-            <th id="productInformation">제품정보</th>
+            <th id="restaurantInformation">가게상호 </th>
+            <th id="productInformation">반찬명</th>
             <th id="quantity">수량</th>
             <th id="paymentAmount">결제금액</th>
         </tr>
         <tr>
-            <td>찜닭최고</td>
-            <td>고추장 야채 찜닭</td>
-            <td>1</td>
-            <td>9,000원</td>
+            <td value="${ storeName }">찜닭최고</td>
+            <td value="${ sdName }">고추장 야채 찜닭</td>
+            <td value="${ amount }">1</td>
+            <td value="${ totalPrice }">9,000원</td>
         </tr>
     </table>
     </form>
     <br><br><br><br>
     <jsp:include page="${ pageContext.servletContext.contextPath }/views/commons/footer.jsp"/>
+    
+    
     <script>
-      // 태그 div 출력 이벤트
-      $('#search').on('keyup', function() {
-        let text = $('#search').val();
-        if(text.charAt(text.length-1) == '#') {
-         $('#tags').css('display', 'block');
-        } else {
-         $('#tags').css('display', 'none');
-        }
-      });
-
-      // 태그 클릭 이벤트
-      $('.tag').on('click',function(e) {
-       
-       let text = $('#search').val();
-       let index = text.lastIndexOf('#');
-       let replace = text.replaceAt(index, e.target.value + ", ");
-       $('#search').val(replace);
-       $('#tags').css('display', 'none');
-       $('#search').focus();
-      });
-
-      String.prototype.replaceAt=function(index, character) {
-        return this.substr(0, index) + character + this.substr(index+character.length); 
-      }
+    
+    const $myOrderList = document.getElementId("myOrderList");
+    	$myOrderList.onclick = function(){
+    		location.href = "${ pageContext.servletContext.contextPath }/userMyPage/myOrderList"
+    	}
+    	
+   const $customerCare = document.getEementId("customerCare");
+   		$customerCare.onclick = function(){
+   			location.href = "${ pageContext.servletContext.contextPath }/user/ucc/MTMQnA"
+   		}
     </script>
 </body>
 </html>
