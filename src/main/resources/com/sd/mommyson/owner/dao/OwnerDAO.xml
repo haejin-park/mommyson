@@ -1330,6 +1330,7 @@
 				     , SUM(TOTAL_PRICE) AS totalPrice
 				  FROM ORDER_TBL 
 				 WHERE STORE_NAME = #{ storeName } 
+				   AND TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD') = TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD')
 				 GROUP BY TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD')) A
 		  LEFT JOIN pickupPrice pic ON (A.payDate = pic.pickupDate)
 		  LEFT JOIN DelPrice del ON (A.payDate = del.delDate)
@@ -1366,6 +1367,7 @@
 								     , SUM(TOTAL_PRICE) AS totalPrice
 								  FROM ORDER_TBL 
 								 WHERE STORE_NAME = #{ storeName }
+								   AND TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD') = TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD')
 								 GROUP BY TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM-DD')) A
 						  LEFT JOIN pickupPrice pic ON (A.PAYDATE = pic.PICKUPDATE)
 						  LEFT JOIN DelPrice del ON (A.PAYDATE = del.DELDATE)
@@ -1377,6 +1379,99 @@
 						 ORDER BY A.PAYDATE DESC) B 
 						 ) C
 			WHERE C.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow }			 
+	</select>
+	
+	<!-- 사업자 월별 정산 토탈 카운트 계산 -->
+	<select id="selectTotalsalseMonth" resultType="_int">
+		SELECT 
+		       COUNT(*)
+		  FROM (SELECT
+				       
+				       TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM') AS PAYDATE
+				     , SUM(TOTAL_PRICE) AS totalPrice
+				  FROM ORDER_TBL 
+				 WHERE STORE_NAME = #{ storeName }
+		                             AND TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM') = TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM')
+				 GROUP BY TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM')) A
+		  LEFT JOIN MONTH_PICKUP pic ON (A.PAYDATE = pic.PAYDATE)
+		  LEFT JOIN MONTH_DEL del ON (A.PAYDATE = del.PAYDATE)
+		  <where>
+			<if test="date1 != null and date1 != '' ">
+				A.PAYDATE BETWEEN #{ date1 } AND #{ date2 } 
+			</if>
+		</where>
+		 ORDER BY A.PAYDATE DESC
+	</select>
+	
+	<!-- 사업자 월별 정산 쿼리문 -->
+	<select id="selectSalseMonth" resultType="hashMap">
+		SELECT       
+	       	   C.RNUM
+			 , C.PAYDATE
+		     , C.TOTALPRICE
+		     , C.PICKPRICE
+		     , C.DELPRICE  
+		  FROM (SELECT
+					   ROWNUM RNUM
+					 , B.PAYDATE
+				     , B.TOTALPRICE
+				     , B.PICKPRICE
+				     , B.DELPRICE  
+				  FROM (SELECT 
+						       A.PAYDATE
+						     , A.totalPrice
+						     , pic.PICKPRICE
+						     , del.DELPRICE
+						  FROM (SELECT
+								       TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM') AS PAYDATE
+								     , SUM(TOTAL_PRICE) AS totalPrice
+								  FROM ORDER_TBL 
+								 WHERE STORE_NAME = #{ storeName }
+                                   AND TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM') = TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM')
+								 GROUP BY TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM')) A
+						  LEFT JOIN MONTH_PICKUP pic ON (A.PAYDATE = pic.PAYDATE)
+						  LEFT JOIN MONTH_DEL del ON (A.PAYDATE = del.PAYDATE)
+						  <where>
+							<if test="date1 != null and date1 != '' ">
+								A.PAYDATE BETWEEN #{ date1 } AND #{ date2 } 
+							</if>
+						  </where>
+						 ORDER BY A.PAYDATE DESC) B 
+						 ) C
+			WHERE C.RNUM BETWEEN #{ pagination.startRow } AND #{ pagination.endRow } 
+	</select>
+	
+	<!-- 정산 메인페이지에서 보여줄 그래프에 들어가는 월별 정산 쿼리문 -->
+	<select id="selectMonth" resultType="hashMap">
+		SELECT       
+	       	   C.RNUM
+			 , C.PAYDATE
+		     , C.TOTALPRICE
+		     , C.PICKPRICE
+		     , C.DELPRICE  
+		  FROM (SELECT
+					   ROWNUM RNUM
+					 , B.PAYDATE
+				     , B.TOTALPRICE
+				     , B.PICKPRICE
+				     , B.DELPRICE  
+				  FROM (SELECT 
+						       A.PAYDATE
+						     , A.totalPrice
+						     , pic.PICKPRICE
+						     , del.DELPRICE
+						  FROM (SELECT
+								       TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM') AS PAYDATE
+								     , SUM(TOTAL_PRICE) AS totalPrice
+								  FROM ORDER_TBL 
+								 WHERE STORE_NAME = #{ storeName }
+                                   AND TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM') = TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM')
+								 GROUP BY TO_CHAR(ORDER_COMPLETE_TIME,'YYYY-MM')) A
+						  LEFT JOIN MONTH_PICKUP pic ON (A.PAYDATE = pic.PAYDATE)
+						  LEFT JOIN MONTH_DEL del ON (A.PAYDATE = del.PAYDATE)
+						 ORDER BY A.PAYDATE DESC) B 
+						 ) C
+			WHERE C.RNUM BETWEEN 1 AND 5
 	</select>
 	
 </mapper>

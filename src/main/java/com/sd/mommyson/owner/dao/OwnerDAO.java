@@ -136,10 +136,16 @@ public interface OwnerDAO {
 
 	public Map<String, Integer> selectDelPrice(String storeName);
 
-	public int selectPickupPrice(String storeName);
+	public Integer selectPickupPrice(String storeName);
 
 	public List<Map<String, Object>> selectDailySales(Map<String, Object> map);
 
 	public int selectTotalDailySalse(Map<String, Object> map);
+
+	public int selectTotalsalseMonth(Map<String, Object> map);
+
+	public List<Map<String, Object>> selectSalseMonth(Map<String, Object> map);
+
+	public List<Map<String, Object>> selectMonth(String storeName);
 
 }

@@ -75,7 +75,7 @@
       <br><br>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
       <button type="reset" id="goShoppingBasket">취소하기</button>
-      <script>
+      <!-- <script>
       	$('#pay').on('click',function() {
       		let name = $('#name').val();
       		let phone = $('#phone').val();
@@ -104,7 +104,7 @@
       	      }
       		});
       	})
-      </script>
+      </script> -->
     
 <!--       결제하기 Modal
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

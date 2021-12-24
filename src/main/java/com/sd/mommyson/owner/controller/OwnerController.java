@@ -1262,11 +1262,117 @@ public class OwnerController {
 		System.out.println("delPrice : " + delPrice);
 		
 		// 포장 총 매출
-		int pickupPrice = ownerService.selectPickupPrice(storeName);
+		Integer pickupPrice = ownerService.selectPickupPrice(storeName);
+		
+		System.out.println("pickupPrice : "  + pickupPrice );
+		if(pickupPrice != null && pickupPrice > 0) {
+			
+			model.addAttribute("pickupPrice",pickupPrice);
+			
+		} else {
+			model.addAttribute("pickupPrice", null);
+		}
+		
+		List<Map<String,Object>> salseMonth  = ownerService.selectMonth(storeName);
+		
+		List<String> str = new ArrayList<String>();
+		List<String> delPrices = new ArrayList<String>();
+		List<String> pickPrice = new ArrayList<String>();
+		
+		if(salseMonth != null && !salseMonth.isEmpty()) {
+			
+			for(int i = 0; i < salseMonth.size(); i++) {
+				
+				if(i != salseMonth.size()) {
+					
+					str.add((String)salseMonth.get(i).get("PAYDATE") + "월,");
+					
+				} else {
+					
+					str.add((String)salseMonth.get(i).get("PAYDATE") + "월");
+					
+				}
+				
+				if(i != salseMonth.size()) {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("DELPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					delPrices.add(price + ",");
+					
+				} else {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("DELPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					delPrices.add(price + "");
+					
+				}
+				
+				if(i != salseMonth.size()) {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("PICKPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
+						
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					pickPrice.add(price  + ",");
+					
+				} else {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("PICKPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					pickPrice.add(price + "");
+					
+				}
+			
+			}
+		}
+		
+		System.out.println("str : " + str);
+		System.out.println("delPrices : " + delPrices);
+		System.out.println("pickPrice : " + pickPrice);
+		System.out.println("str[4] : " + str.get(4));
 		
 		model.addAttribute("totalPrice",totalPrice);
 		model.addAttribute("delPrice",delPrice);
-		model.addAttribute("pickupPrice",pickupPrice);
+		
 	}
 	
 	/* 일별 매출 */
@@ -1315,10 +1421,64 @@ public class OwnerController {
 		
 		List<Map<String,Object>> dailySales  = ownerService.selectDailySales(map);
 		
+		
 		model.addAttribute("dailySales",dailySales);
 		model.addAttribute("pagination",pagination);
 		model.addAttribute("map",map);
 	}
+	
+	/* 월별 매출 */
+	@GetMapping("salseMonth")
+	public void salesMonth(Model model, @RequestParam(value = "currentPage", required = false) String currentPage, @RequestParam(value="date1",required = false) String date1, 
+			@RequestParam(value="date2",required = false) String date2) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		
+		String storeName = member.getCeo().getStore().getStoreName();
+		
+		System.out.println("storeName : " + storeName);
+		System.out.println("date1 : " + date1);
+		System.out.println("date2 : " + date2);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("storeName", storeName);
+		map.put("date1", date1);
+		map.put("date2", date2);
+		
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		int totalCount = ownerService.selectTotalsalseMonth(map);
+		
+		int limit = 5; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		
+		Pagination pagination = null;
+		
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		map.put("pagination", pagination);
+		System.out.println("페이지 : " + pagination);
+		
+		List<Map<String,Object>> salseMonth  = ownerService.selectSalseMonth(map);
+		
+		model.addAttribute("salseMonth",salseMonth);
+		model.addAttribute("pagination",pagination);
+		model.addAttribute("map",map);
+		
+	}
+	
 	
 	// 쿠폰 발행 내역
 	@GetMapping("giveCouponLIst")

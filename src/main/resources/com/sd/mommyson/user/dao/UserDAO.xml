@@ -681,19 +681,19 @@
 		VALUES
 		  	(
  		     #{ memCode }
- 		   , #{ packagePayList.totalPrice }
+ 		   , #{ price }
  		   , SEQ_ORDER_CODE.NEXTVAL
  		   , '포장'
  		   , null
  		   , null
  		   , null
- 		   , #{ packagePayList.storeName }
+ 		   , #{ storeName }
  		   , 1
  		   , null
  		   , null
  		   , null
  		   , SYSDATE
- 		   , #{ packagePayList.memCode }	  
+ 		   , #{ storeCode }	  
  		     )
 	</insert>
 

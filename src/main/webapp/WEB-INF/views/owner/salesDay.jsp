@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,11 +32,11 @@
       <br>
       <h2 style="text-align: center;">일별 매출</h2>
       <br><br><br>
-      <form action="${ pageContext.servletContext.contextPath }/owner/salesDay" method="get">
+      <form action="${ pageContext.servletContext.contextPath }/owner/salesDay" method="get" id="frm">
       <div style="float: right;"> 
       <p style="float: left; margin-right: 15px; font-weight: 700;">조회 일자 &nbsp;&nbsp;&nbsp;<input type="date" name="date1" value="${ map.date1 }"></p>
       <p style="float: left;margin-right: 15px;">~ &nbsp;&nbsp;<input type="date" name="date2" value="${ map.date2 }"></p>
-      <button type="submit" class="couponBtn" style="width: 80px; margin-top: 2px;">조회하기</button>
+      <button type="button" class="couponBtn" style="width: 80px; margin-top: 2px;">조회하기</button>
       </div>
     </form>
     <br><br>
@@ -59,20 +60,20 @@
                 <th scope="row">${ list.PAYDATE }일</th>
                 
                 <c:if test="${ list.PICKUPPRICE != null and !empty list.PICKUPPRICE }">
-                <td>${ list.PICKUPPRICE }원</td>
+                <td><fmt:formatNumber value="${ list.PICKUPPRICE }" pattern="#,###"/>원</td>
                 </c:if>
                 <c:if test="${ list.PICKUPPRICE == null and empty list.PICKUPPRICE }">
                 <td>0원</td>
                 </c:if>
                 
                  <c:if test="${ list.DELPRICE != null and !empty list.DELPRICE }">
-                <td>${ list.DELPRICE }원</td>
+                <td><fmt:formatNumber value="${ list.DELPRICE }" pattern="#,###"/>원</td>
                 </c:if>
                 <c:if test="${ list.DELPRICE == null and empty list.DELPRICE }">
                 <td>0원</td>
                 </c:if>
                 
-                <td style="font-weight: 700;">${ list.TOTALPRICE }원</td>
+                <td style="font-weight: 700;"><fmt:formatNumber value="${ list.TOTALPRICE }" pattern="#,###"/>원</td>
               </tr>
               </c:forEach>
               </c:if>
@@ -91,15 +92,16 @@
     </div>  
     
     <script>
+    
+    	$('.pagination').css('margin-left','693px');
+    
     	$('.couponBtn').on('click',function(){
     		
 	    	if($('input[name=date1]').val() !== null && $('input[name=date1]').val() != '' && $('input[name=date2]').val() !== null && $('input[name=date2]').val() != ''){
-	    		submit();
+	    		$('#frm').submit();
 	    	} else{
 	    		alert('조회날짜를 입력해주세요.');
 	    	}
-	    	
-	    	
     	});
     </script>
     

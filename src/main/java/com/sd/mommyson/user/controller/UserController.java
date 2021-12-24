@@ -857,12 +857,21 @@ public class UserController {
 	 * @param orderList
 	 */
 	@GetMapping("packagePay")
-	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList,@RequestParam(value="storeCode",required = false) int storeCode ) {
-		System.out.println("storeCode : " + storeCode);
+	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList, @RequestParam(value="storeCode",required = false) int[] storeCode
+			, @RequestParam String[] storeName) {
+
+		for(int sc : storeCode) {
+			System.out.println("storeCode : " + sc);
+		}
+		
+		for(String st : storeName) {
+			System.out.println("storeName : " + storeName);
+		}
 		
 		System.out.println("orderList : " + orderList);
 		System.out.println("orderList : " + orderList[0]);
 		System.out.println("orderList : " + orderList.length);
+		
 		
 		List<Integer> packagePayList = new ArrayList<>();
 		
@@ -880,6 +889,8 @@ public class UserController {
 		HashMap<String, Object> insertPackage = new HashMap<String, Object>();
 		insertPackage.put("packagePayList", packagePayList);
 		insertPackage.put("memCode", memCode);
+		insertPackage.put("storeCode", storeCode);
+		insertPackage.put("storeName", storeName);
 		
 		int result = userService.insertPackageOrderList(insertPackage);
 		System.out.println("result : " + result);
@@ -889,13 +900,14 @@ public class UserController {
 			System.out.println("insertPackage Service 실패");
 		}
 		
-		return "redirect:/user/Paymentpackage";
+		return "redirect:paymentPackage";
 	}
 	
-	@PostMapping("Paymentpackage")
+	@GetMapping("paymentPackage")
 	public String Paymentpackage(Model model, HttpSession session,@RequestParam(value = "orderList", required = false) int[] orderList ) {
 		
-		return "";
+		
+		return "user/packagePay";
 	}
 	
 	
