@@ -677,7 +677,7 @@
     	DELETE 
     	  FROM CART_TBL A
     	 WHERE A.MEM_CODE = #{ memCode }
-    	   AND A.SD_CODE = #{ sdCode }  
+    	   AND A.CART_CODE IN(<foreach collection="deleteCartList" separator="," item="item">#{ item }</foreach>)
     </delete>
     
 

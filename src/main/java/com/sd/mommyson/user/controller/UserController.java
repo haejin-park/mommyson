@@ -891,7 +891,7 @@ public class UserController {
 			System.out.println("deleteCartList Service실패");
 		}
 		
-		return "user/shoppingBasket";
+		return "redirect:/user/cart";
 	}
 	
 	/**
