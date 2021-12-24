@@ -183,13 +183,13 @@
 	 <!-- modal  -->     
      <script>
 
-        $('.fixImg').click(function(){
+/*         $('.fixImg').click(function(){
             let img = $(this).attr("src");
             
             $('.inquiry_img').attr("src",img);
             $('.inquiry_box').html(img);
             $('.inquiry_modal').show();
-        });
+        }); */
         
         $('.addEvent').click(function(){
             let img = $(this).attr("src");
@@ -211,21 +211,21 @@
 	<!-- file image -->
     <script>
         
-        $("view_area1").click(function(){
+        $("#view_area1").click(function(){
         	$("#insert_img1").click();
         })
         
-        $("view_area2").click(function(){
+        $("#view_area2").click(function(){
         	$("#insert_img2").click();
         })
         
-        $("view_area3").click(function(){
+        $("#view_area3").click(function(){
         	$("#insert_img3").click();
         })
         
 
         function loadImg(value, num){
-        	debugger;
+        	
             if(value.files && value.files[0]){
                 const reader = new FileReader();
                 /* 읽기동작이 성공적으로 로드되었을 때 작동하는 함수 */

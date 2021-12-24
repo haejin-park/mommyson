@@ -1205,6 +1205,15 @@
   	   AND A.FILE_TYPE = 'owner' 
   </select>
   
+   <!-- 소비자 - 1:1 문의 이미지 파일 조회 -->
+  <select id="selectNormalImg" resultMap="imgFileResultMap">
+  	SELECT
+  		   *
+  	  FROM FILE_TBL A
+  	 WHERE A.POST_NO = #{ postNo }
+  	   AND A.FILE_TYPE = 'user' 
+  </select>
+  
   <!-- 관리자 - 1:1 문의 이미지 파일 조회 -->
    <select id="selectAnswerImg" resultMap="imgFileResultMap">
    	SELECT
@@ -1224,6 +1233,22 @@
   
    <!-- 사업자 - 1:1 문의 파일 등록-->
    <insert id="registBusinessFile" parameterType="hashmap">
+     INSERT INTO FILE_TBL A
+     (A.FILE_CODE, A.FILE_NAME, A.POST_NO, A.FILE_TYPE)
+     VALUES
+     (SEQ_FILE.NEXTVAL, #{ fileName }, #{ postNo }, 'manager')
+   </insert>
+   
+   <!-- 소비자 - 1:1 문의 답변 등록-->
+   <update id="registNormalAnswer" parameterType="hashmap">
+     UPDATE POST_TBL A
+        SET A.ANS_STATUS = 'Y',
+            A.ANS_CONTENT = #{ ansContent }
+      WHERE A.POST_NO = #{ postNo }
+    </update>
+  
+   <!-- 소비자 - 1:1 문의 파일 등록-->
+   <insert id="registNormalFile" parameterType="hashmap">
      INSERT INTO FILE_TBL A
      (A.FILE_CODE, A.FILE_NAME, A.POST_NO, A.FILE_TYPE)
      VALUES

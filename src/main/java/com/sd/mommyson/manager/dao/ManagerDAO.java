@@ -155,4 +155,10 @@ public interface ManagerDAO {
 
 	int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
+	List<FileDTO> selectNormalImg(int postNo);
+
+	int registNormalFile(Map<String, Object> registfile);
+
+	int registNormalAnswer(Map<String, Object> registInfo);
+
 }

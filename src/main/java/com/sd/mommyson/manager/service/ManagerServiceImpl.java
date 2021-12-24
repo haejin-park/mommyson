@@ -412,6 +412,7 @@ public class ManagerServiceImpl implements ManagerService {
 	 */
 	@Override
 	public PostDTO selectBusinessPost(int postNo) {
+		
 		return managerDAO.selectQnaPost(postNo);
 	}
 
@@ -499,6 +500,48 @@ public class ManagerServiceImpl implements ManagerService {
 		
 		return managerDAO.selectNormalInquiry(pagination);
 	}
+
+	/**
+	 * 소비자 - 1:1 문의 게시글 조회
+	 * @author junheekim
+	 */
+	@Override
+	public PostDTO selectNormalPost(int postNo) {
+		
+		return managerDAO.selectQnaPost(postNo);
+	}
+
+
+	/**
+	 * 소비자 - 1:1 문의 게시글 이미지 파일 조회
+	 * @author junheekim
+	 */
+	@Override
+	public List<FileDTO> selectNormalImg(int postNo) {
+		
+		return managerDAO.selectNormalImg(postNo);
+	}
+	
+	/**
+	 * 사업자 - 1:1 문의 답변 파일 등록
+	 * @author junheekim
+	 */
+	@Override
+	public int registNormalFile(Map<String, Object> registfile) {
+		
+		return managerDAO.registNormalFile(registfile);
+	}
+
+	/**
+	 * 사업자 - 1:1 문의 답변 등록
+	 * @author junheekim
+	 */
+	@Override
+	public int registNormalAnswer(Map<String, Object> registInfo) {
+		
+		return managerDAO.registNormalAnswer(registInfo);
+	}
+
 	
 	/** 
 	 * 배너추가
@@ -675,5 +718,6 @@ public class ManagerServiceImpl implements ManagerService {
 	public int selectTaxAdjustTotalCount(Map<String, Object> searchMap) {
 		return managerDAO.selectTaxAdjustTotalCount(searchMap);
 	}
+
 
 }
