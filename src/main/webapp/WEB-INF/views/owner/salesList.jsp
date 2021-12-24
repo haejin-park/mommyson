@@ -19,7 +19,7 @@
 	<jsp:include page="../commons/header.jsp"/>
 	
 	<div class="page-text" style="width: 1550px; margin: 0 auto;">
-        <br><h3 style="margin-left: 100px; font-weight: 900;">매출 내역</h3>
+        <br><h3 style="margin-left: 150px; font-weight: 900; font-size: 40px">매출 내역</h3>
         <hr>
     </div>
     <div class="body-all">
@@ -38,9 +38,16 @@
                         <td >배송비</td>
                     </tr>
                     <tr>
-                        <td > ㅇㅇㅇ</td>
-                        <td> ㅇㅇ</td>
-                        <td> ㅇㅇ</td>
+                    	<c:if test="${ requestScope.delPrice != null and !empty requestScope.delPrice }">
+                        <td><fmt:formatNumber value="${ requestScope.delPrice.TOTALPRICE }" pattern="#,###"/>원</td>
+                        <td><fmt:formatNumber value="${ requestScope.delPrice.REAL }" pattern="#,###"/>원</td>
+                        <td><fmt:formatNumber value="${ requestScope.delPrice.DELCOST }" pattern="#,###"/>원</td>
+                        </c:if>
+                        
+                        <c:if test="${ requestScope.delPrice == null and empty requestScope.delPrice }">
+                        <td colspan="3" style="font-weight: 700; font-size: 20px;">등록된 주문이 없습니다.</td>
+                        </c:if>
+                        
                     </tr>
                 </thead>
                 </table><br>
@@ -52,9 +59,13 @@
                         <td colspan="3">주문금액(영업이익)</td>
                         </tr>
                         <tr>
-                            <td > ㅇㅇㅇ</td>
-                            <td> ㅇㅇ</td>
-                            <td> ㅇㅇ</td>
+                        	<c:if test="${ requestScope.pickupPrice != null and !empty requestScope.pickupPrice }">
+                            <td colspan="3"><fmt:formatNumber value="${ requestScope.pickupPrice }" pattern="#,###"/>원</td>
+                            </c:if>
+                            
+                            <c:if test="${ requestScope.pickupPrice == null and empty requestScope.pickupPrice }">
+                            <td colspan="3" style="font-weight: 700; font-size: 20px;" >등록된 주문이 없습니다.</td>
+                            </c:if>
                         </tr>
                     </thead>            
             </table><br>   
@@ -69,15 +80,21 @@
                         <td>배송비</td>
                     </tr>
                     <tr>
-                        <td>ㅇㅇㅇ</td>
-                        <td> ㅇㅇ</td>
-                        <td> ㅇㅇ</td>
+                    	<c:if test="${ requestScope.totalPrice != null and !empty requestScope.totalPrice }">
+                        <td><fmt:formatNumber value="${ requestScope.totalPrice.TOTALPRICE }" pattern="#,###"/>원</td>
+                        <td><fmt:formatNumber value="${ requestScope.totalPrice.REAL }" pattern="#,###"/>원</td>
+                        <td><fmt:formatNumber value="${ requestScope.totalPrice.DELCOST }" pattern="#,###"/>원</td>
+                        </c:if>
+                        
+                        <c:if test="${ requestScope.totalPrice == null and empty requestScope.totalPrice }">
+                        <td colspan="3" style="font-weight: 700; font-size: 20px;">등록된 주문이 없습니다.</td>
+                        </c:if>
                     </tr>
                 </thead>
             </table><br>
             <div style="float: right;">
             <button type="button"  id="couponBtn" style="height: 30px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salesDay'">일별 매출</button>
-          	<button id="couponBtn" style="height: 30px; margin-left: 20px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salesMonth'">월별 매출</button>
+          	<button id="couponBtn" style="height: 30px; margin-left: 20px;" onclick="location.href='${pageContext.servletContext.contextPath}/owner/salseMonth'">월별 매출</button>
             </div>
 			
 			<br><br><br><br><br><br>
@@ -88,18 +105,18 @@
                 type: 'bar',
                 data: {
                     // x축 / y축은 데이터 값에 따라 자동으로 바뀜
-                labels: ["9월", "10월", "11월", "12월"],
+                labels: ["9월","10월","11월","12월","1월"],
                 datasets: [
                     {
                     label: "배달",
                     backgroundColor: "rgba(195, 191, 239, 1)",
                     // 데이터 값
-                    data: [133,221,783,1500]
+                    data: ["13","221","783","1500","100"]
                     }, {
                     label: "포장",
                     backgroundColor: "rgba(252, 235, 233, 1)",
                     // 데이터 값
-                    data: [408,547,675,734]
+                    data: [408,547,675,734,1000]
                     }
                 ]
                 },

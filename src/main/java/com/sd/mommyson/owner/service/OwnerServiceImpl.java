@@ -597,7 +597,7 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public long selectTotalPrice(String storeName) {
+	public Map<String, Integer> selectTotalPrice(String storeName) {
 
 		return ownerDAO.selectTotalPrice(storeName);
 	}
@@ -620,6 +620,51 @@ public class OwnerServiceImpl implements OwnerService{
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public Map<String, Integer> selectDelPrice(String storeName) {
+		
+		
+		return ownerDAO.selectDelPrice(storeName);
+	}
+
+	@Override
+	public Integer selectPickupPrice(String storeName) {
+		
+		return ownerDAO.selectPickupPrice(storeName);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDailySales(Map<String, Object> map) {
+		
+		return ownerDAO.selectDailySales(map);
+	}
+
+	@Override
+	public int selectTotalDailySalse(Map<String, Object> map) {
+
+		int result = ownerDAO.selectTotalDailySalse(map);
+		
+		return result;
+	}
+
+	@Override
+	public int selectTotalsalseMonth(Map<String, Object> map) {
+		
+		return ownerDAO.selectTotalsalseMonth(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectSalseMonth(Map<String, Object> map) {
+
+		return ownerDAO.selectSalseMonth(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMonth(String storeName) {
+
+		return ownerDAO.selectMonth(storeName);
 	}
 
 }

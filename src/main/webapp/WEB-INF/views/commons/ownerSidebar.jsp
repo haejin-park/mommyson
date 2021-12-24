@@ -131,7 +131,7 @@
                                     <a href="${ pageContext.servletContext.contextPath }/owner/salesDay">일별 매출</a>
                                 </li>
                                 <li>
-                                    <a href="#">월별 매출</a>
+                                    <a href="${ pageContext.servletContext.contextPath }/owner/salseMonth">월별 매출</a>
                                 </li>
                                 <li>
                                     <a href="${ pageContext.servletContext.contextPath }/owner/salesList">정산</a>

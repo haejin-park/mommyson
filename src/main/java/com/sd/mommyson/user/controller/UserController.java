@@ -26,6 +26,7 @@ import com.sd.mommyson.manager.dto.PostDTO;
 import com.sd.mommyson.manager.service.ManagerService;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
+import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
@@ -1186,79 +1187,8 @@ public class UserController {
 		return "redirect:/user/cart";
 	}
 	
-	/**
-	 * 방문포장 버튼 누르면 장바구니 정보 insert 
-	 * @author ShinHyungi, ParkHaejin, KimJuhwan
-	 * @param model
-	 * @param session
-	 * @param orderList
-	 * @param storeCode
-	 * @param storeName
-	 * @return "redirect:paymentPackage"
-	 */
-	@GetMapping("packagePay")
-	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList, 
-			@RequestParam(value="storeCode",required = false) int[] storeCode, @RequestParam String[] storeName) {
-		
-		
-		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
-		int memCode = member.getMemCode();
-		
-		System.out.println("memCode : " + memCode);
-		
-		System.out.println("orderList : " + orderList);
-		System.out.println("orderList : " + orderList[0]);
-		System.out.println("orderList : " + orderList.length);
-		
-		for(int sc : storeCode) {
-			System.out.println("storeCode : " + sc);
-		}
-		
-		for(String sn : storeName) {
-			System.out.println("storeName : " + sn);
-		}
-		
-		List<Integer> packagePayList = new ArrayList<>();
-		
-		for(int i = 0; i < orderList.length; i++) {
-			packagePayList.add(orderList[i]);
-		}
-		
-		System.out.println("packagePayList : " + packagePayList);
-		
-		HashMap<String, Object> insertPackage = new HashMap<String, Object>();
-		insertPackage.put("packagePayList", packagePayList);
-		insertPackage.put("memCode", memCode);
-		insertPackage.put("storeCode", storeCode);
-		insertPackage.put("storeName", storeName);
-		
-		int result = userService.insertPackageOrderList(insertPackage);
-		System.out.println("result : " + result);
-		if (result > 0 ) {
-			System.out.println("insertPackage Service 성공");
-		} else {
-			System.out.println("insertPackage Service 실패");
-		}
-		
-		return "redirect:/user/paymentPackage";
-	}
 	
-	/**
-	 * 방문포장 주문자 정보,결제  
-	 * @author ParkHaejin
-	 * @param model
-	 * @param session
-	 * @param orderList
-	 * @return "user/packagePay"
-	 */
-	@GetMapping("paymentPackage")
-	public String paymentPackage(Model model, HttpSession session,@RequestParam(value = "orderList", required = false) int[] orderList ) {
-		
-		
-		return "user/packagePay";
-	}
 	
-
 	
 	/**
 	 * 배달 버튼 누르면 장바구니 정보 insert 

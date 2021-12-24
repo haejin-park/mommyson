@@ -73,7 +73,11 @@
       <br><br>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
       <button type="reset" id="goShoppingBasket">취소하기</button>
+<<<<<<< HEAD
      <!--  <script>
+=======
+      <!-- <script>
+>>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
       	$('#pay').on('click',function() {
       		let name = $('#name').val();
       		let phone = $('#phone').val();
@@ -101,9 +105,13 @@
       	        alert(msg);
       	      }
       		});
+<<<<<<< HEAD
       	});
       	
       	
+=======
+      	})
+>>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
       </script> -->
     
 <!--       결제하기 Modal
