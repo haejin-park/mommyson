@@ -67,11 +67,29 @@ public interface UserService {
 	
 	/* 장바구니 리스트 삭제  */
 	int deleteCartList(HashMap<String, Object> deleteCartProduct);
+
+	/* 방문포장 주문 리스트 조회 */
+	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
+
+	/* 방문포장 쿠폰 리스트 조회 */
+	List<CouponDTO> selectCouponList(int memCode);
+
+	
+	void deleteOrder(List<Integer> orderCodeList);
+	
+	int updateOrder(List<Map<String, Object>> list);
+	
+	int updateCouponStatus(List<Integer> list2);
+	
+	/* 방문포장 결제완료화면 조회 */
+	int selectPackageOrderComplete(List<Map<String, Object>> list);
+
+	/* 배달 결제완료화면 조회 */
+//	int selectDeliveryOrderComplete(List<Map<String, Object>> list);
 	
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);
-
 	int selectSearchTotalCount(Map<String, Object> searchMap);
 
 	List<ProductDTO> selectSearchList(Map<String, Object> searchMap);
@@ -90,17 +108,6 @@ public interface UserService {
 
 	int registMtmConsultingText(Map<String, Object> mtmConsulting);
 
-	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
-
-	List<CouponDTO> selectCouponList(int memCode);
-
-	void deleteOrder(List<Integer> orderCodeList);
-
-	int updateOrder(List<Map<String, Object>> list);
-
-	int updateCouponStatus(List<Integer> list2);
-
-
 	int registMtmConFile(Map<String, Object> fileInfo);
 
 	int selectMtmTotalCount(Map<String, String> searchMap);
@@ -114,6 +121,7 @@ public interface UserService {
 	List<FileDTO> selectManagerImg(int postNo);
 
 	int updateDelConsulting(int postNo);
+
 	
 	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */
 //	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
