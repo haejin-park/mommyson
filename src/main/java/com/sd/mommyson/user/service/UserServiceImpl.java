@@ -265,22 +265,18 @@ public class UserServiceImpl implements UserService{
 	
 	/* 방문포장 결제완료화면 조회 */
 	@Override
-	public int selectPackageOrderComplete(List<Map<String, Object>> list) {
-		return userDAO.selectPackageOrderComplete(list);
+	public List<OrderDTO> selectPackageOrderComplete(HashMap<String, Object> map) {
+		return userDAO.selectPackageOrderComplete(map);
 	}
 	
-	
 	/* 배달 결제완료화면 조회 */
-//	@Override
-//	public int selectDeliveryOrderComplete(List<Map<String, Object>> list) {
-//		return userDAO.selectDeliveryOrderComplete(list);
-//	}
 
 
 	@Override
 	public int insertReport(Map<String, Integer> reportInfo) {
 		return userDAO.insertReport(reportInfo);
 	}
+
 
 
 	@Override

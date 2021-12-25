@@ -59,7 +59,7 @@
 
     <p id="orderProduct">주문 내역</p>
     <br>    
-    <c:forEach var="row" items="${ list.map }" varStatus="i">
+    <c:forEach var="row" items="${ orderList }" varStatus="i">
 	    <table id="table2">  
 	        <tr>
 	            <th id="restaurantInformation">가게상호 </th>

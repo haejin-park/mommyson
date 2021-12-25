@@ -13,6 +13,7 @@ import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.FileDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserService {
@@ -82,10 +83,9 @@ public interface UserService {
 	int updateCouponStatus(List<Integer> list2);
 	
 	/* 방문포장 결제완료화면 조회 */
-	int selectPackageOrderComplete(List<Map<String, Object>> list);
+	List<OrderDTO> selectPackageOrderComplete(HashMap<String, Object> map);
 
 	/* 배달 결제완료화면 조회 */
-//	int selectDeliveryOrderComplete(List<Map<String, Object>> list);
 	
 	int insertReport(Map<String, Integer> reportInfo);
 
@@ -121,6 +121,8 @@ public interface UserService {
 	List<FileDTO> selectManagerImg(int postNo);
 
 	int updateDelConsulting(int postNo);
+
+
 
 	
 	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */

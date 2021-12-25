@@ -2,8 +2,6 @@ package com.sd.mommyson.user.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +33,7 @@ import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.FileDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
@@ -1269,44 +1267,50 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("payComplete")
-	public String payComplete(RedirectAttributes model, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
+	public String payComplete(RedirectAttributes model,HttpSession session, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
 			@RequestParam("phone") String phone, @RequestParam("time") String time, @RequestParam("couponCodes") int[] couponCodes) {
 		
-		System.out.println(orderCodes[0]);
-		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> map = null;
-		for(int i = 0; i < orderCodes.length; i++) {
+	      MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+	      int memCode = member.getMemCode();
+	      System.out.println("memCode : " + memCode);
+		
+		  System.out.println(orderCodes[0]);
+		  List<Map<String, Object>> list = new ArrayList<>();
+		  Map<String, Object> map = null;
+		  for(int i = 0; i < orderCodes.length; i++) {
 			map = new HashMap<>();
 			map.put("orderCode",orderCodes[i]);
 			map.put("totalPrice",totalPrice[i]);
 			System.out.println(orderCodes[i] + " : " + totalPrice[i]);
 			map.put("phone",phone);
 			map.put("time",time);
+			map.put("memCode", memCode);
 			list.add(map);
-		}
-		// 쿠폰 사용 완료 표시
-		List<Integer> list2 = new ArrayList<>();
-		for(int c : couponCodes) {
-			list2.add(c);
-		}
-		
-		int result = userService.updateOrder(list);
-		int result2 = 0;
-		if(!list2.isEmpty()) {
-			result2 = userService.updateCouponStatus(list2);
-		}
-		
-		if(result > 0) {
-			model.addAttribute("message", "업데이트 성공");
-			if(result2 > 0) {
-				System.out.println("쿠폰 업뎃 완료~");
+				
 			}
-		} else {
-			model.addAttribute("message", "업데이트 실패");
+			// 쿠폰 사용 완료 표시
+			List<Integer> list2 = new ArrayList<>();
+			for(int c : couponCodes) {
+				list2.add(c);
+			}
+			
+			int result = userService.updateOrder(list);
+			int result2 = 0;
+			if(!list2.isEmpty()) {
+				result2 = userService.updateCouponStatus(list2);
+			}
+			
+			if(result > 0) {
+				model.addAttribute("message", "업데이트 성공");
+				if(result2 > 0) {
+					System.out.println("쿠폰 업뎃 완료~");
+				}
+			} else {
+				model.addAttribute("message", "업데이트 실패");
+			}
+			
+			return "redirect:/user/selectPackageOrderComplete";
 		}
-		
-		return "redirect:/user/selectPackageOrderComplete";
-	}
 	
 	/**
 	 * 방문포장 결제 완료 조회
@@ -1316,31 +1320,21 @@ public class UserController {
 	 * @return "user/packageOrderComplete"
 	 */
 	@GetMapping("selectPackageOrderComplete")
-	public String selectPackageOrderComplete(Model model, @RequestParam("memCode") int memCode, @RequestParam("orderCodes") int[] orderCodes) {
+	public String selectPackageOrderComplete(Model model, HttpSession session, @RequestParam("orderCodes") int[] orderCodes) {
 		
+	    MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+	    int memCode = member.getMemCode();
+	    System.out.println("memCode : " + memCode);
+	    
+		HashMap<String,Object> map = new HashMap<String,Object>();
+	    map.put("memCode", memCode);
+		map.put("orderCode", orderCodes);
+	    
+	    List<OrderDTO> orderList = userService.selectPackageOrderComplete(map);
+		System.out.println("orderList : " + orderList);
 		
-		System.out.println("memCode : " + memCode);
-		System.out.println("orderCodes : " + orderCodes);
-		System.out.println(orderCodes[0]);
-		
-		List <Map<String,Object>> list = new ArrayList<>();
-		for(int i = 0; i < orderCodes.length; i++) {
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("memCode", memCode);
-		map.put("orderCode", orderCodes[i]);
-		list.add(map);
-		
-		}
-		
-		int result = userService.selectPackageOrderComplete(list);
-		
-		if(result > 0) {
-			System.out.println("방문포장 결제 완료 조회 service 성공 ");
-		} else {
-			System.out.println("방문포장 결제 완료 조회 service 실패 ");
-		}
-		
+		model.addAttribute("orderList", orderList);
+		System.out.println("model : " + model);
 		
 		return "user/packageOrderComplete";
 				
@@ -1427,30 +1421,7 @@ public class UserController {
 	 * @return "user/deliveryOrderComplete"
 	 */
 //	@GetMapping("selectDeliveryOrderComplete")
-//	public String selectDeliveryOrderComplete(Model model, @RequestParam("memCode") int memCode, @RequestParam("orderCodes") int[] orderCodes) {
-//		
-//		
-//		System.out.println("memCode : " + memCode);
-//		System.out.println("orderCodes : " + orderCodes);
-//		System.out.println(orderCodes[0]);
-//		
-//		List <Map<String,Object>> list = new ArrayList<>();
-//		for(int i = 0; i < orderCodes.length; i++) {
-//		
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		map.put("memCode", memCode);
-//		map.put("orderCode", orderCodes[i]);
-//		list.add(map);
-//		
-//		}
-//		
-//		int result = userService.selectDeliveryOrderComplete(list);
-//		
-//		if(result > 0) {
-//			System.out.println("배달 결제 완료 조회 service 성공 ");
-//		} else {
-//			System.out.println("배달 결제 완료 조회 service 실패 ");
-//		}
+//	public String selectDeliveryOrderComplete(Model model, @RequestParam("orderCodes") int[] orderCodes) {
 //		
 //		
 //		return "user/deliveryOrderComplete";
