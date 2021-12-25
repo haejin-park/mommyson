@@ -401,6 +401,22 @@ public class UserServiceImpl implements UserService{
 		return delResultdelResult;
 	}
 
+
+	@Override
+	public int updateMtmConsultingText(Map<String, Object> mtmConsulting) {
+		
+		int result = userDAO.updateMtmConsultingText(mtmConsulting);
+		return result;
+	}
+
+
+	@Override
+	public int updateMtmConFile(Map<String, Object> fileInfo) {
+
+		int fileUploadResult = userDAO.updateMtmConFile(fileInfo);
+		return fileUploadResult;
+	}
+
 	/**
 	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
 	 * @author leeseungwoo

@@ -64,7 +64,11 @@
           		const $tds = $('td');
           		for(let i = 0; i < $tds.length; i++) {
           			$tds[i].onclick = function() {
+          				
 						let StoreAddress = this.parentNode.children[3].value; 
+          				/* for(let j = 0; j < $tds.length; j++ ){
+          				} */
+          					//검증
 						/* let StoreAddress = this.parentNode.parentNode.children[2].value; */
 						console.log(StoreAddress);
 						location.href = "${ pageContext.servletContext.contextPath }/user/storepage?memCode=" + StoreAddress;

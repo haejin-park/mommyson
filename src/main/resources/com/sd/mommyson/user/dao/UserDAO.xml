@@ -831,6 +831,7 @@
     	  AND CEO_CODE = #{ storeCode }
     </delete>
     
+     <!-- 1:1상담 입력 -->
      <insert id="registMtmConsultingText" parameterType="hashmap">
 	    INSERT
 	       	INTO POST_TBL A
@@ -853,7 +854,7 @@
 	    )
      </insert>
      
-     <!-- 1:1상담 입력 -->
+    
      <insert id="registMtmConFile" parameterType="hashmap">
 	    <selectKey keyProperty="postNo" resultType="int" order="BEFORE">
 	    	SELECT
@@ -871,22 +872,43 @@
      	VALUES
      	(
      	  SEQ_FILE.NEXTVAL
-     	, #{ fileLocation }
+     	, #{ fileLocation, jdbcType=VARCHAR }
      	, #{ postNo }
      	, #{ fileType }
      	)	
      </insert>
      
+     <!-- 1:1 상담 게시물 수정 -->
+     <!-- 1:1 상담 게시물 텍스트 수정 -->
+     <update id="updateMtmConsultingText" parameterType="hashmap">
+     	UPDATE
+     		   POST_TBL A
+     	   SET A.POST_TITLE = #{ mtmTitle },
+     	   	   A.POST_CONTENT = #{ mtmContents, jdbcType=VARCHAR }
+     	 WHERE A.POST_NO = #{ postNo }
+     	   AND A.MEM_CODE = #{ memCode }	   
+     	   	   
+     </update>
+     <!-- 1:1 상담게시물 파일 업데이트 -->
+     <update id="updateMtmConFile">
+	     UPDATE
+	     		FILE_TBL A
+	        SET A.FILE_NAME = #{ fileLocation }	
+	      WHERE A.POST_NO = #{ postNo }
+	        AND A.FILE_CODE = #{ fileCode }
+     </update>
+     
+     
      <!-- 1:1 상담내역 출력 -->
      <!-- 1:1 상담 게시물 전체 숫자 출력 -->
      <select id="selectMtmTotalCount" parameterType="hashmap" resultType="_int">
-     
      	SELECT
 			   COUNT(*)
 		  FROM POST_TBL A
 		  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
 		 WHERE (B.TYPE = 'userMtmConsulting' OR B.TYPE = 'OwnerMtmConsulting')
 		   AND A.MEM_CODE = #{ searchCondition }
+		   AND A.STATUS = 'N'
 		   <if test="searchValue != null">
 		   AND A.POST_TITLE = #{ searchValue }
 		   </if>
@@ -1002,6 +1024,9 @@
         SET A.STATUS = 'Y'
       WHERE A.POST_NO = #{ postNo }	
      </update>
+     
+     <!-- 1:1상담 게시물 수정 -->
+     <!-- 1:1상담 게시물 수정을 위한 내용 출력 -->
      
     <select id="selectLastOrderCode" resultType="_int">
     	SELECT SEQ_ORDER_CODE.CURRVAL FROM DUAL

@@ -32,9 +32,6 @@
               <li>
                 <a href="${ pageContext.servletContext.contextPath }/userMyPage/userRecommendStore">자주찾는가게</a>
                </li>
-               <li>
-                <a href="${ pageContext.servletContext.contextPath }/userMyPage/userReport">나의 신고 내역</a>
-               </li>
               </ul>
               
           </nav>

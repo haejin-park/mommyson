@@ -283,16 +283,93 @@ public class UserController {
 				file.put("filePath", filePath);
 				files.add(file);
 			} else {
-				break;
+				
+				/* 파일명 변경 처리 */
+//				String originFileName = multiFiles.get(i).getOriginalFilename();
+//				String ext = "";
+//				String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+//				System.out.println("변경되어 저장되는 파일 이름 : " + savedName);
+				/* 파일에 관한 정보 추출 후 보관 */
+				//데이터페이스에 쓸 내용
+				Map<String,String> file = new HashMap<>();
+				file.put("originFileName", "");
+				file.put("savedName", "");
+				file.put("filePath", "");
+				files.add(file);
+				
 			}
 			
+			
 		}
+		
+//		if(multiFiles.get(0) !=null && !multiFiles.get(0).isEmpty()) {
+//		
+//		/* 파일명 변경 처리 */
+//		String originFileName = multiFiles.get(0).getOriginalFilename();
+//		String ext = originFileName.substring(originFileName.lastIndexOf("."));
+//		String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+//		System.out.println("변경되어 저장되는 파일 이름 : " + savedName);
+//		/* 파일에 관한 정보 추출 후 보관 */
+//		//데이터페이스에 쓸 내용
+//		Map<String,String> file = new HashMap<>();
+//		file.put("originFileName", originFileName);
+//		file.put("savedName", savedName);
+//		file.put("filePath", filePath);
+//		files.add(file);
+//		} 
+		
+		
 		//파일저장
 		int fileUploadResult = 0;
 		try {
-					for(int i = 0; i < multiFiles.size(); i++) {
-						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
-						
+//					for(int i = 0; i < multiFiles.size(); i++) {
+//						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+//						
+//						Map<String,String> file = files.get(i);//반복하며 하나씩 업로드
+//						multiFiles.get(i).transferTo(new File(filePath + "\\" + file.get("savedName")));
+//						
+//						String fileLocation = "resources/uploadFiles/" + file.get("savedName");//DB에 올릴 파일경로 및 파일명
+//						System.out.println("올라가는 파일명 및 이름  : " + fileLocation);
+//						System.out.println("save : " + file.get("savedName"));
+//						Map<String,Object> fileInfo = new HashMap<>();
+//						fileInfo.put("boardCode", boardCode);
+//						fileInfo.put("fileLocation", fileLocation);
+//						fileInfo.put("fileType", fileType);
+//						fileUploadResult += userService.registMtmConFile(fileInfo);
+//						} else {
+//							break;
+//						}
+//					}
+					
+
+//						int j = 0;
+//					for(int i = 0; i < multiFiles.size(); i++) {
+//						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+//							for( ; j< multiFiles.size(); ) {
+//								Map<String,String> file = new HashMap<>();	
+//								if(!files.get(j).isEmpty()) {
+//									file = files.get(j);//반복하며 하나씩 업로드
+//								} 
+//								multiFiles.get(i).transferTo(new File(filePath + "\\" + file.get("savedName")));
+//								
+//								String fileLocation = "resources/uploadFiles/" + file.get("savedName");//DB에 올릴 파일경로 및 파일명
+//								System.out.println("올라가는 파일명 및 이름  : " + fileLocation);
+//								System.out.println("save : " + file.get("savedName"));
+//								Map<String,Object> fileInfo = new HashMap<>();
+//								fileInfo.put("boardCode", boardCode);
+//								fileInfo.put("fileLocation", fileLocation);
+//								fileInfo.put("fileType", fileType);
+//								fileUploadResult += userService.registMtmConFile(fileInfo);
+//								j++;
+//								break;
+//							}
+//							
+//						} 
+//					}
+			
+				for(int i = 0; i < multiFiles.size(); i++) {
+					if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+					
 						Map<String,String> file = files.get(i);//반복하며 하나씩 업로드
 						multiFiles.get(i).transferTo(new File(filePath + "\\" + file.get("savedName")));
 						
@@ -304,16 +381,28 @@ public class UserController {
 						fileInfo.put("fileLocation", fileLocation);
 						fileInfo.put("fileType", fileType);
 						fileUploadResult += userService.registMtmConFile(fileInfo);
-						} else {
-							break;
-						}
+					} else {
+						
+						Map<String,String> file = files.get(i);//반복하며 하나씩 업로드
+						
+						String fileLocation = "";//DB에 올릴 파일경로 및 파일명
+						System.out.println("올라가는 파일명 및 이름  : " + fileLocation);
+						System.out.println("save : " + file.get("savedName"));
+						Map<String,Object> fileInfo = new HashMap<>();
+						fileInfo.put("boardCode", boardCode);
+						fileInfo.put("fileLocation", fileLocation);
+						fileInfo.put("fileType", fileType);
+						fileUploadResult += userService.registMtmConFile(fileInfo);
 					}
+				}
+						
+					
 					
 				mv.addAttribute("message","파일업로드 성공");
 				if(fileUploadResult == multiFiles.size() ) {
 					System.out.println("정상적으로 파일이 처리됨");
 				} else {
-					System.out.println("비정상적으로 파일이 업로드됨");
+					System.out.println("파일업로드 갯수가 " + fileUploadResult + "개 입니까? 숫자가 맞다면 정상적으로 처리되었습니다." );
 				}
 			} catch (IllegalStateException | IOException e) {
 				//실패시파일삭제
@@ -332,21 +421,223 @@ public class UserController {
 			}
 		
 		
-		return "user/userCustomerServiceCenterMTMQnA";
+		return "user/userCustomerServiceCenterMTMQnADetail";
 	}
 	
 	/**@author 양윤제
-	 * @category 1:1상담내용 수정
+	 * @category 1:1상담내용 수정 직전 내용 출력 
 	 */
 	@GetMapping("ucc/MTMChange")
-	public String userCustomerServiceCenterMTMQnAChange() {
+	public String userCustomerServiceCenterMTMQnAChange(HttpSession session, @RequestParam(required = false) Map<String,String> parameters, Model mv) {
+		
+		int postNo = Integer.parseInt(parameters.get("postNo"));
+		
+		System.out.println("postNo : " + postNo);
+		
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		
+		int memCode = memberInfo.getMemCode();
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("postNo", postNo);
+		searchMap.put("memCode", memCode);
+		
+		//포스트 내용 불러 오기
+		PostDTO consultingCon = userService.selectConsultingCon(searchMap);
+		
+		System.out.println("consultingCon : " + consultingCon);
+		
+		//포스트 첨부 이미지파일 출력(소비자, 사업자)
+		List<FileDTO> userFileImg = userService.selectConsumerImg(postNo);
+		
+		System.out.println("소비자, 사업자 파일 내용 : " + userFileImg);
+		
+		//포스트 첨부 이미지 파일 츌룍(관리자)
+//		List<FileDTO> managerFileImg = userService.selectManagerImg(postNo);
+		
+//		System.out.println("관리자 첨부 파일 내용 : " +  managerFileImg);
+		
+		mv.addAttribute("consultingCon", consultingCon);
+		mv.addAttribute("userFileImg", userFileImg);
+//		mv.addAttribute("managerFileImg", managerFileImg);
 		
 		return "user/userCustomerServiceCenterMTMQnAChange";
 	}
 	
+	
 	/**
 	 * @author 양윤제
-	 * 삭제/수정
+	 * @category 1:1 상담 게시글 수정
+	 * @return
+	 */
+	@PostMapping("ucc/MTMDAmd")
+	public String userCustomerServiceCenterMTMQnAAmendment(@RequestParam(required = false) List<MultipartFile> multiFiles, HttpServletRequest request, Model mv, HttpSession session) {
+		
+		String mtmTitle = request.getParameter("title");//상담제목
+//		String mtmSort = request.getParameter("mtmSort");//질문 유형
+		String mtmContents = request.getParameter("content");//상담 본문
+		int postNo = Integer.parseInt(request.getParameter("postNo"));
+		int fileCode0 = Integer.parseInt(request.getParameter("fileCode0"));
+		int fileCode1 = Integer.parseInt(request.getParameter("fileCode1"));
+		int fileCode2 = Integer.parseInt(request.getParameter("fileCode2"));
+		List<Integer> fileCode = new ArrayList<>();
+		fileCode.add(fileCode0);
+		fileCode.add(fileCode1);
+		fileCode.add(fileCode2);
+		
+		
+		System.out.println("mtmTitle : " + mtmTitle);
+//		System.out.println("mtmSort : " + mtmSort);
+		System.out.println("mtmContents : " + mtmContents);
+		System.out.println("multiFiles : " + multiFiles);
+		System.out.println("postNo : " + postNo);
+		System.out.println("fileCode0 : " + fileCode0);
+		System.out.println("fileCode1 : " + fileCode1);
+		System.out.println("fileCode2 : " + fileCode2);
+		System.out.println("fileCode리스트 : " + fileCode);
+		
+		//유저와 유저 종류(사업자, 소비자) 정보
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println("로그인 멤버: " + memberInfo);
+		//유저 코드
+		int memCode = memberInfo.getMemCode();
+		System.out.println("로그인한 멤버의 멤버 코드: " + memCode);
+		//유저 종류
+		String memType = memberInfo.getMemType();
+		System.out.println("멤버 타입 : " + memType);
+		
+		Map<String,Object> mtmConsulting = new HashMap<>();
+		mtmConsulting.put("mtmTitle", mtmTitle);
+		mtmConsulting.put("mtmContents", mtmContents);
+		mtmConsulting.put("postNo", postNo);
+		mtmConsulting.put("memCode", memCode);
+		
+		System.out.println("mtmConsulting : " + mtmConsulting);
+		//텍스트 업데이트  
+		int result = userService.updateMtmConsultingText(mtmConsulting);
+		
+		System.out.println("result : " + result);
+		System.out.println("multiFiles : " + multiFiles);
+		
+		if(!multiFiles.isEmpty()) {
+			/* 파일을 저장할 경로 설정 */
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			System.out.println("root : " + root);
+			
+			String filePath = root + "\\uploadFiles";
+		
+			System.out.println("filePath :" + filePath);
+			File mkdir = new File(filePath);
+			if(!mkdir.exists()) {
+				mkdir.mkdirs();
+			}
+			System.out.println("멀티파일 사이즈" + multiFiles.size());
+			List<Map<String,String>> files = new ArrayList<>();
+			for(int i = 0; i < multiFiles.size(); i++) {
+				
+				if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+					
+					/* 파일명 변경 처리 */
+					String originFileName = multiFiles.get(i).getOriginalFilename();
+					String ext = originFileName.substring(originFileName.lastIndexOf("."));
+					String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+					System.out.println("변경되어 저장되는 파일 이름 : " + savedName);
+					/* 파일에 관한 정보 추출 후 보관 */
+					//데이터페이스에 쓸 내용
+					Map<String,String> file = new HashMap<>();
+					file.put("originFileName", originFileName);
+					file.put("savedName", savedName);
+					file.put("filePath", filePath);
+					files.add(file);
+				} else {
+					
+					/* 파일명 변경 처리 */
+//					String originFileName = multiFiles.get(i).getOriginalFilename();
+//					String ext = "";
+//					String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+//					System.out.println("변경되어 저장되는 파일 이름 : " + savedName);
+					/* 파일에 관한 정보 추출 후 보관 */
+					//데이터페이스에 쓸 내용
+					Map<String,String> file = new HashMap<>();
+					file.put("originFileName", "");
+					file.put("savedName", "");
+					file.put("filePath", "");
+					files.add(file);
+					
+				}
+				
+				
+			}
+			
+			//파일저장
+			int fileUploadResult = 0;
+			try {
+				
+					for(int i = 0; i < multiFiles.size(); i++) {
+						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+						
+							Map<String,String> file = files.get(i);//반복하며 하나씩 업로드
+							multiFiles.get(i).transferTo(new File(filePath + "\\" + file.get("savedName")));
+							
+							String fileLocation = "resources/uploadFiles/" + file.get("savedName");//DB에 올릴 파일경로 및 파일명
+							System.out.println("올라가는 파일명 및 이름  : " + fileLocation);
+							System.out.println("save : " + file.get("savedName"));
+							Map<String,Object> fileInfo = new HashMap<>();
+							fileInfo.put("fileCode", fileCode.get(i));
+							fileInfo.put("fileLocation", fileLocation);
+							fileInfo.put("postNo", postNo);
+							fileUploadResult += userService.updateMtmConFile(fileInfo);
+						} 
+//						else {
+//							
+//							Map<String,String> file = files.get(i);//반복하며 하나씩 업로드
+//							
+//							String fileLocation = "";//DB에 올릴 파일경로 및 파일명
+//							System.out.println("올라가는 파일명 및 이름  : " + fileLocation);
+//							System.out.println("save : " + file.get("savedName"));
+//							Map<String,Object> fileInfo = new HashMap<>();
+//							fileInfo.put("fileLocation", fileLocation);
+//							fileUploadResult += userService.registMtmConFile(fileInfo);
+//						}
+					}
+							
+						
+						
+					mv.addAttribute("message","파일업로드 성공");
+					if(fileUploadResult == multiFiles.size() ) {
+						System.out.println("정상적으로 파일이 처리됨");
+					} else {
+						System.out.println("파일업로드 갯수가 " + fileUploadResult + "개 입니까? 숫자가 맞다면 정상적으로 처리되었습니다." );
+					}
+				} catch (IllegalStateException | IOException e) {
+					//실패시파일삭제
+						
+						for(int i = 0; i < multiFiles.size(); i++) {
+							if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+								Map<String,String> file = files.get(i);
+								new File(filePath + "\\" + file.get("savedName")).delete(); 
+							
+							} else {
+								break;
+							}
+						}
+					
+//					e.printStackTrace();
+				}
+			
+		}
+		
+//		return "user/userCustomerServiceCenterNoticeSelect";
+//		return "/user/ucc/MTMOpen?postNo=" + postNo;
+//		mv.addAttribute("postNo", postNo);
+//		return "user/userCustomerServiceCenterMTMQnADetail";
+		return "redirect:/user/ucc/MTMOpen?postNo=" + postNo;
+	}
+	
+	
+	/**
+	 * @author 양윤제
+	 * @category 1:1 상담 게시글 삭제
 	 * @return
 	 */
 	@PostMapping("ucc/MTMDel")
@@ -663,7 +954,7 @@ public class UserController {
 		
 		System.out.println("fqa회원관리 : " + fqaList);
 		/* FQA title 전달 */
-		System.out.println("테스트: " + fqaList.get(0));
+//		System.out.println("테스트: " + fqaList.get(0));
 
 		String boardTitle = "회원가입";
 		

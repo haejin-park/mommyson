@@ -117,6 +117,10 @@ public interface UserDAO {
 
 	int updateDelConsulting(int postNo);
 
+	int updateMtmConsultingText(Map<String, Object> mtmConsulting);
+
+	int updateMtmConFile(Map<String, Object> fileInfo);
+
 //	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }
