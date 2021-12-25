@@ -69,6 +69,11 @@ public interface UserDAO {
 	/* 배달 주문리스트 저장  */
 	int insertDeliveryOrderList(Map<String, Object> map);
 	
+	/* 방문포장 결제완료화면 조회  */
+	List<OrderDTO> selectPackageOrderComplete(HashMap<String, Object> map);
+	
+	/* 배달 결제완료화면 조회 */
+
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);
@@ -116,6 +121,9 @@ public interface UserDAO {
 	List<FileDTO> selectManagerImg(int postNo);
 
 	int updateDelConsulting(int postNo);
+
+
+
 
 //	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 

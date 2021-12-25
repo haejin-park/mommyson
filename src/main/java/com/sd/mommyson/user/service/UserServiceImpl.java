@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
-	/* 방문포장 주문리스트 저장 */
+	/* 방문포장 주문리스트 저장 & 조회 */
 	   @Override
 	   public Map<String,Object> insertPackageOrderList(HashMap<String, Object> insertPackage) {
 	      
@@ -262,11 +262,21 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
+	
+	/* 방문포장 결제완료화면 조회 */
+	@Override
+	public List<OrderDTO> selectPackageOrderComplete(HashMap<String, Object> map) {
+		return userDAO.selectPackageOrderComplete(map);
+	}
+	
+	/* 배달 결제완료화면 조회 */
+
 
 	@Override
 	public int insertReport(Map<String, Integer> reportInfo) {
 		return userDAO.insertReport(reportInfo);
 	}
+
 
 
 	@Override
@@ -401,6 +411,8 @@ public class UserServiceImpl implements UserService{
 		return delResultdelResult;
 	}
 
+
+
 	/**
 	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
 	 * @author leeseungwoo
@@ -410,5 +422,8 @@ public class UserServiceImpl implements UserService{
 //		
 //		return userDAO.selectDeliveryOrder(orderMap);
 //	}
+	
+	
+	
 
 }

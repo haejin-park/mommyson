@@ -2,8 +2,6 @@ package com.sd.mommyson.user.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +33,7 @@ import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
 import com.sd.mommyson.user.dto.FileDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
@@ -1149,6 +1147,7 @@ public class UserController {
 	}
 	
 	/**
+	 * 장바구니 상품 삭제하기 
 	 * @author ParkHaejin
 	 * @param model
 	 * @param session
@@ -1190,6 +1189,157 @@ public class UserController {
 		
 		return "redirect:/user/cart";
 	}
+	
+	/**
+	 * 방문포장 버튼 누르면 주문 정보 insert, select
+	 * @author shinhyungi,haejinpark,kimjuhwan
+	 * @param model
+	 * @param session
+	 * @param orderPrice
+	 * @param storeCode
+	 * @param storeName
+	 * @return
+	 */
+	@GetMapping("packagePay")
+	   public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderPrice, @RequestParam(value="storeCode",required = false) int[] storeCode
+	         , @RequestParam String[] storeName) {
+
+	      for(int sc : storeCode) {
+	         System.out.println("storeCode : " + sc);
+	      }
+	      
+	      for(String st : storeName) {
+	         System.out.println("storeName : " + storeName);
+	      }
+	      
+	      System.out.println("orderPrice : " + orderPrice);
+	      System.out.println("orderPrice : " + orderPrice[0]);
+	      System.out.println("orderPrice : " + orderPrice.length);
+	      
+	      
+	      List<Integer> packagePayList = new ArrayList<>();
+	      
+	      for(int i = 0; i < orderPrice.length; i++) {
+	         packagePayList.add(orderPrice[i]);
+	      }
+	      
+	      System.out.println("packagePayList : " + packagePayList);
+	      
+	      MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+	      int memCode = member.getMemCode();
+	      
+	      System.out.println("memCode : " + memCode);
+	      
+	      HashMap<String, Object> insertPackage = new HashMap<String, Object>();
+	      insertPackage.put("packagePayList", packagePayList);
+	      insertPackage.put("memCode", memCode);
+	      insertPackage.put("storeCode", storeCode);
+	      insertPackage.put("storeName", storeName);
+	      
+	      Map<String,Object> result = userService.insertPackageOrderList(insertPackage);
+	      System.out.println("result : " + result);
+	      if ((int)result.get("result") > 0 ) {
+	         System.out.println("insertPackage Service 성공");
+	      } else {
+	         System.out.println("insertPackage Service 실패");
+	      }
+	      
+	      // 주문 내역 및 쿠폰 가져오기
+	      List<Integer> orderCodes =  (List<Integer>) result.get("orderCodes");
+	      List<Map<String, String>> orderList = userService.selectOrderList(orderCodes); 
+	      model.addAttribute("orderList", orderList);
+	      List<CouponDTO> couponList = userService.selectCouponList(member.getMemCode());
+	      model.addAttribute("couponList", couponList);
+	      
+	      for(CouponDTO c : couponList) {
+	         System.out.println("coupon : " + c);
+	      }
+	      
+	      return "user/packagePay";
+	   }
+	
+	
+	
+	
+	
+	/**@author ShinHyungi
+	 * 포장 주문 시작할 때 생성된 주문 업데이트
+	 * @return
+	 */
+	@GetMapping("payComplete")
+	public String payComplete(RedirectAttributes model,HttpSession session, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
+			@RequestParam("phone") String phone, @RequestParam("time") String time, @RequestParam("couponCodes") int[] couponCodes) {
+		
+	      MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+	      int memCode = member.getMemCode();
+	      System.out.println("memCode : " + memCode);
+		
+		  System.out.println(orderCodes[0]);
+		  List<Map<String, Object>> list = new ArrayList<>();
+		  Map<String, Object> map = null;
+		  for(int i = 0; i < orderCodes.length; i++) {
+			map = new HashMap<>();
+			map.put("orderCode",orderCodes[i]);
+			map.put("totalPrice",totalPrice[i]);
+			System.out.println(orderCodes[i] + " : " + totalPrice[i]);
+			map.put("phone",phone);
+			map.put("time",time);
+			map.put("memCode", memCode);
+			list.add(map);
+				
+			}
+			// 쿠폰 사용 완료 표시
+			List<Integer> list2 = new ArrayList<>();
+			for(int c : couponCodes) {
+				list2.add(c);
+			}
+			
+			int result = userService.updateOrder(list);
+			int result2 = 0;
+			if(!list2.isEmpty()) {
+				result2 = userService.updateCouponStatus(list2);
+			}
+			
+			if(result > 0) {
+				model.addAttribute("message", "업데이트 성공");
+				if(result2 > 0) {
+					System.out.println("쿠폰 업뎃 완료~");
+				}
+			} else {
+				model.addAttribute("message", "업데이트 실패");
+			}
+			
+			return "redirect:/user/selectPackageOrderComplete";
+		}
+	
+	/**
+	 * 방문포장 결제 완료 조회
+	 * @author ParkHaejin
+	 * @param model
+	 * @param memCode
+	 * @return "user/packageOrderComplete"
+	 */
+	@GetMapping("selectPackageOrderComplete")
+	public String selectPackageOrderComplete(Model model, HttpSession session, @RequestParam("orderCodes") int[] orderCodes) {
+		
+	    MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+	    int memCode = member.getMemCode();
+	    System.out.println("memCode : " + memCode);
+	    
+		HashMap<String,Object> map = new HashMap<String,Object>();
+	    map.put("memCode", memCode);
+		map.put("orderCode", orderCodes);
+	    
+	    List<OrderDTO> orderList = userService.selectPackageOrderComplete(map);
+		System.out.println("orderList : " + orderList);
+		
+		model.addAttribute("orderList", orderList);
+		System.out.println("model : " + model);
+		
+		return "user/packageOrderComplete";
+				
+	}
+	
 	
 	/**
 	 * 배달 버튼 누르면 장바구니 정보 insert 
@@ -1249,7 +1399,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 배달 주문자 정보,결제  
+	 * 배달 주문자 정보,결제 화면 조회
 	 * @author ParkHaejin
 	 * @param model
 	 * @param session
@@ -1261,10 +1411,22 @@ public class UserController {
 		return "user/deliveryPay";
 	}
 	
-	private int sum(int price) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
+	
+	/**
+	 * 배달 결제 완료 조회
+	 * @author ParkHaejin
+	 * @param model
+	 * @param memCode
+	 * @return "user/deliveryOrderComplete"
+	 */
+//	@GetMapping("selectDeliveryOrderComplete")
+//	public String selectDeliveryOrderComplete(Model model, @RequestParam("orderCodes") int[] orderCodes) {
+//		
+//		
+//		return "user/deliveryOrderComplete";
+//				
+//	}
 
 
 	/**
@@ -1681,49 +1843,7 @@ public class UserController {
 		
 	}
 	
-	/**@author ShinHyungi
-	 * 주문 시작할 때 생성된 주문 업데이트
-	 * @return
-	 */
-	@GetMapping("payComplete")
-	public String payComplete(RedirectAttributes model, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
-			@RequestParam("phone") String phone, @RequestParam("time") String time, @RequestParam("couponCodes") int[] couponCodes) {
-		
-		System.out.println(orderCodes[0]);
-		List<Map<String, Object>> list = new ArrayList<>();
-		Map<String, Object> map = null;
-		for(int i = 0; i < orderCodes.length; i++) {
-			map = new HashMap<>();
-			map.put("orderCode",orderCodes[i]);
-			map.put("totalPrice",totalPrice[i]);
-			System.out.println(orderCodes[i] + " : " + totalPrice[i]);
-			map.put("phone",phone);
-			map.put("time",time);
-			list.add(map);
-		}
-		// 쿠폰 사용 완료 표시
-		List<Integer> list2 = new ArrayList<>();
-		for(int c : couponCodes) {
-			list2.add(c);
-		}
-		
-		int result = userService.updateOrder(list);
-		int result2 = 0;
-		if(!list2.isEmpty()) {
-			result2 = userService.updateCouponStatus(list2);
-		}
-		
-		if(result > 0) {
-			model.addAttribute("message", "업데이트 성공");
-			if(result2 > 0) {
-				System.out.println("쿠폰 업뎃 완료~");
-			}
-		} else {
-			model.addAttribute("message", "업데이트 실패");
-		}
-		
-		return "redirect:cart";
-	}
+	
 	
 	/**@author ShinHyungi
 	 * @param storeCode
