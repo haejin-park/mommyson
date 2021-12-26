@@ -144,8 +144,6 @@
 		</div>
 	</div>
 
-
-
 	<!-- footer -->
 	<jsp:include page="../commons/footer.jsp" />
 

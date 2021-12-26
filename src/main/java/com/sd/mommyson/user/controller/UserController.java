@@ -1872,7 +1872,7 @@ public class UserController {
 		System.out.println(pageNo);
 
 		/* ==== 검색 처리 ==== */
-		String searchCondition = (String) model.getAttribute("searchCondition");
+		String searchCondition = type;
 		String searchValue = (String) model.getAttribute("searchValue");
 
 		Map<String, String> searchMap = new HashMap<>();
@@ -1888,17 +1888,12 @@ public class UserController {
 		int buttonAmount = 10;
 
 		Pagination pagination = null;
-		if(searchCondition == null && "".equals(searchCondition)) {
-			searchCondition = type;
-		}
 
 		/* ==== 검색과 selectOption 고르기 ==== */
 		if(searchValue != null && !"".equals(searchValue)) {
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, searchValue);
-		} else if(searchCondition != null && searchCondition != "전체") {
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
 		} else {
-			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, "전체", null);
+			pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, searchCondition, null);
 		}
 
 		System.out.println("pagination : " + pagination);
