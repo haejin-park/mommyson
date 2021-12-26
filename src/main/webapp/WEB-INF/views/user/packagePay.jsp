@@ -78,14 +78,6 @@
       </div>
       <br><br>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
-<<<<<<< HEAD
-      <button type="reset" id="goShoppingBasket">취소하기</button>
-<<<<<<< HEAD
-     <!--  <script>
-=======
-      <!-- <script>
->>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
-=======
       <button type="button" id="goShoppingBasket">취소하기</button>
       <script>
       	// 금액 뿌려주기
@@ -127,7 +119,6 @@
       	})
       	
       	// 결제 로직
->>>>>>> 9c5167aa6f5d955964c6aeb35bd160be704c0373
       	$('#pay').on('click',function() {
       		if($('#phone').val() == '' || $('#time').val() == '') {
       			alert('주문 정보를 모두 기입해주세요!');
@@ -162,25 +153,12 @@
           	        buyer_addr : '서울특별시 강남구 삼성동',
           	        buyer_postcode : '123-456',
           	        m_redirect_url : ''
-          	    },  function(rsp) {
+          	    },  
+          	    function(rsp) {
           	      if ( !rsp.success ) {
           	    	//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
           	        var msg = '오류로 인하여 결제가 시작되지 못하였습니다.';
           	        msg += '에러내용 : ' + rsp.error_msg;
-
-<<<<<<< HEAD
-      	        alert(msg);
-      	      }
-      		});
-<<<<<<< HEAD
-      	});
-      	
-      	
-=======
-      	})
->>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
-      </script> -->
-=======
           	        alert(msg);
           	      } else {
           	    	  alert('결제 완료!');
@@ -189,10 +167,7 @@
           		});
       		}
       	});
-      	
-      	
       </script>
->>>>>>> 9c5167aa6f5d955964c6aeb35bd160be704c0373
     
 <!--       결제하기 Modal
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

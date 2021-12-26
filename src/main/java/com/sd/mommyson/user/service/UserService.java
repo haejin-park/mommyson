@@ -63,7 +63,7 @@ public interface UserService {
 	Map<String,Object> insertPackageOrderList(HashMap<String, Object> insertPackage);
 
 	/* 배달 주문리스트 저장  */
-	int insertDeliveryOrderList(HashMap<String, Object> insertDelivery);
+	Map<String, Object> insertDeliveryOrderList(HashMap<String, Object> insertDelivery);
 	
 	/* 장바구니 리스트 삭제  */
 	int deleteCartList(HashMap<String, Object> deleteCartProduct);
@@ -114,8 +114,12 @@ public interface UserService {
 	List<FileDTO> selectManagerImg(int postNo);
 
 	int updateDelConsulting(int postNo);
-	
-	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */
-//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
+
+	/* 회원주소조회 */
+	MemberDTO selectMemberAddress(int memCode);
+
+	/* 배달주문 결제 시 주문내역 업데이트 */
+	int updateOrder2(List<Map<String, Object>> list);
+
 
 }

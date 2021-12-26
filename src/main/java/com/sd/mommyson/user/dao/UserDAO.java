@@ -117,6 +117,9 @@ public interface UserDAO {
 
 	int updateDelConsulting(int postNo);
 
-//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
+	MemberDTO selectMemberAddress(int memCode);
+
+	int updateOrder2(Map<String, Object> map);
+
 
 }

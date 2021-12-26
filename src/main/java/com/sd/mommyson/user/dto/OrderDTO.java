@@ -29,6 +29,8 @@ public class OrderDTO {
 	private List<ProductDTO> productDTO; // 따로따로 뽑아줄라고...
 	private List<OrderInfoDTO> orderAmount;
 	private StoreDTO storeInfo;
+	private String postCode;
+	private String dAddress;
 
 	
 	public OrderDTO() {
@@ -40,7 +42,8 @@ public class OrderDTO {
 	public OrderDTO(int memCode, int totalPrice, int orderCode, String orderType, String takeTime, String address,
 			String phone, String storeName, int code, String acceptTime, Date cancleTime, String completeTime,
 			Date requestTime, OrderInfoDTO orderInfoDTO, MemberDTO memberDTO, AcceptDTO acceptDTO, List<String> product,
-			List<ProductDTO> productDTO, List<OrderInfoDTO> orderAmount, StoreDTO storeInfo) {
+			List<ProductDTO> productDTO, List<OrderInfoDTO> orderAmount, StoreDTO storeInfo, String postCode,
+			String dAddress) {
 		super();
 		this.memCode = memCode;
 		this.totalPrice = totalPrice;
@@ -62,6 +65,8 @@ public class OrderDTO {
 		this.productDTO = productDTO;
 		this.orderAmount = orderAmount;
 		this.storeInfo = storeInfo;
+		this.postCode = postCode;
+		this.dAddress = dAddress;
 	}
 
 
@@ -265,6 +270,26 @@ public class OrderDTO {
 	}
 
 
+	public String getPostCode() {
+		return postCode;
+	}
+
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+
+	public String getdAddress() {
+		return dAddress;
+	}
+
+
+	public void setdAddress(String dAddress) {
+		this.dAddress = dAddress;
+	}
+
+
 	@Override
 	public String toString() {
 		return "OrderDTO [memCode=" + memCode + ", totalPrice=" + totalPrice + ", orderCode=" + orderCode
@@ -272,7 +297,9 @@ public class OrderDTO {
 				+ ", storeName=" + storeName + ", code=" + code + ", acceptTime=" + acceptTime + ", cancleTime="
 				+ cancleTime + ", completeTime=" + completeTime + ", requestTime=" + requestTime + ", orderInfoDTO="
 				+ orderInfoDTO + ", memberDTO=" + memberDTO + ", acceptDTO=" + acceptDTO + ", product=" + product
-				+ ", productDTO=" + productDTO + ", orderAmount=" + orderAmount + ", storeInfo=" + storeInfo + "]";
+				+ ", productDTO=" + productDTO + ", orderAmount=" + orderAmount + ", storeInfo=" + storeInfo
+				+ ", postCode=" + postCode + ", dAddress=" + dAddress + "]";
 	}
 
+	
 }

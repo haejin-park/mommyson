@@ -41,7 +41,6 @@
 	    		<c:otherwise>
 	    			<c:forEach var="row" items="${ map.cartList }" varStatus="i">
 	    				<table  style="width: 80%; margin-left:10%; text-align: center; border :1px solid black;">	    				
-<<<<<<< HEAD
 		    				<tr id="tr2">
 						        <td><input type="checkbox" class="checkbox" name="checkbox" id="checkbox" value="${ row.totalPrice }"><input type="hidden" class="checkboxHd" value="${ row.cartCode }"></td>
 								<td><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
@@ -58,8 +57,7 @@
 						        </td>
 						        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
 					      	</tr>
-=======
-	    				<tr id="tr2">
+	    				<%-- <tr id="tr2">
 				        <td><input type="checkbox" name="checkbox" value="${ row.totalPrice }"></td>
 				        <td style="display: none"><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
 				        <td style="display: none"><input type="hidden" name="storeName" value="${ row.storeName }"/></td>
@@ -75,8 +73,7 @@
 				        	</div>
 				        </td>
 				        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
-				      	</tr>
->>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
+				      	</tr> --%>
 				      	</table>
 			    </c:forEach> 
 	    	</c:otherwise>
@@ -184,9 +181,7 @@
 		
 	  
   	  /* 주문번호 가지고 결제창으로 이동 */
-<<<<<<< HEAD
-=======
-  	  function gopay(str) {
+  	  /* function gopay(str) {
   		  let orderList = [];
   		  let storeCode = [];
   		  let storeName = [];
@@ -204,29 +199,26 @@
 	  			   location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList +"&storeCode=" + storeCode  + "&storeName=" + storeName; 
 	  			  return true;
 	  		  } else if(str == "deli") {
-	  			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList +"&storeCode=" + memCode;
+	  			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList +"&storeCode=" +storeCode  + "&storeName=" + storeName;
 	  			  return true;
 	  		  }
   		  
-  	  }
+  	  } */
   	  
->>>>>>> 2cb6a6ec48a42c8e36e7fa46619747e2513d52ce
 
 		function gopay(str) {
 			let orderList = [];
 			let storeCode = [];
 			let storeName = [];
-			$("input:checkbox[name='checkbox']:checked")
-					.each(
-							function() {
-								orderList.push($(this).val());
-								storeCode.push($(this).parent().next()
-										.children().val());
-								storeName.push($(this).parent().next()
-										.children().parent().next().children()
-										.val());
+			$("input:checkbox[name='checkbox']:checked").each(function() {
+				orderList.push($(this).val());
+				storeCode.push($(this).parent().next()
+						.children().val());
+				storeName.push($(this).parent().next()
+						.children().parent().next().children()
+						.val());
 
-							});
+			});
 
 			console.log(storeCode);
 			

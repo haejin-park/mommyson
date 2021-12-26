@@ -2305,6 +2305,7 @@ public class ManagerController {
 		
 		List<TaxAdjustDTO> taxList = managerService.selectTaxList(list);
 		System.out.println(taxList);
+		System.out.println(taxList.get(0).getStoreNo());
 		
 		// 엑셀 변환
 		//.xls 확장자 지원
@@ -2435,6 +2436,12 @@ public class ManagerController {
 				xssfCell = xssfRow.createCell((short) 6);
 				xssfCell.setCellStyle(cellStyle_Body);
 				xssfCell.setCellValue(taxList.get(i).getAddress());
+				xssfCell = xssfRow.createCell((short) 8);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getMsType());
+				xssfCell = xssfRow.createCell((short) 9);
+				xssfCell.setCellStyle(cellStyle_Body);
+				xssfCell.setCellValue(taxList.get(i).getEmail());
 			}
 			
 			
