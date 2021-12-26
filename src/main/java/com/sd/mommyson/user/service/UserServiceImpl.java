@@ -354,6 +354,7 @@ public class UserServiceImpl implements UserService{
 		for(int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i));
 			result += userDAO.updateOrder(list.get(i));
+			userDAO.insertRTNotice(list.get(i));
 		}
 		System.out.println("service 들어옴 -----------------------" + result);
 		return result;

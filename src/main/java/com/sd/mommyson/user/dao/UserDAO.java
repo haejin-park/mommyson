@@ -134,4 +134,8 @@ public interface UserDAO {
 
 	int updateOrder2(Map<String, Object> map);
 
+	void insertRTNotice(Map<String, Object> map);
+
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
+
 }
