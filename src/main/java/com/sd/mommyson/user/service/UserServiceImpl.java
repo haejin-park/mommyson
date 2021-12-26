@@ -232,18 +232,18 @@ public class UserServiceImpl implements UserService{
 	
 	/* 배달 주문리스트 저장 */
 	@Override
-	public int insertDeliveryOrderList(HashMap<String, Object> insertDelivery) {
+	public Map<String,Object> insertDeliveryOrderList(HashMap<String, Object> insertDelivery) {
 
 		int result = 0;
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		List<Integer> totalPrice = (List<Integer>)insertDelivery.get("deliveryPayList");
-		
 		int[] storeCode = (int[])insertDelivery.get("storeCode");
-		
 		String[] storeName = (String[])insertDelivery.get("storeName");
 		
+		List<Integer> orderCodes = new ArrayList<>();
+		List<Integer> storeCodes = new ArrayList<>();
 		for(int i = 0; i < totalPrice.size(); i++) {
 			map.put("totalPrice", totalPrice.get(i));
 			map.put("storeCode", storeCode[i]);
@@ -251,15 +251,19 @@ public class UserServiceImpl implements UserService{
 			map.put("memCode", insertDelivery.get("memCode"));
 			
 			int success = userDAO.insertDeliveryOrderList(map);
-			
 			if(success > 0) {
 				result += 1;
 			}
-		
-		
+			orderCodes.add(userDAO.selectLastOrderCode());
+			storeCodes.add((Integer) map.get("storeCode"));
 		}
 		
-		return result;
+		Map<String,Object> resultMap = new HashMap<>();
+	    resultMap.put("result", result);
+	    resultMap.put("orderCodes", orderCodes);
+	    resultMap.put("storeCodes", storeCodes);
+	    
+		return resultMap;
 	}
 
 	
@@ -442,17 +446,28 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
+
+	@Override
+	public MemberDTO selectMemberAddress(int memCode) {
+		
+		return userDAO.selectMemberAddress(memCode);
+	}
+
+
 	/**
-	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
+	 * 배달주문 결제 시 주문내역 업데이트
 	 * @author leeseungwoo
 	 */
-//	@Override
-//	public List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap) {
-//		
-//		return userDAO.selectDeliveryOrder(orderMap);
-//	}
-	
-	
-	
+	@Override
+	public int updateOrder2(List<Map<String, Object>> list) {
+		
+		int result = 0;
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+			result += userDAO.updateOrder2(list.get(i));
+		}
+		System.out.println("service 들어옴 -----------------------" + result);
+		return result;
+	}
 
 }

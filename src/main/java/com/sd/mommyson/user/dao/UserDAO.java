@@ -130,6 +130,8 @@ public interface UserDAO {
 
 	int updateDelImg(Map<String, Object> delImgInfo);
 
-//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
+	MemberDTO selectMemberAddress(int memCode);
+
+	int updateOrder2(Map<String, Object> map);
 
 }

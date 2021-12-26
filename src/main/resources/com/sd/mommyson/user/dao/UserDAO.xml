@@ -136,13 +136,6 @@
 		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
-    <!-- 12-24 승우 -->
-    <!-- <resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-    	<id property="memCode" column="MEM_CODE"/>
-    </resultMap>
-    
-    <select id="selectDeliveryOrder"></select> -->
-    
     <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
@@ -825,6 +818,8 @@
 		   , null
 		   , SYSDATE
 		   , #{ storeCode }
+		   , null
+		   , null
 			)
 	</insert>
 
@@ -1258,11 +1253,13 @@
     
     <select id="selectOrderList" resultType="hashmap" parameterType="list">
     	SELECT
-    		   A.ORDER_CODE
+    	       A.MEM_CODE
+    		 , A.ORDER_CODE
     		 , A.TOTAL_PRICE
     		 , B.STORE_IMG
     		 , B.STORE_NAME
     		 , B.MEM_CODE AS STORE_CODE
+    		 , B.DEL_COST
     	  FROM ORDER_TBL A
     	  LEFT JOIN STORE_TBL B ON(A.STORE_CODE = B.MEM_CODE)
     	 WHERE A.ORDER_CODE IN (
@@ -1278,6 +1275,7 @@
     	  SET FILE_NAME = #{ cameraImg }
     	WHERE FILE_CODE = #{ fileCode }  
     </update>
+    
     
     <resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
 		<id property="cpCode" column="CP_CODE"/>
@@ -1324,6 +1322,18 @@
     	       PHONE = #{ phone },
     	       TAKE_TIME = #{ time }
     	 WHERE ORDER_CODE = #{ orderCode }
+    </update>
+    
+    <update id="updateOrder2" parameterType="hashmap">
+        UPDATE ORDER_TBL
+           SET TOTAL_PRICE = #{ totalPrice },
+               ORDER_RUQEUST_TIME = TO_DATE(SYSDATE,'YYYY-MM-DD HH24:mi:ss'),
+               PHONE = #{ phone },
+               TAKE_TIME = #{ time },
+               ADDRESS = #{ address },
+               POST_CODE = #{ zipCode },
+               D_ADDRESS = #{ detailAddress }
+         WHERE ORDER_CODE = #{ orderCode }
     </update>
     
     <update id="updateCouponStatus" parameterType="list">

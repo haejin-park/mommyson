@@ -64,7 +64,7 @@ public interface UserService {
 	Map<String,Object> insertPackageOrderList(HashMap<String, Object> insertPackage);
 
 	/* 배달 주문리스트 저장  */
-	int insertDeliveryOrderList(HashMap<String, Object> insertDelivery);
+	Map<String, Object> insertDeliveryOrderList(HashMap<String, Object> insertDelivery);
 	
 	/* 장바구니 리스트 삭제  */
 	int deleteCartList(HashMap<String, Object> deleteCartProduct);
@@ -75,7 +75,6 @@ public interface UserService {
 	/* 방문포장 쿠폰 리스트 조회 */
 	List<CouponDTO> selectCouponList(int memCode);
 
-	
 	void deleteOrder(List<Integer> orderCodeList);
 	
 	int updateOrder(List<Map<String, Object>> list);
@@ -86,10 +85,10 @@ public interface UserService {
 	List<OrderDTO> selectPackageOrderComplete(HashMap<String, Object> map);
 
 	/* 배달 결제완료화면 조회 */
-	
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);
+	
 	int selectSearchTotalCount(Map<String, Object> searchMap);
 
 	List<ProductDTO> selectSearchList(Map<String, Object> searchMap);
@@ -130,7 +129,10 @@ public interface UserService {
 
 	int updateDelImg(Map<String, Object> delImgInfo);
 	
-	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */
-//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
+	/* 회원주소조회 */
+	MemberDTO selectMemberAddress(int memCode);
+
+	/* 배달주문 결제 시 주문내역 업데이트 */
+	int updateOrder2(List<Map<String, Object>> list);
 
 }

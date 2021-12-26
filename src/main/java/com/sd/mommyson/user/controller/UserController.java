@@ -1445,15 +1445,14 @@ public class UserController {
 	 */
 	@GetMapping("packagePay")
 	   public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderPrice, @RequestParam(value="storeCode",required = false) int[] storeCode
-	         , @RequestParam String[] storeName) {
+	         , @RequestParam String[] storeName, @RequestParam int[] sdCode, @RequestParam String[] sdName, @RequestParam int[] amount) {
 
-	      for(int sc : storeCode) {
-	         System.out.println("storeCode : " + sc);
-	      }
+	
+	      MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+	      int memCode = member.getMemCode();
 	      
-	      for(String st : storeName) {
-	         System.out.println("storeName : " + storeName);
-	      }
+	      System.out.println("memCode : " + memCode);
+	      
 	      
 	      System.out.println("orderPrice : " + orderPrice);
 	      System.out.println("orderPrice : " + orderPrice[0]);
@@ -1468,16 +1467,37 @@ public class UserController {
 	      
 	      System.out.println("packagePayList : " + packagePayList);
 	      
-	      MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
-	      int memCode = member.getMemCode();
+
+	      for(int sc : storeCode) {
+	         System.out.println("storeCode : " + sc);
+	      }
 	      
-	      System.out.println("memCode : " + memCode);
+	      for(String st : storeName) {
+	         System.out.println("storeName : " + storeName);
+	      }
 	      
+		  for(int sdCode2 : sdCode) {
+			  System.out.println("sdCode : " + sdCode2);
+		  }
+		
+		  for(String sdName2 : sdName) {
+			  System.out.println("sdName : " + sdName2);
+		  }
+		  
+	      for(int amount2 : amount) {
+	    	  System.out.println("amount : " + amount2);
+	      }
+	      
+
 	      HashMap<String, Object> insertPackage = new HashMap<String, Object>();
-	      insertPackage.put("packagePayList", packagePayList);
 	      insertPackage.put("memCode", memCode);
+	      insertPackage.put("packagePayList", packagePayList);
 	      insertPackage.put("storeCode", storeCode);
 	      insertPackage.put("storeName", storeName);
+	      insertPackage.put("sdCode", sdCode);
+	      insertPackage.put("sdName", sdName);
+	      insertPackage.put("amount", amount);
+	      
 	      
 	      Map<String,Object> result = userService.insertPackageOrderList(insertPackage);
 	      System.out.println("result : " + result);
@@ -1500,9 +1520,6 @@ public class UserController {
 	      
 	      return "user/packagePay";
 	   }
-	
-	
-	
 	
 	
 	/**@author ShinHyungi
@@ -1586,7 +1603,7 @@ public class UserController {
 	
 	/**
 	 * 배달 버튼 누르면 장바구니 정보 insert 
-	 * @author ParkHaejin 
+	 * @author leeseungwoo
 	 * @param model
 	 * @param session
 	 * @param orderList
@@ -1629,15 +1646,26 @@ public class UserController {
 		insertDelivery.put("storeCode", storeCode);
 		insertDelivery.put("storeName", storeName);
 		
-		int result = userService.insertDeliveryOrderList(insertDelivery);
+		Map<String,Object> result = userService.insertDeliveryOrderList(insertDelivery);
 		System.out.println("result : " + result);
-		if (result > 0 ) {
+		if ((int)result.get("result") > 0 ) {
 			System.out.println("insertDelivery Service 성공");
 		} else {
 			System.out.println("insertDelivery Service 실패");
 		}
 		
-		return "redirect:/user/paymentDelivery";
+		// 주문 내역 & 배송비 가져오기
+      List<Integer> orderCodes =  (List<Integer>) result.get("orderCodes");
+      List<Map<String, String>> orderList2 = userService.selectOrderList(orderCodes); 
+      model.addAttribute("orderList", orderList2);
+      List<CouponDTO> couponList = userService.selectCouponList(member.getMemCode());
+      model.addAttribute("couponList", couponList);
+      
+      for(CouponDTO c : couponList) {
+         System.out.println("coupon : " + c);
+      }
+		
+		return "user/deliveryPay";
 		
 	}
 	
@@ -1654,23 +1682,23 @@ public class UserController {
 		return "user/deliveryPay";
 	}
 	
+	private int sum(int price) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	/**
-	 * 배달 결제 완료 조회
-	 * @author ParkHaejin
-	 * @param model
-	 * @param memCode
-	 * @return "user/deliveryOrderComplete"
+	 * 배달 예약 주문 결제 진행
+	 * @return
 	 */
-//	@GetMapping("selectDeliveryOrderComplete")
-//	public String selectDeliveryOrderComplete(Model model, @RequestParam("orderCodes") int[] orderCodes) {
-//		
-//		
-//		return "user/deliveryOrderComplete";
-//				
-//	}
-
+	@PostMapping("deliveryPay")
+	public String deliveryPayTry() {
+		
+		
+		
+		return "";
+	}
 
 	/**
 	 * @author ShinHyungi
@@ -1965,43 +1993,6 @@ public class UserController {
 		return "user/store_page";
 	}
 	
-//	
-//	/**
-//	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
-//	 * @param orderList
-//	 * @param session
-//	 * @param model
-//	 * @author leeseungwoo
-//	 */
-//	@GetMapping("deliveryPay")
-//	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[], HttpSession session, Model model) {
-//		
-//		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
-//		System.out.println("member : " + member);
-//		
-//		Map<String, Integer> orderMap = new HashMap<>();
-//		orderMap.put("member", member.getMemCode());
-//		
-////		List<OrderDTO> deliveryOrderList = userService.selectDeliveryOrder(orderMap);
-////		if(deliveryOrderList != null) {
-////			model.addAttribute("deliveryOrderList", deliveryOrderList);
-////		} else {
-////			System.out.println("조회 실패");
-////		}
-//	}
-	
-	/**
-	 * 배달 예약 주문 결제 진행
-	 * @return
-	 */
-	@PostMapping("deliveryPay")
-	public String deliveryPayTry() {
-		
-		
-		
-		return "";
-	}
-	
 	/**@author ShinHyungi
 	 * @param sdCode
 	 * @param memCode
@@ -2088,6 +2079,64 @@ public class UserController {
 	
 	
 	
+	/**
+	 * 배달주문 결제 시 주문내역 업데이트
+	 * @param model
+	 * @param orderCodes
+	 * @param totalPrice
+	 * @param phone
+	 * @param time
+	 * @param couponCodes
+	 * @param zipCode
+	 * @param address
+	 * @param detailAddress
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@GetMapping("payComplete2")
+	public String payComplete2(RedirectAttributes model, @RequestParam("orderCodes") int[] orderCodes, @RequestParam("totalPrice") int[] totalPrice,
+			@RequestParam("phone") String phone, @RequestParam("time") String time, @RequestParam("couponCodes") int[] couponCodes,
+			@RequestParam("zipCode") String zipCode, @RequestParam("address") String address, @RequestParam("detailAddress") String detailAddress) {
+		
+		System.out.println(orderCodes[0]);
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<String, Object> map = null;
+		for(int i = 0; i < orderCodes.length; i++) {
+			map = new HashMap<>();
+			map.put("orderCode",orderCodes[i]);
+			map.put("totalPrice",totalPrice[i]);
+			System.out.println(orderCodes[i] + " : " + totalPrice[i]);
+			map.put("phone",phone);
+			map.put("time",time);
+			map.put("zipCode",zipCode);
+			map.put("address",address);
+			map.put("detailAddress",detailAddress);
+			list.add(map);
+		}
+		// 쿠폰 사용 완료 표시
+		List<Integer> list2 = new ArrayList<>();
+		for(int c : couponCodes) {
+			list2.add(c);
+		}
+		
+		int result = userService.updateOrder2(list);
+		int result2 = 0;
+		if(!list2.isEmpty()) {
+			result2 = userService.updateCouponStatus(list2);
+		}
+		
+		if(result > 0) {
+			model.addAttribute("message", "업데이트 성공");
+			if(result2 > 0) {
+				System.out.println("쿠폰 업뎃 완료~");
+			}
+		} else {
+			model.addAttribute("message", "업데이트 실패");
+		}
+		
+		return "user/deliveryOrderComplete";
+	}
+	
 	/**@author ShinHyungi
 	 * @param storeCode
 	 * @param memCode
@@ -2126,7 +2175,7 @@ public class UserController {
 	
 	@GetMapping("payCancle")
 	public String orderCancle(@RequestParam("orderCodes") int[] orderCodes) {
-		
+		System.out.println("orderCodes : " + orderCodes);
 		List<Integer> orderCodeList = new ArrayList<>();
 		for(int i : orderCodes) {
 			orderCodeList.add(i);
@@ -2137,16 +2186,22 @@ public class UserController {
 		return "redirect:cart";
 	}
 	
-	// 고객센터 1;1 문의
-	@GetMapping("userCustomerServiceCenterMTMQnA")
-	public void userCustomerServiceCenterMTMQnA(Model model) {
-		
-	}
 	
-	// 고객센터 메인
-	@GetMapping("userCustomerServiceMain")
-	public void userCustomerServiceMain(Model model) {
+	/**
+	 * 주소 검색
+	 * @param memCode
+	 * @return
+	 * @author leeseungwoo
+	 */
+	@PostMapping(value = "memberAddress", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public MemberDTO memberAddress(@RequestParam("memCode") int memCode) {
 		
+		System.out.println("memCode : " + memCode);
+		MemberDTO memberAddress = userService.selectMemberAddress(memCode);
+		System.out.println("memberAddress : " + memberAddress);
+		
+		return memberAddress;
 	}
 
 }

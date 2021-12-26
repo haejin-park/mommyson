@@ -80,6 +80,7 @@
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
       <button type="button" id="goShoppingBasket">취소하기</button>
       <script>
+<<<<<<< HEAD
          // 금액 뿌려주기
          $(function() {
             let prices = 0;
@@ -170,6 +171,120 @@
          
          
       </script>
+=======
+      	// 금액 뿌려주기
+      	$(function() {
+      		let prices = 0;
+      		$('#price').each(function(index,val) {
+      			prices += parseInt($('#price').text().replace(',',''));
+      		})
+      		
+      		$('#productPrice').text(prices);
+      		
+      		$('#totalPrice').val(prices);
+      	})
+      	
+      	// 취소 시 order_tbl 데이터 삭제
+      	$('#goShoppingBasket').on('click',function() {
+      		let orderCodes = [];
+      		$('#orderCode').each(function(index, val) {
+      			orderCodes.push($(this).val());
+      		})
+      		location.href='${ pageContext.servletContext.contextPath }/user/payCancle?orderCodes=' + orderCodes;
+      	})
+      	
+      	// 쿠폰 적용 스크립트
+      	$('select').on('change',function() {
+      		let coupon = parseInt($(this).val());
+      		let price = parseInt($('#price').text().replace(',',''));
+      		if(price <= coupon) {
+      			alert('할인금액은 제품금액보다 클 수 없습니다.');
+      		} else {
+      			let discountWon = 0;
+          		$('select option:selected').each(function(index,val) {
+          			discountWon += parseInt($(this).val());
+          		})
+          		$('#discountWon').text(discountWon);
+          		let total = parseInt($('#productPrice').text()) - discountWon;
+          		$('#totalPrice').val(total);
+      		}
+      	})
+      	
+      	// 결제 로직
+      	$('#pay').on('click',function() {
+      		if($('#phone').val() == '' || $('#time').val() == '') {
+      			alert('주문 정보를 모두 기입해주세요!');
+      		} else {
+      			let name = $('#name').val();
+          		let phone = $('#phone').val();
+          		let totalPrice = [];
+          		$('#price').each(function(index,val) {
+          			totalPrice.push($('#price').text().replace(',',''));
+          		})
+          		let payPrice = $('#totalPrice').val();
+          		let takeTime = $('#time').val();
+          		let orderCodes = [];
+          		$('#orderCode').each(function(index, val) {
+          			orderCodes.push($(this).val());
+          		})
+          		let couponCodes = [];
+          		$('select option:selected').each(function(index) {
+          			couponCodes.push($(this).attr('id'));
+          		})
+          		var IMP = window.IMP; 
+          	    IMP.init('imp43692691'); 
+          	    IMP.request_pay({
+          	    	pg : 'kakaopay',
+          	        pay_method : 'card', //생략 가능
+          	        merchant_uid: "${ requestScope.orderCodes[0] }", // 상점에서 관리하는 주문 번호 db에서 가져와야함
+          	        name : '포장예약 결제',
+          	        amount : payPrice,
+          	        buyer_email : 'iamport@siot.do',
+          	        buyer_name : name,
+          	        buyer_tel : phone,
+          	        buyer_addr : '서울특별시 강남구 삼성동',
+          	        buyer_postcode : '123-456',
+          	        m_redirect_url : ''
+          	    },  
+          	    function(rsp) {
+          	      if ( !rsp.success ) {
+          	    	//결제 시작 페이지로 리디렉션되기 전에 오류가 난 경우
+          	        var msg = '오류로 인하여 결제가 시작되지 못하였습니다.';
+          	        msg += '에러내용 : ' + rsp.error_msg;
+          	        alert(msg);
+          	      } else {
+          	    	  alert('결제 완료!');
+          	    	  location.href='${ pageContext.servletContext.contextPath }/user/payComplete?orderCodes=' + orderCodes + '&totalPrice=' + totalPrice + '&phone=' + phone + '&time=' + takeTime + '&couponCodes=' + couponCodes;
+          	      }
+          		});
+      		}
+      	});
+      </script>
+    
+<!--       결제하기 Modal
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">결제하기</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">결제 수단
+              <select>
+                <option>카카오페이</option>
+                <option>받을 때 결제</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="ok">결제</button>
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal" id="cancle">취소</button>
+            </div>
+          </div>
+        </div>
+    </div> -->
+>>>>>>> 6f67263fa98ef0acdafe2de383f6c2856c4aa142
     <br><br><br><br>
     <jsp:include page="../commons/footer.jsp"/>
     

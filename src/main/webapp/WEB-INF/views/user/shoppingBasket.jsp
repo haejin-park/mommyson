@@ -57,6 +57,26 @@
 						        </td>
 						        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
 					      	</tr>
+<<<<<<< HEAD
+=======
+	    				<%-- <tr id="tr2">
+				        <td><input type="checkbox" name="checkbox" value="${ row.totalPrice }"></td>
+				        <td style="display: none"><input type="hidden" id="memCode" name="memCode" value="${ row.memCode }"/></td>
+				        <td style="display: none"><input type="hidden" name="storeName" value="${ row.storeName }"/></td>
+				         <!-- 사업자멤코드  -->
+				        <td id="storeImgTd" style="width: 18%;"><img id="storeImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.storeImg }"/><br><c:out value="${ row.storeName }"/></td>
+				        <td id="sdImgTd"  style="padding-right: 12%;"><img id="sdImg" style="width :100px; height:100px;" src="${ pageContext.servletContext.contextPath }/${ row.sdImg }"/><br><c:out value="${ row.sdName }"/></td>
+				        <td><span id="price"><c:out value="${ row.price }"/></span></td>
+				        <td>
+				         	<div class="number">
+				           	<a href="#" id="decreaseQuantity"> - </a>
+				            <span id="numberUpDown" name="amount"><c:out value="${ row.amount }"/></span>
+				            <a href="#" id="increaseQuantity"> + </a>
+				        	</div>
+				        </td>
+				        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
+				      	</tr> --%>
+>>>>>>> 6f67263fa98ef0acdafe2de383f6c2856c4aa142
 				      	</table>
 			    </c:forEach> 
 	    	</c:otherwise>
@@ -163,22 +183,48 @@
 	  
 		
 	  
+<<<<<<< HEAD
+=======
+  	  /* 주문번호 가지고 결제창으로 이동 */
+  	  /* function gopay(str) {
+  		  let orderList = [];
+  		  let storeCode = [];
+  		  let storeName = [];
+  		  $("input:checkbox[name='checkbox']:checked").each(function() {
+  			  orderList.push($(this).val());
+  			  storeCode.push($(this).parent().next().children().val());
+  			  storeName.push($(this).parent().next().children().parent().next().children().val());
+  	  	
+  		 });
+  		 
+  		  console.log(storeCode);
+  		  
+	  		  if(str == "pack") {
+	  			 console.log(memCode);
+	  			   location.href='${ pageContext.servletContext.contextPath }/user/packagePay?orderList=' + orderList +"&storeCode=" + storeCode  + "&storeName=" + storeName; 
+	  			  return true;
+	  		  } else if(str == "deli") {
+	  			  location.href='${ pageContext.servletContext.contextPath }/user/deliveryPay?orderList=' + orderList +"&storeCode=" +storeCode  + "&storeName=" + storeName;
+	  			  return true;
+	  		  }
+  		  
+  	  } */
+  	  
+>>>>>>> 6f67263fa98ef0acdafe2de383f6c2856c4aa142
 
 		function gopay(str) {
 			let orderList = [];
 			let storeCode = [];
 			let storeName = [];
-			$("input:checkbox[name='checkbox']:checked")
-					.each(
-							function() {
-								orderList.push($(this).val());
-								storeCode.push($(this).parent().next()
-										.children().val());
-								storeName.push($(this).parent().next()
-										.children().parent().next().children()
-										.val());
+			$("input:checkbox[name='checkbox']:checked").each(function() {
+				orderList.push($(this).val());
+				storeCode.push($(this).parent().next()
+						.children().val());
+				storeName.push($(this).parent().next()
+						.children().parent().next().children()
+						.val());
 
-							});
+			});
 
 			console.log(storeCode);
 			
