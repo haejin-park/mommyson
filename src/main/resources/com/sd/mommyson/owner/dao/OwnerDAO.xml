@@ -113,6 +113,7 @@
 		<result property="acceptTime" column="ORDER_ACCEPT_TIME" jdbcType="VARCHAR" />
 		<result property="completeTime" column="ORDER_COMPLETE_TIME" jdbcType="VARCHAR" />
 		<result property="phone" column="PHONE" jdbcType="VARCHAR" />
+		<result property="address" column="ADDRESS"/>
 		<association property="memberDTO" resultMap="memberResultMap"/>
 		<association property="orderInfoDTO" resultMap="InfoResultMap"/>
 		<association property="acceptDTO" resultMap="acceptResultMap"/>
@@ -130,7 +131,6 @@
 		<result property="amount" column="AMONT"/>
 		<result property="orderCode" column="ORDER_CODE"/>
 		<result property="sdCode" column="SD_CODE"/>
-		<result property="address" column="ADDRESS"/>
 		<result property="storeName" column="STORE_NAME"/>
 	</resultMap>
 	
@@ -857,6 +857,7 @@
 		      , B.AMONT 
 		      , A.ORDER_COMPLETE_TIME 
 		      , A.PHONE
+		      , A.ADDRESS
 		  FROM ORDER_TBL A
 		  LEFT JOIN MEMBER_TBL C ON (A.MEM_CODE = C.MEM_CODE)
 		  LEFT JOIN ACCEPT_TYPE_TBL D ON (A.CODE = D.CODE)
