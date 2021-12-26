@@ -486,4 +486,24 @@
 	<select id="selectCartCount" resultType="_int">
 		SELECT COUNT(*) FROM CART_TBL WHERE MEM_CODE = #{ memCode }
 	</select>
+	
+	<resultMap type="com.sd.mommyson.manager.dto.BannerDTO" id="bannerResultMap">
+		<id property="bnCode" column="BANER_CODE"/>
+		<result property="bnName" column="BANER_NAME"/>
+		<result property="bnImg" column="BANER_IMG"/>
+		<result property="bnStatus" column="STATUS"/>
+		<result property="bnOrder" column="BANER_ORDER"/>
+	</resultMap>
+	
+	<select id="selectBanners" resultMap="bannerResultMap">
+		SELECT
+			   A.BANER_CODE
+			 , A.BANER_NAME
+			 , A.BANER_IMG
+			 , A.STATUS
+			 , A.BANER_ORDER
+		  FROM BANER_TBL A
+		 WHERE A.STATUS = 'Y'
+		 ORDER BY A.BANER_ORDER ASC
+	</select>
 </mapper>

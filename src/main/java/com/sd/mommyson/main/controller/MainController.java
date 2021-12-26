@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.owner.dto.ProductDTO;
@@ -32,6 +33,7 @@ public class MainController {
 		
 		List<HashMap<String, String>> locationList = memberService.selectLoation();
 		List<HashMap<String, String>> categoryList = memberService.selectCategoryList();
+		List<BannerDTO> banerList = memberService.selectBanners();
 		List<TagDTO> tagList = memberService.selectTagList();
 		List<ProductDTO> productList = memberService.selectProductList();
 		List<TagDTO> hotKeywordList = memberService.selectHotKeywordList();
@@ -40,6 +42,7 @@ public class MainController {
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("tagList", tagList);
+		model.addAttribute("banerList", banerList);
 		model.addAttribute("productList", productList);
 		model.addAttribute("hotKeywordList", hotKeywordList);
 		model.addAttribute("storeList", storeList);

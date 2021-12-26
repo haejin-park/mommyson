@@ -3,6 +3,7 @@ package com.sd.mommyson.member.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.RTNoticeDTO;
@@ -68,6 +69,8 @@ public interface MemberService  {
 	public int deleteNotice(int noticeCode);
 
 	public int selectCartCount(int memCode);
+
+	public List<BannerDTO> selectBanners();
 
 
 
