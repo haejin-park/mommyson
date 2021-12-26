@@ -68,7 +68,7 @@
 							<c:if test="${ ni.boardCode eq '16' }">불편관리</c:if>
 							<c:if test="${ ni.boardCode eq '17' }">기타</c:if>
 							</td>
-							<td><a href="${ pageContext.servletContext.contextPath }/manager/normalAnswer?queNo=${ ni.queNo }">${ ni.postTitle }</a></td>
+							<td><a href="${ pageContext.servletContext.contextPath }/manager/normalAnswer?postNo=${ ni.postNo }">${ ni.postTitle }</a></td>
 							<td>${ ni.member.memId }</td>
 							<td>${ ni.postDate }</td>
 							<td>

@@ -19,6 +19,22 @@
 		<result property="enrollDate" column="ENROLL_DATE"/>
 		<result property="isDeleted" column="IS_DELETED"/>
 		<association property="user" resultMap="userResultMap"/>
+	</resultMap>
+	
+	<resultMap id="memberResultMap2" type="com.sd.mommyson.member.dto.MemberDTO">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="memPwd" column="MEM_PWD"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="postCode" column="POST_CODE"/>
+		<result property="dAddress" column="D_ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="memType" column="MEM_TYPE"/>
+		<result property="locationCode" column="LOCATION_CODE"/>
+		<result property="nickname" column="NICKNAME"/>
+		<result property="memId" column="MEM_ID"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+		<result property="isDeleted" column="IS_DELETED"/>
 		<association property="ceo" resultMap="ceoResultMap"/>
 		<association property="manager" resultMap="managerResultMap"/>
 	</resultMap>
@@ -37,6 +53,11 @@
 		<association property="store" resultMap="storeResultMap"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="totalPrice" column="TOTAL_PRICE"/>
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="storeName" column="STORE_NAME"/>
@@ -45,6 +66,22 @@
 		<result property="grade" column="GRADE"/>
 		<result property="delCost" column="DEL_COST"/>
 		<result property="workTime" column="WORK_TIME"/>
+		<association property="membershipAndStore" resultMap="membershipAndStoreResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.MembershipDTO" id="membershipResultMap">
+		<id property="msCode" column="MS_CODE"/>
+		<result property="msType" column="MS_TYPE"/>
+		<result property="msDate" column="MS_DATE"/>
+		<result property="msPrice" column="MS_PRICE"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.MembershipAndStoreDTO" id="membershipAndStoreResultMap">
+		<id property="memCode" column="MEM_CODE"/>
+		<result property="msCode" column="MS_CODE"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="endDate" column="END_DATE"/>
+		<association property="membership" resultMap="membershipResultMap"/>
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.AuthDTO" id="authResultMap">
@@ -56,6 +93,9 @@
 		<id property="memCode" column="MEM_CODE"/>
 		<result property="name" column="NAME"/>
 		<result property="repCount" column="REP_COUNT"/>
+		<collection property="totalPrice" ofType="java.lang.Integer" javaType="list">
+            <result column="TOTAL_PRICE"/>
+        </collection>
 		<collection property="review" resultMap="reviewResultMap"/>
 	</resultMap>
 	
@@ -84,6 +124,14 @@
 		<result property="repType" column="REP_TYPE"/>
 	</resultMap>
 	
+	<resultMap type="com.sd.mommyson.manager.dto.BannerDTO" id="bannerResultMap">
+		<id property="bnCode" column="BANER_CODE"/>
+		<result property="bnName" column="BANER_NAME"/>
+		<result property="bnImg" column="BANER_IMG"/>
+		<result property="bnStatus" column="STATUS"/>
+		<result property="bnOrder" column="BANER_ORDER"/>
+	</resultMap>
+	
 	<resultMap type="com.sd.mommyson.owner.dto.TagDTO" id="tagResultMap">
 		<id property="tagNo" column="TAG_NO"/>
 		<result property="tagName" column="TAG"/>
@@ -103,6 +151,28 @@
 		<result property="status" column="STATUS"/>
 	</resultMap>
 	
+	<select id="selectTotalPrice" resultMap="orderResultMap">
+	    SELECT
+	           TOTAL_PRICE
+	      FROM ORDER_TBL
+	     WHERE MEM_CODE = #{ memCode }
+	</select>
+	
+	<select id="selectUserTotalCount" resultType="_int">
+	    SELECT
+   	  	       COUNT(*)
+   	  	  FROM MEMBER_TBL A
+   		<where>
+   			A.MEM_TYPE = 'user'
+   			<if test='searchValue != null'>
+	   			AND (A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  	 	A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+	   	  	 	A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+		   	  	A.NICKNAME LIKE '%' ||  #{ searchValue } || '%')
+	   	  	</if>
+   		</where>
+	</select>
+	
 	<select id="selectNormalMemberTotalCount" resultType="_int">
 	    SELECT
    	  	       COUNT(*)
@@ -110,12 +180,6 @@
    	  	  LEFT JOIN CEO_TBL B ON (A.MEM_CODE = B.MEM_CODE)
    	  	  LEFT JOIN STORE_TBL C ON (B.MEM_CODE = C.MEM_CODE)
    	  	 <where>
-   	  	 	<if test='searchValue != null and memberTypeUser'>
-   	  	 		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
-   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
-   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
-	   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
-	   	  	</if>
 	   	  	<if test='searchValue != null and memberTypeCeo'>
 	   	  		A.MEM_TYPE = 'ceo' AND
 	   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
@@ -143,7 +207,77 @@
    	  	 </where>
 	</select>
 	
-	<select id="selectMember" resultMap="memberResultMap">
+	<select id="selectUser" resultMap="memberResultMap">
+		SELECT
+		        C.MEM_CODE
+			  , C.EMAIL
+			  , C.ADDRESS
+			  , C.D_ADDRESS
+			  , C.PHONE
+			  , C.MEM_TYPE
+			  , C.LOCATION_CODE
+			  , C.NICKNAME
+			  , C.MEM_ID
+			  , C.ENROLL_DATE
+			  , C.IS_DELETED
+			  , C.REP_COUNT
+			  , C.TOTAL_PRICE
+			  <!-- , C.RV_CODE -->
+		   FROM (SELECT 
+		                ROWNUM RNUM
+					  , B.MEM_CODE
+					  , B.EMAIL
+					  , B.ADDRESS
+					  , B.D_ADDRESS
+					  , B.PHONE
+					  , B.MEM_TYPE
+					  , B.LOCATION_CODE
+					  , B.NICKNAME
+					  , B.MEM_ID
+					  , B.ENROLL_DATE
+					  , B.IS_DELETED
+					  , B.REP_COUNT
+					  , B.TOTAL_PRICE
+					  <!-- , B.RV_CODE -->
+				   FROM (SELECT 
+							   A.MEM_CODE
+							 , A.EMAIL
+							 , A.ADDRESS
+							 , A.D_ADDRESS
+							 , A.PHONE
+							 , A.MEM_TYPE
+							 , A.LOCATION_CODE
+							 , A.NICKNAME
+							 , A.MEM_ID
+							 , A.ENROLL_DATE
+							 , A.IS_DELETED
+							 , U.REP_COUNT
+							 , OD.TOTAL_PRICE
+							 <!-- , R.RV_CODE -->
+						  FROM MEMBER_TBL A 
+						  JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
+						  LEFT JOIN ORDER_TBL OD ON (U.MEM_CODE = OD.MEM_CODE)
+						  <!-- LEFT JOIN REVIEW_TBL R ON (U.MEM_CODE = R.MEM_CODE) -->
+						  <where>
+						  	A.IS_DELETED = 'N' AND
+						  	A.MEM_TYPE = 'user'
+						  	<if test='searchValue != null'>
+					   	  		AND (A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
+				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
+					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%')
+					   	  	</if>
+						  </where>
+						 ORDER BY A.MEM_CODE DESC)B
+				 <![CDATA[        
+		          WHERE ROWNUM <= #{ endRow }
+		          ]]>)C
+	      <![CDATA[
+		  WHERE C.RNUM >= #{ startRow } 
+	       ]]>
+	</select>
+	
+	<select id="selectMember" resultMap="memberResultMap2">
 		SELECT
 		        C.MEM_CODE
 			  , C.EMAIL
@@ -162,6 +296,7 @@
 			  , C.CEO_NAME
 			  , C.STORE_NAME
 			  , C.RV_CODE
+			  , C.MS_TYPE
 		   FROM (SELECT 
 		                ROWNUM RNUM
 					  , B.MEM_CODE
@@ -181,6 +316,7 @@
 					  , B.CEO_NAME
 					  , B.STORE_NAME
 					  , B.RV_CODE
+					  , B.MS_TYPE
 				   FROM (SELECT 
 							   A.MEM_CODE
 							 , A.EMAIL
@@ -199,18 +335,16 @@
 							 , F.CEO_NAME
 							 , D.STORE_NAME
 							 , R.RV_CODE
-						  FROM MEMBER_TBL A
+							 , MB.MS_TYPE
+						  FROM MEMBER_TBL A 
 						  LEFT JOIN USER_TBL U ON (A.MEM_CODE = U.MEM_CODE)
 						  LEFT JOIN CEO_TBL F ON (A.MEM_CODE = F.MEM_CODE)
 						  LEFT JOIN STORE_TBL D ON (A.MEM_CODE = D.MEM_CODE)
+						  LEFT JOIN MS_STORE_TBL MS ON (D.MEM_CODE = MS.MEM_CODE)
+						  LEFT JOIN MEMBERSHIP_TBL MB ON (MS.MS_CODE = MB.MS_CODE)
 						  LEFT JOIN REVIEW_TBL R ON (U.MEM_CODE = R.MEM_CODE)
+						  LEFT JOIN REPORT_TBL P ON (R.RV_CODE = P.RV_CODE)
 						  <where>
-						  	<if test='searchValue != null and searchCondition == "user"'>
-					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
-				   	  	 		A.EMAIL LIKE '%' ||  #{ searchValue } || '%' OR
-				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
-					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
-					   	  	</if>
 					   	  	<if test='searchValue != null and searchCondition == "ceo"'>
 					   	  		A.MEM_TYPE = 'ceo' AND
 					   	  		(A.MEM_CODE LIKE '%' ||  #{ searchValue } || '%' OR
@@ -225,10 +359,6 @@
 				   	  	 		A.MEM_ID LIKE '%' ||  #{ searchValue } || '%' OR
 					   	  		A.NICKNAME LIKE '%' ||  #{ searchValue } || '%') AND
 					   	  	</if>
-						  	<if test='searchCondition == "user"'>
-						  		A.IS_DELETED = 'N' AND
-						  		A.MEM_TYPE = 'user' 
-						  	</if>
 						  	<if test='searchCondition == "ceo"'>
 						  		A.IS_DELETED = 'N' AND
 						  		A.MEM_TYPE = 'ceo' 
@@ -291,6 +421,7 @@
 	      JOIN REPORT_TYPE_TBL C ON (B.REP_TYPE_CODE = C.REP_TYPE_CODE)
 	     WHERE A.MEM_CODE = #{ memCode }
 	       AND A.IS_DELETED = 'Y'
+	       AND B.STATUS != 'B'
 	</select>
 	
 	<update id="deleteMembers" parameterType="list">
@@ -353,7 +484,7 @@
  		</where> 
 	</update>
 	
-	<select id="selectCeoDetailInfo" resultMap="memberResultMap" resultType="hashmap">
+	<select id="selectCeoDetailInfo" resultMap="memberResultMap2" resultType="hashmap">
 	    SELECT
 	           A.MEM_CODE
 			 , A.EMAIL
@@ -370,6 +501,9 @@
 			 , B.STORE_NO
 			 , B.CEO_NAME
 			 , C.STORE_NAME
+			 , D.START_DATE
+			 , D.END_DATE
+			 , D.PAY_DATE
 			 , E.MS_CODE
 			 , E.MS_TYPE
 			 , E.MS_DATE
@@ -380,6 +514,7 @@
 		  LEFT JOIN MS_STORE_TBL D ON (C.MEM_CODE = D.MEM_CODE)
 		  LEFT JOIN MEMBERSHIP_TBL E ON (D.MS_CODE = E.MS_CODE)
 		 WHERE A.MEM_CODE = #{ ceoNum }
+		   AND A.MEM_TYPE = 'ceo'
 	</select>
 	
 	<select id="selectReportTotalCount" resultType="_int">
@@ -555,7 +690,31 @@
 	     WHERE A.RV_CODE = #{ repRvCode }
 	</update>
 	
-	<insert id="insertBannerAdd">
+	<!-- 배너조회 -->
+	<select id="selectBanner" resultMap="bannerResultMap">
+		SELECT
+		       A.BANER_CODE
+		     , A.BANER_NAME
+		     , A.STATUS
+		     , A.BANER_ORDER
+		 FROM BANER_TBL A
+		ORDER BY A.BANER_ORDER ASC
+	</select>
+	
+	<!-- 배너수정 페이지 조회 -->
+	<select id="selectBannerEditView" resultMap="bannerResultMap">
+	    SELECT
+		       A.BANER_CODE
+		     , A.BANER_NAME
+		     , A.BANER_IMG
+		     , A.STATUS
+		     , A.BANER_ORDER
+		 FROM BANER_TBL A
+		WHERE A.BANER_CODE = #{ bnCode }
+	</select>
+	
+	<!-- 배너추가 -->
+	<insert id="insertBannerAdd" parameterType="hashmap">
 	    INSERT
 	      INTO BANER_TBL
 	    (
@@ -568,12 +727,39 @@
 	    VALUES
 	    (
 	      SEQ_BANNER.NEXTVAL
-	    , #{ bnName }
-	    , 'test'
-	    , #{ bnStatus }
-	    , #{ bnOrder }
+	    , #{ banner.bnName }
+	    , #{ bnImg }
+	    , #{ banner.bnStatus }
+	    , #{ banner.bnOrder }
 	    )
 	</insert>
+	
+	<!-- 배너수정 -->
+	<update id="updateBanner" parameterType="hashmap">
+	    UPDATE
+	           BANER_TBL
+	       SET BANER_NAME = #{ banner.bnName }
+	       <if test="bnImg != null">
+             , BANER_IMG = #{ bnImg }
+           </if>
+             , STATUS = #{ banner.bnStatus }
+             , BANER_ORDER = #{ banner.bnOrder }
+    	<where>
+    		BANER_CODE = #{ banner.bnCode }
+    	</where>
+	</update>
+	
+	<!-- 배너삭제 -->
+	<delete id="deleteBanner" parameterType="list">
+	    DELETE
+	      FROM BANER_TBL
+	    <where>
+	    	BANER_CODE IN
+			<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+		     	#{ item }
+		    </foreach>
+	    </where>
+	</delete>
 	
 	<!-- 사용태그조회 -->
 	<select id="selectUseTag" resultMap="tagResultMap">
@@ -1205,6 +1391,15 @@
   	   AND A.FILE_TYPE = 'owner' 
   </select>
   
+   <!-- 소비자 - 1:1 문의 이미지 파일 조회 -->
+  <select id="selectNormalImg" resultMap="imgFileResultMap">
+  	SELECT
+  		   *
+  	  FROM FILE_TBL A
+  	 WHERE A.POST_NO = #{ postNo }
+  	   AND A.FILE_TYPE = 'user' 
+  </select>
+  
   <!-- 관리자 - 1:1 문의 이미지 파일 조회 -->
    <select id="selectAnswerImg" resultMap="imgFileResultMap">
    	SELECT
@@ -1229,18 +1424,35 @@
      VALUES
      (SEQ_FILE.NEXTVAL, #{ fileName }, #{ postNo }, 'manager')
    </insert>
+   
+   <!-- 소비자 - 1:1 문의 답변 등록-->
+   <update id="registNormalAnswer" parameterType="hashmap">
+     UPDATE POST_TBL A
+        SET A.ANS_STATUS = 'Y',
+            A.ANS_CONTENT = #{ ansContent }
+      WHERE A.POST_NO = #{ postNo }
+    </update>
+  
+   <!-- 소비자 - 1:1 문의 파일 등록-->
+   <insert id="registNormalFile" parameterType="hashmap">
+     INSERT INTO FILE_TBL A
+     (A.FILE_CODE, A.FILE_NAME, A.POST_NO, A.FILE_TYPE)
+     VALUES
+     (SEQ_FILE.NEXTVAL, #{ fileName }, #{ postNo }, 'manager')
+   </insert>
 
    <!-- 사업자 - 1:1 문의 답변 파일 수정 -->
    <update id="updateBusinessFile" parameterType="hashmap">
     UPDATE FILE_TBL A
-       SET A.FILE_NAME = #{ fileName },
-     WHERE A.POST_NO = #{ postNo }, A.FILE_CODE = #{ fileCode }
+       SET A.FILE_NAME = #{ fileName }
+     WHERE A.POST_NO = #{ postNo }
+       AND A.FILE_CODE = #{ fileCode }
    </update>
 
    <!-- 사업자 - 1:1 문의 답변 수정 -->
    <update id="updateBusinessAnswer" parameterType="hashmap">
     UPDATE POST_TBL A
-       SET A.ANS_CONTENT = #{ ansContent },
+       SET A.ANS_CONTENT = #{ ansContent }
      WHERE A.POST_NO = #{ postNo }
    </update>
 

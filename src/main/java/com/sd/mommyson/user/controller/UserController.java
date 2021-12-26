@@ -1,12 +1,16 @@
 package com.sd.mommyson.user.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sd.mommyson.manager.common.Pagination;
@@ -30,6 +35,7 @@ import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
+import com.sd.mommyson.user.dto.FileDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
@@ -50,6 +56,16 @@ public class UserController {
 	public UserController(UserService userService, ManagerService managerService) {
 		this.userService = userService;
 		this.managerService = managerService;
+	}
+	
+	@GetMapping("test")
+	public void test() {
+		
+	}
+	
+	@GetMapping("test2")
+	public void test2() {
+		
 	}
 	
 	
@@ -77,20 +93,244 @@ public class UserController {
 	
 	/**
 	 * @author 양윤제
-	 * @category1:1 상담내역
+	 * @category1:1 상담내역 출력
 	 */
 	@GetMapping("ucc/MTMConsult")
-	public String userCustomerServiceCenterMTMConsult() {
+	public String userCustomerServiceCenterMTMConsult(HttpSession session, Model mv, @RequestParam(required= false) Map<String,String> parameters) {
+		
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		
+		int memCode = memberInfo.getMemCode();
+		
+		String currentPage = parameters.get("currentPage");
+		
+		int pageNo = 1;
+		System.out.println("currnetPage : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		
+		/* 0보다 작은 숫자값을 입력해도 1페이지를 보여준다 */
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		//searchCondition에 유저 코드를 넣어줌
+		String searchCondition = "" + memCode;
+		String searchValue = parameters.get("searchValue");
+		
+		System.out.println("searchCondition : " + searchCondition);
+		System.out.println("searchValue : " + searchValue);
+		System.out.println("pageNo : " + pageNo);
+		
+		Map<String, String> searchMap = new HashMap<>();
+		searchMap.put("searchCondition", searchCondition);
+		searchMap.put("searchValue", searchValue);
+		System.out.println("searchMap : " + searchMap);
+		
+		int totalCount = userService.selectMtmTotalCount(searchMap);
+		System.out.println("total : " + totalCount);
+		
+
+		/* 한 페이지에 보여 줄 게시물 수 */
+		int limit = 4;		//얘도 파라미터로 전달받아도 된다.
+		/* 한 번에 보여질 페이징 버튼의 갯수 */
+		int buttonAmount = 5;
+		
+		/* 페이징 처리를 위한 로직 호출 후 페이징 처리에 관한 정보를 담고 있는 인스턴스를 반환받는다. */
+		SelectCriteria selectCriteria = null;
+		
+		if(searchCondition != null && !"".equals(searchCondition)) {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+		} else {
+			selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+		}
+		
+		System.out.println("selectCriteria : " + selectCriteria);
+		
+		List<PostDTO> mtmConsultingSelect = userService.selectMtmConsulting(selectCriteria);
+		
+		System.out.println("mtmConsultingSelect :" + mtmConsultingSelect);
+		
+		mv.addAttribute("mtmConsultingSelect", mtmConsultingSelect);
+		mv.addAttribute("selectCriteria", selectCriteria);
+		mv.addAttribute("paging", "mtm");
+		
 		
 		return "user/userCustomerServiceCenterMTMConsult";
 	}
 	
+	
 	/**
 	 * @author 양윤제
-	 * @category 1:1문의
+	 * @return 1:1입력창 진입
 	 */
 	@GetMapping("ucc/MTMQnA")
-	public String userCustomerServiceCenterMTMQnA() {
+	public String userCustomerServiceCenterMTMQnA(HttpSession session) {
+		
+		return "user/userCustomerServiceCenterMTMQnA";
+	}
+	
+	
+	
+	
+	/**
+	 * @author 양윤제
+	 * @category 1:1문의 입력기능 수행
+	 */
+	@PostMapping("ucc/MTMQnA")
+	public String userCustomerServiceCenterMTMQnA(@RequestParam(required = false) List<MultipartFile> multiFiles, HttpServletRequest request, Model mv, HttpSession session) {
+		
+		String mtmTitle = request.getParameter("title");//상담제목
+		String mtmSort = request.getParameter("mtmSort");//질문 유형
+		String mtmContents = request.getParameter("content");//상담 본문
+		
+		System.out.println("mtmTitle : " + mtmTitle);
+		System.out.println("mtmSort : " + mtmSort);
+		System.out.println("mtmContents : " + mtmContents);
+		System.out.println("multiFiles : " + multiFiles);
+		
+		
+		//유저와 유저 종류(사업자, 소비자) 정보
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		System.out.println("로그인 멤버: " + memberInfo);
+		//유저 코드
+		int memCode = memberInfo.getMemCode();
+		System.out.println("로그인한 멤버의 멤버 코드: " + memCode);
+		//유저 종류
+		String memType = memberInfo.getMemType();
+		System.out.println("멤버 타입 : " + memType);
+		
+		int boardCode = 0;
+		if(memType.equals("user")) {
+			switch (mtmSort) {
+			case "memberJoinQuestion": boardCode = 12 ; break;
+			case "billAndOrderQuestion": boardCode = 13; break;
+			case "reviewManagementQuestion": boardCode = 14; break;
+			case "userQuestion": boardCode = 15; break;
+			case "inconvenienceQuestion": boardCode = 16; break;
+			case "etcQuestion": boardCode = 17; break;
+			default: System.out.println("관리자에게 문의하세요"); break;
+			}
+		}
+		
+		
+		if(memType.equals("ceo")) {
+			switch (mtmSort) {
+			case "memberJoinQuestion": boardCode = 18; break;
+			case "billAndOrderQuestion": boardCode = 19; break;
+			case "reviewManagementQuestion": boardCode = 20; break;
+			case "userQuestion": boardCode = 21; break;
+			case "inconvenienceQuestion": boardCode = 22; break;
+			case "etcQuestion": boardCode = 23; break;
+			default: System.out.println("관리자에게 문의하세요"); break;
+			}
+		}
+		
+		
+		
+		Map<String,Object> mtmConsulting = new HashMap<>();
+		mtmConsulting.put("mtmTitle", mtmTitle);
+		mtmConsulting.put("mtmContents", mtmContents);
+		mtmConsulting.put("boardCode", boardCode);
+		mtmConsulting.put("memCode", memCode);
+		
+		System.out.println("mtmConsulting : " + mtmConsulting);
+		//인서트후 postNo값 받아옴 
+		int result = userService.registMtmConsultingText(mtmConsulting);
+		
+		System.out.println("result : " + result);
+		
+//		int postNo = postInfo.getPostNo();
+		
+		
+		//파일테이블 파일타입 설정값
+		String fileType ="";
+		switch (memType) {
+		case "ceo": fileType = "owner";	break;
+		case "user": fileType = "user";	break;
+		default: System.out.println("올바르지 못한 사용자 입니다."); break;
+		}
+		
+		/* 파일을 저장할 경로 설정 */
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		System.out.println("root : " + root);
+		
+		String filePath = root + "\\uploadFiles";
+	
+		System.out.println("filePath :" + filePath);
+		File mkdir = new File(filePath);
+		if(!mkdir.exists()) {
+			mkdir.mkdirs();
+		}
+		System.out.println("멀티파일 사이즈" + multiFiles.size());
+		List<Map<String,String>> files = new ArrayList<>();
+		for(int i = 0; i < multiFiles.size(); i++) {
+			
+			if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+				
+				/* 파일명 변경 처리 */
+				String originFileName = multiFiles.get(i).getOriginalFilename();
+				String ext = originFileName.substring(originFileName.lastIndexOf("."));
+				String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+				System.out.println("변경되어 저장되는 파일 이름 : " + savedName);
+				/* 파일에 관한 정보 추출 후 보관 */
+				//데이터페이스에 쓸 내용
+				Map<String,String> file = new HashMap<>();
+				file.put("originFileName", originFileName);
+				file.put("savedName", savedName);
+				file.put("filePath", filePath);
+				files.add(file);
+			} else {
+				break;
+			}
+			
+		}
+		//파일저장
+		int fileUploadResult = 0;
+		try {
+					for(int i = 0; i < multiFiles.size(); i++) {
+						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+						
+						Map<String,String> file = files.get(i);//반복하며 하나씩 업로드
+						multiFiles.get(i).transferTo(new File(filePath + "\\" + file.get("savedName")));
+						
+						String fileLocation = "resources/uploadFiles/" + file.get("savedName");//DB에 올릴 파일경로 및 파일명
+						System.out.println("올라가는 파일명 및 이름  : " + fileLocation);
+						System.out.println("save : " + file.get("savedName"));
+						Map<String,Object> fileInfo = new HashMap<>();
+						fileInfo.put("boardCode", boardCode);
+						fileInfo.put("fileLocation", fileLocation);
+						fileInfo.put("fileType", fileType);
+						fileUploadResult += userService.registMtmConFile(fileInfo);
+						} else {
+							break;
+						}
+					}
+					
+				mv.addAttribute("message","파일업로드 성공");
+				if(fileUploadResult == multiFiles.size() ) {
+					System.out.println("정상적으로 파일이 처리됨");
+				} else {
+					System.out.println("비정상적으로 파일이 업로드됨");
+				}
+			} catch (IllegalStateException | IOException e) {
+				//실패시파일삭제
+					
+					for(int i = 0; i < multiFiles.size(); i++) {
+						if(multiFiles.get(i) !=null && !multiFiles.get(i).isEmpty()) {
+							Map<String,String> file = files.get(i);
+							new File(filePath + "\\" + file.get("savedName")).delete(); 
+						
+						} else {
+							break;
+						}
+					}
+				
+//				e.printStackTrace();
+			}
+		
 		
 		return "user/userCustomerServiceCenterMTMQnA";
 	}
@@ -104,15 +344,67 @@ public class UserController {
 		return "user/userCustomerServiceCenterMTMQnAChange";
 	}
 	
+	/**
+	 * @author 양윤제
+	 * 삭제/수정
+	 * @return
+	 */
+	@PostMapping("ucc/MTMDel")
+	public String userCustomerServiceCenterMTMQnADel(HttpSession session, @RequestParam(required = false) Map<String,String> parameters, Model mv ) {
+		
+		if(parameters.get("delInfo") != null || !parameters.get("delInfo").isEmpty()) {
+			int postNo = Integer.parseInt(parameters.get("delInfo")); //삭제 할 1:1상담게시물
+			System.out.println("게시물 번호 : " + postNo);
+			
+			int delResult = userService.updateDelConsulting(postNo);
+			
+		}
+		
+		return "user/userCustomerServiceCenterNoticeSelect";
+	}
+	
 	
 	/**@author 양윤제
 	 * @category 1:1상담내용 열람
 	 */
 	@GetMapping("ucc/MTMOpen")
-	public String userCustomerServiceCenterMTMQnADetail() {
+	public String userCustomerServiceCenterMTMQnADetail(HttpSession session, @RequestParam(required = false)Map<String,String> parameters, Model mv) {
+		
+		int postNo = Integer.parseInt(parameters.get("postNo"));
+		
+		System.out.println("postNo : " + postNo);
+		
+		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
+		
+		int memCode = memberInfo.getMemCode();
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("postNo", postNo);
+		searchMap.put("memCode", memCode);
+		
+		//포스트 내용 불러 오기
+		PostDTO consultingCon = userService.selectConsultingCon(searchMap);
+		
+		System.out.println("consultingCon : " + consultingCon);
+		
+		//포스트 첨부 이미지파일 출력(소비자, 사업자)
+		List<FileDTO> userFileImg = userService.selectConsumerImg(postNo);
+		
+		System.out.println("소비자, 사업자 파일 내용 : " + userFileImg);
+		
+		//포스트 첨부 이미지 파일 츌룍(관리자)
+		List<FileDTO> managerFileImg = userService.selectManagerImg(postNo);
+		
+		System.out.println("관리자 첨부 파일 내용 : " +  managerFileImg);
+		
+		mv.addAttribute("consultingCon", consultingCon);
+		mv.addAttribute("userFileImg", userFileImg);
+		mv.addAttribute("managerFileImg", managerFileImg);
 		
 		return "user/userCustomerServiceCenterMTMQnADetail";
 	}
+	
+
 	
 	/**@author 양윤제
 	 * @category 공지사항 게시글 목룍 출력
@@ -856,79 +1148,90 @@ public class UserController {
 		return "user/shoppingBasket";
 	}
 	
-	@GetMapping("packagePay")
-	public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderPrice, @RequestParam(value="storeCode",required = false) int[] storeCode
-			, @RequestParam String[] storeName) {
+	/**
+	 * @author ParkHaejin
+	 * @param model
+	 * @param session
+	 * @param deleteList
+	 * @return "user/shoppingBasket"
+	 */
+	@GetMapping("deleteCart")
+	public String deleteCart(Model model, HttpSession session, @RequestParam(value = "deleteList", required = false) int[] deleteList){
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
+		int memCode = member.getMemCode();
+		System.out.println("memCode : " + memCode);
+		
+		System.out.println("deleteList : " + deleteList);
+		System.out.println("deleteList : " + deleteList[0]);
+		System.out.println("deleteList : " + deleteList.length);
+		
+		List<Integer> deleteCartList = new ArrayList<>();
+		
+		for(int i = 0; i < deleteList.length; i++) {
+			deleteCartList.add(deleteList[i]); 
+	
+		}
+		
+		System.out.println("deleteCartList : " + deleteCartList);
+		
+		HashMap<String,Object> deleteCartProduct = new HashMap<String,Object>();
+		deleteCartProduct.put("deleteCartList", deleteCartList);
+		deleteCartProduct.put("memCode", memCode);
+		
+		int result = userService.deleteCartList(deleteCartProduct);
+		System.out.println("result : " + result);
+		
+		if(result > 0) {
+			System.out.println("deleteCartList Service성공");
+		} else {
+			System.out.println("deleteCartList Service실패");
+		}
+		
+		return "redirect:/user/cart";
+	}
+	
+	/**
+	 * 배달 버튼 누르면 장바구니 정보 insert 
+	 * @author ParkHaejin 
+	 * @param model
+	 * @param session
+	 * @param orderList
+	 * @param storeCode
+	 * @param storeName
+	 * @return "redirect:/paymentDelivery"	 
+	 * */
+	@GetMapping("deliveryPay")
+	public String deliveryPay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderList, 
+			@RequestParam(value="storeCode",required = false) int[] storeCode, @RequestParam String[] storeName) {
 
-		for(int sc : storeCode) {
-			System.out.println("storeCode : " + sc);
-		}
-		
-		for(String st : storeName) {
-			System.out.println("storeName : " + storeName);
-		}
-		
-		System.out.println("orderPrice : " + orderPrice);
-		System.out.println("orderPrice : " + orderPrice[0]);
-		System.out.println("orderPrice : " + orderPrice.length);
-		
-		
-		List<Integer> packagePayList = new ArrayList<>();
-		
-		for(int i = 0; i < orderPrice.length; i++) {
-			packagePayList.add(orderPrice[i]);
-		}
-		
-		System.out.println("packagePayList : " + packagePayList);
-		
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
 		int memCode = member.getMemCode();
 		
 		System.out.println("memCode : " + memCode);
 		
-		HashMap<String, Object> insertPackage = new HashMap<String, Object>();
-		insertPackage.put("packagePayList", packagePayList);
-		insertPackage.put("memCode", memCode);
-		insertPackage.put("storeCode", storeCode);
-		insertPackage.put("storeName", storeName);
+		System.out.println("orderList : " + orderList);
+		System.out.println("orderList : " + orderList[0]);
+		System.out.println("orderList : " + orderList.length);
 		
-		Map<String,Object> result = userService.insertPackageOrderList(insertPackage);
-		System.out.println("result : " + result);
-		if ((int)result.get("result") > 0 ) {
-			System.out.println("insertPackage Service 성공");
-		} else {
-			System.out.println("insertPackage Service 실패");
+		for(int sc : storeCode) {
+			System.out.println("storeCode : " + sc);
 		}
 		
-		// 주문 내역 및 쿠폰 가져오기
-		List<Integer> orderCodes =  (List<Integer>) result.get("orderCodes");
-		List<Map<String, String>> orderList = userService.selectOrderList(orderCodes); 
-		model.addAttribute("orderList", orderList);
-		List<CouponDTO> couponList = userService.selectCouponList(member.getMemCode());
-		model.addAttribute("couponList", couponList);
+		for(String sn : storeName) {
+			System.out.println("storeName : " + sn);
+		}
 		
-		for(CouponDTO c : couponList) {
-			System.out.println("coupon : " + c);
+		List<Integer> deliveryPayList = new ArrayList<>();
+		
+		for(int i = 0; i < orderList.length; i++) {
+			deliveryPayList.add(orderList[i]);
 		}
 		
 		return "user/packagePay";
 	}
 	
 	
-	/**@author ShinHyungi
-	 * @param orderList
-	 */
-	@GetMapping("deliveryPay")
-	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[]) {
-		
-	}
-	
-	private int sum(int price) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
 	/**
 	 * @author ShinHyungi
 	 * @param mv
@@ -1222,7 +1525,42 @@ public class UserController {
 		return "user/store_page";
 	}
 	
+//	
+//	/**
+//	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
+//	 * @param orderList
+//	 * @param session
+//	 * @param model
+//	 * @author leeseungwoo
+//	 */
+//	@GetMapping("deliveryPay")
+//	public void deliveryPay(@RequestParam(value = "orderList", required = false) int orderList[], HttpSession session, Model model) {
+//		
+//		MemberDTO member = (MemberDTO) session.getAttribute("loginMember");
+//		System.out.println("member : " + member);
+//		
+//		Map<String, Integer> orderMap = new HashMap<>();
+//		orderMap.put("member", member.getMemCode());
+//		
+////		List<OrderDTO> deliveryOrderList = userService.selectDeliveryOrder(orderMap);
+////		if(deliveryOrderList != null) {
+////			model.addAttribute("deliveryOrderList", deliveryOrderList);
+////		} else {
+////			System.out.println("조회 실패");
+////		}
+//	}
 	
+	/**
+	 * 배달 예약 주문 결제 진행
+	 * @return
+	 */
+	@PostMapping("deliveryPay")
+	public String deliveryPayTry() {
+		
+		
+		
+		return "";
+	}
 	
 	/**@author ShinHyungi
 	 * @param sdCode
@@ -1400,6 +1738,55 @@ public class UserController {
 		
 		return "redirect:cart";
 	}
+
 	
+	/**@author ShinHyungi
+	 * @param model
+	 * @param session
+	 * @param orderPrice
+	 * @param storeCode
+	 * @param storeName
+	 * @return
+	 */
+	@GetMapping("packagePay")
+	   public String packagePay(Model model, HttpSession session, @RequestParam(value = "orderList", required = false) int[] orderPrice, @RequestParam(value="storeCode",required = false) int[] storeCode
+	         , @RequestParam String[] storeName) {
+
+	      List<Integer> packagePayList = new ArrayList<>();
+	      
+	      for(int i = 0; i < orderPrice.length; i++) {
+	         packagePayList.add(orderPrice[i]);
+	      }
+	      
+	      MemberDTO member = (MemberDTO)session.getAttribute("loginMember"); 
+	      int memCode = member.getMemCode();
+	      
+	      HashMap<String, Object> insertPackage = new HashMap<String, Object>();
+	      insertPackage.put("packagePayList", packagePayList);
+	      insertPackage.put("memCode", memCode);
+	      insertPackage.put("storeCode", storeCode);
+	      insertPackage.put("storeName", storeName);
+	      
+	      Map<String,Object> result = userService.insertPackageOrderList(insertPackage);
+	      System.out.println("result : " + result);
+	      if ((int)result.get("result") > 0 ) {
+	         System.out.println("insertPackage Service 성공");
+	      } else {
+	         System.out.println("insertPackage Service 실패");
+	      }
+	      
+	      // 주문 내역 및 쿠폰 가져오기
+	      List<Integer> orderCodes =  (List<Integer>) result.get("orderCodes");
+	      List<Map<String, String>> orderList = userService.selectOrderList(orderCodes); 
+	      model.addAttribute("orderList", orderList);
+	      List<CouponDTO> couponList = userService.selectCouponList(member.getMemCode());
+	      model.addAttribute("couponList", couponList);
+	      
+	      for(CouponDTO c : couponList) {
+	         System.out.println("coupon : " + c);
+	      }
+	      
+	      return "user/packagePay";
+	   }
 
 }

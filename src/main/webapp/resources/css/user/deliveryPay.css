@@ -1,4 +1,60 @@
-#order{
+.delivery-container.at-container { margin: 70px auto 0; }
+.delivery-container .title { font-size: 30px; line-height: 32px; color: #333; font-weight: 700; padding-bottom: 20px; border-bottom: 2px solid #000; margin-bottom: 30px; }
+.infoBox { padding: 35px 70px; border: 2px solid #999; }
+.infoBox .title2 { font-size: 26px; line-height: 28px; color: #676767; font-weight: 600; margin-bottom: 25px; }
+.infoBox > div { margin-bottom: 20px; display: flex; align-items: center; }
+.infoBox > div > span { font-size: 16px; line-height: 18px; color: #333; display: inline-block; width: 109px; text-align: center; }
+.infoBox > div > input { border: 1px solid #ddd; padding: 5px 8px; }
+.infoBox > div > input.search_btn { margin-left: 10px; border: 0; background-color: #F89E91; font-size: 15px; color: #fff; border-radius: 0; }
+.infoBox > div > input.myCheckBtn { display: inline-block; margin: 0 5px 0 30px; }
+.infoBox > div > input[id="myaddress"] { display: none; }
+.infoBox > div > input[id="myaddress"] + label { display: inline-block; width: 20px; height: 20px; border: 2px solid #ddd; cursor: pointer; margin: 0 5px 0 25px; }
+.infoBox > div > input[id="myaddress"]:checked + label { background: url('../../images/check_img.png') center no-repeat; background-size: 15px; border: 0; background-color: #F89E91; }
+.infoBox > div > input::placeholder { font-size: 13px; color: #999; }
+
+.infoBox2 { margin: 50px 0; border: 2px solid #999; }
+.infoBox2 .info_table { width: 100%; text-align: center; }
+.infoBox2 .info_table thead { background-color: #EDEDED; }
+.infoBox2 .info_table thead tr {}
+.infoBox2 .info_table thead tr th { font-size: 16px; color: #333; padding: 15px 0; }
+.infoBox2 .info_table tbody {}
+.infoBox2 .info_table tbody tr {}
+.infoBox2 .info_table tbody tr td {}
+.infoBox2 .info_table tbody tr td img { max-width: 100px; }
+
+.info_box3 { padding: 35px 70px; border: 2px solid #999; }
+.info_box3 .payment_list { display: flex; justify-content: space-around; align-items: center; }
+.info_box3 .payment_list li { text-align: center; }
+.info_box3 .payment_list li p { font-size: 18px; line-height: 20px; color: #999; margin-bottom: 20px; }
+.info_box3 .payment_list li:last-child p { color: #333; font-weight: 700; }
+.info_box3 .payment_list li strong { font-size: 26px; line-height: 28px; color: #333; font-weight: 700; }
+.info_box3 .payment_list li:last-child strong { font-size: 32px; color: #F89E91; }
+.info_box3 .payment_list li strong span { font-size: 17px; font-weight: 300; }
+
+.btn_box { text-align: center; margin: 30px 0 0; }
+.btn_box .final_btn { border: 0; border-radius: 10px; background-color: #F89E91; display: inline-block; width: 150px; padding: 10px 0; font-size: 18px; color: #fff !important; font-weight: 700; }
+.btn_box {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* #order{
     margin-left: 12%;
     margin-top: 50px;
 
@@ -105,7 +161,7 @@
     padding-bottom: 30px;
     margin-left: 11%;
     margin-right: 11%;
-}
+} */
 
 
 

@@ -12,7 +12,7 @@
 		<result property="endDate" column="END_DATE"/>
 		<result property="dCcon" column="DC_CONDITION"/>
 		<association property="store" resultMap="storeResultMap"/>
-		<association property="cpHistory" resultMap="cpHistoryResultMap"/>
+		<!-- <association property="cpHistory" resultMap="cpHistoryResultMap"/> -->
 	</resultMap>
 	
 	<resultMap type="com.sd.mommyson.member.dto.StoreDTO" id="storeResultMap">
@@ -25,86 +25,100 @@
 		<result property="workTime" column="WORK_TIME"/>
 	</resultMap>
 	
+	
 	<resultMap type="com.sd.mommyson.usermypage.dto.CouponHistoryDTO" id="cpHistoryResultMap">
-		<id property="cpCode" column="CP_CODE"/>
-		<id property="memCode" column="MEM_CODE"/>
+		<id property="cpNum" column="CP_NUM"/>
+		<result property="cpCode" column="CP_CODE"/>
+		<result property="memCode" column="MEM_CODE"/>
 		<result property="useStatus" column="USE_STATUS"/>
+		<result property="giveDate" column="GIVE_DATE"/>
+		<association property="couponInfo" resultMap="couponResultMap"/>
 	</resultMap>
 	
 	<!-- 나의 사용가능한 쿠폰 총 갯수 확인 -->
 	<select id="selectMycouponNo" resultType="_int" parameterType="hashmap">
-	
 		SELECT
-			  COUNT(*)
-		 FROM COUPON_TBL A
-		 JOIN CP_HISTORY_TBL B ON(A.CP_CODE = B.CP_CODE)
-		WHERE B.USE_STATUS = 'N'
-		  AND B.MEM_CODE = #{ searchCondition }
-		  <if test="searchValue != null">
-		  AND A.CP_NAME LIKE '%' || #{ searchValue } || '%' 
-		  </if>
-		  <![CDATA[
-		  AND SYSDATE <= A.END_DATE
-		  ]]>
+			   COUNT(*)
+	     FROM CP_HISTORY_TBL A
+	   	 JOIN COUPON_TBL B ON(B.CP_CODE = A.CP_CODE)
+	   	 JOIN COUPON_STORE_TBL C ON(C.CP_CODE = B.CP_CODE)
+	   	 JOIN STORE_TBL D ON(C.MEM_CODE = D.MEM_CODE)
+	    WHERE A.MEM_CODE = #{ searchCondition }
+	      AND A.USE_STATUS = 'N'
+	      <![CDATA[
+	      AND B.END_DATE >= SYSDATE 
+		  ]]>	
+	    <if test="searchValue != null">
+	    	AND D.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+	    </if>
 	</select>
+	
     <!-- 내 쿠폰함 출력 -->
-    <select id="selectMyCouponList" resultMap="couponResultMap">
-    	SELECT
-    		   A.RNUM	
-    		 , A.CP_CODE
+    <select id="selectMyCouponList" resultMap="cpHistoryResultMap">
+    	SELECT A.RNUM
+	    	 , A.CP_CODE
+			 , A.MEM_CODE
+			 , A.USE_STATUS
+			 , A.CP_NUM
+			 , A.GIVE_DATE
 			 , A.CP_NAME
-			 , A.START_DATE
 			 , A.DISCOUNT_WON
-			 , A.END_DATE
-			 , A.DC_CONDITION
 			 , A.STORE_NAME
 			 , A.STORE_IMG
-			 , A.MEM_CODE
-		 FROM (SELECT  ROWNUM RNUM	
-		    		 , B.CP_CODE
-					 , B.CP_NAME
-					 , B.START_DATE
-					 , B.DISCOUNT_WON
-					 , B.END_DATE
-					 , B.DC_CONDITION
-					 , B.STORE_NAME
-					 , B.STORE_IMG
-					 , B.MEM_CODE
-				 FROM (SELECT  C.CP_CODE
-							 , C.CP_NAME
-							 , C.START_DATE
-							 , C.DISCOUNT_WON
-							 , C.END_DATE
-							 , C.DC_CONDITION
-							 , F.STORE_NAME
-							 , F.STORE_IMG
-							 , F.MEM_CODE
-				 		  FROM COUPON_TBL C
-				 		  JOIN CP_HISTORY_TBL D ON (C.CP_CODE = D.CP_CODE)
-				 		  JOIN COUPON_STORE_TBL E ON (C.CP_CODE = E.CP_CODE)
-				 		  JOIN STORE_TBL F ON (E.MEM_CODE= F.MEM_CODE)
-					 		   <where>
-							 	  D.USE_STATUS = 'N'				 		  
-					 		 	  <![CDATA[
-					 		 	  AND SYSDATE <= C.END_DATE
-					 		 	  ]]>
-					 			  <if test="searchValue != null">
-					 			  AND C.CP_NAME LIKE '%' || #{ searchValue } || '%'
-					 			  </if>
-					 		   </where>
-					 		   ORDER BY C.END_DATE ASC
-					 		   )B
-					 	 <![CDATA[
-					 	 WHERE ROWNUM <= #{ endRow }
-					 	 ]]>
-					 	 )A
-			 <![CDATA[
-			 WHERE A.RNUM >= #{ startRow }
-			 ]]>		 	 	 
+		 FROM (SELECT ROWNUM RNUM
+			 		, B.CP_CODE
+					, B.MEM_CODE
+					, B.USE_STATUS
+					, B.CP_NUM
+					, B.GIVE_DATE
+					, B.CP_NAME
+					, B.DISCOUNT_WON
+					, B.STORE_NAME
+				    , B.STORE_IMG
+				FROM(SELECT C.CP_CODE
+						  , C.MEM_CODE
+						  , C.USE_STATUS
+						  , C.CP_NUM
+						  , C.GIVE_DATE
+						  , D.CP_NAME
+						  , D.DISCOUNT_WON
+						  , F.STORE_NAME
+						  , F.STORE_IMG
+					  FROM CP_HISTORY_TBL C
+					  JOIN COUPON_TBL D ON(D.CP_CODE = C.CP_CODE)
+				   	  JOIN COUPON_STORE_TBL E ON(E.CP_CODE = D.CP_CODE)
+				   	  JOIN STORE_TBL F ON(F.MEM_CODE = E.MEM_CODE)
+				     WHERE C.MEM_CODE = #{ searchCondition }
+				       AND C.USE_STATUS = 'N'
+				       <![CDATA[
+				       AND D.END_DATE >= SYSDATE 
+				       ]]>
+				     <if test="searchValue != null">
+				       AND F.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+				     </if>
+				    ORDER BY D.END_DATE ASC
+				)B	 
+		  <![CDATA[
+			 	 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+		 	 )A
+     <![CDATA[
+	 WHERE A.RNUM >= #{ startRow }
+	 ]]>	 	 
+    </select>
+    
+    <select id="selectCeoCode" parameterType="_int" resultType="_int">
+    SELECT
+    	   C.MEM_CODE
+      FROM COUPON_TBL A
+      JOIN COUPON_STORE_TBL B ON(B.CP_CODE = A.CP_CODE)  
+      JOIN STORE_TBL C ON(C.MEM_CODE = B.MEM_CODE)
+     WHERE A.CP_CODE =#{ cpCode }	   
+    	   
     </select>
     
     <!-- 나의 주문내역  -->
-    <resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="myOrderResultMap">
+    <resultMap type="com.sd.mommyson.usermypage.dto.MyOrderDTO" id="myOrderResultMap"><!-- 필요한가?? -->
     	<id property="orderCode" column="ORDER_CODE"/>
     	<result property="memCode" column="MEM_CODE"/>
     	<result property="totalPrice" column="TOTAL_PRICE"/>
@@ -352,7 +366,7 @@
 		WHERE A.MEM_CODE = #{ searchCondition }
 		  AND A.IS_DELETED = 'N'
 		  <if test="searchValue != null">
-		  AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
+		  AND B.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
 		  </if>
 	</select>
 	
@@ -393,7 +407,7 @@
 				  WHERE C.MEM_CODE = #{ searchCondition }
 				  	AND C.IS_DELETED = 'N'
 				  <if test="searchValue != null">
-				    AND D.STORE_NAME = #{ searchValue }
+				    AND D.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 				  </if>
 				  	ORDER BY D.ORDER_RUQEUST_TIME DESC
 					)B
@@ -415,6 +429,18 @@
        JOIN STORE_TBL B ON(A.STORE_CODE=B.MEM_CODE) 
       WHERE A.MEM_CODE = #{ userCode }
 	 </select>
+	 <!-- 리뷰수정 -->
+	<update id="updateReview" parameterType="hashmap">
+	UPDATE
+		   REVIEW_TBL A
+	  SET	
+	   	   A.RV_IMG = #{ fileFolder, jdbcType=VARCHAR },		
+	       A.RV_CONTENT = #{ postContents, jdbcType=VARCHAR},
+	       A.RV_GRADE = #{ postGrade }
+	 WHERE A.RV_CODE = #{ rvCode }
+	   AND A.MEM_CODE = #{ memCode }	
+	</update>	
+	
 	
 	<insert id="insertReview">
 		INSERT
@@ -459,8 +485,75 @@
 	 	 WHERE B.STORE_CODE = (SELECT C.STORE_CODE FROM ORDER_TBL C WHERE C.ORDER_CODE = #{ orderCode })
 	</select>
 	 <!-- 리뷰삭제  -->
-	 <update id="">
+	 <update id="updateDelReview">
+		 UPDATE
+		 		REVIEW_TBL A
+		 	SET A.IS_DELETED = 'Y'
+		  WHERE	A.RV_CODE = #{ rvCodeDel }	
 	 </update>
 	 
+	 <!-- 리뷰 수정 페이지 출력 -->
+	 <select id="selectReviewInfo" parameterType="_int" resultMap="reviewResultMap">
+	 	SELECT
+	 		   A.MEM_CODE
+			 , A.ORDER_CODE
+			 , A.RV_IMG
+			 , A.RV_CONTENT
+			 , A.RV_GRADE
+			 , A.RV_CODE
+			 , A.MEM_ID
+			 , A.IS_DELETED
+	 	  FROM REVIEW_TBL A
+	 	 WHERE A.RV_CODE = #{ rvCode }	 
+	 </select>
+	 
+	 <resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap">
+	 	<id property="memCode" column="MEM_CODE"/>
+	 	<result property="email" column="EMAIL"/>
+	 	<result property="memPwd" column="MEM_PWD"/>
+	 	<result property="address" column="ADDRESS"/>
+	 	<result property="postCode" column="POST_CODE"/>
+	 	<result property="dAddress" column="D_ADDRESS"/>
+	 	<result property="phone" column="PHONE"/>
+	 	<result property="memType" column="MEM_TYPE"/>
+	 	<result property="locationCode" column="LOCATION_CODE"/>
+	 	<result property="nickname" column="NICKNAME"/>
+	 	<result property="memId" column="MEM_ID"/>
+	 	<result property="enrollDate" column="ENROLL_DATE"/>
+	 	<result property="isDeleted" column="IS_DELETED"/>
+	 </resultMap>
+	 
+	 <!-- 회원탈퇴 -->
+	 <!-- 현재 유저 신원확인 -->
+	 <select id="selectEncPwd" resultType="String">
+		 SELECT
+		 		A.MEM_PWD
+		  FROM MEMBER_TBL A
+		 WHERE A.MEM_ID = #{ memId }	
+	 </select>
+	 
+	 <update id="updateSignOut">
+	 	UPDATE
+	 		   MEMBER_TBL A
+	 	   SET A.IS_DELETED = 'Y'
+	 	 WHERE MEM_ID = #{ memId } 
+	 </update>
+	 
+	 <update id="updateMemberInfo">
+	 	UPDATE MEMBER_TBL
+	 	   SET <if test="memPwd != null">MEM_PWD = #{ memPwd },</if>
+	 	   	   NICKNAME = #{ nickname },
+	 	   	   POST_CODE = #{ postCode },
+	 	   	   ADDRESS = #{ address },
+	 	   	   D_ADDRESS = #{ dAddress },
+	 	   	   LOCATION_CODE = (SELECT LOCATION_CODE FROM LOCATION WHERE LOCATION_NAME = (SELECT SUBSTR(#{ address }, INSTR(#{ address }, ' ', 1, 1), INSTR(#{ address }, ' ', 1, 1)) FROM DUAL))
+	 	 WHERE MEM_CODE = #{ memCode }
+	 </update>
+	 
+	 <update id="updateUserInfo">
+	 	UPDATE USER_TBL
+	 	   SET NAME = #{ user.name }
+	 	 WHERE MEM_CODE = #{ memCode }
+	 </update>
 </mapper>
     

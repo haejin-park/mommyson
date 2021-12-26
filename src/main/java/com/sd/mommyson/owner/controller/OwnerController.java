@@ -2,7 +2,6 @@ package com.sd.mommyson.owner.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,38 +78,40 @@ public class OwnerController {
 		
 		Map<String, Object> memberShip = ownerService.selectMembershipInfo(memCode);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Calendar c1 = Calendar.getInstance(); 
-		
-		String dd = sdf.format(c1.getTime());
-		
-		java.util.Date today = sdf.parse(dd);
-		
-		String startDate = sdf.format(memberShip.get("START_DATE"));
-		String endDate = sdf.format(memberShip.get("END_DATE"));
-		
-		memberShip.put("startDate", startDate);
-		memberShip.put("endDate", endDate);
-		
-		model.addAttribute("membership",memberShip);
-		
-		List<ProductDTO> proList = ownerService.selectProdoucts(memCode);
-		
-		int status = 0;
-		
-		for(ProductDTO i : proList) {
+		if(memberShip != null && !memberShip.isEmpty()) {
 			
-			if(i.geteDate().before(today) && !i.getOrderableStatus().equals("X")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Calendar c1 = Calendar.getInstance(); 
+			
+			String dd = sdf.format(c1.getTime());
+			
+			java.util.Date today = sdf.parse(dd);
+			
+			String startDate = sdf.format(memberShip.get("START_DATE"));
+			String endDate = sdf.format(memberShip.get("END_DATE"));
+			
+			memberShip.put("startDate", startDate);
+			memberShip.put("endDate", endDate);
+			
+			model.addAttribute("membership",memberShip);
+			
+			List<ProductDTO> proList = ownerService.selectProdoucts(memCode);
+			
+			int status = 0;
+			
+			for(ProductDTO i : proList) {
 				
-				 status += ownerService.modifyEDateStatus(i.getSdCode());
+				if(i.geteDate().before(today) && !i.getOrderableStatus().equals("X")) {
+					
+					 status += ownerService.modifyEDateStatus(i.getSdCode());
+					
+				}
 				
 			}
 			
+			System.out.println(status + "행 업데이트 성공!");
 		}
-		
-		System.out.println(status + "행 업데이트 성공!");
-		
 		
 		return "owner/ownerMain";
 	}
@@ -751,8 +752,6 @@ public class OwnerController {
 		
 		// 주문 접수 가져오기
 		
-//		List<OrderDTO> orderList2 = ownerService.selectOrderList2(storeName);
-		
 		/* 주문 접수 페이지 처리  - 조건 없는 페이지 */
 		// 현재 페이지
 		int pageNo = 1;
@@ -773,8 +772,8 @@ public class OwnerController {
 		/* ==== 조건에 맞는 게시물 수 처리 ==== */
 		int totalCount = ownerService.selectOrderListTotalCount(storeName); // where 절에 storeName을 써야하니까 넘겨준다
 		
-		int limit = 15; //페이지당 글 갯수
-		int buttonAmount =  15;//페이징 버튼의 갯수
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
 		
 		Pagination pagination = null;
 		String searchCondition = storeName;
@@ -1242,16 +1241,241 @@ public class OwnerController {
 		} 
 	}
 	
-	
-	@GetMapping("salesDay")
-	public void salseDay(Model model) {
-		
-	}
-	
+	/* 정산 메인페이지 */
 	@GetMapping("salesList")
 	public void salesList(Model model) {
 		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		
+		String storeName = member.getCeo().getStore().getStoreName();
+		
+		// 하루 총 매출
+		Map<String,Integer> totalPrice = ownerService.selectTotalPrice(storeName);
+		
+		System.out.println("totalPrice : " + totalPrice);
+		
+		// 배달 총 매출
+		Map<String,Integer> delPrice = ownerService.selectDelPrice(storeName);
+		
+		System.out.println("delPrice : " + delPrice);
+		
+		// 포장 총 매출
+		Integer pickupPrice = ownerService.selectPickupPrice(storeName);
+		
+		System.out.println("pickupPrice : "  + pickupPrice );
+		if(pickupPrice != null && pickupPrice > 0) {
+			
+			model.addAttribute("pickupPrice",pickupPrice);
+			
+		} else {
+			model.addAttribute("pickupPrice", null);
+		}
+		
+		List<Map<String,Object>> salseMonth  = ownerService.selectMonth(storeName);
+		
+		List<String> str = new ArrayList<String>();
+		List<String> delPrices = new ArrayList<String>();
+		List<String> pickPrice = new ArrayList<String>();
+		
+		if(salseMonth != null && !salseMonth.isEmpty()) {
+			
+			for(int i = 0; i < salseMonth.size(); i++) {
+				
+				if(i != salseMonth.size()) {
+					
+					str.add((String)salseMonth.get(i).get("PAYDATE") + "월,");
+					
+				} else {
+					
+					str.add((String)salseMonth.get(i).get("PAYDATE") + "월");
+					
+				}
+				
+				if(i != salseMonth.size()) {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("DELPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					delPrices.add(price + ",");
+					
+				} else {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("DELPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					delPrices.add(price + "");
+					
+				}
+				
+				if(i != salseMonth.size()) {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("PICKPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
+						
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					pickPrice.add(price  + ",");
+					
+				} else {
+					
+					int won = 10000;
+					
+					int price = 0;
+					
+					if(salseMonth.get(i).get("PICKPRICE") != null ) {
+						
+						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
+						 
+					}
+					
+					System.out.println("price : " + price);
+					
+					pickPrice.add(price + "");
+					
+				}
+			
+			}
+		}
+		
+		System.out.println("str : " + str);
+		System.out.println("delPrices : " + delPrices);
+		System.out.println("pickPrice : " + pickPrice);
+		System.out.println("str[4] : " + str.get(4));
+		
+		model.addAttribute("totalPrice",totalPrice);
+		model.addAttribute("delPrice",delPrice);
+		
 	}
+	
+	/* 일별 매출 */
+	@GetMapping("salesDay")
+	public void salseDay(Model model, @RequestParam(value = "currentPage", required = false) String currentPage,
+			@RequestParam(value="date1",required = false) String date1, @RequestParam(value="date2",required = false) String date2) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		
+		String storeName = member.getCeo().getStore().getStoreName();
+		
+		System.out.println("storeName : " + storeName);
+		System.out.println("date1 : " + date1);
+		System.out.println("date2 : " + date2);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("storeName", storeName);
+		map.put("date1", date1);
+		map.put("date2", date2);
+		
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		int totalCount = ownerService.selectTotalDailySalse(map);
+		
+		int limit = 10; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		
+		Pagination pagination = null;
+		
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		map.put("pagination", pagination);
+		System.out.println("페이지 : " + pagination);
+		
+		List<Map<String,Object>> dailySales  = ownerService.selectDailySales(map);
+		
+		
+		model.addAttribute("dailySales",dailySales);
+		model.addAttribute("pagination",pagination);
+		model.addAttribute("map",map);
+	}
+	
+	/* 월별 매출 */
+	@GetMapping("salseMonth")
+	public void salesMonth(Model model, @RequestParam(value = "currentPage", required = false) String currentPage, @RequestParam(value="date1",required = false) String date1, 
+			@RequestParam(value="date2",required = false) String date2) {
+		
+		MemberDTO member = (MemberDTO)model.getAttribute("loginMember");
+		
+		String storeName = member.getCeo().getStore().getStoreName();
+		System.out.println("storeName : " + storeName);
+		System.out.println("date1 : " + date1);
+		System.out.println("date2 : " + date2);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("storeName", storeName);
+		map.put("date1", date1);
+		map.put("date2", date2);
+		
+		int pageNo = 1;
+		
+		System.out.println("현재 페이지 : " + currentPage);
+		
+		if(currentPage != null && !"".equals(currentPage)) {
+			pageNo = Integer.parseInt(currentPage);
+		}
+		
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		
+		System.out.println(currentPage);
+		System.out.println(pageNo);
+		
+		int totalCount = ownerService.selectTotalsalseMonth(map);
+		
+		int limit = 5; //페이지당 글 갯수
+		int buttonAmount =  10;//페이징 버튼의 갯수
+		
+		Pagination pagination = null;
+		
+		pagination = Pagination.getPagination(pageNo, totalCount, limit, buttonAmount, null, null);
+		map.put("pagination", pagination);
+		System.out.println("페이지 : " + pagination);
+		
+		List<Map<String,Object>> salseMonth  = ownerService.selectSalseMonth(map);
+		
+		model.addAttribute("salseMonth",salseMonth);
+		model.addAttribute("pagination",pagination);
+		model.addAttribute("map",map);
+		
+	}
+	
 	
 	// 쿠폰 발행 내역
 	@GetMapping("giveCouponLIst")
@@ -1298,6 +1522,35 @@ public class OwnerController {
 		model.addAttribute("pagination",pagination);
 		model.addAttribute("givecpList",givecpList);
 
+	}
+	
+	@GetMapping("ownerQuit")
+	public void ownerQuit(Model model) {
+		
+	}
+	
+	@PostMapping(value="ownerQuitGo", produces="text/plain; charset=UTF-8")
+	@ResponseBody
+	public String ownerQuitGo(@ModelAttribute("loginMember") MemberDTO member ,Model model, @RequestParam("memPwd") String memPwd) throws JsonProcessingException {
+		
+		int memCode = member.getMemCode();
+		
+		System.out.println("탈퇴갑니다");
+		
+		boolean originPwd = ownerService.selectOriginPwd(memCode,memPwd);
+		
+		int result = 0;
+		
+		if(originPwd == true) {
+			result = 1;
+		} else {
+			result = 0;
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		return mapper.writeValueAsString(result);
+		
 	}
 	
 }

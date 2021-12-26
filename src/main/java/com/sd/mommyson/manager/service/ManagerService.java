@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sd.mommyson.manager.common.Pagination;
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.manager.dto.CategoryDTO;
 import com.sd.mommyson.manager.dto.FileDTO;
 import com.sd.mommyson.manager.dto.HotKeywordDTO;
@@ -13,6 +14,7 @@ import com.sd.mommyson.member.dto.AuthDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.owner.dto.TagDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 
 public interface ManagerService {
 
@@ -127,10 +129,10 @@ public interface ManagerService {
 	/* 관리자 - 1:1 문의 이미지 파일 조회 */
 	public List<FileDTO> selectAnswerImg(int postNo);
 	
-	/* 관리자 - 1:1 문의 답변 답변 파일 등록 */
+	/* 관리자 - 1:1 문의 답변 파일 등록 */
 	public int registBusinessFile(Map<String, Object> registFile);
 	
-	/* 관리자 - 1:1 문의 답변 답변 등록 */
+	/* 관리자 - 1:1 문의 답변 등록 */
 	public int registBusinessAnswer(Map<String, Object> registInfo);
 	
 	/* 관리자 - 1:1 문의 답변 파일 수정 */
@@ -145,8 +147,32 @@ public interface ManagerService {
 	/* 소비자 - 1:1 문의 리스트 */
 	public List<PostDTO> selectNormalInquiry(Pagination pagination);
 
+	/* 소비자 - 1:1 문의 게시글 조회  */
+	public PostDTO selectNormalPost(int postNo);
+
+	/* 소비자 - 1:1 문의 이미지 파일 조회 */
+	public List<FileDTO> selectNormalImg(int postNo);
+	
+	/* 관리자 - 1:1 문의 답변 파일 등록 */
+	public int registNormalFile(Map<String, Object> registfile);
+
+	/* 관리자 - 1:1 문의 답변 등록 */
+	public int registNormalAnswer(Map<String, Object> registInfo);
+
+	/* 배너조회 */
+	public List<BannerDTO> selectBanner();
+	
 	/* 배너추가 */
 	public int insertBannerAdd(Map<String, Object> bnMap);
+	
+	/* 배너수정 페이지 */
+	public BannerDTO selectBannerEditView(int bnCode);
+	
+	/* 배너수정 */
+	public int updateBanner(Map<String, Object> bnMap);
+	
+	/* 배너삭제 */
+	public int deleteBanner(List<String> chkBannerList);
 
 	/* 사용중인 태그 조회 */
 	public List<TagDTO> selectUseTag();
@@ -192,5 +218,14 @@ public interface ManagerService {
 	public int selectTaxAdjustTotalCount(Map<String, Object> searchMap);
 
 	public List<TaxAdjustDTO> selectTaxList(List<String> list);
+
+	/* 일반회원 인원 수 */
+	public int selectUserTotalCount(Map<String, Object> searchMap);
+
+	/* 일반회원 조회 */
+	public List<MemberDTO> selectUser(Pagination pagination);
+
+	/* 일반회원 총 주문금액 조회 */
+	public List<OrderDTO> selectTotalPrice(int memCode);
 
 }

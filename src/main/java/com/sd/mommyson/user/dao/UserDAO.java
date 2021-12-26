@@ -12,6 +12,8 @@ import com.sd.mommyson.owner.dto.CouponDTO;
 import com.sd.mommyson.owner.dto.ProductDTO;
 import com.sd.mommyson.user.common.SelectCriteria;
 import com.sd.mommyson.user.dto.CartDTO;
+import com.sd.mommyson.user.dto.FileDTO;
+import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
 
 public interface UserDAO {
@@ -58,8 +60,14 @@ public interface UserDAO {
 	/* 장바구니 목록 조회 */
 	List<CartDTO> cartList(MemberDTO member);
 
+	/* 장바구니 리스트 삭제 */
+	int deleteCartList(HashMap<String, Object> deleteCartProduct);
+
 	/* 방문포장 주문리스트 저장  */
 	int insertPackageOrderList(Map<String, Object> map);
+	
+	/* 배달 주문리스트 저장  */
+	int insertDeliveryOrderList(Map<String, Object> map);
 	
 	int insertReport(Map<String, Integer> reportInfo);
 
@@ -75,13 +83,14 @@ public interface UserDAO {
 
 	List<PostDTO> selectOftenFqa();
 
-
 	Integer insertJJIMplus(Map<String, Integer> map);
 
 	List<String> selectJJIMList(String memCode);
 
 	Integer deleteJJIMplus(Map<String, Integer> map);
 
+	int registMtmConsultingText(Map<String, Object> mtmConsulting);
+	
 	Integer selectLastOrderCode();
 
 	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
@@ -94,16 +103,20 @@ public interface UserDAO {
 
 	int updateCouponStatus(List<Integer> list2);
 
+	int registMtmConFile(Map<String, Object> fileInfo);
 
-
-
-
+	int selectMtmTotalCount(Map<String, String> searchMap);
 	
+	List<PostDTO> selectMtmConsulting(SelectCriteria selectCriteria);
 
+	PostDTO selectConsultingCon(Map<String, Object> searchMap);
 
+	List<FileDTO> selectConsumerImg(int postNo);
 
+	List<FileDTO> selectManagerImg(int postNo);
 
-	
+	int updateDelConsulting(int postNo);
 
+//	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

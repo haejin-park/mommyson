@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sd.mommyson.manager.common.Pagination;
@@ -29,11 +30,13 @@ public class OwnerServiceImpl implements OwnerService{
 
 	private OwnerDAO ownerDAO;
 	private MemberDAO memberDAO;
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public OwnerServiceImpl(MemberDAO memberDAO,OwnerDAO ownerDAO) {
+	public OwnerServiceImpl(MemberDAO memberDAO,OwnerDAO ownerDAO, BCryptPasswordEncoder passwordEncoder) {
 		this.memberDAO = memberDAO;
 		this.ownerDAO = ownerDAO;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -594,9 +597,74 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public long selectTotalPrice(String storeName) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Map<String, Integer> selectTotalPrice(String storeName) {
+
+		return ownerDAO.selectTotalPrice(storeName);
+	}
+
+	@Override
+	public boolean selectOriginPwd(int memCode, String memPwd) {
+		
+		boolean result = false;
+		
+		if(passwordEncoder.matches(memPwd, ownerDAO.selectEncPwd(memCode))) {
+			
+			int yn = ownerDAO.updateDeleteYN(memCode);
+			
+			if(yn > 0) {
+				result = true;
+			}
+			
+		} else {
+			result = false;
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public Map<String, Integer> selectDelPrice(String storeName) {
+		
+		
+		return ownerDAO.selectDelPrice(storeName);
+	}
+
+	@Override
+	public Integer selectPickupPrice(String storeName) {
+		
+		return ownerDAO.selectPickupPrice(storeName);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDailySales(Map<String, Object> map) {
+		
+		return ownerDAO.selectDailySales(map);
+	}
+
+	@Override
+	public int selectTotalDailySalse(Map<String, Object> map) {
+
+		int result = ownerDAO.selectTotalDailySalse(map);
+		
+		return result;
+	}
+
+	@Override
+	public int selectTotalsalseMonth(Map<String, Object> map) {
+		
+		return ownerDAO.selectTotalsalseMonth(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectSalseMonth(Map<String, Object> map) {
+
+		return ownerDAO.selectSalseMonth(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMonth(String storeName) {
+
+		return ownerDAO.selectMonth(storeName);
 	}
 
 }
