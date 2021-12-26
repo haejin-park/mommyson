@@ -2187,5 +2187,4 @@ public class UserController {
 		return memberAddress;
 	}
 	
-
 }
