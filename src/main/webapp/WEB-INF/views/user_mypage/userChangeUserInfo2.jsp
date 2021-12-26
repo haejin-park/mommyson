@@ -70,7 +70,7 @@
               <button type="button" onclick="codeChk()" style="background: #F89E91; border: none; color: white; width: 60px; border-radius: 6px;">확인</button>
             </div>
             <div class="changeUserInfo">
-              <span id="checkResult" style="margin-left: 60px;"></span>
+              <span id="checkResult" style="margin-left: 200px;"></span>
             </div>
             <div class="changeUserInfo">
               <label>우편번호</label><input type="text" name="postCode" value="${ requestScope.memberInfo.postCode }">
@@ -129,7 +129,7 @@
 		   						return false;
 		     				} else {
 	     						codeCheckResult.html("인증번호가 일치합니다.");
-	     						codeCheckResult.attr("color", "#594EDE");
+	     						codeCheckResult.css("color", "#594EDE");
 		   						$('#emailCheck').val('Y');
 	   							return true;
 		     				}
