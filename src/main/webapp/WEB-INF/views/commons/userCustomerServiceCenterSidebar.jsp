@@ -17,7 +17,7 @@
                  <a href="${ pageContext.servletContext.contextPath }/user/ucc/uccNoticeSelect">공지사항</a>
              </li>                 
              <li>
-                 <a href="${ pageContext.servletContext.contextPath }/user/ucc/uccOftenQuestion">자주하는 질문</a>
+                 <a href="${ pageContext.servletContext.contextPath }/user/ucc/memberJoinFqa">자주하는 질문</a>
              </li>
              <li>
                  <a href="${ pageContext.servletContext.contextPath }/user/ucc/MTMQnA">1:1 문의</a>
