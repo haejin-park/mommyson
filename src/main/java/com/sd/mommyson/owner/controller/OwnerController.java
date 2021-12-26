@@ -1273,103 +1273,97 @@ public class OwnerController {
 		
 		List<Map<String,Object>> salseMonth  = ownerService.selectMonth(storeName);
 		
-		List<String> str = new ArrayList<String>();
-		List<String> delPrices = new ArrayList<String>();
-		List<String> pickPrice = new ArrayList<String>();
+		String str = "";
+		String delPrices = "";
+		String pickPrice = "";
 		
 		if(salseMonth != null && !salseMonth.isEmpty()) {
 			
 			for(int i = 0; i < salseMonth.size(); i++) {
 				
-				if(i != salseMonth.size()) {
+				if(i != salseMonth.size()-1 ) {
 					
-					str.add((String)salseMonth.get(i).get("PAYDATE") + "월,");
+					str += (String)salseMonth.get(i).get("PAYDATE") + "월,";
 					
 				} else {
 					
-					str.add((String)salseMonth.get(i).get("PAYDATE") + "월");
-					
+					str += (String)salseMonth.get(i).get("PAYDATE") + "월";
 				}
+					
+				if(salseMonth.get(i).get("DELPRICE") != null ) {
 				
-				if(i != salseMonth.size()) {
-					
 					int won = 10000;
 					
-					int price = 0;
+					int	price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
 					
-					if(salseMonth.get(i).get("DELPRICE") != null ) {
+					if(i != salseMonth.size()-1) {
 						
-						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
-						 
+						delPrices += price +",";
+						
+					} else {
+						
+						delPrices += price + "";
+						
 					}
-					
-					System.out.println("price : " + price);
-					
-					delPrices.add(price + ",");
+						 
 					
 				} else {
 					
-					int won = 10000;
-					
-					int price = 0;
-					
-					if(salseMonth.get(i).get("DELPRICE") != null ) {
+					if(i != salseMonth.size()-1) {
 						
-						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
-						 
+						delPrices += 0 +",";
+						
+					} else {
+						
+						delPrices += 0 + "";
+						
 					}
-					
-					System.out.println("price : " + price);
-					
-					delPrices.add(price + "");
 					
 				}
-				
-				if(i != salseMonth.size()) {
+					
+				if(salseMonth.get(i).get("PICKPRICE") != null ) {
 					
 					int won = 10000;
 					
-					int price = 0;
+					int price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
 					
-					if(salseMonth.get(i).get("PICKPRICE") != null ) {
+					if(i != salseMonth.size()-1) {
 						
-						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
+						pickPrice += price + ",";
 						
-						 
+					} else {
+						
+						pickPrice += price + "";
+						
 					}
-					
-					System.out.println("price : " + price);
-					
-					pickPrice.add(price  + ",");
 					
 				} else {
 					
-					int won = 10000;
-					
-					int price = 0;
-					
-					if(salseMonth.get(i).get("PICKPRICE") != null ) {
+					if(i != salseMonth.size()-1) {
 						
-						price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
-						 
+						pickPrice += 0 + ",";
+						
+					} else {
+						
+						pickPrice += 0 + "";
 					}
 					
-					System.out.println("price : " + price);
-					
-					pickPrice.add(price + "");
 					
 				}
-			
-			}
+					
+			} 
+		
 		}
 		
 		System.out.println("str : " + str);
 		System.out.println("delPrices : " + delPrices);
 		System.out.println("pickPrice : " + pickPrice);
-		System.out.println("str[4] : " + str.get(4));
 		
 		model.addAttribute("totalPrice",totalPrice);
 		model.addAttribute("delPrice",delPrice);
+		model.addAttribute("str",str);
+		model.addAttribute("delPrices",delPrices);
+		model.addAttribute("pickPrice",pickPrice);
 		
 	}
 	

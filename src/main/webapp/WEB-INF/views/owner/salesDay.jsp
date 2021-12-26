@@ -36,7 +36,8 @@
       <div style="float: right;"> 
       <p style="float: left; margin-right: 15px; font-weight: 700;">조회 일자 &nbsp;&nbsp;&nbsp;<input type="date" name="date1" value="${ map.date1 }"></p>
       <p style="float: left;margin-right: 15px;">~ &nbsp;&nbsp;<input type="date" name="date2" value="${ map.date2 }"></p>
-      <button type="button" class="couponBtn" style="width: 80px; margin-top: 2px;">조회하기</button>
+      <button type="button" class="couponBtn" style="width: 80px; margin-top: 2px;">조회하기</button><br>
+      <button type="button" id="clear" class="couponBtn" style="margin: 20px 0 20px 0 ;">초기화</button>
       </div>
     </form>
     <br><br>
@@ -102,6 +103,12 @@
 	    	} else{
 	    		alert('조회날짜를 입력해주세요.');
 	    	}
+    	});
+    	
+    	$("#clear").on('click',function(){
+    		$('input[name=date1]').val("");
+    		$('input[name=date2]').val("");
+    		$("#frm").submit();
     	});
     </script>
     
