@@ -35,7 +35,7 @@
     </script>
 	
     <section>
-        <div style="width: 100%; height: 450px; margin-bottom: 100px; padding: 0 !important;" class="at-container">
+        <div style="width: 100%; height: 400px; margin-bottom: 100px; padding: 0 !important;" class="at-container">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <c:forEach items="${ requestScope.banerList }" var="baner">
