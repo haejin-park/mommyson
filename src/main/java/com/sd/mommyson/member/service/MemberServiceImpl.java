@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.member.dao.MemberDAO;
 import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -296,6 +297,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int selectCartCount(int memCode) {
 		return memberDAO.selectCartCount(memCode);
+	}
+
+	@Override
+	public List<BannerDTO> selectBanners() {
+		return memberDAO.selectBanners();
 	}
 
 }

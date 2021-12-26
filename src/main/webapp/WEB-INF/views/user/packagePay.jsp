@@ -8,7 +8,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>방문포장 주문 결제화면</title>
+=======
+    <title>Document</title>
+>>>>>>> a6d804976bbf1f33133549d277a0677224ee6fde
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
@@ -30,7 +34,6 @@
         <input type="text" class="input1" id="phone" placeholder=" 전화번호를 입력해주세요">
       </div>
       <br>
-
 
         <table id="table1">
           <tr id="tr1">
@@ -81,6 +84,9 @@
       <button type="button" id="goShoppingBasket">취소하기</button>
       <script>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a6d804976bbf1f33133549d277a0677224ee6fde
          // 금액 뿌려주기
          $(function() {
             let prices = 0;
@@ -170,6 +176,7 @@
          });
          
          
+<<<<<<< HEAD
       </script>
 =======
       	// 금액 뿌려주기
@@ -285,10 +292,16 @@
         </div>
     </div> -->
 >>>>>>> 6f67263fa98ef0acdafe2de383f6c2856c4aa142
+=======
+      </script>
+    
+
+>>>>>>> a6d804976bbf1f33133549d277a0677224ee6fde
     <br><br><br><br>
     <jsp:include page="../commons/footer.jsp"/>
     
     <script>
+<<<<<<< HEAD
     function validate(){
       var name = document.getElementById("name");
       var phone = document.getElementById("phone");
@@ -329,6 +342,47 @@
     }
 </script>
 
+=======
+	    function validate(){
+	      var name = document.getElementById("name");
+	      var phone = document.getElementById("phone");
+	      
+	
+	      if(name.value == ""){
+	          alert("이름을 입력해주세요.")
+	          name.focus()
+	          return false;
+	      }
+	
+	      if(!chk(/^[가-힣]{2,}$/,name,"이름은 한글로 2글자 이상을 넣으세요")){
+	          return false;
+	      }
+	      
+	      if(phone.value == ""){
+	          alert("전화번호를 입력해주세요.")
+	          phone.focus()
+	          return false;
+	      }
+	
+	      var reg = /^[0-9]+/g;
+	      if(!reg.test(phone.value)) {
+	          alert("전화번호는 숫자만 입력할 수 있습니다.")
+	          phone.focus();
+	          return false;
+	      }
+	
+	    function chk(re, ele, msg){
+	      if(!re.test(ele.value)){
+	              alert(msg);
+	              ele.select();
+	              return false;
+	          }
+	          return true;
+	      }
+	
+	    }
+	</script>
+>>>>>>> a6d804976bbf1f33133549d277a0677224ee6fde
 
 </body>
 </html>

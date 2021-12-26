@@ -606,6 +606,21 @@
 	 	 WHERE MEM_ID = #{ memId } 
 	 </update>
 	 
+	 <update id="updateMemberInfo">
+	 	UPDATE MEMBER_TBL
+	 	   SET <if test="memPwd != null">MEM_PWD = #{ memPwd },</if>
+	 	   	   NICKNAME = #{ nickname },
+	 	   	   POST_CODE = #{ postCode },
+	 	   	   ADDRESS = #{ address },
+	 	   	   D_ADDRESS = #{ dAddress },
+	 	   	   LOCATION_CODE = (SELECT LOCATION_CODE FROM LOCATION WHERE LOCATION_NAME = (SELECT SUBSTR(#{ address }, INSTR(#{ address }, ' ', 1, 1), INSTR(#{ address }, ' ', 1, 1)) FROM DUAL))
+	 	 WHERE MEM_CODE = #{ memCode }
+	 </update>
 	 
+	 <update id="updateUserInfo">
+	 	UPDATE USER_TBL
+	 	   SET NAME = #{ user.name }
+	 	 WHERE MEM_CODE = #{ memCode }
+	 </update>
 </mapper>
     

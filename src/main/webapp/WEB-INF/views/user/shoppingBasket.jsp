@@ -58,6 +58,7 @@
 						        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
 					      	</tr>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	    				<%-- <tr id="tr2">
 				        <td><input type="checkbox" name="checkbox" value="${ row.totalPrice }"></td>
@@ -77,6 +78,8 @@
 				        <td><span id="totalPrice" name="totalPrice"><c:out value="${ row.totalPrice }"/></span>원</td> 
 				      	</tr> --%>
 >>>>>>> 6f67263fa98ef0acdafe2de383f6c2856c4aa142
+=======
+>>>>>>> a6d804976bbf1f33133549d277a0677224ee6fde
 				      	</table>
 			    </c:forEach> 
 	    	</c:otherwise>
@@ -184,6 +187,7 @@
 		
 	  
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   	  /* 주문번호 가지고 결제창으로 이동 */
   	  /* function gopay(str) {
@@ -211,6 +215,8 @@
   	  } */
   	  
 >>>>>>> 6f67263fa98ef0acdafe2de383f6c2856c4aa142
+=======
+>>>>>>> a6d804976bbf1f33133549d277a0677224ee6fde
 
 		function gopay(str) {
 			let orderList = [];

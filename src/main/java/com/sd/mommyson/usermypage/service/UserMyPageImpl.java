@@ -183,6 +183,12 @@ public class UserMyPageImpl implements UserMyPageService {
 		return ceoCode;
 	}
 
+	@Override
+	public void updateMemberInfo(MemberDTO member) {
+		userMyPageDAO.updateMemberInfo(member);
+		userMyPageDAO.updateUserInfo(member);
+	}
+
 
 
 	

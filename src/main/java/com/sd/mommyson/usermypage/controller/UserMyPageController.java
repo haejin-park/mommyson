@@ -7,14 +7,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer.MvcMatchersAuthorizedUrl;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,17 +34,15 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sd.mommyson.member.controller.MemberController;
 import com.sd.mommyson.member.dto.MemberDTO;
 import com.sd.mommyson.member.dto.StoreDTO;
 import com.sd.mommyson.member.service.MemberService;
 import com.sd.mommyson.user.common.Pagenation;
 import com.sd.mommyson.user.common.SelectCriteria;
-import com.sd.mommyson.user.dto.OrderDTO;
 import com.sd.mommyson.user.dto.ReviewDTO;
-import com.sd.mommyson.usermypage.dto.CouponDTO;
 import com.sd.mommyson.usermypage.dto.CouponHistoryDTO;
 import com.sd.mommyson.usermypage.dto.MyOrderDTO;
-import com.sd.mommyson.usermypage.dto.OrderInfoDTO;
 import com.sd.mommyson.usermypage.service.UserMyPageService;
 
 @Controller
@@ -49,12 +52,18 @@ public class UserMyPageController {
 //양윤제
 	
 	private UserMyPageService userMyPageService;
+	private MemberService memberService;
 	private BCryptPasswordEncoder passwordEncorder;
 	
+	@Autowired				 
+	JavaMailSender mailSender; 
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	
 	@Autowired
-	public UserMyPageController(UserMyPageService userMyPageService, BCryptPasswordEncoder passwordEncorder) {
+	public UserMyPageController(UserMyPageService userMyPageService, BCryptPasswordEncoder passwordEncorder, MemberService memberService) {
 		this.userMyPageService = userMyPageService;
 		this.passwordEncorder = passwordEncorder;
+		this.memberService = memberService;
 	}
 	
 	/*주문내역*/
@@ -700,6 +709,89 @@ public class UserMyPageController {
 		return url;
 	}
 	
+	/**@author ShinHyungi
+	 * @param email
+	 */
+	@PostMapping("emailCheck")
+	@ResponseBody
+	public void emailCheck(@RequestParam("email") String email) {
+		
+		/* 뷰에서 넘어온 데이터 확인 */ 
+		logger.info("이메일 데이터 전송 확인");
+		logger.info("이메일 : " + email);
+
+		/* 인증번호(난수) 생성 */
+		Random random = new Random();
+		int checkNum = random.nextInt(888888) +111111;
+		logger.info("인증번호" + checkNum);
+
+		/* 이메일 보내기 */
+		String setFrom = "sli9962@naver.com";
+		String toMail = email;
+		String title = "회원가입 인증 이메일입니다.";
+		String content = "마미손을 방문해주셔서 감사합니다." 
+				+ "<br><br>" 
+				+ "인증번호는 " + checkNum +"입니다." 
+				+ "<br><br>" 
+				+ "해당 인증번호를 홈페이지의 인증번호 확인란에 기입하여 주세요."; 
+
+		try {
+
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			helper.setFrom(setFrom);
+			helper.setTo(toMail);
+			helper.setSubject(title);
+			helper.setText(content,true);
+			mailSender.send(message);
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		
+		String num = Integer.toString(checkNum);
+
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("num", num);
+		map.put("toMail", toMail);
+		
+		System.out.println("map : " + map);
+		memberService.registEmailCode(map);
+
+	}
 	
+	/**@author ShinHyungi
+	 * @param code
+	 * @return
+	 */
+	@PostMapping(value = "codeCheck", produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String codeCheck(@RequestParam("inputCode") String code) {
+		
+		String email= memberService.codeCheck(code);
+		
+		return email;
+	}
+	
+	/**@author ShinHyungi
+	 * @return
+	 */
+	@PostMapping("updateMemberInfo")
+	public String updateMemberInfo(@ModelAttribute MemberDTO member, HttpSession session, SessionStatus status) {
+		
+		MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+		member.setMemCode(loginMember.getMemCode());
+		
+		status.setComplete();
+		
+		if(member.getMemPwd() != null) {
+			member.setMemPwd(passwordEncorder.encode(member.getMemPwd()));
+		}
+		
+		userMyPageService.updateMemberInfo(member);
+		
+		return "redirect:/";
+	}
 	
 }
