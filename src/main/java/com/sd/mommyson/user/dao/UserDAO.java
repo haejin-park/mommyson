@@ -117,6 +117,8 @@ public interface UserDAO {
 
 	int updateDelConsulting(int postNo);
 
+	void insertRTNotice(Map<String, Object> map);
+
 //	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 
 }

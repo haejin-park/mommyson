@@ -1085,4 +1085,27 @@
     	 </foreach>
     	 )
     </update>
+    
+    <insert id="insertRTNotice">
+    	<selectKey keyProperty="memCode" resultType="int" order="BEFORE">
+	    	SELECT
+	    		   STORE_CODE
+	    	  FROM ORDER_TBL WHERE ORDER_CODE = #{ orderCode }
+	    </selectKey>
+    	INSERT
+    	INTO RT_NOTICE_TBL
+    	(
+    	  NOTICE_CODE
+    	, MEM_CODE
+    	, NOTICE_CONTENTS
+    	, NOTICE_TIME
+    	)
+    	VALUES
+    	(
+    	  RT_NOTICE.NEXTVAL
+    	, #{ memCode }
+    	, '새 주문이 들어왔어요!'
+    	, SYSDATE
+    	)
+    </insert>
     </mapper>
