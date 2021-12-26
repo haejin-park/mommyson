@@ -281,6 +281,9 @@
 		 <if test="type == 'new'">
 		   AND B.ENROLL_DATE > (SYSDATE - 100)
 		 </if>
+		 <if test="type == 'famous'">
+		   AND (SELECT COUNT(*) FROM REVIEW_TBL R JOIN ORDER_TBL O ON(R.ORDER_CODE = O.ORDER_CODE) WHERE O.STORE_CODE = A.MEM_CODE) > 10 
+		 </if>
 		 <if test="searchValue != null">
 		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
 		 </if>
@@ -425,8 +428,11 @@
 	                    <where>
 	                    	M.IS_DELETED = 'N'
 				         	<if test='searchValue != null'>
-				         	A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+				         	AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
 				         	</if>
+				         	<if test="searchCondition == 'famous'">
+	                    	AND (SELECT COUNT(*) FROM REVIEW_TBL R JOIN ORDER_TBL O ON(R.ORDER_CODE = O.ORDER_CODE) WHERE O.STORE_CODE = A.MEM_CODE) > 10 
+		                    </if>
 			   	        </where>
 	                    <if test="searchCondition == 'new'">
 	                    	ORDER BY M.ENROLL_DATE DESC
