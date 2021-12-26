@@ -1774,5 +1774,16 @@ public class UserController {
 		return "redirect:cart";
 	}
 	
+	// 고객센터 1;1 문의
+	@GetMapping("userCustomerServiceCenterMTMQnA")
+	public void userCustomerServiceCenterMTMQnA(Model model) {
+		
+	}
+	
+	// 고객센터 메인
+	@GetMapping("userCustomerServiceMain")
+	public void userCustomerServiceMain(Model model) {
+		
+	}
 
 }
