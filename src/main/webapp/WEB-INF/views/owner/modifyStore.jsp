@@ -125,7 +125,7 @@
 		            <label>대표자명</label><input type="text" name="name" placeholder="${ sessionScope.owner.ceo.name }">
 		          </div>
 		          <div class="changeUserInfo">
-		            <label>사업자 등록번호</label><input type="text" name="no" placeholder="${ sessionScope.owner.ceo.no }">
+		            <label>사업자 등록번호</label><input type="text" id="no" name="no" placeholder="${ sessionScope.owner.ceo.no }">
 		          </div>
 		        </div>
 		          <div class="changeUserInfo" style="margin: 40px 0 100px 0">
@@ -136,19 +136,12 @@
 		          </div>
                 </div>
                 <input type="button" class="pink_btn" id="btn" style="background: #AEAEAE; margin-right: 20px" value="취소">
-                <input type="submit"class="pink_btn" value="완료">
+                <input type="submit"class="pink_btn" value="완료" id="btn">
               </div>
              </form>
           </div>
         </div>
       </div>  
-    <script>
-    	$(function() {
-			$("#btn").click(function() {
-				location.href="${ pageContext.servletContext.contextPath }/owner/ownerMain"
-			});
-		});
-    </script>
    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
    <script>
     function sample6_execDaumPostcode() {

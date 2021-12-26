@@ -1273,28 +1273,51 @@ public class OwnerController {
 		
 		List<Map<String,Object>> salseMonth  = ownerService.selectMonth(storeName);
 		
-		List<String> str = new ArrayList<String>();
-		List<Integer> delPrices = new ArrayList<Integer>();
-		List<Integer> pickPrice = new ArrayList<Integer>();
+		String str = "";
+		String delPrices = "";
+		String pickPrice = "";
 		
 		if(salseMonth != null && !salseMonth.isEmpty()) {
 			
 			for(int i = 0; i < salseMonth.size(); i++) {
 				
-				str.add((String)salseMonth.get(i).get("PAYDATE") + "월");
+				if(i != salseMonth.size()-1 ) {
+					
+					str += (String)salseMonth.get(i).get("PAYDATE") + "월,";
+					
+				} else {
+					
+					str += (String)salseMonth.get(i).get("PAYDATE") + "월";
+				}
 					
 				if(salseMonth.get(i).get("DELPRICE") != null ) {
 				
 					int won = 10000;
-						
-					int	price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
-						 
 					
-					delPrices.add(price);
+					int	price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("DELPRICE"))) / won;
+					
+					if(i != salseMonth.size()-1) {
+						
+						delPrices += price +",";
+						
+					} else {
+						
+						delPrices += price + "";
+						
+					}
+						 
 					
 				} else {
 					
-					delPrices.add(0);
+					if(i != salseMonth.size()-1) {
+						
+						delPrices += 0 +",";
+						
+					} else {
+						
+						delPrices += 0 + "";
+						
+					}
 					
 				}
 					
@@ -1304,13 +1327,28 @@ public class OwnerController {
 					
 					int price = Integer.parseInt(String.valueOf(salseMonth.get(i).get("PICKPRICE"))) / won;
 					
-					System.out.println("price : " + price);
-					
-					pickPrice.add(price);
+					if(i != salseMonth.size()-1) {
+						
+						pickPrice += price + ",";
+						
+					} else {
+						
+						pickPrice += price + "";
+						
+					}
 					
 				} else {
 					
-					pickPrice.add(0);
+					if(i != salseMonth.size()-1) {
+						
+						pickPrice += 0 + ",";
+						
+					} else {
+						
+						pickPrice += 0 + "";
+					}
+					
+					
 				}
 					
 			} 

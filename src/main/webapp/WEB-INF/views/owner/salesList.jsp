@@ -101,30 +101,30 @@
             <canvas id="bar-chart-grouped" width="830" height="450" style="margin-left: 80px;"></canvas>
 
             <script>
+            	let str = '${ requestScope.str }';
+	            let delPrice = '${ requestScope.delPrices }'
+	            let pickPrice = '${ requestScope.pickPrice }'
 	            
-            	let str = []
-	            str = '${ requestScope.str }';
-	            let delPrice = []
-	            delPrice = '${ requestScope.delPrices }'
-	            let pickPrice = []
-	            pickPrice = '${ requestScope.pickPrice }'
-            
+	            let str2 = str.split(',');
+            	let delPrice2 = delPrice.split(",");
+            	let pickPrice2 = pickPrice.split(",");
+            	
                new Chart(document.getElementById("bar-chart-grouped"), {
                 type: 'bar',
                 data: {
                     // x축 / y축은 데이터 값에 따라 자동으로 바뀜
-                labels: ["9","10"],
+                labels: str2,
                 datasets: [
                     {
                     label: "배달",
                     backgroundColor: "rgba(195, 191, 239, 1)",
                     // 데이터 값
-                    data: [  ]
+                    data: delPrice2
                     }, {
                     label: "포장",
                     backgroundColor: "rgba(252, 235, 233, 1)",
                     // 데이터 값
-                    data: [  ]
+                    data: pickPrice2
                     }
                 ]
                 },
