@@ -75,7 +75,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="4"><textarea name="content" placeholder="내용을 입력하세요"><c:out value="${ requestScope.consultingCon.postContent }"/></textarea></td> 
+                  <td colspan="4"><textarea name="content" id="textCon" placeholder="내용을 입력하세요" >${ requestScope.consultingCon.postContent }</textarea></td> 
                 </tr>
               </tbody>
             </table>
@@ -119,6 +119,14 @@
                     <input type="file" id="insert_img3" name="multiFiles" onchange="loadImg(this,3)" accept="image/*">
             
             </div>
+              <div style="display: flex;">
+              <button type="button" class="imgDelButton" id="imgDelButton0" value="${requestScope.userFileImg[0].fileCode }" style="margin-left:300px; background-color: rgb(251, 158, 158); color: white; 
+	width: 50px; border-radius: 2px; border: none;">삭제</button>
+              <button type="button" class="imgDelButton" id="imgDelButton1" value="${requestScope.userFileImg[1].fileCode }" style="margin-left:300px; background-color: rgb(251, 158, 158); color: white; 
+	width: 50px; border-radius: 2px; border: none;">삭제</button>
+              <button type="button" class="imgDelButton" id="imgDelButton2" value="${requestScope.userFileImg[2].fileCode }" style="margin-left:300px; background-color: rgb(251, 158, 158); color: white; 
+	width: 50px; border-radius: 2px; border: none;">삭제</button>
+              </div>
               <br>
               <h6>이미지당 10MB이하, 최대 3개까지 등록 가능합니다. </h6>
               <input type="hidden" name="postNo" value="${requestScope.consultingCon.postNo }">
@@ -131,9 +139,13 @@
             
             <!-- ////////////////////////// -->
             <div id="sendArea">
+             
               <button type="submit" id="sendQusestion"><strong>저장</strong></button>
+            
                 &nbsp;&nbsp;
-              <button type="button" id="cnacel"><strong>취소</strong></button>
+             
+              <button type="button" id="cnacel" value="${ requestScope.consultingCon.postNo }"><strong>취소</strong></button>
+             
             </div>
           </div>
         </div>
@@ -183,14 +195,67 @@
             }
         }
              
-             //let $save = document.getElementById("sendQusestion");
-             /* if(document.getElementById("sendQusestion")){
-            	 
-             $save.onclick = function(){
-            	 let postNo = ${requestScop.consultingCon.postNo};
-                 location.herf = "{ pageContext.servletContext.contextPath }/user/ucc/MTMOpen?postNo=" + postNo;
-             }
-             } */
+             
+             $("#cnacel").on('click',function(e){
+                 
+                 let postNo = $(this).val();
+                 console.log(postNo);
+                 location.href = "${ pageContext.servletContext.contextPath }/user/ucc/MTMOpen?postNo=" + postNo;
+                 
+                                
+             });
+             
+             
+             $("#imgDelButton0").on('click',function(e){
+                                 
+                 let fileCode = $(this).val();
+                 console.log(fileCode);
+                 
+                 $.ajax({
+                 	url :  'imgDel',
+                 	method : 'post',
+                 	data : {
+                 		fileCode : fileCode
+                 	}
+                 });
+                 
+                 location.href = location.href;
+             });
+             
+             $("#imgDelButton1").on('click',function(e){
+                 
+                 let fileCode = $(this).val();
+                 console.log(fileCode);
+                 
+                 $.ajax({
+                 	url :  'imgDel',
+                 	method : 'post',
+                 	data : {
+                 		fileCode : fileCode
+                 	}
+                 });
+                 
+                 location.href = location.href;
+             });
+             
+			$("#imgDelButton2").on('click',function(e){
+                 
+                 let fileCode = $(this).val();
+                 console.log(fileCode);
+                 
+                 $.ajax({
+                 	url :  'imgDel',
+                 	method : 'post',
+                 	data : {
+                 		fileCode : fileCode
+                 	}
+                 });
+                 //삭제 후 세로고침
+                 location.href = location.href;
+					                 
+             });
+             
+             
             </script>
     </section>
    	<jsp:include page="../commons/footer.jsp"/>

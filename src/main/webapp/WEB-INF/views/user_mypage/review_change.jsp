@@ -16,8 +16,7 @@
 <body>
     <jsp:include page="../commons/header.jsp"></jsp:include>
     <section>
-<!--     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
- -->        <div class="at-container" style="width: 80%;">
+        <div class="at-container" style="width: 80%;">
              <form action="${ pageContext.servletContext.contextPath }/userMyPage/amendmentReview" method="post" enctype="multipart/form-data">
          		
             <div class="main_box">
@@ -135,7 +134,7 @@
                 </div>
                 <div class="sub_box" style="margin-bottom: 100px; align-items: center; width: 36%;">
                     <div style="display: flex; justify-content: space-between; width: 100%;">
-                        <button type="button" class="pink_btn" style="background: #AEAEAE;" id="goBackMyReview">취소</button>
+                        <button type="button" class="pink_btn" style="background: #AEAEAE;" id="goBackMyReview" onclick="history.back()">취소</button>
                         <button type="submit" class="pink_btn" id="completeform">완료</button>
                     </div>
                 </div>
@@ -175,35 +174,10 @@
                     $('#star').val($(event.currentTarget).val())
                 });
                 
-               	   /* function sendAmdReview() {
-                	
-                	let postGrade = document.getElementById('star').value;
-                	console.log(postGrade);
-                	let postContents = document.getElementById('contents').value;
-                	console.log(postContents);
-                	let reviewCode = "${ requestScope.reviewInfo.rvCode }";
-                	console.log(reviewCode);
-					let orderNo = "${ requestScope.reviewInfo.orderCode }"
-					console.log(orderNo);
-                	
-                	$.ajax({
-                		url : "${ pageContext.servletContext.contextPath }/userMyPage/amendmentReview",
-                		type : 'post',
-                		data : {
-                		
-                			orderNo : orderNo,
-                			postGrade : postGrade,
-                			postContents : postContents,
-                			reviewCode : reviewCode
-                		},
-                		success : function(data) {
-                			alert(data);
-                			
-						}
-						
-                	}); 
-               	  } */
+               /*  $('#goBackMyReview').on('click',function() {
                 
+                    location.href = "${ pageContext.servletContext.contextPath }/userMyPage/userReview";
+                }); */
                 
                 
             </script>

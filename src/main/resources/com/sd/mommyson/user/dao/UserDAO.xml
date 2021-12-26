@@ -176,12 +176,25 @@
 			 , A.POST_DATE
 			 , A.ANS_STATUS
 			 , A.QUE_NO
-			 , A.STATUS	
+			 , A.STATUS
+			 , A.VIEW_CNT	
 		 FROM POST_TBL A
 		 JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
 		WHERE B.TYPE = 'fqa'
-		<!-- 뷰카운트 만들어야함 -->	 
+		ORDER BY A.VIEW_CNT DESC
     </select>
+    
+        <!-- fqa viewCount -->
+    <update id="updateVcountFqa" parameterType="_int">
+    UPDATE 
+               POST_TBL A
+           SET A.VIEW_CNT = (SELECT B.VIEW_CNT
+                                  FROM POST_TBL B
+                                 WHERE B.POST_NO = #{ postNo }
+                               ) + 1
+         WHERE A.POST_NO = #{ postNo }	   
+    	   
+    </update>
     
     
     <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
@@ -399,8 +412,7 @@
 					  ) A
 				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	  
 		 	   WHERE A.RNUM >= #{ startRow }	
-    </select>
-	 
+    </select> 
     
     <select id="selectStoreList" resultMap="storeResultMap">
     	SELECT
@@ -1047,6 +1059,13 @@
     	 </foreach>
     	 )
     </select>
+    <!-- 소비자 게시물 소비자 이미지 파일 삭제 -->
+    <update id="updateDelImg">
+    	UPDATE
+    		  FILE_TBL A
+    	  SET FILE_NAME = #{ cameraImg }
+    	WHERE FILE_CODE = #{ fileCode }  
+    </update>
     
     <resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
 		<id property="cpCode" column="CP_CODE"/>

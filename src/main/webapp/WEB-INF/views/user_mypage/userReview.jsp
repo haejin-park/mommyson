@@ -55,24 +55,17 @@
                    </c:forEach>
                   </td>
                   <td>
-              <%--     <c:forEach var="RelativeSdIfo" items="${ requestScope.productInfo }">
-                  <c:if test="${ RelativeSdIfo.ORDER_CODE eq reviewInfo.orderCode }">
-                	 <div><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ RelativeSdIfo.SD_IMG }"><br><c:out value="${ RelativeSdIfo.SD_NAME }"/></div>
-                  </c:if>
-                  </c:forEach> --%>
                   	<img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ reviewInfo.img }">
-                	  </td><!-- 크앙 -->
+                  </td>
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.content }"/></td>
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.grade }"/>개</td><!--추후 별 이미지 처리-->
                   <td style="padding-top: 40px;"><c:out value="${ reviewInfo.orderDTO.requestTime }"/></td><!-- 주문일자 -->
                   <td style="padding-top: 40px;"><button class="urBtn del" value="${ reviewInfo.rvCode }">삭제</button><button class="urBtn am" value="${ reviewInfo.rvCode }">수정</button></td>
-                <c:out value="${ reviewInfo.rvCode }"/>
                 </tr>
                	
 				</c:forEach>
               </tbody>
             </table>
-            <c:out value="${ requestScope.productInfo[0].ORDER_CODE }"/>
             <script>
             										
 				if(document.getElementsByClassName("del")) {
@@ -124,7 +117,7 @@
              </ul>
             <!-- 페이징 -->
  
-			<form action="${ pageContext.servletContext.contextPath }/userMyPage/userReview" method="get">
+			<form action="${ pageContext.servletContext.contextPath }/userMyPage/userReview" method="get" style="margin-left: 300px">
                <input type="hidden" name="currentPage" value="1">			
                <img class="glass" src="${ pageContext.servletContext.contextPath }/resources/images/glass.png">
                <input type="text" class="searchtext" name="searchValue" placeholder="찾고싶은 리뷰 작성한 가게 이름을 입력해주세요">

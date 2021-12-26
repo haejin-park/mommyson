@@ -118,6 +118,10 @@ public interface UserService {
 	int updateMtmConsultingText(Map<String, Object> mtmConsulting);
 
 	int updateMtmConFile(Map<String, Object> fileInfo);
+
+	int updateVcountFqa(int postNo);
+
+	int updateDelImg(Map<String, Object> delImgInfo);
 	
 	/* 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회) */
 //	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);

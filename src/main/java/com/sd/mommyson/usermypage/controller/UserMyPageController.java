@@ -300,14 +300,11 @@ public class UserMyPageController {
 		List<Integer> ceoCode = new ArrayList<>();
 		for(int i = 0; i < myCouponList.size(); i++) {
 			
-//			System.out.println("ceoCode 찾기 위한 변수 : " + myCouponList.get(i).getCpCode());
-//			ceoCode.add(myCouponList.get(i).getCpCode());
 			int ceoNum = userMyPageService.selectCeoCode(myCouponList.get(i).getCouponInfo().getCpCode());
 			ceoCode.add(ceoNum);
 			
 			System.out.println("ceoCode : " + ceoCode);
 			
-//			ceoCode.add(ceoNum);
 		}
 		System.out.println("ceoCode : " + ceoCode);
 		mv.addAttribute("ceoCode", ceoCode);
@@ -484,51 +481,10 @@ public class UserMyPageController {
 		List<ReviewDTO> reviewContentList = userMyPageService.selectReviewContentList(selectCriteria);
 		System.out.println("리뷰 페이지네이션 및 검색 : " + reviewContentList);
 		
-//		int productInfoCode;
-////		List<OrderInfoDTO>	productInfo = new ArrayList<>();
+		//반찬정보 조회
 		List<HashMap<String, String>>productInfo = userMyPageService.selectMySdInfo(userCode);
-//		System.out.println(productInfo);
-//		for(int i = 0; i < reviewContentList.size(); i++) {
-//			productInfoCode = reviewContentList.get(i).getOrderCode();
-//				System.out.println(productInfoCode);
-//				productInfo=userMyPageService.selectMySdInfo(productInfoCode);
-//				System.out.println(productInfo);
-//		}
-//		System.out.println("반찬 정보 : " + productInfo);
-//		List<Integer> sdCodeList = new ArrayList<>();
-//		for(int i = 0; i < reviewContentList.size(); i++) {
-//			productOrderCode = reviewContentList.get(i).getOrderCode();
-//			sdCodeList.add(userMyPageService.selectMySdInfo(productOrderCode));
-//			
-//		}
-		
-		
-		
-	
-		
-//		System.out.println(request.getParameter("orderNo"));
-//		String productNo = request.getParameter("orderNo");
-//		System.out.println(productNo);
-//		
-//		String num = request.getParameter("orderNo");
-//		System.out.println("Num값을 찾아라  : " + num);
-//		int productInfoCode = Integer.parseInt(num);
-		
-		
-		
-//		List<OrderInfoDTO>	productInfo = userMyPageService.selectMySdInfo(productInfoCode);	
-//		System.out.println(request.getParameter("orderNo"));
-//		response.setContentType("text/plain; charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//		out.print(Num);
-//		
-//		out.flush();
-//		out.close();
-		
-		
-		
-		
-//		System.out.println("넘어온 주문번호" + orderNo);
+
+
 		
 		model.addAttribute("selectCriteria", selectCriteria);
 		model.addAttribute("reviewContentList", reviewContentList);
@@ -564,21 +520,18 @@ public class UserMyPageController {
 		String message ="";
 		MemberDTO memberInfo = (MemberDTO) session.getAttribute("loginMember");
 		int memCode = memberInfo.getMemCode();
-//		String reviewImg = parameters.get("reviewImg");
 		int postGrade = Integer.parseInt(parameters.get("postGrade"));
 		String postContents = parameters.get("contents");
 		String rvCode = parameters.get("reviewCode");
 		int orderNo = Integer.parseInt(parameters.get("orderNo"));
 				
 		System.out.println("memCode : " + memCode);
-//		System.out.println("reviewImg : " + reviewImg);
 		System.out.println("reviewImg : " + postGrade);
 		System.out.println("postContents : " + postContents);
 		System.out.println("rvCode : " + rvCode);
 		System.out.println("orderNo : " + orderNo);
 		
 		Map<String, Object> amendmentRv = new HashMap<>();
-//		amendmentRv.put("reviewImg", reviewImg);
 		amendmentRv.put("postGrade", postGrade);
 		amendmentRv.put("postContents", postContents);
 		amendmentRv.put("rvCode", rvCode);

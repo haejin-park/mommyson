@@ -130,6 +130,21 @@
                 
                 // let show = e.next();
                 // show.toggle();
+                let postNo = $(this).children('td:eq(0)').text();
+                console.log(postNo);
+                
+                $.ajax({
+                	url :  'countingFqa',
+                	method : 'post',
+                	data : {
+                		postNo : postNo
+                	},
+                	success : function(data) {
+						console.log(data);
+					}
+                });
+                
+                
             });
             
         </script>

@@ -40,7 +40,7 @@
             <table class="table table" style="width: 1050px;">
               <thead style="background-color: #EDEDED;">
                 <tr>
-                  <th id="tablecol0"><input type="checkbox" onclick="selectAll(this)"></th><!-- 체크 박스 -->
+                  <th id="tablecol0"><input type="checkbox" style="width: 20px; height: 20px;" onclick="selectAll(this)"></th><!-- 체크 박스 -->
                   <th id="tablecol1" scope="col">가게 정보</th>
                   <th id="tablecol2" scope="col"></th><!-- 제품 이미지 -->        
                   <th id="tablecol3" scope="col">제품정보</th>        

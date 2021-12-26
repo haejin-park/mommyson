@@ -114,8 +114,15 @@
           </div>
           <br>
           <c:if test="${ requestScope.consultingCon.ansContent eq null or requestScope.consultingCon.ansContent eq '' }">
-          <button type="button" id="sendQusestion" value="${ requestScope.consultingCon.postNo }" onclick="amendmentPost();">수정</button>
-          <button type="button" id="delQusestion" value="${ requestScope.consultingCon.postNo }" onclick="delQ();">삭제</button>
+          
+          <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center;">
+          <div>
+	          <button type=" utton" id="sendQusestion" value="${ requestScope.consultingCon.postNo }" onclick="amendmentPost();">수정</button>
+          </div>
+          <div>
+          <button type="button" id="delQusestion" style="margin-left : 300px;" value="${ requestScope.consultingCon.postNo }" onclick="delQ();">삭제</button>
+          </div>
+          </div>
           </c:if>
           </div>
         </div>
@@ -144,49 +151,64 @@
           <!-- 첨부파일 부분 -->
           <div id="fileAttachment">
             <h4><strong>&nbsp;&nbsp;첨부이미지</strong></h4>
-            <form>          
                   <c:if test="${ requestScope.managerFileImg[0].fileName eq null or requestScope.managerFileImg[0].fileName eq '' }">
-                  <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
+                  <button class="imgbtn1 img4" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
                    ><img class="imgbtn1 img4" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
                   </c:if>
                      
                   <c:if test="${ requestScope.managerFileImg[0].fileName ne null and requestScope.managerFileImg[0].fileName ne '' }">
-                  <button class="imgbtn1" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
+                  <button class="imgbtn1 img4" id="imgbtn1" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" 
                    ><img class="imgbtn1 img4" src="${ pageContext.servletContext.contextPath }/${ requestScope.managerFileImg[0].fileName }"></button>
                   </c:if>   
                  
                   <c:if test = "${ requestScope.managerFileImg[1].fileName eq null or requestScope.managerFileImg[1].fileName eq '' }">
-                  <button class="imgbtn2" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
+                  <button class="imgbtn2 img5" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
                   ><img class="imgbtn2 img5" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
                   </c:if>   
                   <c:if test = "${ requestScope.managerFileImg[1].fileName ne null and requestScope.managerFileImg[1].fileName ne '' }">
-                  <button class="imgbtn2" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
+                  <button class="imgbtn2 img5" id="imgbtn2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" 
                   ><img class="imgbtn2 img5" src="${ pageContext.servletContext.contextPath }/${ requestScope.managerFileImg[1].fileName }"></button>
                   </c:if>   
             
                   <c:if test = "${ requestScope.managerFileImg[2].fileName eq null or requestScope.managerFileImg[2].fileName eq '' }">
-                  <button class="imgbtn3" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
+                  <button class="imgbtn3 img6" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
                   ><img class="imgbtn3 img6" src="${ pageContext.servletContext.contextPath }/resources/images/camera.png"></button>
                   </c:if>   
                   <c:if test = "${ requestScope.managerFileImg[2].fileName ne null and requestScope.managerFileImg[2].fileName ne '' }">
-                  <button class="imgbtn3" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
+                  <button class="imgbtn3 img6" id="imgbtn3" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" 
                   ><img class="imgbtn3 img6" src="${ pageContext.servletContext.contextPath }/${ requestScope.managerFileImg[2].fileName }"></button>
                   </c:if>
-            </form>
+          <!-- <div class="inquiry_modal">
+             <div class="inqury_box">
+                 <img class="inqury_img" id="show_img">
+             </div>
+         </div> -->
           </div>
+          
+          
           <br>
           <button type="button" id="delQusestion" value="${ requestScope.consultingCon.postNo }" onclick="delQ();">삭제</button>
           </div>
         </div>
      	   </c:if>
       </div>
-      <script>
-      /* $('#delQusestion').on('click', function () {
-          let delInfo = $(this).val();
-	         let delInfo = document.getElementById('delQusestion').value; 
-          console.log( $(this).val());
-      }); */
       
+     <!--  <script>
+        $('.img4').click(function(){
+            let img = new Image();
+            console.log(this);
+            img.src = $(this).attr("src");
+            console.log(img.src);
+            $('.inquiry_box').html(img);
+            $('.inquiry_modal').show();
+        });
+
+        $('.inquiry_modal').click(function(e){
+            $('.inquiry_modal').toggle();
+        });
+   	 </script> -->
+      
+      <script>
       function delQ() {
       		  
     	let delInfo = document.getElementById('delQusestion').value;
@@ -216,22 +238,6 @@
     	let amendmentInfo = document.getElementById('sendQusestion').value; 
     	
     	location.href = "${ pageContext.servletContext.contextPath }/user/ucc/MTMChange?postNo=" + amendmentInfo;
-    			
-    	/* $.ajax({
-    		url: "${ pageContext.servletContext.contextPath }/user/ucc/MTMChange",
-    		method : "get",
-    		data : {
-    			amendmentInfo :amendmentInfo
-    		},
-    		success : function(data) {
-				alert("상담게시글이 삭제 되었습니다.");
-				location.replace("${ pageContext.servletContext.contextPath }/user/ucc/MTMConsult");
-			},
-			error : function(error) {
-				alert("수정페이지로 이동에 실패했습니니다. 관리자에게 문의하세요.");
-				location.replace("${ pageContext.servletContext.contextPath }/user/ucc/MTMConsult");
-			}
-    	});	 */
     			
 	}
       
