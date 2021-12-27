@@ -29,6 +29,7 @@ public class OrderDTO {
 	private List<ProductDTO> productDTO; // 따로따로 뽑아줄라고...
 	private List<OrderInfoDTO> orderAmount;
 	private StoreDTO storeInfo;
+	
 
 	
 	public OrderDTO() {
