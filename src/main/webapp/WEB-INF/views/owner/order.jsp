@@ -182,6 +182,14 @@
 	          </thead>
             <tbody></tbody>
           </table>
+          <table class="table table" id="address" style="width: 700px; text-align: center;">
+	          <thead>
+              <tr>
+                <th scope="row" style=" background-color: rgba(252, 235, 233, 1);">주문자 주소</th>
+              </tr>
+	          </thead>
+            <tbody></tbody>
+          </table>
 	          <br><br>
 	        </div>
 	        <div class="modal-footer">
@@ -275,6 +283,25 @@
 					$phone = $("<td>").text(data.phone);
 					
 					$tr.append($phone);
+					$table.append($tr);
+    		}
+      		});
+    	
+    	$.ajax({
+    		url : '${ pageContext.servletContext.contextPath }/owner/order',
+    		type : 'post',
+    		data : { orderCode : orderCode },
+    		success : function(data){
+    			console.log(data);
+
+				const $table = $("#address tbody");
+				$table.html("");
+				
+				/* 변수 선언 부분 */
+					$tr = $("<tr>");
+					$address = $("<td>").text(data.address);
+					
+					$tr.append($address);
 					$table.append($tr);
     		}
       		});

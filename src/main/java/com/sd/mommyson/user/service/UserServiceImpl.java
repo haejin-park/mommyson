@@ -240,53 +240,53 @@ public class UserServiceImpl implements UserService{
 	   }
 
 	
-	/* 배달 주문리스트 저장 */
-	@Override
-	public Map<String, Object> insertDeliveryOrderList(HashMap<String, Object> insertDelivery) {
+	   /* 배달 주문리스트 저장 */
+		@Override
+		public Map<String, Object> insertDeliveryOrderList(HashMap<String, Object> insertDelivery) {
 
-		int result = 0;
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		List<Integer> price = (List<Integer>)insertDelivery.get("deliveryPayList");
-		
-		int[] storeCode = (int[])insertDelivery.get("storeCode");
-		
-		String[] storeName = (String[])insertDelivery.get("storeName");
-		
-        int[] sdCode = (int[])insertDelivery.get("sdCode");
-
-        int[] amount = (int[])insertDelivery.get("amount");
-      
-        String[] sdName = (String[])insertDelivery.get("sdName");
-        
-		
-	      List<Integer> orderCodes = new ArrayList<>();
-
-	      for(int i = 0; i< price.size(); i++) {
-	         
-	    	 map.put("memCode", insertDelivery.get("memCode"));
-	         map.put("price", price.get(i));
-	         map.put("storeCode",storeCode[i]);
-	         map.put("storeName", storeName[i]);
-	         map.put("sdCode", sdCode[i]);
-	         map.put("sdName", sdName[i]);
-	         map.put("amount", amount[i]);
+			int result = 0;
 			
-			int success = userDAO.insertDeliveryOrderList(map);
-			orderCodes.add(userDAO.selectLastOrderCode());
-			if(success > 0) {
-				result += 1;
-			}
-		
-		
-		}
-	      Map<String,Object> resultMap = new HashMap<>();
-	      resultMap.put("result", result);
-	      resultMap.put("orderCodes", orderCodes);
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			List<Integer> price = (List<Integer>)insertDelivery.get("deliveryPayList");
+			
+			int[] storeCode = (int[])insertDelivery.get("storeCode");
+			
+			String[] storeName = (String[])insertDelivery.get("storeName");
+			
+	        int[] sdCode = (int[])insertDelivery.get("sdCode");
+
+	        int[] amount = (int[])insertDelivery.get("amount");
 	      
-	      return resultMap;     
-	}
+	        String[] sdName = (String[])insertDelivery.get("sdName");
+	        
+			
+		      List<Integer> orderCodes = new ArrayList<>();
+
+		      for(int i = 0; i< price.size(); i++) {
+		         
+		    	 map.put("memCode", insertDelivery.get("memCode"));
+		         map.put("price", price.get(i));
+		         map.put("storeCode",storeCode[i]);
+		         map.put("storeName", storeName[i]);
+		         map.put("sdCode", sdCode[i]);
+		         map.put("sdName", sdName[i]);
+		         map.put("amount", amount[i]);
+				
+				int success = userDAO.insertDeliveryOrderList(map);
+				orderCodes.add(userDAO.selectLastOrderCode());
+				if(success > 0) {
+					result += 1;
+				}
+			
+			
+			}
+		      Map<String,Object> resultMap = new HashMap<>();
+		      resultMap.put("result", result);
+		      resultMap.put("orderCodes", orderCodes);
+		      
+		      return resultMap;     
+		}
 
 	
 	/**
@@ -389,6 +389,7 @@ public class UserServiceImpl implements UserService{
 		for(int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i));
 			result += userDAO.updateOrder(list.get(i));
+			userDAO.insertRTNotice(list.get(i));
 		}
 		System.out.println("service 들어옴 -----------------------" + result);
 		return result;
@@ -456,18 +457,41 @@ public class UserServiceImpl implements UserService{
 	}
 
 
+	@Override
+	public int updateMtmConsultingText(Map<String, Object> mtmConsulting) {
+		
+		int result = userDAO.updateMtmConsultingText(mtmConsulting);
+		return result;
+	}
 
-	/**
-	 * 배달 예약 주문 페이지(장바구니에 담았던 메뉴의 가게정보 & 제품금액 조회)
-	 * @author leeseungwoo
-	 */
-//	@Override
-//	public List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap) {
-//		
-//		return userDAO.selectDeliveryOrder(orderMap);
-//	}
-	
-	
-	
+
+	@Override
+	public int updateMtmConFile(Map<String, Object> fileInfo) {
+
+		int fileUploadResult = userDAO.updateMtmConFile(fileInfo);
+		return fileUploadResult;
+	}
+
+
+	@Override
+	public int updateVcountFqa(int postNo) {
+		
+		int result = userDAO.updateVcountFqa(postNo);
+		return result;
+	}
+
+
+	@Override
+	public int updateDelImg(Map<String, Object> delImgInfo) {
+		int result = userDAO.updateDelImg(delImgInfo);
+		return result;
+	}
+
+
+	@Override
+	public MemberDTO selectMemberAddress(int memCode) {
+		
+		return userDAO.selectMemberAddress(memCode);
+	}
 
 }

@@ -40,13 +40,13 @@
             <table class="table table" style="width: 1050px;">
               <thead style="background-color: #EDEDED;">
                 <tr>
-                  <th id="tablecol0"><input type="checkbox" onclick="selectAll(this)"></th><!-- 체크 박스 -->
+                  <th id="tablecol0"><input type="checkbox" style="width: 20px; height: 20px;" onclick="selectAll(this)"></th><!-- 체크 박스 -->
                   <th id="tablecol1" scope="col">가게 정보</th>
                   <th id="tablecol2" scope="col"></th><!-- 제품 이미지 -->        
                   <th id="tablecol3" scope="col">제품정보</th>        
                   <th id="tablecol4" scope="col">제품금액</th>        
                   <th id="tablecol5" scope="col">수량</th>        
-                  <th id="tablecol6" scope="col">수령일자</th>        
+                  <th id="tablecol6" scope="col">주문완료일자</th>        
                   <th id="tablecol7" scope="col">구매금액</th>      
                   <th id="tablecol8" scope="col">상태</th><!-- 리뷰쓰기 버튼// 접수상테(배달이완료되고 나서 뜨도록) -->     
                 </tr>
@@ -83,17 +83,15 @@
                   </td>
                   
                   <td style="padding-top: 40px;">
-                  <if test="${ myOrder.completeTime ne null}">
                   <c:out value="${ myOrder.completeTime }"/>
-                  </if>
-                  <if test="${ myOrder.takeTime ne null}">
+                  <%-- <if test="${ myOrder.takeTime ne null}">
                   <c:out value="${ myOrder.takeTime }"/>
-                  </if>
+                  </if> --%>
                   </td>
                   <td style="padding-top: 40px;"><c:out value="${ myOrder.totalPrice }"/></td>
                   <td style="padding-top: 40px;">
 <!--                   <td rowspan="i" style="padding-top: 40px;"> -->
-                  <c:if test="${ myOrder.completeTime ne null || myOrder.takeTime ne null }">
+                  <c:if test="${ (myOrder.completeTime ne null || myOrder.takeTime ne null) && myOrder.acceptTime ne null }">
                   <button value="${ myOrder.orderCode }" onclick="postReview(this)" class="urBtn">리뷰쓰기</button>                             
                   </c:if>
                   <c:if test="${ (myOrder.acceptTime eq null) && (myOrder.cancleTime eq null) }">

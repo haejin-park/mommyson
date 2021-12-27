@@ -38,7 +38,7 @@
             <p>ⓒ SSEULEODAMJO CORP. All Rights Reserved.</p>
         </div>
         <div class="manager_center">
-            <h4>고객센터</h4>
+            <h4><a href="${ pageContext.servletContext.contextPath }/user/ucc">고객센터</a></h4>
             <div class="callNum">
                 <img src="${ pageContext.servletContext.contextPath }/resources/images/callImg.png" alt="call">
                 <span>1644 - 1234</span>    
@@ -46,6 +46,9 @@
             <p>평일 10:00~18:50</p>
             <p>점심시간 12:00~13:00</p>
             <p>(주말과 공휴일은 휴무입니다.)</p>
+            <hr>
+            <p><a href="${ pageContext.servletContext.contextPath }/user/ucc/MTMQnA"/>1:1 문의하기</a></p>
+            <br>
         </div>
     </footer>
 </body>

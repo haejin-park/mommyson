@@ -86,8 +86,8 @@
     <br><br><br><br>
     <jsp:include page="../commons/footer.jsp"/>
     
-    
-<!--     <script>
+<!--     
+<!—     <script>
     
 	$("#myOrderList").on('click', function(){
 		let orderCodes = [];
@@ -98,6 +98,6 @@
 		location.href = "${ pageContext.servletContext.contextPath }/userMyPage/myOrderList?orderCodes=" + orderCodes ; 
 	});
 
-    </script> -->
+    </script> —> -->
 </body>
 </html>

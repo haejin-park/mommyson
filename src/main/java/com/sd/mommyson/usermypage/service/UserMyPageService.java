@@ -58,6 +58,8 @@ public interface UserMyPageService {
 
 	int selectCeoCode(int cpCode);
 
+	void updateMemberInfo(MemberDTO member);
+
 
 
 }

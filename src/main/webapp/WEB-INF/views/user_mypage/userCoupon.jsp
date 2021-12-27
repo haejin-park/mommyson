@@ -47,11 +47,8 @@
 	                  <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ myCoupon.couponInfo.store.storeImg }"/></td><!-- 450 * 550 이거 주의-->
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.cpName }"/></td>
 	                  <td style="padding-top: 40px;"><c:out value="${ myCoupon.couponInfo.disWon }"/></td>
-	                  <c:forEach var="banchanStore" items="${requestScope.ceoCode[colist.index]}" varStatus="banchanlist">
 	                  
-	                  <input type="hidden" value="${ banchanStore }">				
-					  <c:out value="${ banchanStore }"/>
-	                  </c:forEach>
+	                  <input type="hidden" value="${ requestScope.ceoCode[colist.index] }">				
 	                </tr>
               	</c:forEach>             	
              
@@ -64,7 +61,11 @@
           		const $tds = $('td');
           		for(let i = 0; i < $tds.length; i++) {
           			$tds[i].onclick = function() {
+          				
 						let StoreAddress = this.parentNode.children[3].value; 
+          				/* for(let j = 0; j < $tds.length; j++ ){
+          				} */
+          					//검증
 						/* let StoreAddress = this.parentNode.parentNode.children[2].value; */
 						console.log(StoreAddress);
 						location.href = "${ pageContext.servletContext.contextPath }/user/storepage?memCode=" + StoreAddress;

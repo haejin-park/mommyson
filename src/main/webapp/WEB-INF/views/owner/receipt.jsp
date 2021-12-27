@@ -51,9 +51,9 @@
 				<div style="margin-left: 600px;" id="before">
 					<h3 style="font-weight: 900; text-align: left;">영수증 상세 페이지</h3>
 					<br>
-					<div id="Layout" style="width: 700px; background-color: #ededed">
+					<div id="Layout">
 						<br>
-						<div style="width: 600px;  background-color: white; margin: 0 auto;" class="align">
+						<div id="inner" class="align">
 							<div style="width: 80%; margin: 0 auto;">
 							<br>
 							<h4 style="text-align: left;"><strong>마미손</strong></h4>
@@ -138,17 +138,37 @@
 					</div>
 							<br>
 				</div>		
-
 				</div>
+				<button id="print" class="couponBtn" style="margin-top : 100px;" onclick="goPrint('영수증 프린트')">프린트하기</button>
 			</div>
-			
 		</div>
 	</div>
-
-
 
 	<!-- footer -->
 	<jsp:include page="../commons/footer.jsp" />
 
+<script>
+function goPrint(title){
+    let sw=screen.width;
+    let sh=screen.height;
+    let w=800;//팝업창 가로길이
+    let h=600;//세로길이
+    let xpos=(sw-w)/2; 
+    let ypos=(sh-h)/2; 
+
+    let pHeader="<html><head><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css' integrity='sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn' crossorigin='anonymous'><link rel='stylesheet' href='${ pageContext.servletContext.contextPath }/resources/css/coupon.css'> <title>" + title + "</title></head><body>";
+    let pgetContent=document.getElementById("Layout").innerHTML + "<br>";
+    //innerHTML을 이용하여 Div로 묶어준 부분을 가져옵니다.
+    let pFooter="</body></html>";
+    pContent=pHeader + pgetContent + pFooter; 
+     
+    pWin=window.open("","print","width=" + w +",height="+ h +",top=" + ypos + ",left="+ xpos +",status=yes,scrollbars=yes"); //동적인 새창을 띄웁니다.
+    pWin.document.open(); //팝업창 오픈
+    pWin.document.write(pContent); //새롭게 만든 html소스를 씁니다.
+    pWin.document.close(); //클로즈
+    pWin.print(); //윈도우 인쇄 창 띄우고
+    pWin.close(); //인쇄가 되던가 취소가 되면 팝업창을 닫습니다.
+   }
+</script>
 </body>
 </html>

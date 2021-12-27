@@ -70,7 +70,6 @@
 			},
 			success : function (data) {
 				if(data == true) {
-					alert("개인정보 변경절차에 들어가겠습니다.");
 					location.href="${ pageContext.servletContext.contextPath }/userMyPage/userInfoChange2";
 				} else {
 					alert("회원정보가 일치하지 않습니다.");

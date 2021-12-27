@@ -129,7 +129,7 @@
             <div id="sendArea">
               <button type="submit" id="sendQusestion"><strong>보내기</strong></button>
                 &nbsp;&nbsp;
-              <button id="cnacel"><strong>취소</strong></button>
+              <button type="button" id="cnacel" onclick="history.back()"><strong>취소</strong></button>
             </div>
           </div>
         </div>

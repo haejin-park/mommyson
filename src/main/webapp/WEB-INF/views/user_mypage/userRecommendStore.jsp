@@ -42,7 +42,8 @@
               </thead>
               <tbody>
                 <c:forEach var="recommend" items="${ requestScope.storeReconmendList }">
-                <tr>          
+                <tr>
+                  <input type="hidden" value="${ recommend.memCode }">         
                   <td><img class="storeimg" src="${ pageContext.servletContext.contextPath }/${ recommend.storeImg }"></td>
                   <td style="padding-top: 20px;">
                   <p><strong><c:out value="${ recommend.storeName }"/></strong><br></p>
@@ -66,7 +67,7 @@
               		const $tds = $('td');
               		for(let i = 0; i < $tds.length; i++) {
               			$tds[i].onclick = function() {
-							let StoreAddress = this.parentNode.children[2].children[1].value;
+							let StoreAddress = this.parentNode.children[0].value;
 							location.href = "${ pageContext.servletContext.contextPath }/user/storepage?memCode=" + StoreAddress;
 							console.log(StoreAddress);
               				

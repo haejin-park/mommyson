@@ -194,15 +194,25 @@
 	SELECT
 			  COUNT(*)
 		 FROM ORDER_TBL A
+		 JOIN STORE_TBL B ON(B.MEM_CODE = A.STORE_CODE)
 		WHERE A.MEM_CODE = #{ searchCondition }
 		  <if test="searchValue != null">
-		  AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
+		  AND B.STORE_NAME LIKE '%' || #{ searchValue } || '%' 
 		  </if>
+	  <!-- SELECT
+		  COUNT(*)
+	 FROM ORDER_TBL A
+	 JOIN ORDER_INFO_TBL B ON(B.ORDER_CODE = A.ORDER_CODE)
+	 JOIN PRODUCT_TBL C ON(B.SD_CODE=C.SD_CODE)
+	 JOIN STORE_TBL D ON(D.MEM_CODE=C.MEM_CODE)		  		  
+	WHERE A.MEM_CODE = #{ searchCondition }
+	<if test="searchValue != null">
+	  AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'		
+   </if> -->
 	</select>
-	
 	<!-- 나의 주문목록 출력 및 페이지 네이션  -->
 	<select id="selectMyOrderList" resultMap="orderResultMap">
-		SELECT
+		<!-- SELECT
 			   A.RNUM
 			 , A.MEM_CODE
 			 , A.TOTAL_PRICE
@@ -251,6 +261,63 @@
 				  		 WHERE C.MEM_CODE = #{ searchCondition } 		
 				  		 <if test="searchValue != null">
 				  		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'		
+				  		 </if>
+				  		 ORDER BY C.ORDER_CODE DESC
+				  )B	 
+		  <![CDATA[
+			 	 WHERE ROWNUM <= #{ endRow }
+			 	 ]]>
+			 	 )A
+	 <![CDATA[
+	 WHERE A.RNUM >= #{ startRow }
+	 ]]> -->
+	 		SELECT
+			   A.RNUM
+			 , A.MEM_CODE
+			 , A.TOTAL_PRICE
+			 , A.ORDER_CODE
+			 , A.ORDER_TYPE
+			 , A.TAKE_TIME
+			 , A.ADDRESS
+			 , A.PHONE
+			 , A.STORE_NAME
+			 , A.CODE
+			 , A.ORDER_CANCLE_TIME
+			 , A.ORDER_COMPLETE_TIME
+			 , A.ORDER_ACCEPT_TIME
+			 , A.STORE_IMG
+		  FROM (SELECT ROWNUM RNUM
+		  			 , B.MEM_CODE
+					 , B.TOTAL_PRICE
+					 , B.ORDER_CODE
+					 , B.ORDER_TYPE
+					 , B.TAKE_TIME
+					 , B.ADDRESS
+					 , B.PHONE
+					 , B.STORE_NAME
+					 , B.CODE
+					 , B.ORDER_CANCLE_TIME
+					 , B.ORDER_COMPLETE_TIME
+					 , B.ORDER_ACCEPT_TIME
+					 , B.STORE_IMG		 
+				  FROM (SELECT C.MEM_CODE
+							 , C.TOTAL_PRICE
+							 , C.ORDER_CODE
+							 , C.ORDER_TYPE
+							 , C.TAKE_TIME
+							 , C.ADDRESS
+							 , C.PHONE
+							 , C.STORE_NAME
+							 , C.CODE
+							 , C.ORDER_CANCLE_TIME
+							 , C.ORDER_COMPLETE_TIME
+							 , C.ORDER_ACCEPT_TIME
+							 , D.STORE_IMG
+				  		  FROM ORDER_TBL C
+				  		  JOIN STORE_TBL D ON(C.STORE_CODE=D.MEM_CODE)		  		  
+				  		 WHERE C.MEM_CODE = #{ searchCondition } 		
+				  		 <if test="searchValue != null">
+				  		   AND D.STORE_NAME LIKE '%' || #{ searchValue } || '%'		
 				  		 </if>
 				  		 ORDER BY C.ORDER_CODE DESC
 				  )B	 
@@ -539,6 +606,21 @@
 	 	 WHERE MEM_ID = #{ memId } 
 	 </update>
 	 
+	 <update id="updateMemberInfo">
+	 	UPDATE MEMBER_TBL
+	 	   SET <if test="memPwd != null">MEM_PWD = #{ memPwd },</if>
+	 	   	   NICKNAME = #{ nickname },
+	 	   	   POST_CODE = #{ postCode },
+	 	   	   ADDRESS = #{ address },
+	 	   	   D_ADDRESS = #{ dAddress },
+	 	   	   LOCATION_CODE = (SELECT LOCATION_CODE FROM LOCATION WHERE LOCATION_NAME = (SELECT SUBSTR(#{ address }, INSTR(#{ address }, ' ', 1, 1), INSTR(#{ address }, ' ', 1, 1)) FROM DUAL))
+	 	 WHERE MEM_CODE = #{ memCode }
+	 </update>
 	 
+	 <update id="updateUserInfo">
+	 	UPDATE USER_TBL
+	 	   SET NAME = #{ user.name }
+	 	 WHERE MEM_CODE = #{ memCode }
+	 </update>
 </mapper>
     

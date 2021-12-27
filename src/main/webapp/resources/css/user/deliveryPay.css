@@ -18,8 +18,8 @@
 .infoBox2 .info_table thead tr {}
 .infoBox2 .info_table thead tr th { font-size: 16px; color: #333; padding: 15px 0; }
 .infoBox2 .info_table tbody {}
-.infoBox2 .info_table tbody tr {}
-.infoBox2 .info_table tbody tr td {}
+.infoBox2 .info_table tbody tr { border-bottom: 1px solid #ddd; }
+.infoBox2 .info_table tbody tr td { padding: 20px; }
 .infoBox2 .info_table tbody tr td img { max-width: 100px; }
 
 .info_box3 { padding: 35px 70px; border: 2px solid #999; }
@@ -28,8 +28,8 @@
 .info_box3 .payment_list li p { font-size: 18px; line-height: 20px; color: #999; margin-bottom: 20px; }
 .info_box3 .payment_list li:last-child p { color: #333; font-weight: 700; }
 .info_box3 .payment_list li strong { font-size: 26px; line-height: 28px; color: #333; font-weight: 700; }
-.info_box3 .payment_list li:last-child strong { font-size: 32px; color: #F89E91; }
-.info_box3 .payment_list li strong span { font-size: 17px; font-weight: 300; }
+.info_box3 .payment_list li:last-child input { font-size: 32px; color: #F89E91; font-weight: 600; background: white; width: 117px; border: none; }
+.info_box3 .payment_list li span { font-size: 17px; font-weight: 300; }
 
 .btn_box { text-align: center; margin: 30px 0 0; }
 .btn_box .final_btn { border: 0; border-radius: 10px; background-color: #F89E91; display: inline-block; width: 150px; padding: 10px 0; font-size: 18px; color: #fff !important; font-weight: 700; }
@@ -166,7 +166,7 @@
 
 
 
-#paymentAmount{
+/* #paymentAmount{
     color:rgb(242, 119, 78);
     border: 1px;
     font-size: 25px;
@@ -181,9 +181,9 @@
     font-size: 25px;
     border:2px solid black;
     margin-bottom: 7px;
-}
+} */
 
-#goShoppingBasket{
+/* #goShoppingBasket{
     width:200px;
     height:50px;
     border-radius: 9px;
@@ -192,7 +192,7 @@
     border:2px solid black;
     color :white;
     margin-left: 30px;
-}
+} */
 /* 
 #ok{
     width:100px;

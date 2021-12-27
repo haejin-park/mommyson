@@ -43,9 +43,7 @@
     	</collection>
     </resultMap>
     
-
-	
-    <resultMap type="com.sd.mommyson.user.dto.CartDTO" id="cartResultMap">
+<resultMap type="com.sd.mommyson.user.dto.CartDTO" id="cartResultMap">
     	<id property="cartCode" column="CART_CODE"/>
     	<result property="memCode" column="MEM_CODE"/>
     	<result property="amount" column="AMOUNT"/>
@@ -136,13 +134,7 @@
 		<association property="authDTO" resultMap="authResultMap"/>
 	</resultMap>
 	
-    <!-- 12-24 승우 -->
-    <!-- <resultMap type="com.sd.mommyson.user.dto.OrderDTO" id="orderResultMap">
-    	<id property="memCode" column="MEM_CODE"/>
-    </resultMap>
-    
-    <select id="selectDeliveryOrder"></select> -->
-    
+	
     <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
@@ -249,12 +241,25 @@
 			 , A.POST_DATE
 			 , A.ANS_STATUS
 			 , A.QUE_NO
-			 , A.STATUS	
+			 , A.STATUS
+			 , A.VIEW_CNT	
 		 FROM POST_TBL A
 		 JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
 		WHERE B.TYPE = 'fqa'
-		<!-- 뷰카운트 만들어야함 -->	 
+		ORDER BY A.VIEW_CNT DESC
     </select>
+    
+        <!-- fqa viewCount -->
+    <update id="updateVcountFqa" parameterType="_int">
+    UPDATE 
+               POST_TBL A
+           SET A.VIEW_CNT = (SELECT B.VIEW_CNT
+                                  FROM POST_TBL B
+                                 WHERE B.POST_NO = #{ postNo }
+                               ) + 1
+         WHERE A.POST_NO = #{ postNo }	   
+    	   
+    </update>
     
     
     <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
@@ -353,6 +358,9 @@
 		 WHERE B.IS_DELETED = 'N'
 		 <if test="type == 'new'">
 		   AND B.ENROLL_DATE > (SYSDATE - 100)
+		 </if>
+		 <if test="type == 'famous'">
+		   AND (SELECT COUNT(*) FROM REVIEW_TBL R JOIN ORDER_TBL O ON(R.ORDER_CODE = O.ORDER_CODE) WHERE O.STORE_CODE = A.MEM_CODE) > 10 
 		 </if>
 		 <if test="searchValue != null">
 		   AND C.STORE_NAME LIKE '%' || #{ searchValue } || '%'
@@ -472,8 +480,7 @@
 					  ) A
 				JOIN BOARD_TBL D ON (A.BOARD_CODE = D.BOARD_CODE)	  
 		 	   WHERE A.RNUM >= #{ startRow }	
-    </select>
-	 
+    </select> 
     
     <select id="selectStoreList" resultMap="storeResultMap">
     	SELECT
@@ -492,20 +499,23 @@
 	                         A.MEM_CODE
 	                       , A.STORE_NAME
 	                       , A.STORE_IMG 
-	                       , (SELECT COUNT(*) FROM STORE_TBL S LEFT JOIN REVIEW_TBL R ON(S.MEM_CODE = R.MEM_CODE)) AS COUNT
+	                       , (SELECT COUNT(*) FROM REVIEW_TBL R JOIN ORDER_TBL O ON(R.ORDER_CODE = O.ORDER_CODE) WHERE O.STORE_CODE = A.MEM_CODE) AS COUNT
 	                    FROM STORE_TBL A
 	                    LEFT JOIN MEMBER_TBL M ON(A.MEM_CODE = M.MEM_CODE)
 	                    <where>
 	                    	M.IS_DELETED = 'N'
 				         	<if test='searchValue != null'>
-				         	A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
+				         	AND A.POST_TITLE LIKE '%' ||  #{ searchValue } || '%'
 				         	</if>
+				         	<if test="searchCondition == 'famous'">
+	                    	AND (SELECT COUNT(*) FROM REVIEW_TBL R JOIN ORDER_TBL O ON(R.ORDER_CODE = O.ORDER_CODE) WHERE O.STORE_CODE = A.MEM_CODE) > 10 
+		                    </if>
 			   	        </where>
 	                    <if test="searchCondition == 'new'">
 	                    	ORDER BY M.ENROLL_DATE DESC
 	                    </if>
 	                    <if test="searchCondition == 'famous'">
-	                    	ORDER BY (SELECT COUNT(*) FROM STORE_TBL S LEFT JOIN REVIEW_TBL R ON(S.MEM_CODE = R.MEM_CODE)) DESC
+	                    	ORDER BY (SELECT COUNT(*) FROM REVIEW_TBL R JOIN ORDER_TBL O ON(R.ORDER_CODE = O.ORDER_CODE) WHERE O.STORE_CODE = A.MEM_CODE) DESC
 	                    </if>
 	                    )B
 	          <![CDATA[        
@@ -707,7 +717,7 @@
     	   AND A.SD_CODE = #{ sdCode }
     </select>
     
-   <!--  장바구니 상품 조회   -->
+ <!--  장바구니 상품 조회   -->
     <select id="selectCountCart" resultType="_int"> 
     	SELECT COUNT(*)
     	  FROM CART_TBL
@@ -844,22 +854,7 @@
     </select>
     
     
-    <!-- 결제 화면 조회 -->
-    <select id="selectOrderList" resultType="hashmap" parameterType="list">
-    	SELECT
-    		   A.ORDER_CODE
-    		 , A.TOTAL_PRICE
-    		 , B.STORE_IMG
-    		 , B.STORE_NAME
-    		 , B.MEM_CODE AS STORE_CODE
-    	  FROM ORDER_TBL A
-    	  LEFT JOIN STORE_TBL B ON(A.STORE_CODE = B.MEM_CODE)
-    	 WHERE A.ORDER_CODE IN (
-    	 <foreach collection="list" item="item" separator=",">
-    	 	#{ item }
-    	 </foreach>
-    	 )
-    </select>
+  
     
     <!-- 결제취소 -->
     <delete id="deleteOrder" parameterType="list">
@@ -998,7 +993,7 @@
 			 </foreach>
 			 )
 		
-	</select> 
+	</select>
 
     <insert id="insertReport">
     	INSERT
@@ -1088,6 +1083,7 @@
     	  AND CEO_CODE = #{ storeCode }
     </delete>
     
+     <!-- 1:1상담 입력 -->
      <insert id="registMtmConsultingText" parameterType="hashmap">
 	    INSERT
 	       	INTO POST_TBL A
@@ -1110,7 +1106,7 @@
 	    )
      </insert>
      
-     <!-- 1:1상담 입력 -->
+    
      <insert id="registMtmConFile" parameterType="hashmap">
 	    <selectKey keyProperty="postNo" resultType="int" order="BEFORE">
 	    	SELECT
@@ -1128,22 +1124,43 @@
      	VALUES
      	(
      	  SEQ_FILE.NEXTVAL
-     	, #{ fileLocation }
+     	, #{ fileLocation, jdbcType=VARCHAR }
      	, #{ postNo }
      	, #{ fileType }
      	)	
      </insert>
      
+     <!-- 1:1 상담 게시물 수정 -->
+     <!-- 1:1 상담 게시물 텍스트 수정 -->
+     <update id="updateMtmConsultingText" parameterType="hashmap">
+     	UPDATE
+     		   POST_TBL A
+     	   SET A.POST_TITLE = #{ mtmTitle },
+     	   	   A.POST_CONTENT = #{ mtmContents, jdbcType=VARCHAR }
+     	 WHERE A.POST_NO = #{ postNo }
+     	   AND A.MEM_CODE = #{ memCode }	   
+     	   	   
+     </update>
+     <!-- 1:1 상담게시물 파일 업데이트 -->
+     <update id="updateMtmConFile">
+	     UPDATE
+	     		FILE_TBL A
+	        SET A.FILE_NAME = #{ fileLocation }	
+	      WHERE A.POST_NO = #{ postNo }
+	        AND A.FILE_CODE = #{ fileCode }
+     </update>
+     
+     
      <!-- 1:1 상담내역 출력 -->
      <!-- 1:1 상담 게시물 전체 숫자 출력 -->
      <select id="selectMtmTotalCount" parameterType="hashmap" resultType="_int">
-     
      	SELECT
 			   COUNT(*)
 		  FROM POST_TBL A
 		  JOIN BOARD_TBL B ON(B.BOARD_CODE = A.BOARD_CODE)
 		 WHERE (B.TYPE = 'userMtmConsulting' OR B.TYPE = 'OwnerMtmConsulting')
 		   AND A.MEM_CODE = #{ searchCondition }
+		   AND A.STATUS = 'N'
 		   <if test="searchValue != null">
 		   AND A.POST_TITLE = #{ searchValue }
 		   </if>
@@ -1259,6 +1276,55 @@
         SET A.STATUS = 'Y'
       WHERE A.POST_NO = #{ postNo }	
      </update>
-     
     
+    <select id="selectOrderList" resultType="hashmap" parameterType="list">
+    	SELECT
+    	       A.MEM_CODE
+    		 , A.ORDER_CODE
+    		 , A.TOTAL_PRICE
+    		 , B.STORE_IMG
+    		 , B.STORE_NAME
+    		 , B.MEM_CODE AS STORE_CODE
+    		 , B.DEL_COST
+    	  FROM ORDER_TBL A
+    	  LEFT JOIN STORE_TBL B ON(A.STORE_CODE = B.MEM_CODE)
+    	 WHERE A.ORDER_CODE IN (
+    	 <foreach collection="list" item="item" separator=",">
+    	 	#{ item }
+    	 </foreach>
+    	 )
+    </select>
+    
+    <!-- 소비자 게시물 소비자 이미지 파일 삭제 -->
+    <update id="updateDelImg">
+    	UPDATE
+    		  FILE_TBL A
+    	  SET FILE_NAME = #{ cameraImg }
+    	WHERE FILE_CODE = #{ fileCode }  
+    </update>
+    
+    <insert id="insertRTNotice">
+    	<selectKey keyProperty="memCode" resultType="int" order="BEFORE">
+	    	SELECT
+	    		   STORE_CODE
+	    	  FROM ORDER_TBL WHERE ORDER_CODE = #{ orderCode }
+	    </selectKey>
+    	INSERT
+    	INTO RT_NOTICE_TBL
+    	(
+    	  NOTICE_CODE
+    	, MEM_CODE
+    	, NOTICE_CONTENTS
+    	, NOTICE_TIME
+    	)
+    	VALUES
+    	(
+    	  RT_NOTICE.NEXTVAL
+    	, #{ memCode }
+    	, '새 주문이 들어왔어요!'
+    	, SYSDATE
+    	)
+    </insert>
+    
+
     </mapper>

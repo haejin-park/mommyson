@@ -35,18 +35,21 @@
     </script>
 	
     <section>
-        <div style="width: 100%; height: 450px; margin-bottom: 100px; padding: 0 !important;" class="at-container">
+        <div style="width: 100%; height: 400px; margin-bottom: 100px; padding: 0 !important;" class="at-container">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="${ pageContext.servletContext.contextPath }/resources/images/main_label.png" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="${ pageContext.servletContext.contextPath }/resources/images/baner2.jpg" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="${ pageContext.servletContext.contextPath }/resources/images/baner1.jpg" class="d-block w-100" alt="...">
-                  </div>
+                  <c:forEach items="${ requestScope.banerList }" var="baner">
+	                  <c:if test="${ baner.bnOrder == 1 }">
+		                  <div class="carousel-item active">
+		                    <img src="${ pageContext.servletContext.contextPath }/${ baner.bnImg }" class="d-block w-100" alt="...">
+		                  </div>
+	                  </c:if>
+	                  <c:if test="${ baner.bnOrder != 1 }">
+		                  <div class="carousel-item">
+		                    <img src="${ pageContext.servletContext.contextPath }/${ baner.bnImg }" class="d-block w-100" alt="...">
+		                  </div>
+	                  </c:if>
+                  </c:forEach>
                 </div>
                <button class="carousel-control-prev" type="button" data-target="#carouselExampleControls" data-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>

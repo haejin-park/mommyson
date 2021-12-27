@@ -2,6 +2,8 @@ package com.sd.mommyson.member.dao;
 
 import java.util.HashMap;
 import java.util.List;
+
+import com.sd.mommyson.manager.dto.BannerDTO;
 import com.sd.mommyson.member.dto.EmailCodeDTO;
 import com.sd.mommyson.member.dto.ManagerDTO;
 import com.sd.mommyson.member.dto.MemberDTO;
@@ -95,6 +97,8 @@ public interface MemberDAO {
 	public int deleteNotice(int noticeCode);
 
 	public int selectCartCount(int memCode);
+
+	public List<BannerDTO> selectBanners();
 
 
 

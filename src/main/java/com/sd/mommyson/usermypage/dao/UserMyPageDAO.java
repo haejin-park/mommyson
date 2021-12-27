@@ -58,4 +58,8 @@ public interface UserMyPageDAO {
 
 	int selectCeoCode(int cpCode);
 
+	void updateMemberInfo(MemberDTO member);
+
+	void updateUserInfo(MemberDTO member);
+
 }
