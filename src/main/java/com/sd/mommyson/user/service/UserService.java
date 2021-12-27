@@ -94,9 +94,6 @@ public interface UserService {
 	/* 주문 결제 취소 */
 	void deleteOrder(List<Integer> orderCodeList);
 	
-
-
-	
 	int insertReport(Map<String, Integer> reportInfo);
 
 	Map<String, String> selectStoreInfoByMemcode(int memCode);

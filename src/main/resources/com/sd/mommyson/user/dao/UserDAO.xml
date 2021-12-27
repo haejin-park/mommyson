@@ -844,7 +844,7 @@
     </select>
     
     
-    <!-- 방문 포장 결제 화면 조회 -->
+    <!-- 결제 화면 조회 -->
     <select id="selectOrderList" resultType="hashmap" parameterType="list">
     	SELECT
     		   A.ORDER_CODE
