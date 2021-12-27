@@ -135,6 +135,14 @@
 	</resultMap>
 	
 	
+<resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap2">
+       <id property="memCode" column="MEM_CODE"/>
+       <result property="address" column="ADDRESS"/>
+       <result property="postCode" column="POST_CODE"/>
+       <result property="dAddress" column="D_ADDRESS"/>
+    </resultMap>
+
+	
     <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
@@ -1325,6 +1333,15 @@
     	, SYSDATE
     	)
     </insert>
+    
+    <select id="selectMemberAddress" resultMap="memberResultMap2" parameterType="_int">
+       SELECT
+              ADDRESS
+            , POST_CODE
+            , D_ADDRESS
+         FROM MEMBER_TBL
+        WHERE MEM_CODE = #{ memCode }
+    </select>
     
 
     </mapper>
