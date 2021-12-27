@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/user/packagePay.css">
-    <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
+    <link rel="stylesheet" type="text/css" href="${ pageContext.servletContext.contextPath }/resources/css/colorset.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -80,8 +80,10 @@
         </table>  
       </div>
       <br><br>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay">결제하기</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="pay" ">결제하기</button>
       <button type="button" id="goShoppingBasket">취소하기</button>
+      
+      <jsp:include page="../commons/footer.jsp"/>
       <script>
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -298,28 +300,16 @@
 
 >>>>>>> a6d804976bbf1f33133549d277a0677224ee6fde
     <br><br><br><br>
-    <jsp:include page="../commons/footer.jsp"/>
     
     <script>
 <<<<<<< HEAD
     function validate(){
-      var name = document.getElementById("name");
       var phone = document.getElementById("phone");
-      
 
-      if(name.value == ""){
-          alert("이름을 입력해주세요.")
-          name.focus()
-          return false;
-      }
-
-      if(!chk(/^[가-힣]{2,}$/,name,"이름은 한글로 2글자 이상을 넣으세요")){
-          return false;
-      }
       
       if(phone.value == ""){
           alert("전화번호를 입력해주세요.")
-          phone.focus()
+          phone.focus();
           return false;
       }
 
