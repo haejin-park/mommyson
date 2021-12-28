@@ -432,7 +432,8 @@ public class MemberController {
 	/* 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러 */
 	@PostMapping(value ="modifyPwd")
 	@ResponseBody
-	public String modifyPwd(@RequestParam String email, @RequestParam("pwd1") String memPwd, Model model) throws Exception{
+	public String modifyPwd(@RequestParam String email, 
+			@RequestParam("pwd1") String memPwd, Model model) throws Exception{
 		
 		System.out.println("변경할 비밀번호 입력 후 같이 보낼 email : " + email);
 		

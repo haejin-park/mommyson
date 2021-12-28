@@ -40,10 +40,6 @@ import com.sd.mommyson.user.dto.ReviewDTO;
 import com.sd.mommyson.user.service.UserService;
 
 
-/**
- * @author haejinpark
- *
- */
 @Controller
 //@SessionAttributes("")
 @RequestMapping("/user/*")
@@ -1401,7 +1397,8 @@ public class UserController {
 	 * @return "user/shoppingBasket"
 	 */
 	@GetMapping("deleteCart")
-	public String deleteCart(Model model, HttpSession session, @RequestParam(value = "deleteList", required = false) int[] deleteList){
+	public String deleteCart(Model model, HttpSession session, 
+			@RequestParam(value = "deleteList", required = false) int[] deleteList){
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("loginMember");
 		int memCode = member.getMemCode();
@@ -1572,12 +1569,12 @@ public class UserController {
 				model.addAttribute("message", "업데이트 실패");
 			}
 			
-			List<Map<String,Object>> orderList = userService.selectPackageOrderComplete(list); //방문포장 결제 완료 조회
+			List<Map<String,Object>> orderList = 
+					userService.selectPackageOrderComplete(list); //방문포장 결제 완료 조회
 			System.out.println("orderList : " + orderList);
 			
 			model.addAttribute("orderList", orderList);
 			System.out.println("model : " + model);
-			
 			
 			return "user/packageOrderComplete";
 		}

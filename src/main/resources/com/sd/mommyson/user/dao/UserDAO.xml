@@ -135,7 +135,7 @@
 	</resultMap>
 	
 	
-<resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap2">
+	<resultMap type="com.sd.mommyson.member.dto.MemberDTO" id="memberResultMap2">
        <id property="memCode" column="MEM_CODE"/>
        <result property="address" column="ADDRESS"/>
        <result property="postCode" column="POST_CODE"/>
