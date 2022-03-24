@@ -181,7 +181,7 @@
 		</dependency>
 		
 		<!-- 회원가입시 비밀번호 암호화 -->
-		  <dependency>
+	  	<dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>5.4.2</version>
@@ -222,8 +222,6 @@
 		
 		
 		<!-- 메일 전송 -->
- 
-
         <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
         <dependency>
             <groupId>javax.mail</groupId>

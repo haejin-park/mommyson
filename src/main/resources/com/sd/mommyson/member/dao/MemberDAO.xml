@@ -76,6 +76,26 @@
 		<result property="tagName" column="TAG"/>
 		<result property="status" column="STATUS"/>
 	</resultMap>
+	
+	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+		<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<result property="storeName" column="STORE_NAME"/>
+	</resultMap>
 
 
 	<select id="selectAll" resultType="_int">
@@ -402,25 +422,7 @@
 		 WHERE A.STATUS = 'Y'
 	</select> 
 	
-	<resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
-		<id property="sdCode" column="SD_CODE"/>
-    	<result property="sdName" column="SD_NAME"/>
-    	<result property="mDate" column="M_DATE"/>
-    	<result property="price" column="PRICE"/>
-    	<result property="ingredient" column="INGREDIENT"/>
-    	<result property="volume" column="VOLUME"/>
-    	<result property="sdImg" column="SD_IMG"/>
-    	<result property="category" column="CATEGORY"/>
-    	<result property="discountRate" column="DISCOUNT_RATE"/>
-    	<result property="memCode" column="MEM_CODE"/>
-    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
-    	<result property="eDate" column="EXPIRY_DATE"/>
-    	<result property="categoryCode" column="CATEGORY_CODE"/>
-    	<result property="storageMethod" column="STORAGE_METHOD"/>
-    	<result property="detail" column="SD_DETAIL"/>
-    	<result property="isDeleted" column="IS_DELETED"/>
-    	<result property="storeName" column="STORE_NAME"/>
-	</resultMap>
+
 	
 	<select id="selectProductList" resultMap="productResultMap">
 		SELECT

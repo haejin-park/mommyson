@@ -143,6 +143,67 @@
     </resultMap>
 
 	
+    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
+    	<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<result property="storeName" column="STORE_NAME"/>
+    </resultMap>
+    
+    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productTagResultMap">
+    	<id property="sdCode" column="SD_CODE"/>
+    	<result property="sdName" column="SD_NAME"/>
+    	<result property="mDate" column="M_DATE"/>
+    	<result property="price" column="PRICE"/>
+    	<result property="ingredient" column="INGREDIENT"/>
+    	<result property="volume" column="VOLUME"/>
+    	<result property="sdImg" column="SD_IMG"/>
+    	<result property="category" column="CATEGORY"/>
+    	<result property="discountRate" column="DISCOUNT_RATE"/>
+    	<result property="memCode" column="MEM_CODE"/>
+    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
+    	<result property="eDate" column="EXPIRY_DATE"/>
+    	<result property="categoryCode" column="CATEGORY_CODE"/>
+    	<result property="storageMethod" column="STORAGE_METHOD"/>
+    	<result property="detail" column="SD_DETAIL"/>
+    	<result property="isDeleted" column="IS_DELETED"/>
+    	<result property="storeName" column="STORE_NAME"/>
+    	<collection property="tagList" ofType="java.lang.String" javaType="list">
+    		<result column="TAG"/>
+    	</collection>
+    </resultMap>
+    
+    <resultMap type="com.sd.mommyson.user.dto.FileDTO" id="fileResultMap">
+    	<id property="fileCode" column="FILE_CODE"/>
+    	<result property="fileName" column="FILE_NAME"/>
+    	<result property="postNo" column="POST_NO"/>
+    	<result property="fileType" column="FILE_TYPE"/>
+    </resultMap>
+
+    <resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
+		<id property="cpCode" column="CP_CODE"/>
+		<result property="cpNum" column="CP_NUM"/>
+		<result property="cpName" column="CP_NAME"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="disWon" column="DISCOUNT_WON"/>
+		<result property="endDate" column="END_DATE"/>
+		<result property="dCcon" column="DC_CONDITION"/>
+		<result property="storeCode" column="STORE_CODE"/>
+	</resultMap>
+	
     <!-- 공지사항 출력 및 검색 -->
     <select id="selectNotice" resultMap="postResultMap">
     	SELECT
@@ -270,55 +331,6 @@
     </update>
     
     
-    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productResultMap">
-    	<id property="sdCode" column="SD_CODE"/>
-    	<result property="sdName" column="SD_NAME"/>
-    	<result property="mDate" column="M_DATE"/>
-    	<result property="price" column="PRICE"/>
-    	<result property="ingredient" column="INGREDIENT"/>
-    	<result property="volume" column="VOLUME"/>
-    	<result property="sdImg" column="SD_IMG"/>
-    	<result property="category" column="CATEGORY"/>
-    	<result property="discountRate" column="DISCOUNT_RATE"/>
-    	<result property="memCode" column="MEM_CODE"/>
-    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
-    	<result property="eDate" column="EXPIRY_DATE"/>
-    	<result property="categoryCode" column="CATEGORY_CODE"/>
-    	<result property="storageMethod" column="STORAGE_METHOD"/>
-    	<result property="detail" column="SD_DETAIL"/>
-    	<result property="isDeleted" column="IS_DELETED"/>
-    	<result property="storeName" column="STORE_NAME"/>
-    </resultMap>
-    
-    <resultMap type="com.sd.mommyson.owner.dto.ProductDTO" id="productTagResultMap">
-    	<id property="sdCode" column="SD_CODE"/>
-    	<result property="sdName" column="SD_NAME"/>
-    	<result property="mDate" column="M_DATE"/>
-    	<result property="price" column="PRICE"/>
-    	<result property="ingredient" column="INGREDIENT"/>
-    	<result property="volume" column="VOLUME"/>
-    	<result property="sdImg" column="SD_IMG"/>
-    	<result property="category" column="CATEGORY"/>
-    	<result property="discountRate" column="DISCOUNT_RATE"/>
-    	<result property="memCode" column="MEM_CODE"/>
-    	<result property="orderableStatus" column="ORDERABLE_STATUS"/>
-    	<result property="eDate" column="EXPIRY_DATE"/>
-    	<result property="categoryCode" column="CATEGORY_CODE"/>
-    	<result property="storageMethod" column="STORAGE_METHOD"/>
-    	<result property="detail" column="SD_DETAIL"/>
-    	<result property="isDeleted" column="IS_DELETED"/>
-    	<result property="storeName" column="STORE_NAME"/>
-    	<collection property="tagList" ofType="java.lang.String" javaType="list">
-    		<result column="TAG"/>
-    	</collection>
-    </resultMap>
-    
-    <resultMap type="com.sd.mommyson.user.dto.FileDTO" id="fileResultMap">
-    	<id property="fileCode" column="FILE_CODE"/>
-    	<result property="fileName" column="FILE_NAME"/>
-    	<result property="postNo" column="POST_NO"/>
-    	<result property="fileType" column="FILE_TYPE"/>
-    </resultMap>
 
     <!-- 공지사항  페이지수  -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -788,7 +800,7 @@
     </delete>
     
 
-	<!-- 방문포장 주문리스트 저장 -->
+	<!-- 포장 주문리스트 저장 -->
 	<insert id="insertPackageOrderList">
       INSERT ALL
         INTO ORDER_TBL
@@ -821,6 +833,16 @@
          )
       SELECT * FROM DUAL    
    </insert>
+   
+   <select id="selectMemberAddress" resultMap="memberResultMap2" parameterType="_int">
+      SELECT
+             ADDRESS
+           , POST_CODE
+           , D_ADDRESS
+        FROM MEMBER_TBL
+       WHERE MEM_CODE = #{ memCode }
+   </select>
+   
 
 	<!-- 배달 주문리스트 저장 -->
 	<insert id="insertDeliveryOrderList">
@@ -831,7 +853,7 @@
             #{ memCode }
           , #{ price }
           , SEQ_ORDER_CODE.NEXTVAL
-          , '배'
+          , '배달'
           , null
           , null
           , null
@@ -861,31 +883,26 @@
     	SELECT SEQ_ORDER_CODE.CURRVAL FROM DUAL
     </select>
     
-    
-  
-    
-    <!-- 결제취소 -->
-    <delete id="deleteOrder" parameterType="list">
-    	DELETE FROM ORDER_TBL
-    	 WHERE ORDER_CODE IN (
-    	 <foreach collection="list" separator="," item="item">
+    <!-- 주문 리스트 조회 -->   
+    <select id="selectOrderList" resultType="hashmap" parameterType="list">
+    	SELECT
+    	       A.MEM_CODE
+    		 , A.ORDER_CODE
+    		 , A.TOTAL_PRICE
+    		 , B.STORE_IMG
+    		 , B.STORE_NAME
+    		 , B.MEM_CODE AS STORE_CODE
+    		 , B.DEL_COST
+    	  FROM ORDER_TBL A
+    	  LEFT JOIN STORE_TBL B ON(A.STORE_CODE = B.MEM_CODE)
+    	 WHERE A.ORDER_CODE IN (
+    	 <foreach collection="list" item="item" separator=",">
     	 	#{ item }
     	 </foreach>
     	 )
-    </delete>
+    </select>
     
-    <resultMap type="com.sd.mommyson.owner.dto.CouponDTO" id="couponResultMap">
-		<id property="cpCode" column="CP_CODE"/>
-		<result property="cpNum" column="CP_NUM"/>
-		<result property="cpName" column="CP_NAME"/>
-		<result property="startDate" column="START_DATE"/>
-		<result property="disWon" column="DISCOUNT_WON"/>
-		<result property="endDate" column="END_DATE"/>
-		<result property="dCcon" column="DC_CONDITION"/>
-		<result property="storeCode" column="STORE_CODE"/>
-	</resultMap>
-    
-    <!-- 결제시 쿠폰 조회 -->
+    <!-- 쿠폰 리스트 조회 -->
     <select id="selectCouponList" resultMap="couponResultMap">
     	SELECT
     		   A.CP_CODE
@@ -904,7 +921,15 @@
     	   AND A.MEM_CODE = #{ memCode }
     </select>
     
-
+  <!-- 결제취소 -->
+    <delete id="deleteOrder" parameterType="list">
+    	DELETE FROM ORDER_TBL
+    	 WHERE ORDER_CODE IN (
+    	 <foreach collection="list" separator="," item="item">
+    	 	#{ item }
+    	 </foreach>
+    	 )
+    </delete>
     
     <!-- 방문포장 결제 업데이트 -->
     <update id="updateOrder" parameterType="hashmap">
@@ -917,6 +942,20 @@
     </update>
     
     
+ 	<!-- 배달 결제 업데이트 -->
+	<update id="updateOrder2" parameterType="hashmap">
+        UPDATE ORDER_TBL
+           SET TOTAL_PRICE = #{ totalPrice },
+               ORDER_RUQEUST_TIME = TO_DATE(SYSDATE,'YYYY-MM-DD HH24:mi:ss'),
+               PHONE = #{ phone },
+               TAKE_TIME = #{ time },
+               ADDRESS = #{ address },
+               POST_CODE = #{ zipCode },
+               D_ADDRESS = #{ detailAddress }
+         WHERE ORDER_CODE = #{ orderCode }
+    </update>
+	
+    
     <!-- 결제시 쿠폰 업데이트 -->
     <update id="updateCouponStatus" parameterType="list">
     	UPDATE CP_HISTORY_TBL
@@ -928,9 +967,33 @@
     	 )
     </update>
     
+    
+    <!-- 가게 주문 알림 -->
+    <insert id="insertRTNotice">
+    	<selectKey keyProperty="memCode" resultType="int" order="BEFORE">
+	    	SELECT
+	    		   STORE_CODE
+	    	  FROM ORDER_TBL WHERE ORDER_CODE = #{ orderCode }
+	    </selectKey>
+    	INSERT
+    	INTO RT_NOTICE_TBL
+    	(
+    	  NOTICE_CODE
+    	, MEM_CODE
+    	, NOTICE_CONTENTS
+    	, NOTICE_TIME
+    	)
+    	VALUES
+    	(
+    	  RT_NOTICE.NEXTVAL
+    	, #{ memCode }
+    	, '새 주문이 들어왔어요!'
+    	, SYSDATE
+    	)
+    </insert>
 
 
-	<!-- 결제완료화면 조회 -->
+	<!-- 포장 결제 완료 화면 조회 -->
 	<select id="selectPackageOrderComplete" resultType="hashmap" parameterType="list">
 		SELECT 
 				   O.MEM_CODE 
@@ -958,20 +1021,8 @@
 			 )
 	</select>
 	
-	 <!-- 배달 결제 업데이트 -->
-	<update id="updateOrder2" parameterType="hashmap">
-        UPDATE ORDER_TBL
-           SET TOTAL_PRICE = #{ totalPrice },
-               ORDER_RUQEUST_TIME = TO_DATE(SYSDATE,'YYYY-MM-DD HH24:mi:ss'),
-               PHONE = #{ phone },
-               TAKE_TIME = #{ time },
-               ADDRESS = #{ address },
-               POST_CODE = #{ zipCode },
-               D_ADDRESS = #{ detailAddress }
-         WHERE ORDER_CODE = #{ orderCode }
-    </update>
-	
-	
+
+	<!-- 배달 결제 완료 화면 조회 -->
  	<select id="selectDeliveryOrderComplete" resultType="hashmap" parameterType="list">
 		SELECT 
 				   O.MEM_CODE 
@@ -1285,24 +1336,6 @@
       WHERE A.POST_NO = #{ postNo }	
      </update>
     
-    <select id="selectOrderList" resultType="hashmap" parameterType="list">
-    	SELECT
-    	       A.MEM_CODE
-    		 , A.ORDER_CODE
-    		 , A.TOTAL_PRICE
-    		 , B.STORE_IMG
-    		 , B.STORE_NAME
-    		 , B.MEM_CODE AS STORE_CODE
-    		 , B.DEL_COST
-    	  FROM ORDER_TBL A
-    	  LEFT JOIN STORE_TBL B ON(A.STORE_CODE = B.MEM_CODE)
-    	 WHERE A.ORDER_CODE IN (
-    	 <foreach collection="list" item="item" separator=",">
-    	 	#{ item }
-    	 </foreach>
-    	 )
-    </select>
-    
     <!-- 소비자 게시물 소비자 이미지 파일 삭제 -->
     <update id="updateDelImg">
     	UPDATE
@@ -1311,37 +1344,8 @@
     	WHERE FILE_CODE = #{ fileCode }  
     </update>
     
-    <insert id="insertRTNotice">
-    	<selectKey keyProperty="memCode" resultType="int" order="BEFORE">
-	    	SELECT
-	    		   STORE_CODE
-	    	  FROM ORDER_TBL WHERE ORDER_CODE = #{ orderCode }
-	    </selectKey>
-    	INSERT
-    	INTO RT_NOTICE_TBL
-    	(
-    	  NOTICE_CODE
-    	, MEM_CODE
-    	, NOTICE_CONTENTS
-    	, NOTICE_TIME
-    	)
-    	VALUES
-    	(
-    	  RT_NOTICE.NEXTVAL
-    	, #{ memCode }
-    	, '새 주문이 들어왔어요!'
-    	, SYSDATE
-    	)
-    </insert>
+
     
-    <select id="selectMemberAddress" resultMap="memberResultMap2" parameterType="_int">
-       SELECT
-              ADDRESS
-            , POST_CODE
-            , D_ADDRESS
-         FROM MEMBER_TBL
-        WHERE MEM_CODE = #{ memCode }
-    </select>
-    
+
 
     </mapper>

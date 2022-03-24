@@ -21,9 +21,7 @@ import com.sd.mommyson.owner.dto.TagDTO;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-	@Inject
-	@Autowired
-	private final MemberDAO memberDAO;
+	private MemberDAO memberDAO;
 	private BCryptPasswordEncoder passwordEncoder;
 
 	

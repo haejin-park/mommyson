@@ -51,10 +51,10 @@ public interface UserDAO {
 	/* 장바구니 상품 조회  */
 	int selectCountCart(HashMap<String, Integer> order);
 
-	/* 장바구니에 상품 insert  */
+	/* 장바구니에 상품 저장  */
 	void insertCart(HashMap<String,Integer> order);
 	
-	/* 장바구니에 상품 update */
+	/* 장바구니에 상품 업데이트 */
 	void updateCart(HashMap<String,Integer> order);
 	
 	/* 장바구니 목록 조회 */
@@ -66,23 +66,38 @@ public interface UserDAO {
 	/* 방문포장 주문리스트 저장  */
 	int insertPackageOrderList(Map<String, Object> map);
 	
-	/* 결제 취소 */
+	/* 주문 결제 취소 */
 	void deleteOrder(List<Integer> orderCodeList);
-	
-	/* 방문포장 결제 업데이트 */
-	int updateOrder(Map<String, Object> map);
 
-	/* 결제시 쿠폰상태 업데이트 */
-	int updateCouponStatus(List<Integer> list2);
+	/* 배달 받을 회원 주소 조회 */
+	MemberDTO selectMemberAddress(int memCode);
 	
-	/* 방문포장 결제완료화면 조회  */
-	List<Map<String, Object>> selectPackageOrderComplete(List<Map<String, Object>> list);
-
 	/* 배달 주문리스트 저장  */
 	int insertDeliveryOrderList(Map<String, Object> map);
 	
+	/* 마지막 주문 코드 조회 */
+	Integer selectLastOrderCode();
+	
+	/* 주문 리스트 조회 */
+	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
+
+	/* 쿠폰 리스트 조회 */
+	List<CouponDTO> selectCouponList(int memCode);
+	
+	/* 포장 결제 업데이트 */
+	int updateOrder(Map<String, Object> map);
+	
 	/* 배달 결제 업데이트 */
 	int updateOrder2(Map<String, Object> map);
+
+	/* 가게 주문 알림 */
+	void insertRTNotice(Map<String, Object> map);
+	
+	/* 결제시 쿠폰상태 업데이트 */
+	int updateCouponStatus(List<Integer> list2);
+
+	/* 방문포장 결제완료화면 조회  */
+	List<Map<String, Object>> selectPackageOrderComplete(List<Map<String, Object>> list);
 	
 	/* 배달 결제완료화면 조회 */
 	List<Map<String, Object>> selectDeliveryOrderComplete(List<Map<String, Object>> list);
@@ -109,12 +124,6 @@ public interface UserDAO {
 
 	int registMtmConsultingText(Map<String, Object> mtmConsulting);
 	
-	Integer selectLastOrderCode();
-
-	List<Map<String, String>> selectOrderList(List<Integer> orderCodes);
-
-	List<CouponDTO> selectCouponList(int memCode);
-
 	int registMtmConFile(Map<String, Object> fileInfo);
 
 	int selectMtmTotalCount(Map<String, String> searchMap);
@@ -137,9 +146,6 @@ public interface UserDAO {
 
 	int updateDelImg(Map<String, Object> delImgInfo);
 
-	MemberDTO selectMemberAddress(int memCode);
-
-	void insertRTNotice(Map<String, Object> map);
 
 //	List<OrderDTO> selectDeliveryOrder(Map<String, Integer> orderMap);
 

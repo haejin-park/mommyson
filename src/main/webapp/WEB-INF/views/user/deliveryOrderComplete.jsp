@@ -86,18 +86,5 @@
     <br><br><br><br>
     <jsp:include page="../commons/footer.jsp"/>
     
-<!--     
-<!—     <script>
-    
-	$("#myOrderList").on('click', function(){
-		let orderCodes = [];
-		$('#orderCode').each(function(index,val){
-			orderCodes.push($(this.val()));
-		});
-  		
-		location.href = "${ pageContext.servletContext.contextPath }/userMyPage/myOrderList?orderCodes=" + orderCodes ; 
-	});
-
-    </script> —> -->
 </body>
 </html>

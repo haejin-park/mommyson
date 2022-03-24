@@ -96,7 +96,7 @@
 	
 	/* 수량증감에따라 totalCount 변경 */
 
-    /* $(function(){
+	$(function(){
        
 	     	var stat = $('#numberUpDown').text();
 	      	var num = parseInt(stat,10);
@@ -137,7 +137,7 @@
 	  });
 	    
 	    
-	});   */
+	});   
 	
 	  /* 전체 체크, 해제 */
 	  $("#all").click(function(){

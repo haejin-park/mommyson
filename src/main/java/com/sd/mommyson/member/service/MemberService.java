@@ -63,7 +63,6 @@ public interface MemberService  {
 
 	public List<StoreDTO> selectStoreList();
 
-
 	public List<RTNoticeDTO> selectRTNotice(int memCode);
 
 	public int deleteNotice(int noticeCode);

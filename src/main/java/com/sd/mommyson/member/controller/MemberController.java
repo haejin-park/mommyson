@@ -43,19 +43,15 @@ public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	@Autowired	
 	private MemberService memberService; 
-
-	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
-	
-	@Autowired				 
 	JavaMailSender mailSender;   
 
 	@Autowired
-	public MemberController(MemberService memberService) {
+	public MemberController(MemberService memberService,  BCryptPasswordEncoder passwordEncoder, JavaMailSender mailSender) {
 		this.memberService = memberService;
+		this.passwordEncoder = passwordEncoder;
+		this.mailSender = mailSender;
 	}
 
 	@GetMapping("login")
@@ -97,15 +93,21 @@ public class MemberController {
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("customerJoin")
 	public void customerJoin() {}
-	
-	
+
+
 	/* 사용자 회원가입 페이지 이동 */
 	@GetMapping("businessJoin")
 	public void businessJoin() {}
 
 
 
-	/*  아이디 중복 검사 */
+	/**
+	 * 아이디 중복 검사
+	 * @author haejinpark
+	 * @param memId
+	 * @return re
+	 * @throws Exception
+	 */
 	@PostMapping(value="idChk", produces="text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String idChk(@RequestParam("id") String memId) throws Exception {
@@ -125,9 +127,15 @@ public class MemberController {
 
 
 	}
-	
-	
-	/* 이메일 중복 검사 */
+
+
+	/**
+	 * 이메일 중복 검사
+	 * @author haejinpark
+	 * @param email
+	 * @return re
+	 * @throws Exception
+	 */
 	@PostMapping(value ="emailChk", produces="text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String emailChk(@RequestParam String email) throws Exception {
@@ -143,8 +151,15 @@ public class MemberController {
 		return re;
 	}
 
-	
-	/* 회원가입 이메일 인증 번호 전송 버튼을 눌러 이메일 주소와 인증번호와 저장 */
+
+	/**
+	 * 회원가입 이메일 인증 번호 전송 버튼을 눌러 이메일 주소와 인증번호와 저장
+	 * @author haejinpark
+	 * @param email
+	 * @param model
+	 * @return num
+	 * @throws Exception
+	 */
 	@RequestMapping(value="mailCheck", method=RequestMethod.POST)
 	@ResponseBody
 	public String mailCheck(String email, Model model) throws Exception{
@@ -185,139 +200,171 @@ public class MemberController {
 			e.printStackTrace();
 		}
 
-		
+
 		String num = Integer.toString(checkNum);
 
 		HashMap<String,String> map = new HashMap<String,String>();
 		map.put("num", num);
 		map.put("toMail", toMail);
-		
+
 		System.out.println("map : " + map);
 		memberService.registEmailCode(map);
 
 		return num;
 	}
-	
 
-	/* 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 이메일 인증번호 조회해서 일치 여부 확인 */
+
+	/**
+	 * 회원가입할 때 전송버튼 눌러 데이터베이스에 저장한 이메일 인증번호 조회해서 일치 여부 확인
+	 * @author haejinpark
+	 * @param inputCode
+	 * @return email
+	 */
 	@PostMapping(value="codeCheck",  produces="text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String codeCheck(@RequestParam String inputCode) {
-		
+
 		System.out.println("inputCode");
-		
+
 		String email= memberService.codeCheck(inputCode);
-		
+
 		return email;
 	}
-	
-	
-	
-	/* 주소에서 구 가져오기 */
+
+
+	/**
+	 * 주소에서 구 가져오기
+	 * @param address
+	 * @return result
+	 * @throws Exception
+	 */
 	@PostMapping(value="locationCode", produces="text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String locationCode(@RequestParam("address1")String address) throws Exception {
-		
-			System.out.println("address : " + address);
-			String locationName = address.split(" ")[1];
-			System.out.println(locationName);
-			String result = memberService.locationCode(locationName);
-			
-			return result;
-		
+
+		System.out.println("address : " + address);
+		String locationName = address.split(" ")[1];
+		System.out.println(locationName);
+		String result = memberService.locationCode(locationName);
+
+		return result;
+
 	}
-	
-	
-	/* 소비자 회원가입 */
+
+
+	/**
+	 * 소비자 회원가입
+	 * @author haejinpark
+	 * @param member
+	 * @return /member/login
+	 * @throws Exception
+	 */
 	@RequestMapping(value="customerJoin", method=RequestMethod.POST)
 	public String customerJoin(@ModelAttribute MemberDTO member) throws Exception{
-//
-//		String rawPwd = "";
-//		String encodePwd = "";
-//		
-//		rawPwd = member.getMemPwd(); //비밀번호 데이터 얻음 
-//		encodePwd = passwordEncoder.encode(rawPwd); //비밀번호 인코딩 
-//		member.setMemPwd(encodePwd); //인코딩 비밀번호 member 객체에 다시 저장 
-		
+		//
+		//		String rawPwd = "";
+		//		String encodePwd = "";
+		//		
+		//		rawPwd = member.getMemPwd(); //비밀번호 데이터 얻음 
+		//		encodePwd = passwordEncoder.encode(rawPwd); //비밀번호 인코딩 
+		//		member.setMemPwd(encodePwd); //인코딩 비밀번호 member 객체에 다시 저장 
+
 		member.setMemPwd(passwordEncoder.encode(member.getMemPwd()));
 		System.out.println(member);
 		logger.info("join진입");
-		
+
 		memberService.customerJoin(member);
 		logger.info("customerJoin Service 성공");
 
 		return "/member/login";
-		
-		
+
+
 	}
-	
-	/* 사업자 회원가입 */
+
+	/**
+	 * 사업자 회원가입
+	 * @author haejinpark
+	 * @param member
+	 * @param store
+	 * @param storeImg2
+	 * @param request
+	 * @param session
+	 * @param rd
+	 * @return redirect:login
+	 * @throws Exception
+	 */
 	@RequestMapping(value="businessJoin", method=RequestMethod.POST, headers = ("content-type=multipart/*"))
 	public String businessJoin(@ModelAttribute MemberDTO member, @ModelAttribute StoreDTO store, 
 			@RequestParam MultipartFile storeImg2, HttpServletRequest request, HttpSession session, RedirectAttributes rd) throws Exception{
-		
+
 		member.setMemPwd(passwordEncoder.encode(member.getMemPwd()));
 		System.out.println(member);
 		logger.info("join진입");
-		
-		
+
+
 		HashMap<String,Object> ceoRegist  = new HashMap<String,Object>();
 		ceoRegist.put("member", member);
 		ceoRegist.put("store", store);
-		
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		
+
+		String root = request.getSession().getServletContext().getRealPath("resources"); // 절대경로 
+
 		String filePath = root + "/uploadFiles";
-		
+
 		File mkdir = new File(filePath);
 		if(!mkdir.exists()) {
 			mkdir.mkdirs();
 		}
-		
+
 		String originFileName = storeImg2.getOriginalFilename();
-		String ext = originFileName.substring(originFileName.indexOf("."));
-		String savedName = UUID.randomUUID().toString().replace("-","") + ext;
-		
+		String ext = originFileName.substring(originFileName.indexOf(".")); //.이 몇번째 있는지 찾아서 그 부분부터 끝까지 잘라오기 
+		String savedName = UUID.randomUUID().toString().replace("-","") + ext; 
+
 		try {
-			storeImg2.transferTo(new File(filePath + "/" + savedName));
+			storeImg2.transferTo(new File(filePath + "/" + savedName)); //transferTo를 사용해 저장된 경로에 파일을 생성 
 			String fileName = "resources/uploadFiles/" + savedName;
 			ceoRegist.put("fileName", fileName);
-			
-			
+
+
 		} catch (IllegalStateException | IOException e) {
 			new File(filePath + "/" + savedName).delete();
 			e.printStackTrace();
 		}
-		
+
 		int result = memberService.businessJoin(ceoRegist);
 		logger.info("businessJoin Service 성공");
-		
+
 		if(result > 0) {
-			
+
 			rd.addFlashAttribute("message", "회원가입이 완료되었습니다.");
 		} else {
 			rd.addFlashAttribute("message","회원가입에 실패하였습니다.");
 			new File(filePath + "/" + savedName).delete();
 		} 
-		
+
 		return "redirect:login";
-	
-	
+
+
 	}
-	
-	
+
+
 	/* 아이디 찾기 화면 띄우기 */
 	@GetMapping("findId")
 	public void findId() {}
-	
-	
-	/* 아이디 찾기 */
+
+
+	/**
+	 * 아이디 찾기 
+	 * @author haejinpark
+	 * @param name
+	 * @param email
+	 * @return member
+	 */
 	@PostMapping(value = "findIdCheck", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String findIdCheck(@RequestParam String name, @RequestParam String email) {
 		System.out.println(name);
 		System.out.println(email);
-		
+
 		MemberDTO mdto = new MemberDTO(); // 이메일이 담긴 객체 
 		UserDTO udto = new UserDTO(); // 이름이 담긴 객체  
 		udto.setName(name);
@@ -326,15 +373,21 @@ public class MemberController {
 		System.out.println(mdto);
 		String member = memberService.findIdCheck(mdto);
 		System.out.println(member);
-		 return member;
+		return member;
 	}
-	
-	
+
+
 	/* 비밀번호 찾기 화면 띄우기 */
 	@GetMapping("findPwd")
 	public void findPwd() {}
-	
-	/* 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)*/
+
+	/**
+	 * 비밀번호 찾기(변경 화면으로 이동 하기 전단계) 이메일 인증 (기존 인증번호 업데이트 하기위해 이메일 같이 넘겨줌)
+	 * @author haejinpark
+	 * @param email
+	 * @return emailCode
+	 * @throws Exception
+	 */
 	@RequestMapping(value="find_pass.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String find_pass(@RequestParam String email) throws Exception{
@@ -373,90 +426,110 @@ public class MemberController {
 		}
 
 		String emailCode = Integer.toString(code);
-		
+
 		HashMap<String, String> map = new HashMap<String, String>();
-		
+
 		map.put("emailCode", emailCode);
 		map.put("email", email);
 		System.out.println("map : " + map);
-		
+
 		memberService.updateEmailCode(map);
-		
+
 		return emailCode;
-		
+
 	}
-	
-	
-	/* 인증번호를 입력한 후 비밀번호 변경 버튼을 누르면 변경화면으로 이메일값과 이동 */
-	
+
+
+	/**
+	 * 인증번호를 입력한 후 비밀번호 변경 버튼을 누르면 변경화면으로 이메일값과 이동
+	 * @author haejinpark
+	 * @param inputEmailCode
+	 * @param email
+	 * @param model
+	 * @return result
+	 * @throws IOException
+	 */
 	@RequestMapping(value ="findPass2", method = RequestMethod.POST, produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String findPass2(@RequestParam String inputEmailCode, @RequestParam String email, Model model) throws IOException{
-		
+
 		System.out.println("inputEmailCode : " + inputEmailCode);
-		
+
 		System.out.println("email : " + email);
-		
+
 		String result = "";
-		
+
 		int emailCode = memberService.selectEmailCode(email); //비밀번호 변경 화면 이동을 위해 이메일 인증번호 조회하기 
-		
+
 		String emailCode2 = Integer.toString(emailCode);
-		
+
 		if(emailCode2.equals(inputEmailCode)) {	//인증번호가 일치할 경우 이메일을 비밀번호 변경 화면에서 활용할 수 있도록 한다.
-			
+
 			result = email;
-			
+
 		} else {
-			
+
 			result = "인증코드가 일치하지 않습니다.";
-			
+
 		}
-		
+
 		return result;
-		
+
 	}
-	
-	
-	/* 비밀번호 변경하기 화면 띄우기 */
+
+
+	/**
+	 * 비밀번호 변경하기 화면 띄우기 
+	 * @author haejinpark	
+	 * @param email
+	 * @param model
+	 */
 	@GetMapping("modifyPwd")
 	public void modifyPwd(@RequestParam String email, Model model) {
-		
+
 		model.addAttribute("email", email);
 		System.out.println("findPwd.jsp에서 받아온 email : " + email); //modifyPwd로 email 보내기
-		
-		
+
+
 	}
-	
-	
-	/* 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러 */
+
+
+	/**
+	 * 변경할 비밀번호 입력 후 확인 버튼 누르면 넘어오는 컨트롤러
+	 * @author haejinpark
+	 * @param email
+	 * @param memPwd
+	 * @param model
+	 * @return /member/login
+	 * @throws Exception
+	 */
 	@PostMapping(value ="modifyPwd")
 	@ResponseBody
 	public String modifyPwd(@RequestParam String email, 
 			@RequestParam("pwd1") String memPwd, Model model) throws Exception{
-		
+
 		System.out.println("변경할 비밀번호 입력 후 같이 보낼 email : " + email);
-		
+
 		String encode = passwordEncoder.encode(memPwd);
 		System.out.println("encode : " + encode);
-		
+
 		HashMap<String,String> map = new HashMap<String,String>();
 		map.put("email",email);
 		map.put("encode", encode);
-		
+
 		memberService.modifyPwd(map);
-		
+
 		return "/member/login";
-		
+
 	}
-	
-	
+
+
 	@PostMapping(value = "deleteNotice", produces = "text/plain; charset=UTF-8;")
 	@ResponseBody
 	public String deleteNotice(@RequestParam("noticeCode") int noticeCode) {
 		int result = memberService.deleteNotice(noticeCode);
 		return result > 0? "삭제 성공" : "삭제 실패";
 	}
-	
+
 }	
 
