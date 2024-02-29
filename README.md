@@ -1,11 +1,15 @@
+MommySon
 동네 반찬가게와 소비자를 연결해주는 서비스
+
 
 💡 프로젝트 소개
 1인가구 및 맞벌이 가정 증가로 반찬 구매에 대한 수요에 대한 증가에 따라 동네 주변 반찬 가게와 소비자를 연결해주는 서비스를 제공하는 프로젝트입니다.
 
 
+
 🗓 프로젝트 기간
 2021.11.14 ~ 2021.12.30
+
 
 
 👨‍👦‍👦 멤버 구성
@@ -18,14 +22,18 @@
 김준희 : 관리자 기능, 1:1문의, Q&A
 이승우 : 신고관리, 결제기능, 배너관리, 블랙리스트 관리
 
+
 - ERD
 ![erd](https://github.com/haejin-park/mommyson/assets/87789631/cb7f4acc-2480-4820-858b-adb31dc7ef7b)
+
 
 - Usecase Diagram
 ![usecase](https://github.com/haejin-park/mommyson/assets/87789631/a917b61d-e78e-408f-8058-6660133584ca)
 
+
 - Prototype
 https://www.figma.com/file/qmpU8QxrfccpqbU2kvkPZV/%EC%93%B8%EC%96%B4%EB%8B%B4%EC%A1%B0?type=design&node-id=0-1&mode=design
+
 
 🛠 개발 환경
 
@@ -36,6 +44,7 @@ https://www.figma.com/file/qmpU8QxrfccpqbU2kvkPZV/%EC%93%B8%EC%96%B4%EB%8B%B4%EC
 - Server : Apache Tomcat
 - 프레임워크 : Spring Mvc
 - ORM : Mybatis
+
 
 📝 주요 기능
 
