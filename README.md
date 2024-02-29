@@ -9,6 +9,7 @@
 
 
 👨‍👦‍👦 멤버 구성
+
 박해진 : 소비자/사업자 회원가입, 아이디/비밀번호 찾기, 비밀번호 변경하기, 장바구니, 결제완료화면
 신현기 : 메인페이지, 정산 엑셀, 관리자 기능
 양윤제 : 이용자 상품 기능, 고객센터
@@ -16,6 +17,7 @@
 조혜주 : 사업자 주문관리, 할인관리, 사업자 회원탈퇴
 김준희 : 관리자 기능, 1:1문의, Q&A
 이승우 : 신고관리, 결제기능, 배너관리, 블랙리스트 관리
+
 - ERD
 ![erd](https://github.com/haejin-park/mommyson/assets/87789631/cb7f4acc-2480-4820-858b-adb31dc7ef7b)
 
@@ -26,6 +28,7 @@
 https://www.figma.com/file/qmpU8QxrfccpqbU2kvkPZV/%EC%93%B8%EC%96%B4%EB%8B%B4%EC%A1%B0?type=design&node-id=0-1&mode=design
 
 🛠 개발 환경
+
 - 통합 개발 환경 : Eclipse, VS Code
 - 프로그래밍 언어 : Java 8, JavaScript
 - 버전 관리 시스템 : GitHub, Source Tree
@@ -35,6 +38,7 @@ https://www.figma.com/file/qmpU8QxrfccpqbU2kvkPZV/%EC%93%B8%EC%96%B4%EB%8B%B4%EC
 - ORM : Mybatis
 
 📝 주요 기능
+
 1️⃣ 회원가입
 아이디, 비밀번호, 이름, 휴대폰 번호, 이메일, 주소 등을 입력하고 이메일 인증 후 정규식이 올바르면 사용가능 여부 알림
 아이디, 닉네임 중복 검사 / 비밀번호, 휴대폰 번호, 이메일 유효성 검사
